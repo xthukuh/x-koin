@@ -1,0 +1,157 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1288" font-family="monospace" font-size="13">
+<rect width="1000" height="1288" fill="#0d1117"/>
+<text x="40" y="40" fill="#e6edf3" font-size="20">xKoin-Gateway (ESP32-S3-DevKitC-1)</text>
+<rect x="40" y="70" width="300" height="1148" fill="#161b22" stroke="#30363d" rx="8"/>
+<text x="56" y="98" fill="#e6edf3" font-size="15">ESP32-S3</text>
+<rect x="640" y="90" width="300" height="270" fill="#161b22" stroke="#30363d" rx="8"/>
+<text x="652" y="112" fill="#e6edf3">SX1262 LoRa 868 MHz</text>
+<text x="652" y="128" fill="#8b949e" font-size="11">[doc02]</text>
+<rect x="640" y="400" width="300" height="166" fill="#161b22" stroke="#30363d" rx="8"/>
+<text x="652" y="422" fill="#e6edf3">KQ-130F narrowband PLC</text>
+<text x="652" y="438" fill="#8b949e" font-size="11">[doc02]</text>
+<rect x="640" y="606" width="300" height="270" fill="#161b22" stroke="#30363d" rx="8"/>
+<text x="652" y="628" fill="#e6edf3">W5500 Ethernet -&gt; HomePlug AV</text>
+<text x="652" y="644" fill="#8b949e" font-size="11">[proposed]</text>
+<rect x="640" y="916" width="300" height="192" fill="#161b22" stroke="#30363d" rx="8"/>
+<text x="652" y="938" fill="#e6edf3">SIM7600E LTE (backhaul)</text>
+<text x="652" y="954" fill="#8b949e" font-size="11">[proposed]</text>
+<line x1="340" y1="144" x2="640" y2="144" stroke="#2f81f7" stroke-width="2"/>
+<text x="332" y="148" fill="#e6edf3" text-anchor="end">GPIO12</text>
+<text x="648" y="148" fill="#e6edf3">SCK</text>
+<circle cx="340" cy="144" r="3" fill="#2f81f7"/>
+<circle cx="640" cy="144" r="3" fill="#2f81f7"/>
+<line x1="340" y1="170" x2="640" y2="170" stroke="#2f81f7" stroke-width="2"/>
+<text x="332" y="174" fill="#e6edf3" text-anchor="end">GPIO13</text>
+<text x="648" y="174" fill="#e6edf3">MISO</text>
+<circle cx="340" cy="170" r="3" fill="#2f81f7"/>
+<circle cx="640" cy="170" r="3" fill="#2f81f7"/>
+<line x1="340" y1="196" x2="640" y2="196" stroke="#2f81f7" stroke-width="2"/>
+<text x="332" y="200" fill="#e6edf3" text-anchor="end">GPIO11</text>
+<text x="648" y="200" fill="#e6edf3">MOSI</text>
+<circle cx="340" cy="196" r="3" fill="#2f81f7"/>
+<circle cx="640" cy="196" r="3" fill="#2f81f7"/>
+<line x1="340" y1="222" x2="640" y2="222" stroke="#2f81f7" stroke-width="2"/>
+<text x="332" y="226" fill="#e6edf3" text-anchor="end">GPIO10</text>
+<text x="648" y="226" fill="#e6edf3">NSS/CS</text>
+<circle cx="340" cy="222" r="3" fill="#2f81f7"/>
+<circle cx="640" cy="222" r="3" fill="#2f81f7"/>
+<line x1="340" y1="248" x2="640" y2="248" stroke="#3fb950" stroke-width="2"/>
+<text x="332" y="252" fill="#e6edf3" text-anchor="end">GPIO14</text>
+<text x="648" y="252" fill="#e6edf3">DIO1 (IRQ)</text>
+<circle cx="340" cy="248" r="3" fill="#3fb950"/>
+<circle cx="640" cy="248" r="3" fill="#3fb950"/>
+<line x1="340" y1="274" x2="640" y2="274" stroke="#3fb950" stroke-width="2"/>
+<text x="332" y="278" fill="#e6edf3" text-anchor="end">GPIO21</text>
+<text x="648" y="278" fill="#e6edf3">BUSY</text>
+<circle cx="340" cy="274" r="3" fill="#3fb950"/>
+<circle cx="640" cy="274" r="3" fill="#3fb950"/>
+<line x1="340" y1="300" x2="640" y2="300" stroke="#f85149" stroke-width="2"/>
+<text x="332" y="304" fill="#e6edf3" text-anchor="end">3V3</text>
+<text x="648" y="304" fill="#e6edf3">VCC</text>
+<circle cx="340" cy="300" r="3" fill="#f85149"/>
+<circle cx="640" cy="300" r="3" fill="#f85149"/>
+<line x1="340" y1="326" x2="640" y2="326" stroke="#484f58" stroke-width="2"/>
+<text x="332" y="330" fill="#e6edf3" text-anchor="end">GND</text>
+<text x="648" y="330" fill="#e6edf3">GND</text>
+<circle cx="340" cy="326" r="3" fill="#484f58"/>
+<circle cx="640" cy="326" r="3" fill="#484f58"/>
+<line x1="340" y1="454" x2="640" y2="454" stroke="#d29922" stroke-width="2"/>
+<text x="332" y="458" fill="#e6edf3" text-anchor="end">GPIO17</text>
+<text x="648" y="458" fill="#e6edf3">RX  (ESP TX2)</text>
+<circle cx="340" cy="454" r="3" fill="#d29922"/>
+<circle cx="640" cy="454" r="3" fill="#d29922"/>
+<line x1="340" y1="480" x2="640" y2="480" stroke="#d29922" stroke-width="2"/>
+<text x="332" y="484" fill="#e6edf3" text-anchor="end">GPIO18</text>
+<text x="648" y="484" fill="#e6edf3">TX  (ESP RX2)</text>
+<circle cx="340" cy="480" r="3" fill="#d29922"/>
+<circle cx="640" cy="480" r="3" fill="#d29922"/>
+<line x1="340" y1="506" x2="640" y2="506" stroke="#f85149" stroke-width="2"/>
+<text x="332" y="510" fill="#e6edf3" text-anchor="end">5V</text>
+<text x="648" y="510" fill="#e6edf3">VCC (isolated side)</text>
+<circle cx="340" cy="506" r="3" fill="#f85149"/>
+<circle cx="640" cy="506" r="3" fill="#f85149"/>
+<line x1="340" y1="532" x2="640" y2="532" stroke="#484f58" stroke-width="2"/>
+<text x="332" y="536" fill="#e6edf3" text-anchor="end">GND</text>
+<text x="648" y="536" fill="#e6edf3">GND (isolated side)</text>
+<circle cx="340" cy="532" r="3" fill="#484f58"/>
+<circle cx="640" cy="532" r="3" fill="#484f58"/>
+<line x1="340" y1="660" x2="640" y2="660" stroke="#2f81f7" stroke-width="2"/>
+<text x="332" y="664" fill="#e6edf3" text-anchor="end">GPIO36</text>
+<text x="648" y="664" fill="#e6edf3">SCK</text>
+<circle cx="340" cy="660" r="3" fill="#2f81f7"/>
+<circle cx="640" cy="660" r="3" fill="#2f81f7"/>
+<line x1="340" y1="686" x2="640" y2="686" stroke="#2f81f7" stroke-width="2"/>
+<text x="332" y="690" fill="#e6edf3" text-anchor="end">GPIO37</text>
+<text x="648" y="690" fill="#e6edf3">MISO</text>
+<circle cx="340" cy="686" r="3" fill="#2f81f7"/>
+<circle cx="640" cy="686" r="3" fill="#2f81f7"/>
+<line x1="340" y1="712" x2="640" y2="712" stroke="#2f81f7" stroke-width="2"/>
+<text x="332" y="716" fill="#e6edf3" text-anchor="end">GPIO35</text>
+<text x="648" y="716" fill="#e6edf3">MOSI</text>
+<circle cx="340" cy="712" r="3" fill="#2f81f7"/>
+<circle cx="640" cy="712" r="3" fill="#2f81f7"/>
+<line x1="340" y1="738" x2="640" y2="738" stroke="#2f81f7" stroke-width="2"/>
+<text x="332" y="742" fill="#e6edf3" text-anchor="end">GPIO38</text>
+<text x="648" y="742" fill="#e6edf3">CS</text>
+<circle cx="340" cy="738" r="3" fill="#2f81f7"/>
+<circle cx="640" cy="738" r="3" fill="#2f81f7"/>
+<line x1="340" y1="764" x2="640" y2="764" stroke="#3fb950" stroke-width="2"/>
+<text x="332" y="768" fill="#e6edf3" text-anchor="end">GPIO39</text>
+<text x="648" y="768" fill="#e6edf3">INT</text>
+<circle cx="340" cy="764" r="3" fill="#3fb950"/>
+<circle cx="640" cy="764" r="3" fill="#3fb950"/>
+<line x1="340" y1="790" x2="640" y2="790" stroke="#3fb950" stroke-width="2"/>
+<text x="332" y="794" fill="#e6edf3" text-anchor="end">GPIO40</text>
+<text x="648" y="794" fill="#e6edf3">RST</text>
+<circle cx="340" cy="790" r="3" fill="#3fb950"/>
+<circle cx="640" cy="790" r="3" fill="#3fb950"/>
+<line x1="340" y1="816" x2="640" y2="816" stroke="#f85149" stroke-width="2"/>
+<text x="332" y="820" fill="#e6edf3" text-anchor="end">3V3</text>
+<text x="648" y="820" fill="#e6edf3">VCC</text>
+<circle cx="340" cy="816" r="3" fill="#f85149"/>
+<circle cx="640" cy="816" r="3" fill="#f85149"/>
+<line x1="340" y1="842" x2="640" y2="842" stroke="#484f58" stroke-width="2"/>
+<text x="332" y="846" fill="#e6edf3" text-anchor="end">GND</text>
+<text x="648" y="846" fill="#e6edf3">GND</text>
+<circle cx="340" cy="842" r="3" fill="#484f58"/>
+<circle cx="640" cy="842" r="3" fill="#484f58"/>
+<line x1="340" y1="970" x2="640" y2="970" stroke="#d29922" stroke-width="2"/>
+<text x="332" y="974" fill="#e6edf3" text-anchor="end">GPIO4</text>
+<text x="648" y="974" fill="#e6edf3">RXD (ESP TX1)</text>
+<circle cx="340" cy="970" r="3" fill="#d29922"/>
+<circle cx="640" cy="970" r="3" fill="#d29922"/>
+<line x1="340" y1="996" x2="640" y2="996" stroke="#d29922" stroke-width="2"/>
+<text x="332" y="1000" fill="#e6edf3" text-anchor="end">GPIO5</text>
+<text x="648" y="1000" fill="#e6edf3">TXD (ESP RX1)</text>
+<circle cx="340" cy="996" r="3" fill="#d29922"/>
+<circle cx="640" cy="996" r="3" fill="#d29922"/>
+<line x1="340" y1="1022" x2="640" y2="1022" stroke="#3fb950" stroke-width="2"/>
+<text x="332" y="1026" fill="#e6edf3" text-anchor="end">GPIO6</text>
+<text x="648" y="1026" fill="#e6edf3">PWRKEY</text>
+<circle cx="340" cy="1022" r="3" fill="#3fb950"/>
+<circle cx="640" cy="1022" r="3" fill="#3fb950"/>
+<line x1="340" y1="1048" x2="640" y2="1048" stroke="#f85149" stroke-width="2"/>
+<text x="332" y="1052" fill="#e6edf3" text-anchor="end">5V</text>
+<text x="648" y="1052" fill="#e6edf3">VCC 2A peak</text>
+<circle cx="340" cy="1048" r="3" fill="#f85149"/>
+<circle cx="640" cy="1048" r="3" fill="#f85149"/>
+<line x1="340" y1="1074" x2="640" y2="1074" stroke="#484f58" stroke-width="2"/>
+<text x="332" y="1078" fill="#e6edf3" text-anchor="end">GND</text>
+<text x="648" y="1078" fill="#e6edf3">GND</text>
+<circle cx="340" cy="1074" r="3" fill="#484f58"/>
+<circle cx="640" cy="1074" r="3" fill="#484f58"/>
+<rect x="40" y="1222" width="14" height="14" fill="#2f81f7"/>
+<text x="60" y="1234" fill="#e6edf3">SPI</text>
+<rect x="150" y="1222" width="14" height="14" fill="#d29922"/>
+<text x="170" y="1234" fill="#e6edf3">UART</text>
+<rect x="260" y="1222" width="14" height="14" fill="#f85149"/>
+<text x="280" y="1234" fill="#e6edf3">PWR</text>
+<rect x="370" y="1222" width="14" height="14" fill="#484f58"/>
+<text x="390" y="1234" fill="#e6edf3">GND</text>
+<rect x="480" y="1222" width="14" height="14" fill="#3fb950"/>
+<text x="500" y="1234" fill="#e6edf3">CTRL</text>
+<text x="40" y="1256" fill="#f0883e" font-size="11">SAFETY: KQ-130F couples to 230 V mains. Keep mains coupling network fully</text>
+<text x="40" y="1272" fill="#f0883e" font-size="11">isolated from the logic side; opto/transformer isolation per doc 03. Never</text>
+<text x="40" y="1288" fill="#f0883e" font-size="11">bench-test the mains side without an isolation transformer and RCD.</text>
+<text x="40" y="1304" fill="#f0883e" font-size="11">Power: 230 V -&gt; 5 V/3 A buck (HLK or MeanWell) -&gt; AMS1117/buck 3V3 rail.</text>
+</svg>

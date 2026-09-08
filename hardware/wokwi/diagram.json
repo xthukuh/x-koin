@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "author": "Martin Thuku",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "board-esp32-s3-devkitc-1", "id": "esp", "top": 0, "left": 0, "attrs": {} },
+    { "type": "chip-sx1262", "id": "lora", "top": -60, "left": 420, "attrs": {} },
+    { "type": "chip-kq130f", "id": "plc", "top": 180, "left": 420, "attrs": {} }
+  ],
+  "connections": [
+    [ "esp:12", "lora:SCK", "blue", [] ],
+    [ "esp:13", "lora:MISO", "blue", [] ],
+    [ "esp:11", "lora:MOSI", "blue", [] ],
+    [ "esp:10", "lora:CS", "blue", [] ],
+    [ "esp:14", "lora:DIO1", "green", [] ],
+    [ "esp:21", "lora:BUSY", "green", [] ],
+    [ "esp:3V3.1", "lora:VCC", "red", [] ],
+    [ "esp:GND.1", "lora:GND", "black", [] ],
+    [ "esp:17", "plc:RX", "gold", [] ],
+    [ "esp:18", "plc:TX", "gold", [] ],
+    [ "esp:5V.1", "plc:VCC", "red", [] ],
+    [ "esp:GND.2", "plc:GND", "black", [] ]
+  ]
+}
