@@ -1,6 +1,6 @@
 # x-koin
 
-The decentralized zero-trust crypto network by [Martin Thuku](https://github.com/xthukuh) ~ [thuku.dev](https://thuku.dev).
+The decentralized trust-minimized crypto network by [Martin Thuku](https://github.com/xthukuh) ~ [thuku.dev](https://thuku.dev).
 
 Decentralized hybrid PLC + LoRa mesh with trust-minimized state-channel
 micro-settlement and M-Pesa / Equitel fiat bridging. Source of truth for scope
@@ -48,8 +48,16 @@ delta settlement so lost intermediate tickets cost nothing.
 
     cd gateway-api
     pip install -r requirements.txt -r requirements-dev.txt
-    pytest              # 9 tests, all external calls mocked
+    pytest              # 20 tests, all external calls mocked
     uvicorn app.main:app
 
 XKOIN_DRY_RUN=true (default) makes every chain call return the transaction it
 would send instead of broadcasting. Copy .env.example to .env for credentials.
+
+Fee payout worker (spec s8.1 fiat leg): `python -m app.payout.worker` watches
+Transfer(beneficiary -> bridge) on xKoinToken, fires a Daraja B2C to the
+founder MSISDN, and burns exactly the paid-out XKN once Daraja's result
+callback confirms. The MSISDN is pinned by an EIP-191 signature from the
+beneficiary key and verified against the treasury's on-chain beneficiary, so a
+rewritten .env or a hostile event feed can delay a payout but never redirect
+it. Sign the pin offline with `python -m app.payout.pin` (see its docstring).
