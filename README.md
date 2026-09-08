@@ -20,6 +20,13 @@ pricing clearing measured backhaul cost; do not quote them without that check.
 New machine or new session: read HANDOVER.md first, then `scripts/bootstrap.sh`
 re-proves everything (contracts, gateway, protocol, firmware core, chain e2e).
 
+Windows host (Git Bash, Foundry in `~/.foundry/bin`, mingw-w64 gcc):
+
+    python -m venv .venv
+    PYTHON=.venv/Scripts/python.exe MAKE=mingw32-make scripts/bootstrap.sh
+
+Verified green on Windows 11 with Python 3.14 and Foundry 1.5.1 (2026-09-09).
+
 ## Layout
 
     contracts/     Solidity (Foundry): xKoinToken, xKoinEscrow, xKoinTreasury

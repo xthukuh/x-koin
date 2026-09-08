@@ -4,28 +4,32 @@
 # git objects); this restores them, installs Python deps, and runs every proof.
 #   scripts/bootstrap.sh            # local machine
 #   PIP_FLAGS=--break-system-packages FOUNDRY_PROFILE=sandbox scripts/bootstrap.sh
+#   PYTHON=.venv/Scripts/python.exe MAKE=mingw32-make scripts/bootstrap.sh   # Windows Git Bash
 set -euo pipefail
+export PYTHON="${PYTHON:-python3}"   # e2e_chain_proof.sh honours the same variable
+MAKE="${MAKE:-make}"
 cd "$(dirname "$0")/.."
+case "$PYTHON" in */*) PYTHON="$(cd "$(dirname "$PYTHON")" && pwd)/$(basename "$PYTHON")";; esac   # absolute, sub-scripts cd elsewhere
 
 if [ ! -f contracts/lib/openzeppelin-contracts/contracts/token/ERC20/ERC20.sol ]; then
     echo "== restoring vendored solidity deps from git objects"
     git checkout -- contracts/lib
 fi
 echo "== python deps"
-python3 -m pip install -q ${PIP_FLAGS:-} -r gateway-api/requirements.txt \
+"$PYTHON" -m pip install -q ${PIP_FLAGS:-} -r gateway-api/requirements.txt \
     -r gateway-api/requirements-dev.txt
 command -v forge >/dev/null || { echo "Foundry missing: https://getfoundry.sh"; exit 1; }
 
 echo "== contracts (expect 28 passed)"
 (cd contracts && forge test)
 echo "== gateway-api (expect 9 passed)"
-(cd gateway-api && python3 -m pytest tests/ -q)
+(cd gateway-api && "$PYTHON" -m pytest tests/ -q)
 echo "== protocol unit tests (expect 11 passed)"
-(cd protocol && python3 -m pytest tests/ -q)
+(cd protocol && "$PYTHON" -m pytest tests/ -q)
 echo "== protocol scenarios S1-S6"
-(cd protocol && python3 run_sim.py)
+(cd protocol && "$PYTHON" run_sim.py)
 echo "== firmware portable core (expect 75 checks)"
-(cd firmware/xkoin-gateway/test/host && make -s run)
+(cd firmware/xkoin-gateway/test/host && "$MAKE" -s run)
 echo "== chain e2e: anvil + real escrow + founder payout property"
 protocol/e2e_chain_proof.sh
 echo

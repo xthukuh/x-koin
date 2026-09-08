@@ -25,4 +25,4 @@ export XKOIN_TREASURY=$(echo "$DEPLOY_LOG" | grep 'xKoinTreasury' | grep -oE '0x
 export XKOIN_ESCROW=$(echo "$DEPLOY_LOG"   | grep 'xKoinEscrow'   | grep -oE '0x[a-fA-F0-9]{40}')
 echo "token=$XKOIN_TOKEN treasury=$XKOIN_TREASURY escrow=$XKOIN_ESCROW"
 
-python3 run_sim.py --chain
+"${PYTHON:-python3}" run_sim.py --chain

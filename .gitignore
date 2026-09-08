@@ -149,3 +149,8 @@ __pycache__/
 *.pyc
 *.pem
 .venv/
+firmware/xkoin-gateway/test/host/test_core
+firmware/xkoin-gateway/test/host/test_core.exe
+
+# Local anvil (chain 31337) broadcast logs are run artefacts, not source.
+contracts/broadcast/**/31337/
