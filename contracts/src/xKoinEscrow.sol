@@ -7,11 +7,13 @@ import {IERC20Permit} from "@openzeppelin/contracts/token/ERC20/extensions/IERC2
 import {EIP712} from "@openzeppelin/contracts/utils/cryptography/EIP712.sol";
 import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import {ReentrancyGuard} from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
-import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
+import {Ownable2Step, Ownable} from "@openzeppelin/contracts/access/Ownable2Step.sol";
 import {xKoinTreasury} from "./xKoinTreasury.sol";
 
 /// @title xKoinEscrow
-/// @notice Zero-trust state-channel escrow. Clients deposit XKN; gateway nodes
+/// @notice Trust-minimized state-channel escrow: peers need no trust in each
+///         other, but see spec s8 for the named trusted parties at the fiat
+///         boundary (owner, bridge, kiosk root key) and their removal path. Clients deposit XKN; gateway nodes
 ///         collect signed off-chain tickets while relaying WAN bytes and settle
 ///         them in batches. Tickets carry CUMULATIVE units so losing an
 ///         intermediate ticket loses nothing: only the latest ticket per
@@ -22,7 +24,7 @@ import {xKoinTreasury} from "./xKoinTreasury.sol";
 ///         scheme). Ed25519 verification stays at the hardware edge for mesh
 ///         admission; the client key that signs tickets is an EVM keypair held
 ///         by the client device/wallet.
-contract xKoinEscrow is EIP712, ReentrancyGuard, Ownable {
+contract xKoinEscrow is EIP712, ReentrancyGuard, Ownable2Step {
     using SafeERC20 for IERC20;
 
     /// @dev Field order matches plan doc 02 exactly.

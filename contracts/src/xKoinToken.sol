@@ -3,7 +3,7 @@ pragma solidity 0.8.26;
 
 import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import {ERC20Permit} from "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol";
-import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
+import {Ownable2Step, Ownable} from "@openzeppelin/contracts/access/Ownable2Step.sol";
 
 /// @title xKoinToken (XKN)
 /// @notice ERC-20 with EIP-2612 permit() so clients approve escrow deposits via
@@ -11,8 +11,11 @@ import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 ///         The kiosk backend mints against confirmed fiat (M-Pesa Daraja /
 ///         Equitel Jenga) receipts and burns on fiat off-ramp payouts, keeping
 ///         circulating XKN 1:1 with the KES float held by the kiosk.
-contract xKoinToken is ERC20, ERC20Permit, Ownable {
+contract xKoinToken is ERC20, ERC20Permit, Ownable2Step {
     /// @notice Addresses allowed to mint/burn (kiosk fiat bridge services).
+    ///         TRUST SURFACE: a compromised bridge can mint unbacked XKN until
+    ///         detected. Custody roadmap in spec s8: hot/cold split, mint-rate
+    ///         cap, multisig owner. Owner transfer is two-step (Ownable2Step).
     mapping(address => bool) public isBridge;
 
     event BridgeSet(address indexed bridge, bool allowed);

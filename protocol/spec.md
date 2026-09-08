@@ -102,3 +102,28 @@ Economic security: an attacker must break Ed25519 (Law 4) or secp256k1 (chain)
 to mint value; everything cheaper (spam, replay, corruption, Sybil beacons)
 earns zero because pay is strictly per verified signed byte (PoW-B), never for
 presence. Beacon spam costs the attacker airtime and yields no settlement path.
+
+## 8. Trusted parties, stated plainly
+
+"Zero-trust" is true of the peer relay layer (Laws 1-8: no peer must trust any
+other peer). It is not yet true of the fiat boundary, which has named
+custodians. Anyone reviewing this project should find that here, not discover
+it.
+
+| Key | Holder | Power | Blast radius if compromised | Exit path |
+|---|---|---|---|---|
+| Kiosk Root Key (Ed25519) | Founder | Signs admission vouchers | Free network admission; no fund theft (funds need on-chain ECDSA) | Firmware pubkey rotation now; HSM + threshold signing at scale |
+| Bridge hot wallet | gateway-api service | bridgeMint / bridgeBurn | Unbacked XKN minted until monitoring catches it | Hot/cold split, on-chain mint-rate cap (planned), multisig owner can revoke via setBridge |
+| Owner key (3 contracts) | Founder | Fee (capped 10% on-chain), pricePerUnit, bridge allowlist | Fee/price griefing within caps; cannot touch escrowed funds directly | Ownable2Step today; Gnosis Safe multisig pre-mainnet; timelock on price/fee post-launch |
+| Settlement relayer | Anyone | None | None: signatures and monotonic counters gate everything | Already trustless |
+
+Pricing is owner-set and therefore centralized for MVP. Floor discipline: the
+per-unit price must clear measured backhaul cost, price_floor = (backhaul
+KES/MB from Equitel bulk bundle) x (10 KB / 1 MB) / 0.95 fee retention,
+adjusted by measured Squid cache hit rate. Doc 04 payback claims are
+conditional on this and are not to be quoted without it.
+
+Regulatory posture, unresolved and named: CAK licensing likely applies to
+reselling internet transit (beyond SRD radio rules), and a KES-redeemable
+token sits near CBK e-money definitions. Legal review is on the critical path
+before mainnet fiat. Risk register: Drive doc 06.

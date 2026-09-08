@@ -1,8 +1,17 @@
 # x-koin
 
-Decentralized hybrid PLC + LoRa mesh with zero-trust state-channel micro-settlement
-and M-Pesa / Equitel fiat bridging. Source of truth for scope and phases:
-Google Drive / "xKoin Project - MVP E2E Documentation" (docs 00-05).
+Decentralized hybrid PLC + LoRa mesh with trust-minimized state-channel
+micro-settlement and M-Pesa / Equitel fiat bridging. Source of truth for scope
+and phases: Google Drive / "xKoin Project - MVP E2E Documentation" (docs 00-06).
+
+## Trust model, honestly
+
+Peer layer: zero-trust in the strict sense; no peer must trust any other peer
+(protocol/spec.md s7, enforced in Python, Solidity, and C). Fiat boundary: has
+named trusted parties for MVP (kiosk root key, bridge hot wallet, owner keys)
+with an explicit removal roadmap in spec s8 and the risk register (Drive doc
+06). Payback figures in the financial model are conditional on per-unit
+pricing clearing measured backhaul cost; do not quote them without that check.
 
 ## Layout
 
