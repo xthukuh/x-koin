@@ -13,6 +13,11 @@ with an explicit removal roadmap in spec s8 and the risk register (Drive doc
 06). Payback figures in the financial model are conditional on per-unit
 pricing clearing measured backhaul cost; do not quote them without that check.
 
+## Continuing this project
+
+New machine or new session: read HANDOVER.md first, then `scripts/bootstrap.sh`
+re-proves everything (contracts, gateway, protocol, firmware core, chain e2e).
+
 ## Layout
 
     contracts/     Solidity (Foundry): xKoinToken, xKoinEscrow, xKoinTreasury

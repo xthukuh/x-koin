@@ -3,7 +3,6 @@ src = "src"
 out = "out"
 libs = ["lib"]
 test = "test"
-solc = "/usr/local/bin/solc"
 solc_version = "0.8.26"
 optimizer = true
 optimizer_runs = 2000
@@ -12,6 +11,13 @@ remappings = [
     "forge-std/=lib/forge-std/src/",
     "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
 ]
+
+# Cloud sandbox only: binaries.soliditylang.org is unreachable there, so a
+# pre-fetched native solc is pinned. Local machines use the default profile
+# and let Foundry fetch 0.8.26 itself. Run with FOUNDRY_PROFILE=sandbox to
+# reproduce the cloud environment.
+[profile.sandbox]
+solc = "/usr/local/bin/solc"
 
 [profile.default.fmt]
 line_length = 100
