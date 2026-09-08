@@ -22,7 +22,7 @@ command -v forge >/dev/null || { echo "Foundry missing: https://getfoundry.sh"; 
 
 echo "== contracts (expect 28 passed)"
 (cd contracts && forge test)
-echo "== gateway-api (expect 9 passed)"
+echo "== gateway-api (expect 20 passed)"
 (cd gateway-api && "$PYTHON" -m pytest tests/ -q)
 echo "== protocol unit tests (expect 11 passed)"
 (cd protocol && "$PYTHON" -m pytest tests/ -q)

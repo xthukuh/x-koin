@@ -152,4 +152,7 @@ fee cut. Mechanisms, all on-chain and all tested:
 Fiat leg of the fee: beneficiary cold -> transfer to bridge -> B2C to founder
 MSISDN -> self-burn. The payout worker fires B2C only for on-chain transfers
 originating from the beneficiary address, so a compromised server can at worst
-delay the payout, not redirect it. Worker wiring: gateway-api, pending.
+delay the payout, not redirect it. Worker: gateway-api/app/payout (implemented
+2026-09-09). The MSISDN is an EIP-191 pin signed by the beneficiary key and
+checked against treasury.beneficiary() at start; the burn waits for Daraja's
+result callback so a failed payout never destroys XKN; retries are bounded.

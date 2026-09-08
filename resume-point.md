@@ -19,18 +19,22 @@ bootstrap in 87 s.
 WSL Ubuntu-20.04 is unusable for this: DNS resolution times out and sudo
 needs a password. gcc is mingw-w64 at C:\mingw64\bin, make is mingw32-make.
 
+## Done since handover
+
+- B2C payout worker (HANDOVER s4 item 2): gateway-api/app/payout, 11 mocked
+  tests, MSISDN pinned by beneficiary signature, burn after Daraja confirms.
+  Live mode is untested against a real chain until sandbox credentials exist.
+
 ## Next, in handover order
 
-1. B2C payout worker in gateway-api (HANDOVER s4 item 2). Mocked tests like
-   the rest; server compromise may delay, never redirect.
-2. `pio run` the ESP-IDF glue in firmware/xkoin-gateway; verify Wokwi stubs.
-3. SX1262 VERIFY-tagged registers against DS.SX1261-2.
-4. Sandbox credentials into gateway-api/.env (Martin), then XKOIN_DRY_RUN=false.
-5. Satellite firmware, kiosk web, pricing, regulatory gates, Gnosis Safe,
+1. `pio run` the ESP-IDF glue in firmware/xkoin-gateway; verify Wokwi stubs.
+2. SX1262 VERIFY-tagged registers against DS.SX1261-2.
+3. Sandbox credentials into gateway-api/.env (Martin), then XKOIN_DRY_RUN=false
+   and a real B2C round trip on the Daraja sandbox.
+4. Satellite firmware, kiosk web, pricing, regulatory gates, Gnosis Safe,
    Drive doc 06 refresh (HANDOVER s4 items 6-11).
 
 ## Waiting on Martin
 
-- README byline says "zero-trust"; handover reserves that for the peer layer.
 - Pins marked `proposed` in hardware/pinmap.md.
 - Sandbox credentials and the per-unit price.

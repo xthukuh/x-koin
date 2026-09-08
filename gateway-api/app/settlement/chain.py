@@ -3,8 +3,8 @@
 Responsibilities (plan doc 02, phases 2-3):
   * mint_for_fiat: credit XKN 1:1 against a confirmed KES payment.
   * relay_batch:   submit node-collected tickets to xKoinEscrow.settleTicketBatch.
-  * watch_settlements: stream BatchSettled events so the payout worker can fire
-    Daraja B2C / Jenga remittance, then burn the paid-out XKN.
+  * burn_for_payout: self-only burn after a confirmed fiat payout; the
+    Transfer watching and B2C firing live in app/payout/worker.py.
 
 web3 is imported lazily; with settings.dry_run=True every method returns the
 transaction it WOULD send, which is what the sandbox simulation asserts on.
@@ -60,6 +60,15 @@ TOKEN_ABI: list[dict[str, Any]] = [
         "outputs": [],
     },
     {
+        "type": "event",
+        "name": "Transfer",
+        "inputs": [
+            {"name": "from", "type": "address", "indexed": True},
+            {"name": "to", "type": "address", "indexed": True},
+            {"name": "value", "type": "uint256", "indexed": False},
+        ],
+    },
+    {
         "type": "function",
         "name": "bridgeBurn",
         "stateMutability": "nonpayable",
@@ -68,6 +77,16 @@ TOKEN_ABI: list[dict[str, Any]] = [
             {"name": "fiatRef", "type": "bytes32"},
         ],
         "outputs": [],
+    },
+]
+
+TREASURY_ABI: list[dict[str, Any]] = [
+    {
+        "type": "function",
+        "name": "beneficiary",
+        "stateMutability": "view",
+        "inputs": [],
+        "outputs": [{"name": "", "type": "address"}],
     },
 ]
 

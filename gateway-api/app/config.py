@@ -34,6 +34,17 @@ class Settings(BaseSettings):
     bridge_private_key: str = ""  # hot wallet flagged as bridge on xKoinToken
     dry_run: bool = True  # never touch chain or live APIs unless flipped
 
+    # --- Fee payout worker (spec s8.1 fiat leg) ------------------------------
+    treasury_address: str = ""
+    beneficiary_address: str = ""  # dry-run source; live mode reads the treasury and cross-checks
+    bridge_address: str = ""  # dry-run source; live mode derives it from bridge_private_key
+    payout_msisdn: str = ""  # founder M-Pesa number, 254XXXXXXXXX
+    payout_msisdn_signature: str = ""  # EIP-191 signature by the beneficiary key, see app/payout/pin.py
+    payout_min_kes: int = 10  # Daraja B2C floor; smaller transfers are held
+    payout_max_attempts: int = 5
+    payout_ledger_path: str = "payout_ledger.sqlite3"
+    payout_poll_interval_s: float = 15.0
+
     # --- Kiosk voucher signing ----------------------------------------------
     kiosk_root_key_hex: str = ""  # Ed25519 seed, 32 bytes hex
     voucher_ttl_seconds: int = 86_400

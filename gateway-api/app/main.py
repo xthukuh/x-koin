@@ -6,7 +6,9 @@ Flow (plan doc 02, phase 3):
   2. POST /daraja/stk-callback -> on success: bridgeMint XKN + issue signed
      /jenga/payment-callback      Gas Voucher bound to the buyer's address
   3. POST /settlement/relay    -> forwards node ticket batches on-chain
-  4. BatchSettled event        -> payout worker fires B2C / remittance
+  4. Treasury fee leg          -> app/payout/worker.py: beneficiary -> bridge
+     Transfer fires a B2C to the pinned founder MSISDN, Daraja's result
+     callback (below) confirms it, then the bridge burns exactly that amount
 """
 
 import logging
@@ -18,6 +20,7 @@ from pydantic import BaseModel, Field
 from app.config import get_settings
 from app.daraja.client import DarajaClient, parse_stk_callback
 from app.jenga.client import JengaClient, JengaSigner
+from app.payout.worker import PayoutWorker, build_worker
 from app.settlement.chain import ChainBridge
 from app.vouchers import VoucherIssuer
 
@@ -29,6 +32,20 @@ app = FastAPI(title="xKoin gateway-api", version="0.1.0")
 # Redis/SQLite so a restart cannot orphan a paid order.
 PENDING_ORDERS: dict[str, dict] = {}
 ISSUED_VOUCHERS: dict[str, dict] = {}
+
+# Payout worker is a process-wide singleton because its ledger must outlive a
+# request. Built lazily from settings; tests inject their own instance.
+PAYOUT_WORKER: PayoutWorker | None = None
+
+
+def _payout_worker() -> PayoutWorker:
+    global PAYOUT_WORKER
+    if PAYOUT_WORKER is None:
+        try:
+            PAYOUT_WORKER = build_worker(get_settings())
+        except ValueError as exc:
+            raise HTTPException(503, f"payout worker not configured: {exc}")
+    return PAYOUT_WORKER
 
 
 def _services():
@@ -144,3 +161,27 @@ async def settlement_relay(req: RelayRequest):
     _, _, _, chain, _ = _services()
     sigs = [bytes.fromhex(s.removeprefix("0x")) for s in req.signatures]
     return chain.relay_batch([t.model_dump() for t in req.tickets], sigs)
+
+
+# ---------------------------------------------------------------- fee payout (B2C)
+
+
+@app.post("/daraja/b2c-result")
+async def daraja_b2c_result(body: dict):
+    """Daraja's asynchronous B2C outcome. Success burns the paid-out XKN;
+    failure leaves it in the bridge for a bounded retry."""
+    _payout_worker().handle_b2c_result(body)
+    return {"ResultCode": 0, "ResultDesc": "Accepted"}
+
+
+@app.post("/daraja/b2c-timeout")
+async def daraja_b2c_timeout(body: dict):
+    _payout_worker().handle_b2c_timeout(body)
+    return {"ResultCode": 0, "ResultDesc": "Accepted"}
+
+
+@app.get("/payouts")
+async def payouts(limit: int = 100):
+    """Operator view of the payout ledger. Read-only; nothing here can move funds."""
+    worker = _payout_worker()
+    return {"msisdn": worker.pin.msisdn, "beneficiary": worker.beneficiary, "rows": worker.ledger.all(limit)}
