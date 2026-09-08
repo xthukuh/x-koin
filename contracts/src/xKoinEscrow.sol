@@ -46,7 +46,7 @@ contract xKoinEscrow is EIP712, ReentrancyGuard, Ownable {
     IERC20 public immutable token;
     xKoinTreasury public immutable treasury;
 
-    /// @notice XKN base units (KES cents) per relayed unit (1 unit = 1 MB WAN).
+    /// @notice XKN base units (micro-KES) per relayed unit (1 unit = 10 KB WAN).
     uint256 public pricePerUnit;
 
     /// @notice Client deposits available to be consumed by tickets.

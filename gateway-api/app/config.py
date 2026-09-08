@@ -37,7 +37,7 @@ class Settings(BaseSettings):
     # --- Kiosk voucher signing ----------------------------------------------
     kiosk_root_key_hex: str = ""  # Ed25519 seed, 32 bytes hex
     voucher_ttl_seconds: int = 86_400
-    kes_cents_per_xkn_unit: int = 1  # 1 XKN base unit == 1 KES cent
+    ukes_per_kes: int = 1_000_000  # XKN base unit = 1 micro-KES (6 decimals)
 
 
 @lru_cache

@@ -85,19 +85,19 @@ def _fulfil(order_key: str, fiat_ref: str, amount_kes: int) -> dict:
     order = PENDING_ORDERS.pop(order_key, None)
     if order is None:
         raise HTTPException(404, f"Unknown order {order_key}")
-    amount_cents = amount_kes * 100
-    mint = chain.mint_for_fiat(order["client_address"], amount_cents, fiat_ref)
+    amount_ukes = amount_kes * 1_000_000  # XKN has 6 decimals, 1 XKN = 1 KES
+    mint = chain.mint_for_fiat(order["client_address"], amount_ukes, fiat_ref)
     bundle = None
     if issuer:
         bundle = issuer.issue(
             order["client_address"],
-            amount_cents,
+            amount_ukes,
             fiat_ref,
             order["rail"],
             settings.voucher_ttl_seconds,
         )
         ISSUED_VOUCHERS[fiat_ref] = bundle
-    log.info("fulfilled order=%s ref=%s cents=%d", order_key, fiat_ref, amount_cents)
+    log.info("fulfilled order=%s ref=%s ukes=%d", order_key, fiat_ref, amount_ukes)
     return {"mint": mint, "voucher": bundle}
 
 

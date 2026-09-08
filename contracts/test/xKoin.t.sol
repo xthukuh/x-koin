@@ -67,7 +67,7 @@ contract TokenTest is xKoinTestBase {
     function test_metadata() public view {
         assertEq(token.name(), "xKoin");
         assertEq(token.symbol(), "XKN");
-        assertEq(token.decimals(), 2);
+        assertEq(token.decimals(), 6);
     }
 
     function test_bridgeMintBurn() public {

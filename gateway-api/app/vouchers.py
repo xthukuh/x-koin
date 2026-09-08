@@ -19,7 +19,7 @@ from nacl.signing import SigningKey, VerifyKey
 @dataclass(frozen=True)
 class GasVoucher:
     client_address: str  # EVM address of the buyer's ticket-signing key
-    amount_cents: int  # KES cents credited (== XKN base units)
+    amount_ukes: int  # micro-KES credited (== XKN base units, 6 decimals)
     fiat_ref: str  # M-Pesa receipt or Jenga transaction reference
     rail: str  # "daraja" | "jenga"
     issued_at: int  # unix seconds
@@ -40,12 +40,12 @@ class VoucherIssuer:
         return self._key.verify_key.encode().hex()
 
     def issue(
-        self, client_address: str, amount_cents: int, fiat_ref: str, rail: str, ttl_seconds: int
+        self, client_address: str, amount_ukes: int, fiat_ref: str, rail: str, ttl_seconds: int
     ) -> dict:
         now = int(time.time())
         voucher = GasVoucher(
             client_address=client_address.lower(),
-            amount_cents=amount_cents,
+            amount_ukes=amount_ukes,
             fiat_ref=fiat_ref,
             rail=rail,
             issued_at=now,

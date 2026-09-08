@@ -272,13 +272,14 @@ def chain_settle(gw_units: int, sat_units: int):
     escrow = w3.eth.contract(escrow_addr, abi=ESCROW_ABI)
     token = w3.eth.contract(token_addr, abi=TOKEN_ABI)
 
-    send(w3, bridge_key, token.functions.bridgeMint(client.address, 10_000, b"\x01" * 32))
-    send(w3, client.key, token.functions.approve(escrow_addr, 10_000))
-    send(w3, client.key, escrow.functions.deposit(5_000))
+    send(w3, bridge_key, token.functions.bridgeMint(client.address, 100_000_000, b"\x01" * 32))  # 100 KES
+    send(w3, client.key, token.functions.approve(escrow_addr, 100_000_000))
+    send(w3, client.key, escrow.functions.deposit(10_000_000))  # 10 KES escrowed
 
     expiry = w3.eth.get_block("latest")["timestamp"] + 3600
     t_gw = Ticket(client.address, gw.address, 25, gw_units, expiry)
     t_sat = Ticket(client.address, sat.address, 10, sat_units, expiry)
+    # gw: 2500 units (25 MB), sat: 100 units (1 MB) at 500 uKES/unit
 
     for t in (t_gw, t_sat):
         onchain = escrow.functions.hashTicket(t.as_tuple()).call()
@@ -296,15 +297,15 @@ def chain_settle(gw_units: int, sat_units: int):
     tre = token.functions.balanceOf(treasury_addr).call()
     esc_bal = token.functions.balanceOf(escrow_addr).call()
     assert esc_bal == dep + e_gw + e_sat, "escrow solvency FAILED"
-    assert 5_000 - dep == e_gw + e_sat + tre, "conservation FAILED"
+    assert 10_000_000 - dep == e_gw + e_sat + tre, "conservation FAILED"
     return {
         "digest_parity": "python EIP-712 == contract hashTicket for both tickets",
-        "price_per_unit_cents": price,
+        "price_per_unit_ukes": price,
         "settle_gas": rcpt.gasUsed,
-        "client_deposit_left_cents": dep,
-        "gateway_earnings_cents": e_gw,
-        "satellite_earnings_cents": e_sat,
-        "treasury_fee_cents": tre,
+        "client_deposit_left_ukes": dep,
+        "gateway_earnings_ukes": e_gw,
+        "satellite_earnings_ukes": e_sat,
+        "treasury_fee_ukes": tre,
         "solvency": "escrow balance == deposits + earnings (asserted)",
     }
 
@@ -346,8 +347,9 @@ if __name__ == "__main__":
     show("Crypto bench", crypto_bench())
 
     if args.chain:
-        gw_units = s1["proven_bytes"] // MB
-        sat_units = s3["satellite_proven_bytes"] // MB
+        UNIT = 10_000  # 1 billing unit = 10 KB
+        gw_units = s1["proven_bytes"] // UNIT
+        sat_units = s3["satellite_proven_bytes"] // UNIT
         show("ON-CHAIN SETTLEMENT (anvil, real xKoinEscrow)",
              chain_settle(gw_units, sat_units))
     print("\nALL SCENARIOS PASSED")

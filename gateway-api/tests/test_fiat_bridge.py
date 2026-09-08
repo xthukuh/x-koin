@@ -125,12 +125,12 @@ def test_jenga_signature_verifies_with_public_key():
 
 def test_voucher_roundtrip_and_tamper():
     issuer = VoucherIssuer(bytes.fromhex("22" * 32))
-    bundle = issuer.issue("0xAbC0000000000000000000000000000000000001", 2000, "TIH3XXXX", "daraja", 3600)
+    bundle = issuer.issue("0xAbC0000000000000000000000000000000000001", 20_000_000, "TIH3XXXX", "daraja", 3600)
     v = verify_voucher(bundle, issuer.public_key_hex)
-    assert v.amount_cents == 2000
+    assert v.amount_ukes == 20_000_000
     assert v.client_address == "0xabc0000000000000000000000000000000000001"
 
-    bundle["voucher"]["amount_cents"] = 999_999
+    bundle["voucher"]["amount_ukes"] = 999_999
     with pytest.raises(ValueError, match="signature invalid"):
         verify_voucher(bundle, issuer.public_key_hex)
 
@@ -186,9 +186,9 @@ def test_buy_gas_then_callback_mints_and_issues_voucher():
     )
     assert cb.status_code == 200
     data = cb.json()
-    # 20 KES -> 2000 cents minted to the buyer, dry-run tx captured.
+    # 20 KES -> 20,000,000 micro-KES minted to the buyer, dry-run tx captured.
     assert data["mint"]["fn"] == "bridgeMint"
-    assert data["mint"]["args"][1] == 2000
+    assert data["mint"]["args"][1] == 20_000_000
     v = verify_voucher(data["voucher"], VoucherIssuer(bytes.fromhex("11" * 32)).public_key_hex)
     assert v.fiat_ref == "TIH3E2E"
     assert "ws_CO_E2E" not in PENDING_ORDERS

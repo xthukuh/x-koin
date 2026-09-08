@@ -32,9 +32,10 @@ contract xKoinToken is ERC20, ERC20Permit, Ownable {
         Ownable(initialOwner)
     {}
 
-    /// @notice 1 XKN = 1 KES. 2 decimals mirrors KES cents.
+    /// @notice 1 XKN = 1 KES. 6 decimals (base unit = 1 micro-KES) so the
+    ///         10 KB billing unit can price down to fractions of a cent.
     function decimals() public pure override returns (uint8) {
-        return 2;
+        return 6;
     }
 
     function setBridge(address bridge, bool allowed) external onlyOwner {

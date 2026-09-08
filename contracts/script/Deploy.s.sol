@@ -14,7 +14,7 @@ import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 ///       --private-key $DEPLOYER_KEY --broadcast
 contract Deploy is Script {
     uint16 constant FEE_BPS = 500; // 5% per plan doc 02
-    uint256 constant PRICE_PER_UNIT = 5; // 5 KES cents per MB, owner-tunable
+    uint256 constant PRICE_PER_UNIT = 500; // micro-KES per 10 KB unit = 0.05 KES/MB, owner-tunable
 
     function run() external {
         address deployer = vm.addr(vm.envUint("DEPLOYER_KEY"));
