@@ -1,0 +1,7 @@
+# Keep LF everywhere so the bash proof scripts and Makefiles run unchanged on Windows checkouts.
+* text=auto eol=lf
+*.sh text eol=lf
+Makefile text eol=lf
+*.svg text eol=lf
+*.png binary
+*.pyc binary
