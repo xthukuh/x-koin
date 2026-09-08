@@ -15,18 +15,21 @@ import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 contract Deploy is Script {
     uint16 constant FEE_BPS = 500; // 5% per plan doc 02
     uint256 constant PRICE_PER_UNIT = 500; // micro-KES per 10 KB unit = 0.05 KES/MB, owner-tunable
+    uint128 constant DAILY_MINT_CAP = 50_000_000_000; // 50,000 KES/day per bridge
 
     function run() external {
         address deployer = vm.addr(vm.envUint("DEPLOYER_KEY"));
         address bridgeAddr = vm.envAddress("BRIDGE_ADDRESS");
+        address beneficiary = vm.envOr("BENEFICIARY_ADDRESS", deployer); // founder cold key
 
         vm.startBroadcast(vm.envUint("DEPLOYER_KEY"));
         xKoinToken token = new xKoinToken(deployer);
-        xKoinTreasury treasury = new xKoinTreasury(deployer, FEE_BPS);
+        xKoinTreasury treasury = new xKoinTreasury(deployer, FEE_BPS, beneficiary);
         xKoinEscrow escrow =
             new xKoinEscrow(IERC20(address(token)), treasury, PRICE_PER_UNIT, deployer);
-        token.setBridge(bridgeAddr, true);
+        token.setBridge(bridgeAddr, true, DAILY_MINT_CAP);
         vm.stopBroadcast();
+        console.log("beneficiary  :", beneficiary);
 
         console.log("xKoinToken   :", address(token));
         console.log("xKoinTreasury:", address(treasury));

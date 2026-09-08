@@ -49,7 +49,14 @@ contract xKoinEscrow is EIP712, ReentrancyGuard, Ownable2Step {
     xKoinTreasury public immutable treasury;
 
     /// @notice XKN base units (micro-KES) per relayed unit (1 unit = 10 KB WAN).
+    ///         Band + cooldown make the price lever tunable but never a kill
+    ///         switch: worst-case owner abuse is "expensive within band once a
+    ///         day", never "network halted".
+    uint256 public constant PRICE_MIN = 1; // 0.0001 KES/MB
+    uint256 public constant PRICE_MAX = 50_000; // 500 KES/MB ceiling
+    uint256 public constant PRICE_COOLDOWN = 1 days;
     uint256 public pricePerUnit;
+    uint256 public lastPriceChange;
 
     /// @notice Client deposits available to be consumed by tickets.
     mapping(address => uint256) public deposits;
@@ -80,16 +87,18 @@ contract xKoinEscrow is EIP712, ReentrancyGuard, Ownable2Step {
     error ZeroAmount();
     error InsufficientDeposit();
     error InsufficientEarnings();
-    error ZeroPrice();
+    error PriceOutOfBand();
+    error PriceCooldownActive();
 
     constructor(IERC20 token_, xKoinTreasury treasury_, uint256 pricePerUnit_, address initialOwner)
         EIP712("xKoinEscrow", "1")
         Ownable(initialOwner)
     {
-        if (pricePerUnit_ == 0) revert ZeroPrice();
+        if (pricePerUnit_ < PRICE_MIN || pricePerUnit_ > PRICE_MAX) revert PriceOutOfBand();
         token = token_;
         treasury = treasury_;
         pricePerUnit = pricePerUnit_;
+        lastPriceChange = block.timestamp;
         emit PricePerUnitSet(pricePerUnit_);
     }
 
@@ -229,8 +238,10 @@ contract xKoinEscrow is EIP712, ReentrancyGuard, Ownable2Step {
     // ------------------------------------------------------------------
 
     function setPricePerUnit(uint256 newPrice) external onlyOwner {
-        if (newPrice == 0) revert ZeroPrice();
+        if (newPrice < PRICE_MIN || newPrice > PRICE_MAX) revert PriceOutOfBand();
+        if (block.timestamp < lastPriceChange + PRICE_COOLDOWN) revert PriceCooldownActive();
         pricePerUnit = newPrice;
+        lastPriceChange = block.timestamp;
         emit PricePerUnitSet(newPrice);
     }
 

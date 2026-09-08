@@ -64,7 +64,6 @@ TOKEN_ABI: list[dict[str, Any]] = [
         "name": "bridgeBurn",
         "stateMutability": "nonpayable",
         "inputs": [
-            {"name": "from", "type": "address"},
             {"name": "amount", "type": "uint256"},
             {"name": "fiatRef", "type": "bytes32"},
         ],
@@ -126,11 +125,11 @@ class ChainBridge:
 
     # -- off-ramp -----------------------------------------------------------
 
-    def burn_for_payout(self, holder_address: str, amount_cents: int, fiat_ref: str) -> dict:
+    def burn_for_payout(self, amount_ukes: int, fiat_ref: str) -> dict:
+        """Burns the bridge's OWN balance (contract enforces self-only burn):
+        payout flow is receive XKN -> fire B2C -> burn, in that order."""
         ref = fiat_ref_hash(fiat_ref) if not self._s.dry_run else fiat_ref
-        return self._send(
-            self._s.token_address, TOKEN_ABI, "bridgeBurn", (holder_address, amount_cents, ref)
-        )
+        return self._send(self._s.token_address, TOKEN_ABI, "bridgeBurn", (amount_ukes, ref))
 
     # -- settlement relay ----------------------------------------------------
 

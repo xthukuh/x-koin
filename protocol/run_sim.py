@@ -253,7 +253,8 @@ def chain_settle(gw_units: int, sat_units: int):
     from eth_account import Account
     from web3 import Web3
 
-    from xkp.settle import ESCROW_ABI, TOKEN_ABI, Ticket, local_digest, send, sign_ticket
+    from xkp.settle import (ESCROW_ABI, TOKEN_ABI, TREASURY_ABI, Ticket, local_digest,
+                            send, sign_ticket)
 
     w3 = Web3(Web3.HTTPProvider(os.environ.get("XKOIN_RPC", "http://127.0.0.1:8545")))
     assert w3.is_connected(), "anvil not reachable"
@@ -298,6 +299,18 @@ def chain_settle(gw_units: int, sat_units: int):
     esc_bal = token.functions.balanceOf(escrow_addr).call()
     assert esc_bal == dep + e_gw + e_sat, "escrow solvency FAILED"
     assert 10_000_000 - dep == e_gw + e_sat + tre, "conservation FAILED"
+
+    # Founder payout property: a STRANGER (the relayer) triggers the sweep and
+    # the money can only land on the beneficiary cold address.
+    treasury_c = w3.eth.contract(treasury_addr, abi=TREASURY_ABI)
+    ben = treasury_c.functions.beneficiary().call()
+    ben_before = token.functions.balanceOf(ben).call()
+    send(w3, relayer.key, treasury_c.functions.claim(token_addr))
+    ben_after = token.functions.balanceOf(ben).call()
+    assert token.functions.balanceOf(treasury_addr).call() == 0, "claim left dust"
+    assert ben_after - ben_before == tre, "founder payout mismatch"
+    assert token.functions.balanceOf(relayer.address).call() == 0, "stranger gained tokens"
+
     return {
         "digest_parity": "python EIP-712 == contract hashTicket for both tickets",
         "price_per_unit_ukes": price,
@@ -306,6 +319,8 @@ def chain_settle(gw_units: int, sat_units: int):
         "gateway_earnings_ukes": e_gw,
         "satellite_earnings_ukes": e_sat,
         "treasury_fee_ukes": tre,
+        "founder_claimed_ukes": ben_after - ben_before,
+        "claim_property": "triggered by a stranger; funds can only reach beneficiary",
         "solvency": "escrow balance == deposits + earnings (asserted)",
     }
 

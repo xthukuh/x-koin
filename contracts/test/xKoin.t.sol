@@ -14,6 +14,7 @@ contract xKoinTestBase is Test {
 
     address owner = makeAddr("owner");
     address bridge = makeAddr("bridge");
+    address founderCold = makeAddr("founderCold");
     address nodeAdmin = makeAddr("nodeAdmin");
     address relayer = makeAddr("relayer");
 
@@ -26,11 +27,11 @@ contract xKoinTestBase is Test {
     function setUp() public virtual {
         client = vm.addr(clientKey);
         token = new xKoinToken(owner);
-        treasury = new xKoinTreasury(owner, FEE_BPS);
+        treasury = new xKoinTreasury(owner, FEE_BPS, founderCold);
         escrow = new xKoinEscrow(IERC20(address(token)), treasury, PRICE, owner);
 
         vm.prank(owner);
-        token.setBridge(bridge, true);
+        token.setBridge(bridge, true, 1_000_000_000_000); // 1M KES/day, ample for tests
         // Simulate fiat on-ramp: 100.00 KES minted against an M-Pesa receipt.
         vm.prank(bridge);
         token.bridgeMint(client, 10_000, keccak256("ws_CO_051020260001"));
@@ -70,12 +71,31 @@ contract TokenTest is xKoinTestBase {
         assertEq(token.decimals(), 6);
     }
 
-    function test_bridgeMintBurn() public {
+    function test_bridgeMintBurn_selfOnly() public {
         assertEq(token.balanceOf(client), 10_000);
+        // Off-ramp shape: funds land on the bridge, B2C fires, bridge burns OWN balance.
+        vm.prank(client);
+        token.transfer(bridge, 4_000);
         vm.prank(bridge);
-        token.bridgeBurn(client, 4_000, keccak256("payout-ref"));
-        assertEq(token.balanceOf(client), 6_000);
+        token.bridgeBurn(4_000, keccak256("payout-ref"));
+        assertEq(token.balanceOf(bridge), 0);
         assertEq(token.totalSupply(), 6_000);
+        // Third-party balances are unburnable by construction: bridgeBurn takes
+        // no target address, so the pre-hardening takedown vector cannot be expressed.
+    }
+
+    function test_mintCap_rollingDay() public {
+        vm.prank(owner);
+        token.setBridge(bridge, true, 5_000);
+        vm.warp(block.timestamp + 1 days); // roll past setUp's mint window
+        vm.startPrank(bridge);
+        token.bridgeMint(client, 5_000, bytes32(0)); // exactly at cap
+        vm.expectRevert(xKoinToken.MintCapExceeded.selector);
+        token.bridgeMint(client, 1, bytes32(0));
+        vm.warp(block.timestamp + 1 days);
+        token.bridgeMint(client, 5_000, bytes32(0)); // window rolled
+        vm.stopPrank();
+        assertEq(token.balanceOf(client), 20_000);
     }
 
     function test_revert_nonBridgeMint() public {
@@ -86,7 +106,7 @@ contract TokenTest is xKoinTestBase {
     function test_revert_nonOwnerSetBridge() public {
         vm.expectRevert();
         vm.prank(client);
-        token.setBridge(client, true);
+        token.setBridge(client, true, 1);
     }
 
     function test_permit() public {
@@ -128,16 +148,46 @@ contract TreasuryTest is xKoinTestBase {
         vm.expectRevert(xKoinTreasury.FeeTooHigh.selector);
         treasury.setFeeBps(1001);
         vm.expectRevert(xKoinTreasury.FeeTooHigh.selector);
-        new xKoinTreasury(owner, 1001);
+        new xKoinTreasury(owner, 1001, founderCold);
     }
 
-    function test_withdraw() public {
+    function test_claim_anyoneCanPayOnlyTheFounder() public {
         vm.prank(bridge);
         token.bridgeMint(address(treasury), 1_000, bytes32(0));
+        vm.prank(relayer); // a total stranger triggers the payout
+        treasury.claim(IERC20(address(token)));
+        assertEq(token.balanceOf(founderCold), 1_000);
+        assertEq(token.balanceOf(address(treasury)), 0);
+        assertEq(token.balanceOf(relayer), 0); // and gains nothing
+        vm.expectRevert(xKoinTreasury.NothingToClaim.selector);
+        treasury.claim(IERC20(address(token)));
+    }
+
+    function test_stolenOwnerKeyCannotRedirectFees() public {
+        address thief = makeAddr("thief");
+        // Attacker with the owner key queues themselves as beneficiary...
         vm.prank(owner);
-        treasury.withdraw(IERC20(address(token)), owner, 600);
-        assertEq(token.balanceOf(owner), 600);
-        assertEq(token.balanceOf(address(treasury)), 400);
+        treasury.queueBeneficiary(thief);
+        // ...cannot activate inside the 7-day window...
+        vm.expectRevert(xKoinTreasury.TimelockActive.selector);
+        treasury.activateBeneficiary();
+        // ...and the founder's cold key vetoes from safety.
+        vm.prank(founderCold);
+        treasury.cancelBeneficiaryChange();
+        assertEq(treasury.beneficiary(), founderCold);
+        assertEq(treasury.pendingBeneficiary(), address(0));
+    }
+
+    function test_beneficiaryChange_happyPath() public {
+        address newCold = makeAddr("newCold");
+        vm.prank(owner);
+        treasury.queueBeneficiary(newCold);
+        vm.warp(block.timestamp + 7 days);
+        treasury.activateBeneficiary(); // anyone may finalize after the delay
+        assertEq(treasury.beneficiary(), newCold);
+        vm.prank(client);
+        vm.expectRevert(xKoinTreasury.NotAuthorized.selector);
+        treasury.cancelBeneficiaryChange();
     }
 }
 
@@ -327,13 +377,24 @@ contract EscrowTest is xKoinTestBase {
         escrow.settleTicketBatch(new xKoinEscrow.Ticket[](0), sigs);
     }
 
-    function test_setPricePerUnit() public {
+    function test_setPricePerUnit_bandAndCooldown() public {
+        vm.warp(block.timestamp + 1 days); // past deploy-time cooldown
         vm.prank(owner);
         escrow.setPricePerUnit(8);
         assertEq(escrow.pricePerUnit(), 8);
+        // cooldown: one change per day, so price flapping cannot halt commerce
         vm.prank(owner);
-        vm.expectRevert(xKoinEscrow.ZeroPrice.selector);
+        vm.expectRevert(xKoinEscrow.PriceCooldownActive.selector);
+        escrow.setPricePerUnit(9);
+        vm.warp(block.timestamp + 1 days);
+        // band: neither zero nor absurd is expressible on-chain
+        vm.prank(owner);
+        vm.expectRevert(xKoinEscrow.PriceOutOfBand.selector);
         escrow.setPricePerUnit(0);
+        uint256 overMax = escrow.PRICE_MAX() + 1; // hoisted: expectRevert binds to the NEXT call
+        vm.prank(owner);
+        vm.expectRevert(xKoinEscrow.PriceOutOfBand.selector);
+        escrow.setPricePerUnit(overMax);
     }
 
     function testFuzz_settleNeverExceedsDeposit(uint128 units, uint96 depositAmt) public {

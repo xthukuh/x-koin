@@ -52,6 +52,13 @@ ESCROW_ABI = [
      "inputs": [], "outputs": [{"name": "", "type": "uint256"}]},
 ]
 
+TREASURY_ABI = [
+    {"type": "function", "name": "claim", "stateMutability": "nonpayable",
+     "inputs": [{"name": "token", "type": "address"}], "outputs": []},
+    {"type": "function", "name": "beneficiary", "stateMutability": "view",
+     "inputs": [], "outputs": [{"name": "", "type": "address"}]},
+]
+
 TOKEN_ABI = [
     {"type": "function", "name": "bridgeMint", "stateMutability": "nonpayable",
      "inputs": [{"name": "to", "type": "address"}, {"name": "amount", "type": "uint256"},

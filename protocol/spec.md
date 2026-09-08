@@ -113,8 +113,8 @@ it.
 | Key | Holder | Power | Blast radius if compromised | Exit path |
 |---|---|---|---|---|
 | Kiosk Root Key (Ed25519) | Founder | Signs admission vouchers | Free network admission; no fund theft (funds need on-chain ECDSA) | Firmware pubkey rotation now; HSM + threshold signing at scale |
-| Bridge hot wallet | gateway-api service | bridgeMint / bridgeBurn | Unbacked XKN minted until monitoring catches it | Hot/cold split, on-chain mint-rate cap (planned), multisig owner can revoke via setBridge |
-| Owner key (3 contracts) | Founder | Fee (capped 10% on-chain), pricePerUnit, bridge allowlist | Fee/price griefing within caps; cannot touch escrowed funds directly | Ownable2Step today; Gnosis Safe multisig pre-mainnet; timelock on price/fee post-launch |
+| Bridge hot wallet | gateway-api service | bridgeMint / self-only bridgeBurn | Unbacked XKN up to the ON-CHAIN daily cap (50k KES default); third-party balances unburnable by construction | Hot/cold split; owner revokes via setBridge |
+| Owner key (3 contracts) | Founder | Fee (capped 10%), price (banded 1..50000 uKES, 1 change/day), bridge allowlist | Bounded griefing only; cannot halt settlement, cannot touch escrow, cannot redirect fees | Ownable2Step now; Gnosis Safe pre-mainnet |
 | Settlement relayer | Anyone | None | None: signatures and monotonic counters gate everything | Already trustless |
 
 Pricing is owner-set and therefore centralized for MVP. Floor discipline: the
@@ -127,3 +127,29 @@ Regulatory posture, unresolved and named: CAK licensing likely applies to
 reselling internet transit (beyond SRD radio rules), and a KES-redeemable
 token sits near CBK e-money definitions. Legal review is on the critical path
 before mainnet fiat. Risk register: Drive doc 06.
+
+### 8.1 Founder control without founder risk (implemented 2026-09-08)
+
+Requirement: the founder must be paid, must not be able to take the network
+down (even under key theft or coercion), and must bear no theft risk on the
+fee cut. Mechanisms, all on-chain and all tested:
+
+1. Treasury claim() is callable by anyone and pays ONLY the beneficiary cold
+   address. There is no withdraw-to-parameter anywhere. A stolen owner key
+   cannot redirect a single micro-KES (test_stolenOwnerKeyCannotRedirectFees).
+2. Beneficiary changes take a 7-day public timelock and the founder cold key
+   holds a veto. Key theft becomes a 7-day fire alarm, not a loss.
+3. Price is banded (PRICE_MIN..PRICE_MAX) with a 1-day cooldown: worst-case
+   owner abuse is "expensive within band, once a day", never "halted".
+4. bridgeBurn is self-only: no key in the system can destroy user balances.
+5. bridgeMint is capped per rolling day per bridge: a fully compromised bridge
+   leaks at most one day's cap before setBridge revokes it.
+6. Settlement, deposits, withdrawals, and claims run with zero founder
+   involvement: the founder disappearing freezes governance at last-known-good
+   values and stops nothing else. Remaining liveness dependency: kiosk root
+   key for NEW admissions (rotation documented; federation later).
+
+Fiat leg of the fee: beneficiary cold -> transfer to bridge -> B2C to founder
+MSISDN -> self-burn. The payout worker fires B2C only for on-chain transfers
+originating from the beneficiary address, so a compromised server can at worst
+delay the payout, not redirect it. Worker wiring: gateway-api, pending.

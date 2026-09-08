@@ -12,21 +12,34 @@ import {Ownable2Step, Ownable} from "@openzeppelin/contracts/access/Ownable2Step
 ///         Equitel Jenga) receipts and burns on fiat off-ramp payouts, keeping
 ///         circulating XKN 1:1 with the KES float held by the kiosk.
 contract xKoinToken is ERC20, ERC20Permit, Ownable2Step {
-    /// @notice Addresses allowed to mint/burn (kiosk fiat bridge services).
-    ///         TRUST SURFACE: a compromised bridge can mint unbacked XKN until
-    ///         detected. Custody roadmap in spec s8: hot/cold split, mint-rate
-    ///         cap, multisig owner. Owner transfer is two-step (Ownable2Step).
-    mapping(address => bool) public isBridge;
+    /// @notice Bridge accounts (kiosk fiat services). TRUST SURFACE, bounded
+    ///         on-chain: a compromised bridge can mint at most dailyMintCap of
+    ///         unbacked XKN per rolling day, and can burn ONLY its own balance
+    ///         (third-party balances are unburnable by construction, so no key
+    ///         can destroy user funds). Owner transfer is two-step.
+    struct BridgeInfo {
+        bool allowed;
+        uint128 dailyMintCap;
+        uint128 mintedInWindow;
+        uint64 windowStart;
+    }
 
-    event BridgeSet(address indexed bridge, bool allowed);
+    mapping(address => BridgeInfo) public bridges;
+
+    event BridgeSet(address indexed bridge, bool allowed, uint128 dailyMintCap);
     event BridgeMint(address indexed to, uint256 amount, bytes32 indexed fiatRef);
     event BridgeBurn(address indexed from, uint256 amount, bytes32 indexed fiatRef);
 
     error NotBridge();
+    error MintCapExceeded();
 
     modifier onlyBridge() {
-        if (!isBridge[msg.sender]) revert NotBridge();
+        if (!bridges[msg.sender].allowed) revert NotBridge();
         _;
+    }
+
+    function isBridge(address account) external view returns (bool) {
+        return bridges[account].allowed;
     }
 
     constructor(address initialOwner)
@@ -41,20 +54,32 @@ contract xKoinToken is ERC20, ERC20Permit, Ownable2Step {
         return 6;
     }
 
-    function setBridge(address bridge, bool allowed) external onlyOwner {
-        isBridge[bridge] = allowed;
-        emit BridgeSet(bridge, allowed);
+    function setBridge(address bridge, bool allowed, uint128 dailyMintCap) external onlyOwner {
+        BridgeInfo storage info = bridges[bridge];
+        info.allowed = allowed;
+        info.dailyMintCap = dailyMintCap;
+        emit BridgeSet(bridge, allowed, dailyMintCap);
     }
 
     /// @param fiatRef keccak256 of the mobile money receipt (e.g. M-Pesa
     ///        CheckoutRequestID or Jenga transactionReference) for audit.
     function bridgeMint(address to, uint256 amount, bytes32 fiatRef) external onlyBridge {
+        BridgeInfo storage info = bridges[msg.sender];
+        if (block.timestamp >= info.windowStart + 1 days) {
+            info.windowStart = uint64(block.timestamp);
+            info.mintedInWindow = 0;
+        }
+        uint256 newTotal = uint256(info.mintedInWindow) + amount;
+        if (newTotal > info.dailyMintCap) revert MintCapExceeded();
+        info.mintedInWindow = uint128(newTotal);
         _mint(to, amount);
         emit BridgeMint(to, amount, fiatRef);
     }
 
-    function bridgeBurn(address from, uint256 amount, bytes32 fiatRef) external onlyBridge {
-        _burn(from, amount);
-        emit BridgeBurn(from, amount, fiatRef);
+    /// @notice Burns strictly from the bridge's OWN balance (fiat off-ramp:
+    ///         funds arrive at the bridge, get paid out via B2C, then burn).
+    function bridgeBurn(uint256 amount, bytes32 fiatRef) external onlyBridge {
+        _burn(msg.sender, amount);
+        emit BridgeBurn(msg.sender, amount, fiatRef);
     }
 }
