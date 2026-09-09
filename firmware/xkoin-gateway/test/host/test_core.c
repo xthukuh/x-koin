@@ -11,7 +11,7 @@
 #include "../../lib/xkp/medium.h"
 #include "../../lib/router/classifier.h"
 #include "../../lib/kq130f/kq130f.h"
-#include "../../lib/crypto/sha256.h"
+#include "../../lib/xkcrypto/sha256.h"
 #define SX1262_IMPL
 #include "../../lib/sx1262/sx1262.h"
 #include "vectors.h"

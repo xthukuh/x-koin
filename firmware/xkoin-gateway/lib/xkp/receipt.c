@@ -1,6 +1,6 @@
 #include "receipt.h"
 #include <string.h>
-#include "../crypto/sha256.h"
+#include "../xkcrypto/sha256.h"
 #include "../ed25519/ed25519.h"
 
 void xkp_node_id(const uint8_t vk[32], uint8_t out[8]) {
