@@ -1,4 +1,6 @@
-"""Build demo/dist/index.html, then serve demo/dist on http://127.0.0.1:8090/.
+"""Build every page into demo/dist, then serve it on http://127.0.0.1:8090/.
+
+Pages: /  (investor demo)   /landlord.html  (landlord pilot)   /replay.html  (protocol replay)
 
     python demo/serve.py
 
@@ -21,8 +23,7 @@ import build as demo_build  # noqa: E402
 
 
 def main() -> None:
-    demo_build.build(DIST / "index.html")
-    demo_build.build_landlord(DIST / "landlord.html")
+    demo_build.build_all(DIST)
     handler = functools.partial(http.server.SimpleHTTPRequestHandler, directory=str(DIST))
     with http.server.ThreadingHTTPServer(("127.0.0.1", PORT), handler) as httpd:
         print(f"serving {DIST} at http://127.0.0.1:{PORT}/")

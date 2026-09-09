@@ -1,11 +1,22 @@
-# xKoin investor demo
+# xKoin demo pages
 
-One self-contained page explaining xKoin to a lay investor, built from `demo/index.html`.
+One stack for every page: build into `demo/dist`, serve that directory on
+port 8090, publish those same files. Nothing is viewed from `file://` and no
+page has a second way of being built.
 
-Build: `python demo/build.py` writes `demo/dist/index.html` (JSON data from `protocol/out/` is inlined at build time; `demo/dist/` is git-ignored).
+| Page | Source | Audience |
+|---|---|---|
+| `/` | `demo/index.html` | investors: what powers xKoin, with real proof figures |
+| `/landlord.html` | `demo/landlord.html` | building owners: the incentive, no internals |
+| `/replay.html` | `protocol/viz/replay.html` | founder: protocol replay, chain, kiosk, journeys |
 
-Serve: `python demo/serve.py` builds first, then serves `demo/dist` on `http://127.0.0.1:8090/`. Or run `scripts/demo.sh`.
+Build: `python demo/build.py` inlines `protocol/out/{trace,chain,kiosk}.json`
+into the pages that use them and writes `demo/dist/` (git-ignored). Regenerate
+the JSON first when the code changed: `python protocol/trace_sim.py`,
+`python protocol/trace_chain.py`, `cd gateway-api && python trace_kiosk.py`.
 
-Publish: copy `demo/dist/index.html` anywhere; it needs no server beyond a plain static file, and its only external resource is the Google Fonts stylesheet.
+Serve: `python demo/serve.py` (or `scripts/demo.sh`) builds, then serves
+`http://127.0.0.1:8090/`. Ctrl-C stops it.
 
-There is a second page, `demo/landlord.html`, for pitching apartment landlords: same build, same server, deliberately vague about internals, published at `demo/dist/landlord.html`.
+Publish: the files in `demo/dist/` are what gets published as artifacts; each
+is self-contained apart from the Google Fonts stylesheet.

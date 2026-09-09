@@ -1,14 +1,23 @@
 # x-koin resume point
 
-Updated 2026-09-09 (evening session). Boards:
+Updated 2026-09-09, end of the evening session. Pages:
 - Bring-up board: https://claude.ai/code/artifact/ac423197-641a-4994-8c9f-6144aeb3fa4b
-- Mesh replay (animated S1-S3 from the sim trace): https://claude.ai/code/artifact/f351573e-d847-4ce5-96fb-56924ce3a242
+- Mesh replay (protocol, chain and kiosk, journeys): https://claude.ai/code/artifact/f351573e-d847-4ce5-96fb-56924ce3a242
+- Investor demo: https://claude.ai/code/artifact/2360a9fa-beab-45bd-9f98-f976804601eb
+- Landlord pilot page: https://claude.ai/code/artifact/7de94e3f-acf4-4d4a-b343-2a9051b87589
+
+One stack for pages (Martin's rule): `python demo/build.py` writes
+demo/dist/{index,landlord,replay}.html; `python demo/serve.py` serves them on
+http://127.0.0.1:8090/; the artifacts above are those files. No file://
+previews, no other ports.
 
 ## State
 
-Commit db2b807 on main. Proof matrix green on the Windows host: 28 forge
-tests, 25 gateway-api and 11 protocol pytest, S1-S6 sim, 75 C host checks,
-chain e2e settle gas 191,698.
+Commit 4ab960b on main plus the demo unification. Proof matrix green on the
+Windows host and inside Docker (docker-proofs image, Forge 1.8.1): 28 forge
+tests, 31 gateway-api and 11 protocol pytest, S1-S6 sim, 75 C host checks,
+chain e2e settle gas 191,698. Gateway firmware builds: `pio run -e esp32-s3`
+SUCCESS, RAM 11.7%, flash 81.9% of the default 1 MB app partition.
 
 Martin's decisions this session: lawyer engaged; Equitel Jenga first
 (covers M-Pesa on-ramp via STK push and off-ramp via Mobile Wallets, both

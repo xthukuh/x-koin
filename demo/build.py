@@ -1,10 +1,10 @@
 """Inject the trace, chain and kiosk JSON into demo/index.html's markers, and
 build the standalone demo/landlord.html alongside it.
 
-    python demo/build.py [out.html]
+    python demo/build.py [dist_dir]
 
-Defaults: demo/index.html -> demo/dist/index.html, and
-demo/landlord.html -> demo/dist/landlord.html. Same marker convention as
+Writes demo/dist/index.html, demo/dist/landlord.html and demo/dist/replay.html
+(the protocol replay page from protocol/viz). Same marker convention as
 protocol/viz/build_replay.py: /*__TRACE_JSON__*/null, /*__CHAIN_JSON__*/null,
 /*__KIOSK_JSON__*/null. landlord.html carries no markers and no proof data;
 it is copied through as-is (newline-normalised) so it stays byte-for-byte
@@ -53,13 +53,29 @@ def build_landlord(out_path: Path) -> int:
     return out_path.stat().st_size
 
 
+def build_replay(out_path: Path) -> int:
+    """The protocol replay page (protocol/viz) is built into the same dist so
+    one server on one port shows every page: /, /landlord.html, /replay.html."""
+    sys.path.insert(0, str(ROOT / "protocol" / "viz"))
+    import build_replay as replay  # noqa: E402
+
+    return replay.build(TRACE_JSON, out_path)
+
+
+def build_all(dist: Path) -> dict[str, int]:
+    """Build every page into dist. This is the one build step; serve.py calls
+    it and the published artifacts are these exact files."""
+    return {
+        "index.html": build(dist / "index.html"),
+        "landlord.html": build_landlord(dist / "landlord.html"),
+        "replay.html": build_replay(dist / "replay.html"),
+    }
+
+
 def main(argv: list[str]) -> None:
-    out_path = Path(argv[1]) if len(argv) > 1 else ROOT / "demo" / "dist" / "index.html"
-    landlord_out = out_path.parent / "landlord.html"
-    size = build(out_path)
-    print(f"wrote {out_path} ({size:,} bytes)")
-    lsize = build_landlord(landlord_out)
-    print(f"wrote {landlord_out} ({lsize:,} bytes)")
+    dist = Path(argv[1]) if len(argv) > 1 else ROOT / "demo" / "dist"
+    for name, size in build_all(dist).items():
+        print(f"wrote {dist / name} ({size:,} bytes)")
 
 
 if __name__ == "__main__":
