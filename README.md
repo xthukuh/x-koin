@@ -35,10 +35,20 @@ Verified green on Windows 11 with Python 3.14 and Foundry 1.5.1 (2026-09-09).
     kiosk-web/     Next.js kiosk (phase 3 UI, pending)
     cloud-proxy/   WireGuard + Squid backhaul (phase 4, pending)
 
+## Critical accounts and the real-chain test plan
+
+`docs/critical-accounts/` is the operating manual for the crypto layer:
+which accounts to open and how to harden them, one wallet per role, the
+gas budget with measured numbers (`scripts/gas_budget.py`), the security
+list, the five-phase test plan from anvil to a Base mainnet rehearsal, and
+the VPS endpoint at `xkoin.thuku.dev`. Public addresses live in its
+`registry.md`; deployments are written to `contracts/deployments/<chainId>.json`
+by the deploy script.
+
 ## Contracts
 
     cd contracts
-    forge test          # 25 tests incl. fuzz solvency invariant
+    forge test          # 28 tests incl. fuzz solvency invariant
 
 Deploy (Base Sepolia): see script/Deploy.s.sol header. Fee 5% via treasury,
 tickets are EIP-712 ECDSA over the plan's exact Ticket struct, cumulative-unit

@@ -69,6 +69,7 @@ web_modules/
 .env
 .env.*
 !.env.example
+!.env.*.example
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
@@ -154,6 +155,7 @@ firmware/xkoin-gateway/test/host/test_core.exe
 
 # Local anvil (chain 31337) broadcast logs are run artefacts, not source.
 contracts/broadcast/**/31337/
+contracts/deployments/31337.json
 *.sqlite3
 
 # PlatformIO build output

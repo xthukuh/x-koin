@@ -1,0 +1,65 @@
+# xKoin gateway on the VPS behind Traefik (docs/critical-accounts/06-vps-xkoin.thuku.dev.md).
+#
+#   docker compose -f docker/compose.gateway.yml --env-file /srv/xkoin/.env up -d --build
+#
+# Same Traefik pattern as the other services on the host: external network
+# `proxy`, entrypoint `websecure`, certresolver `letsencrypt`. If the host
+# names its network or resolver differently, edit those two labels only.
+#
+# Secrets stay on the host: /srv/xkoin/.env is the env file, and
+# /srv/xkoin/jenga_private.pem is mounted read-only at the path the
+# gateway reads (XKOIN_JENGA_PRIVATE_KEY_PATH). Nothing sensitive is in
+# the image.
+
+x-gateway-base: &gateway-base
+  build:
+    context: ..
+    dockerfile: docker/gateway.Dockerfile
+  image: xkoin-gateway:local
+  env_file:
+    - /srv/xkoin/.env
+  volumes:
+    - /srv/xkoin/jenga_private.pem:/run/secrets/jenga_private.pem:ro
+    - xkoin-data:/data
+  restart: unless-stopped
+  logging:
+    driver: json-file
+    options:
+      max-size: "10m"
+      max-file: "5"
+
+services:
+  gateway:
+    <<: *gateway-base
+    networks:
+      - proxy
+      - internal
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=proxy
+      - traefik.http.routers.xkoin.rule=Host(`${XKOIN_HOST:-xkoin.thuku.dev}`)
+      - traefik.http.routers.xkoin.entrypoints=websecure
+      - traefik.http.routers.xkoin.tls=true
+      - traefik.http.routers.xkoin.tls.certresolver=letsencrypt
+      - traefik.http.routers.xkoin.middlewares=xkoin-headers
+      - traefik.http.services.xkoin.loadbalancer.server.port=8000
+      - traefik.http.middlewares.xkoin-headers.headers.stsSeconds=15552000
+      - traefik.http.middlewares.xkoin-headers.headers.contentTypeNosniff=true
+      - traefik.http.middlewares.xkoin-headers.headers.referrerPolicy=strict-origin-when-cross-origin
+      - traefik.http.middlewares.xkoin-headers.headers.customResponseHeaders.X-Powered-By=
+
+  payout-worker:
+    <<: *gateway-base
+    command: ["python", "-m", "app.payout.worker"]
+    networks:
+      - internal
+    depends_on:
+      - gateway
+
+networks:
+  proxy:
+    external: true
+  internal:
+
+volumes:
+  xkoin-data:

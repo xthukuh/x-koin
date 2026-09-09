@@ -407,3 +407,18 @@ def test_jenga_mpesa_callback_failure_drops_order():
     assert r.status_code == 200
     assert r.json() == {"accepted": True, "fulfilled": False}
     assert "OR-XK-2" not in PENDING_ORDERS
+
+
+# ---------------------------------------------------------------- health
+
+
+def test_health_reports_environment_shape_without_secrets():
+    client = TestClient(app)
+    body = client.get("/health").json()
+    assert body["ok"] is True
+    assert body["chain_id"] == SETTINGS.chain_id
+    assert body["dry_run"] is True
+    assert body["bridge_key_set"] is False
+    # Never echo a key: the only key-related field is a boolean.
+    assert "bridge_private_key" not in body
+    assert not any(isinstance(v, str) and v.startswith("0x") and len(v) > 42 for v in body.values())

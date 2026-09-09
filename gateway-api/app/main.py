@@ -79,7 +79,19 @@ class BuyGasRequest(BaseModel):
 
 @app.get("/health")
 async def health():
-    return {"ok": True, "service": "xkoin-gateway-api"}
+    """Liveness plus the non-secret shape of the environment, so a VPS
+    operator can confirm which chain and mode the service is in without
+    reading .env (docs/critical-accounts/06-vps-xkoin.thuku.dev.md)."""
+    s = get_settings()
+    return {
+        "ok": True,
+        "service": "xkoin-gateway-api",
+        "chain_id": s.chain_id,
+        "dry_run": s.dry_run,
+        "bridge_key_set": bool(s.bridge_private_key),
+        "escrow_address": s.escrow_address or None,
+        "token_address": s.token_address or None,
+    }
 
 
 @app.post("/buy-gas")

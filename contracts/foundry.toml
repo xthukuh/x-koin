@@ -11,6 +11,8 @@ remappings = [
     "forge-std/=lib/forge-std/src/",
     "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
 ]
+# Deploy.s.sol writes deployments/<chainId>.json; nothing else may touch disk.
+fs_permissions = [{ access = "read-write", path = "./deployments" }]
 
 # Cloud sandbox only: binaries.soliditylang.org is unreachable there, so a
 # pre-fetched native solc is pinned. Local machines use the default profile
