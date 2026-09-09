@@ -328,7 +328,8 @@ window.KIOSK = /*__KIOSK_JSON__*/null;
     for (const m in S.bins) { let a = 0; cum[m] = S.bins[m].map((v) => (a += v)); }
     receiptsAt = S.events.filter((e) => e[1] === 'receipt').map((e) => [e[0], e[4]]).sort((a, b) => a[0] - b[0]);
     buildTopo(); buildChart(); buildLog(); buildSummary(); buildBins();
-    render();
+    lastBin = -1; lastNow = -2; lastStatusKey = ''; statusEls = [];
+    render(true);
   }
 
   // ---------- topology ----------
@@ -496,35 +497,55 @@ window.KIOSK = /*__KIOSK_JSON__*/null;
   }
 
   // ---------- render at time t ----------
-  function render() {
-    const k = Math.min(S.bins[rows[0]].length - 1, Math.floor(t / S.bin_s));
-    let delivered = 0, rate = 0;
-    rows.forEach((m) => { delivered += cum[m][k] || 0; rate += S.bins[m][k] * 8 / S.bin_s; });
-    let proven = 0; for (const [rt, cv] of receiptsAt) { if (rt <= t) proven = cv; else break; }
-    document.getElementById('t-deliv').textContent = fmtMB(delivered);
-    document.getElementById('t-proven').textContent = fmtMB(proven);
-    const [rv, ru] = fmtRate(rate); document.getElementById('t-rate').textContent = rv; document.getElementById('t-rate-u').textContent = ru;
-    const kes = Math.floor(proven / UNIT_BYTES) * UKES_PER_UNIT / 1e6;
-    document.getElementById('t-kes').textContent = kes.toFixed(3);
-    const kesEl = document.getElementById('kes'); if (kesEl) kesEl.textContent = proven > 0 ? `${(proven / UNIT_BYTES) | 0} units proven = ${kes.toFixed(3)} KES` : '';
+  // Per-frame work is limited to packet motion and the playhead. Tiles, medium
+  // status and the event log are refreshed only when the time bin or the
+  // latest event changes, which is what makes 64x playback cheap.
+  const el = {};
+  ['t-deliv', 't-proven', 't-rate', 't-rate-u', 't-kes', 'kes'].forEach((id) => { el[id] = document.getElementById(id); });
+  let statusEls = [], lastBin = -1, lastNow = -2, lastStatusKey = '';
+  function render(force) {
+    const nb = S.bins[rows[0]].length;
+    const k = Math.min(nb - 1, Math.floor(t / S.bin_s));
     clock.textContent = fmtT(t); scrub.value = Math.round(t / S.duration_s * 1000);
-    playheadEl.setAttribute('x1', xOf(t)); playheadEl.setAttribute('x2', xOf(t));
-    // medium status
+    const px = xOf(t); playheadEl.setAttribute('x1', px); playheadEl.setAttribute('x2', px);
+    if (force || k !== lastBin) {
+      lastBin = k;
+      let delivered = 0, rate = 0;
+      rows.forEach((m) => { delivered += cum[m][k] || 0; rate += S.bins[m][k] * 8 / S.bin_s; });
+      let proven = 0; for (const [rt, cv] of receiptsAt) { if (rt <= t) proven = cv; else break; }
+      el['t-deliv'].textContent = fmtMB(delivered);
+      el['t-proven'].textContent = fmtMB(proven);
+      const [rv, ru] = fmtRate(rate); el['t-rate'].textContent = rv; el['t-rate-u'].textContent = ru;
+      const kes = Math.floor(proven / UNIT_BYTES) * UKES_PER_UNIT / 1e6;
+      el['t-kes'].textContent = kes.toFixed(3);
+      const kesEl = document.getElementById('kes'); if (kesEl) kesEl.textContent = proven > 0 ? `${(proven / UNIT_BYTES) | 0} units proven = ${kes.toFixed(3)} KES` : '';
+    }
+    // medium status: recompute the small key and touch the DOM only on change
     const cutAt = (S.events.find((e) => e[1] === 'cut') || [Infinity])[0];
     const quarantines = S.events.filter((e) => e[1] === 'quarantine');
-    document.querySelectorAll('.status .st').forEach((el) => {
-      const m = el.dataset.m;
-      const down = t >= cutAt && m !== 'lora-sf7' && m !== 'gfsk-150k';
-      const q = quarantines.some((e) => e[2] === m && t >= e[0] && t < e[0] + 2);
-      el.textContent = down ? 'down' : q ? 'quarantined' : 'live';
-      el.className = 'st' + (down ? ' down' : q ? ' quar' : '');
-      lanes.filter((l) => l.m === m).forEach((l) => laneEls[l.id].classList.toggle('dead', down || q));
-    });
-    // log highlight
-    let nowIdx = -1; logRows.forEach((r, i) => { const rt = +r.dataset.t; r.classList.toggle('future', rt > t); if (rt <= t) nowIdx = i; });
-    logRows.forEach((r, i) => r.classList.toggle('now', i === nowIdx));
-    if (nowIdx >= 0 && playing) logRows[nowIdx].scrollIntoView({ block: 'nearest' });
-    // packets
+    if (!statusEls.length || force) statusEls = [...document.querySelectorAll('.status .st')];
+    const key = statusEls.map((x) => { const m = x.dataset.m; const down = t >= cutAt && m !== 'lora-sf7' && m !== 'gfsk-150k'; const q = quarantines.some((e) => e[2] === m && t >= e[0] && t < e[0] + 2); return down ? 'd' : q ? 'q' : 'l'; }).join('');
+    if (key !== lastStatusKey || force) {
+      lastStatusKey = key;
+      statusEls.forEach((x, i) => {
+        const st = key[i]; const m = x.dataset.m;
+        x.textContent = st === 'd' ? 'down' : st === 'q' ? 'quarantined' : 'live';
+        x.className = 'st' + (st === 'd' ? ' down' : st === 'q' ? ' quar' : '');
+        lanes.filter((l) => l.m === m).forEach((l) => laneEls[l.id].classList.toggle('dead', st !== 'l'));
+      });
+    }
+    // log highlight: binary search the current event, update two rows at most
+    let lo = 0, hi = logRows.length - 1, nowIdx = -1;
+    while (lo <= hi) { const mid = (lo + hi) >> 1; if (+logRows[mid].dataset.t <= t) { nowIdx = mid; lo = mid + 1; } else hi = mid - 1; }
+    if (nowIdx !== lastNow || force) {
+      if (force) logRows.forEach((r, i) => { r.classList.toggle('future', i > nowIdx); r.classList.toggle('now', i === nowIdx); });
+      else {
+        const a = Math.min(lastNow, nowIdx), b = Math.max(lastNow, nowIdx);
+        for (let i = Math.max(a, 0); i <= b && i < logRows.length; i++) { logRows[i].classList.toggle('future', i > nowIdx); logRows[i].classList.toggle('now', i === nowIdx); }
+      }
+      lastNow = nowIdx;
+      if (nowIdx >= 0 && playing) logRows[nowIdx].scrollIntoView({ block: 'nearest' });
+    }
     if (!reduced) animatePackets(k);
   }
   const pktLayer = () => document.getElementById('pkts');
@@ -533,7 +554,7 @@ window.KIOSK = /*__KIOSK_JSON__*/null;
     lanes.forEach((l) => {
       const bytes = S.bins[l.m][k] || 0;
       const frames = bytes / (S.mediums[l.m].mtu || 200);          // frames in this bin
-      const want = playing ? Math.min(6, Math.ceil(frames / 12)) : 0;
+      const want = playing ? Math.min(4, Math.ceil(frames / 12)) : 0;
       while (l.pkts.length < want) {
         const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
         c.setAttribute('class', 'pkt'); c.setAttribute('fill', colorOf(l.m)); layer.appendChild(c);
@@ -549,6 +570,7 @@ window.KIOSK = /*__KIOSK_JSON__*/null;
     });
   }
 
+  document.addEventListener('visibilitychange', () => { if (document.hidden && playing) stop(); });
   matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => select(key));
   select(key);
 })();
