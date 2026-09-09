@@ -7,14 +7,21 @@ beneficiary address it reads from the chain. Editing the MSISDN in .env
 without the cold key therefore fails closed: the worker refuses to start, so
 a server compromise can delay payouts but never redirect them (spec s8.1).
 
-Generating the signature is an OFFLINE step on the founder's machine:
+The real cold key lives on a hardware wallet and never touches a computer:
 
-    XKOIN_PIN_SIGNER_KEY=0x<beneficiary private key> python -m app.payout.pin \
+    python -m app.payout.pin 254722000000 --chain-id 84532 --token 0xTOKEN --print-message
+    # sign the printed text on the device ("Sign message", EIP-191 personal)
+    python -m app.payout.pin 254722000000 --chain-id 84532 --token 0xTOKEN \
+        --verify 0x<signature> --beneficiary 0x<cold address>
+
+The second command checks the signature and prints the two .env lines. For
+local proofs only, a throwaway key can sign directly:
+
+    XKOIN_PIN_SIGNER_KEY=0x<throwaway key> python -m app.payout.pin \
         254722000000 --chain-id 84532 --token 0xTOKEN
 
-Prints the signature to paste into XKOIN_PAYOUT_MSISDN_SIGNATURE. The private
-key is read from the environment only, never from argv, and never leaves the
-process.
+The key is read from the environment only, never from argv, and never leaves
+the process. See docs/key-management.md.
 """
 
 from __future__ import annotations
@@ -77,29 +84,72 @@ class PayoutPin:
         return cls(msisdn=msisdn, beneficiary=beneficiary)
 
 
-def _main() -> None:
+def _main(argv: list[str] | None = None) -> None:
+    """Three modes, in order of preference:
+
+    --print-message   print the exact text to sign on a hardware wallet (Ledger,
+                      Trezor, or a wallet app's "Sign message"); no key needed.
+    --verify SIG --beneficiary ADDR
+                      check a pasted signature against the beneficiary address
+                      and print the two .env lines; no key needed.
+    (default)         sign with XKOIN_PIN_SIGNER_KEY from the environment; only
+                      for local proofs, never with the real cold key.
+    """
     import argparse
     import os
     import sys
 
     parser = argparse.ArgumentParser(
-        description="Sign the payout MSISDN pin (offline)."
+        description="Payout MSISDN pin: print the message, verify a signature, or sign."
     )
     parser.add_argument("msisdn")
     parser.add_argument("--chain-id", type=int, required=True)
     parser.add_argument("--token", required=True, help="xKoinToken address")
-    args = parser.parse_args()
+    parser.add_argument(
+        "--print-message",
+        action="store_true",
+        help="print the EIP-191 message text to sign on a hardware wallet",
+    )
+    parser.add_argument("--verify", metavar="SIG", help="0x signature to verify")
+    parser.add_argument(
+        "--beneficiary", metavar="ADDR", help="expected signer (treasury beneficiary)"
+    )
+    args = parser.parse_args(argv)
+    if not MSISDN_RE.match(args.msisdn):
+        sys.exit("MSISDN must match 254XXXXXXXXX")
+    message = pin_message(args.msisdn, args.chain_id, args.token)
+
+    if args.print_message:
+        print(
+            "Sign this text as a plain (EIP-191 personal) message on the cold device,"
+        )
+        print("then run again with --verify <signature> --beneficiary <address>:")
+        print()
+        print(message.body.decode())
+        return
+
+    if args.verify:
+        if not args.beneficiary:
+            sys.exit("--verify needs --beneficiary <address>")
+        try:
+            PayoutPin.verify(
+                args.msisdn, args.verify, args.chain_id, args.token, args.beneficiary
+            )
+        except PayoutPinError as exc:
+            sys.exit(str(exc))
+        print(f"signer:    {args.beneficiary} (verified)")
+        print(f"XKOIN_PAYOUT_MSISDN={args.msisdn}")
+        print(f"XKOIN_PAYOUT_MSISDN_SIGNATURE={args.verify}")
+        return
+
     key = os.environ.get("XKOIN_PIN_SIGNER_KEY")
     if not key:
         sys.exit(
-            "set XKOIN_PIN_SIGNER_KEY in the environment (never on the command line)"
+            "no XKOIN_PIN_SIGNER_KEY in the environment. For the real cold key use "
+            "--print-message, sign on the device, then --verify."
         )
-    if not MSISDN_RE.match(args.msisdn):
-        sys.exit("MSISDN must match 254XXXXXXXXX")
     acct = Account.from_key(key)
-    sig = Account.sign_message(
-        pin_message(args.msisdn, args.chain_id, args.token), key
-    ).signature
+    sig = Account.sign_message(message, key).signature
     print(f"signer:    {acct.address}")
     print(f"XKOIN_PAYOUT_MSISDN={args.msisdn}")
     print(f"XKOIN_PAYOUT_MSISDN_SIGNATURE=0x{sig.hex()}")
