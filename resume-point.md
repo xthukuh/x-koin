@@ -1,6 +1,6 @@
 # x-koin resume point
 
-Updated 2026-09-09, end of the evening session. Pages:
+Updated 2026-09-10, after session three (critical accounts). Pages:
 - Bring-up board: https://claude.ai/code/artifact/ac423197-641a-4994-8c9f-6144aeb3fa4b
 - Mesh replay (protocol, chain and kiosk, journeys): https://claude.ai/code/artifact/f351573e-d847-4ce5-96fb-56924ce3a242
 - Investor demo: https://claude.ai/code/artifact/2360a9fa-beab-45bd-9f98-f976804601eb
@@ -11,9 +11,36 @@ demo/dist/{index,landlord,replay}.html; `python demo/serve.py` serves them on
 http://127.0.0.1:8090/; the artifacts above are those files. No file://
 previews, no other ports.
 
+## Session three (2026-09-09 night): the crypto layer for real
+
+Commit abdca34 on main. Martin funded Binance with KES 900 (7.30 USDT) for
+real-chain tests. Finding: phases 0 to 4 spend nothing (anvil, Base
+Sepolia faucet, Jenga UAT, Safe on Sepolia); only the mainnet rehearsal
+spends about 0.09 USD of gas; 2 USDT converts to ETH for it, 5.30 stays
+untouched. Chain gas is not the binding cost (settle 0.35 KES, deploy 7.7
+KES at Base 0.006 gwei, ETH 2468.58, KES 123.29 measured 2026-09-09);
+fiat charges and backhaul are.
+
+- docs/critical-accounts/: README, 01 registrations, 02 wallet roles,
+  03 budget, 04 security, 05 test plan (five phases with exits),
+  06 VPS xkoin.thuku.dev, registry.md (public addresses only).
+- scripts/gas_budget.py: offline and live (--rpc/--address) proven.
+- Deploy.s.sol: guard (BENEFICIARY_ADDRESS required off 31337, must differ
+  from deployer), DAILY_MINT_CAP_KES override, writes
+  contracts/deployments/<chainId>.json (31337 git-ignored).
+- docker/gateway.Dockerfile + compose.gateway.yml (Traefik: proxy network,
+  websecure, letsencrypt); image builds, /health reports chain_id, dry_run,
+  bridge_key_set. 28 forge, 32 gateway pytest, chain e2e green.
+
+Waiting on Martin for the crypto layer, ranked: harden Binance; DNS A
+record xkoin -> VPS; Coinbase Developer Platform and Alchemy accounts;
+hardware wallet order; Jenga sandbox. Then phase 1 (Sepolia deploy and
+gas receipts) runs without money.
+
 ## State
 
-Commit 4ab960b on main plus the demo unification. Proof matrix green on the
+Commit abdca34 on main (session three) on top of 4ab960b plus the demo
+unification. Proof matrix green on the
 Windows host and inside Docker (docker-proofs image, Forge 1.8.1): 28 forge
 tests, 31 gateway-api and 11 protocol pytest, S1-S6 sim, 75 C host checks,
 chain e2e settle gas 191,698. Gateway firmware builds: `pio run -e esp32-s3`
