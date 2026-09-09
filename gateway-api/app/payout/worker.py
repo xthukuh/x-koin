@@ -80,7 +80,9 @@ class PayoutLedger:
         return d
 
     def get(self, key: str) -> dict | None:
-        return self._row(self._db.execute("SELECT * FROM payouts WHERE key=?", (key,)).fetchone())
+        return self._row(
+            self._db.execute("SELECT * FROM payouts WHERE key=?", (key,)).fetchone()
+        )
 
     def by_conversation(
         self, conversation_id: str | None, originator_id: str | None
@@ -113,7 +115,9 @@ class PayoutLedger:
             fields["burn_tx"] = json.dumps(fields["burn_tx"])
         fields["updated_at"] = int(time.time())
         cols = ", ".join(f"{k}=:{k}" for k in fields)
-        self._db.execute(f"UPDATE payouts SET {cols} WHERE key=:key", {**fields, "key": key})
+        self._db.execute(
+            f"UPDATE payouts SET {cols} WHERE key=:key", {**fields, "key": key}
+        )
         self._db.commit()
         return self.get(key)
 
@@ -121,7 +125,8 @@ class PayoutLedger:
         statuses = (status,) if isinstance(status, str) else status
         marks = ",".join("?" * len(statuses))
         rows = self._db.execute(
-            f"SELECT * FROM payouts WHERE status IN ({marks}) ORDER BY created_at", statuses
+            f"SELECT * FROM payouts WHERE status IN ({marks}) ORDER BY created_at",
+            statuses,
         ).fetchall()
         return [self._row(r) for r in rows]
 
@@ -137,7 +142,9 @@ class PayoutLedger:
         return [self._row(r) for r in rows]
 
     def cursor(self, name: str = "transfers") -> int | None:
-        r = self._db.execute("SELECT block FROM cursor WHERE name=?", (name,)).fetchone()
+        r = self._db.execute(
+            "SELECT block FROM cursor WHERE name=?", (name,)
+        ).fetchone()
         return int(r[0]) if r else None
 
     def set_cursor(self, block: int, name: str = "transfers") -> None:
@@ -172,7 +179,9 @@ class PayoutWorker:
         self.pin = pin
         self.ledger = ledger
         self.min_kes = settings.payout_min_kes if min_kes is None else min_kes
-        self.max_attempts = settings.payout_max_attempts if max_attempts is None else max_attempts
+        self.max_attempts = (
+            settings.payout_max_attempts if max_attempts is None else max_attempts
+        )
 
     # -- inbound: Transfer(beneficiary -> bridge) -----------------------------
 
@@ -197,11 +206,20 @@ class PayoutWorker:
             "status": "ignored",
         }
         if str(ev["to"]).lower() != self.bridge or sender != self.beneficiary:
-            log.info("payout: ignoring transfer %s from %s (not beneficiary->bridge)", key, sender)
+            log.info(
+                "payout: ignoring transfer %s from %s (not beneficiary->bridge)",
+                key,
+                sender,
+            )
             return self.ledger.insert(row)
         if amount_kes < self.min_kes:
             row["status"] = "held"
-            log.info("payout: holding %s, %d KES below minimum %d", key, amount_kes, self.min_kes)
+            log.info(
+                "payout: holding %s, %d KES below minimum %d",
+                key,
+                amount_kes,
+                self.min_kes,
+            )
             return self.ledger.insert(row)
         row["status"] = "pending"
         self.ledger.insert(row)
@@ -236,7 +254,9 @@ class PayoutWorker:
     def _parse_result(body: dict) -> dict:
         res = body.get("Result", {}) or {}
         params = {}
-        for item in (res.get("ResultParameters", {}) or {}).get("ResultParameter", []) or []:
+        for item in (res.get("ResultParameters", {}) or {}).get(
+            "ResultParameter", []
+        ) or []:
             params[item.get("Key")] = item.get("Value")
         return {
             "conversation_id": res.get("ConversationID"),
@@ -251,17 +271,23 @@ class PayoutWorker:
         r = self._parse_result(body)
         row = self.ledger.by_conversation(r["conversation_id"], r["originator_id"])
         if row is None:
-            log.warning("payout: result for unknown conversation %s", r["conversation_id"])
+            log.warning(
+                "payout: result for unknown conversation %s", r["conversation_id"]
+            )
             return None
         if row["status"] == "settled":
             return row  # Daraja may redeliver; the burn already happened
         if r["result_code"] not in (0, "0"):
             return self.ledger.update(
-                row["key"], status="b2c_failed", last_error=f"{r['result_code']} {r['result_desc']}"
+                row["key"],
+                status="b2c_failed",
+                last_error=f"{r['result_code']} {r['result_desc']}",
             )
         receipt = str(r["receipt"] or row["conversation_id"])
         burn = self._chain.burn_for_payout(row["amount_kes"] * UKES_PER_KES, receipt)
-        return self.ledger.update(row["key"], status="settled", receipt=receipt, burn_tx=burn)
+        return self.ledger.update(
+            row["key"], status="settled", receipt=receipt, burn_tx=burn
+        )
 
     def handle_b2c_timeout(self, body: dict) -> dict | None:
         r = self._parse_result(body)
@@ -269,7 +295,9 @@ class PayoutWorker:
         if row is None or row["status"] == "settled":
             return row
         return self.ledger.update(
-            row["key"], status="b2c_timeout", last_error=r["result_desc"] or "queue timeout"
+            row["key"],
+            status="b2c_timeout",
+            last_error=r["result_desc"] or "queue timeout",
         )
 
     # -- retry ----------------------------------------------------------------
@@ -279,7 +307,11 @@ class PayoutWorker:
         for row in self.ledger.where(RETRYABLE):
             if row["attempts"] >= self.max_attempts:
                 self.ledger.update(row["key"], status="exhausted")
-                log.error("payout: %s exhausted after %d attempts", row["key"], row["attempts"])
+                log.error(
+                    "payout: %s exhausted after %d attempts",
+                    row["key"],
+                    row["attempts"],
+                )
                 continue
             out.append(await self._fire_b2c(row["key"]))
         return out
@@ -331,7 +363,9 @@ class PayoutWorker:
             await asyncio.sleep(interval_s)
 
 
-def build_worker(settings: Settings, ledger: PayoutLedger | None = None) -> PayoutWorker:
+def build_worker(
+    settings: Settings, ledger: PayoutLedger | None = None
+) -> PayoutWorker:
     """Wire a worker from settings. In live mode the beneficiary and bridge
     address come from the chain; dry-run uses the configured overrides."""
     chain = ChainBridge(settings)
@@ -348,10 +382,14 @@ def build_worker(settings: Settings, ledger: PayoutLedger | None = None) -> Payo
             settings.beneficiary_address
             and settings.beneficiary_address.lower() != beneficiary.lower()
         ):
-            raise ValueError("configured beneficiary_address disagrees with the treasury on chain")
+            raise ValueError(
+                "configured beneficiary_address disagrees with the treasury on chain"
+            )
         bridge = w3.eth.account.from_key(settings.bridge_private_key).address
     if not beneficiary or not bridge:
-        raise ValueError("payout worker needs beneficiary_address and bridge_address (dry-run)")
+        raise ValueError(
+            "payout worker needs beneficiary_address and bridge_address (dry-run)"
+        )
     pin = PayoutPin.verify(
         settings.payout_msisdn,
         settings.payout_msisdn_signature,

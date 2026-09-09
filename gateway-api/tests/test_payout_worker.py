@@ -49,7 +49,13 @@ def transfer(
     tx: str = "0xaa",
     log_index: int = 0,
 ):
-    return {"from": sender, "to": to, "value": value_ukes, "tx_hash": tx, "log_index": log_index}
+    return {
+        "from": sender,
+        "to": to,
+        "value": value_ukes,
+        "tx_hash": tx,
+        "log_index": log_index,
+    }
 
 
 def make_worker(http: httpx.AsyncClient, **overrides) -> PayoutWorker:
@@ -66,7 +72,9 @@ def make_worker(http: httpx.AsyncClient, **overrides) -> PayoutWorker:
 
 
 def mock_daraja(mock: respx.MockRouter, response_code: str = "0"):
-    mock.get("/oauth/v1/generate").respond(200, json={"access_token": "t", "expires_in": 3599})
+    mock.get("/oauth/v1/generate").respond(
+        200, json={"access_token": "t", "expires_in": 3599}
+    )
     return mock.post("/mpesa/b2c/v1/paymentrequest").respond(
         200,
         json={
@@ -108,7 +116,11 @@ def test_pin_verifies_and_rejects_tamper_or_wrong_signer():
     # Same signature, edited MSISDN: exactly what a server compromise would try.
     with pytest.raises(PayoutPinError, match="not signed by beneficiary"):
         PayoutPin.verify(
-            "254733999999", good_sig, SETTINGS.chain_id, SETTINGS.token_address, FOUNDER.address
+            "254733999999",
+            good_sig,
+            SETTINGS.chain_id,
+            SETTINGS.token_address,
+            FOUNDER.address,
         )
     # Fresh signature from a key that is not the beneficiary.
     bad_sig = Account.sign_message(
@@ -121,11 +133,19 @@ def test_pin_verifies_and_rejects_tamper_or_wrong_signer():
     # Replay on another chain id fails too.
     with pytest.raises(PayoutPinError):
         PayoutPin.verify(
-            MSISDN, good_sig, SETTINGS.chain_id + 1, SETTINGS.token_address, FOUNDER.address
+            MSISDN,
+            good_sig,
+            SETTINGS.chain_id + 1,
+            SETTINGS.token_address,
+            FOUNDER.address,
         )
     with pytest.raises(PayoutPinError, match="MSISDN"):
         PayoutPin.verify(
-            "0722000000", good_sig, SETTINGS.chain_id, SETTINGS.token_address, FOUNDER.address
+            "0722000000",
+            good_sig,
+            SETTINGS.chain_id,
+            SETTINGS.token_address,
+            FOUNDER.address,
         )
 
 
@@ -155,7 +175,9 @@ async def test_beneficiary_transfer_fires_b2c_to_pinned_msisdn_and_defers_burn()
 async def test_transfers_not_from_beneficiary_or_not_to_bridge_are_ignored():
     async with httpx.AsyncClient(base_url=SETTINGS.daraja_base_url) as http:
         worker = make_worker(http)
-        with respx.mock(base_url=SETTINGS.daraja_base_url, assert_all_called=False) as mock:
+        with respx.mock(
+            base_url=SETTINGS.daraja_base_url, assert_all_called=False
+        ) as mock:
             b2c = mock_daraja(mock)
             stranger = await worker.handle_transfer(
                 transfer(50 * UKES, sender=STRANGER.address, tx="0x01")
@@ -176,7 +198,11 @@ async def test_event_fields_cannot_choose_the_destination():
         worker = make_worker(http)
         hostile = transfer(20 * UKES)
         hostile.update(
-            {"phone": "254733999999", "msisdn": "254733999999", "PartyB": "254733999999"}
+            {
+                "phone": "254733999999",
+                "msisdn": "254733999999",
+                "PartyB": "254733999999",
+            }
         )
         with respx.mock(base_url=SETTINGS.daraja_base_url) as mock:
             b2c = mock_daraja(mock)
@@ -192,8 +218,12 @@ async def test_duplicate_event_is_paid_once():
         worker = make_worker(http)
         with respx.mock(base_url=SETTINGS.daraja_base_url) as mock:
             b2c = mock_daraja(mock)
-            first = await worker.handle_transfer(transfer(30 * UKES, tx="0xdd", log_index=3))
-            again = await worker.handle_transfer(transfer(30 * UKES, tx="0xdd", log_index=3))
+            first = await worker.handle_transfer(
+                transfer(30 * UKES, tx="0xdd", log_index=3)
+            )
+            again = await worker.handle_transfer(
+                transfer(30 * UKES, tx="0xdd", log_index=3)
+            )
         assert b2c.call_count == 1
         assert first["key"] == again["key"]
         assert again["status"] == "b2c_sent"
@@ -203,7 +233,9 @@ async def test_duplicate_event_is_paid_once():
 async def test_below_minimum_is_held_not_paid():
     async with httpx.AsyncClient(base_url=SETTINGS.daraja_base_url) as http:
         worker = make_worker(http)
-        with respx.mock(base_url=SETTINGS.daraja_base_url, assert_all_called=False) as mock:
+        with respx.mock(
+            base_url=SETTINGS.daraja_base_url, assert_all_called=False
+        ) as mock:
             b2c = mock_daraja(mock)
             row = await worker.handle_transfer(transfer(9 * UKES + 999_999))
         assert b2c.call_count == 0
@@ -293,8 +325,13 @@ def test_result_endpoints_route_to_worker():
     try:
         client = TestClient(app=main.app)
         r = client.post("/daraja/b2c-result", json=b2c_result("AG_nothing", 0, 10))
-        assert r.status_code == 200 and r.json() == {"ResultCode": 0, "ResultDesc": "Accepted"}
-        r = client.post("/daraja/b2c-timeout", json={"Result": {"ConversationID": "AG_nothing"}})
+        assert r.status_code == 200 and r.json() == {
+            "ResultCode": 0,
+            "ResultDesc": "Accepted",
+        }
+        r = client.post(
+            "/daraja/b2c-timeout", json={"Result": {"ConversationID": "AG_nothing"}}
+        )
         assert r.status_code == 200
         r = client.get("/payouts")
         assert r.status_code == 200 and r.json()["rows"] == []

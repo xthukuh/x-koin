@@ -36,8 +36,8 @@ def fmt_rate(bps):
     return f"{bps/1e6:.2f} Mbps" if bps >= 1e6 else f"{bps/1e3:.2f} kbps"
 
 
-def base_pair(seed, mediums):
-    sim = Sim(seed)
+def base_pair(seed, mediums, trace: list | None = None):
+    sim = Sim(seed, trace=trace)
     client = Node(sim, "client")
     gateway = Node(sim, "gateway", kiosk_vk=bytes(KIOSK_SK.verify_key))
     client.connect(gateway, mediums)
@@ -48,11 +48,14 @@ def base_pair(seed, mediums):
     return sim, client, gateway, admitted["t"]
 
 
-def s1_speed():
+def s1_speed(trace: list | None = None):
     mediums = [HOMEPLUG(), KQ130F(), LORA_SF7()]
-    sim, client, gateway, admit_t = base_pair(1, mediums)
+    sim, client, gateway, admit_t = base_pair(1, mediums, trace=trace)
     xfer = ClientTransfer(sim, client, "gateway", 25 * MB, receipt_every=1 * MB, window=16)
-    xfer.start()
+    if trace is not None:
+        xfer.start(on_done=lambda: trace.append((xfer.done_at, "done")))
+    else:
+        xfer.start()
     sim.run()
     assert xfer.done_at and not xfer.failed
     dur = xfer.done_at - admit_t
@@ -70,9 +73,9 @@ def s1_speed():
     }
 
 
-def s2_blackout():
+def s2_blackout(trace: list | None = None):
     mediums = [HOMEPLUG(), KQ130F(), LORA_SF7()]
-    sim, client, gateway, _ = base_pair(2, mediums)
+    sim, client, gateway, _ = base_pair(2, mediums, trace=trace)
     xfer = ClientTransfer(sim, client, "gateway", 3 * MB, receipt_every=250_000, window=16)
     marks = {}
 
@@ -80,12 +83,16 @@ def s2_blackout():
         mediums[0].up = False  # HomePlug dies with the grid
         mediums[1].up = False  # narrowband PLC too
         marks["cut"] = sim.now
+        if trace is not None:
+            trace.append((sim.now, "cut"))
         lora = mediums[2]
         base = lora.delivered_app_bytes
 
         def poll():
             if lora.delivered_app_bytes > base:
                 marks["recovered"] = sim.now
+                if trace is not None:
+                    trace.append((sim.now, "recovered"))
             elif sim.now < marks["cut"] + 60:
                 sim.after(0.005, poll)
 
@@ -103,7 +110,10 @@ def s2_blackout():
         sim.after(30.0, beat)
 
     sim.after(1.0, beat)
-    xfer.start()
+    if trace is not None:
+        xfer.start(on_done=lambda: trace.append((xfer.done_at, "done")))
+    else:
+        xfer.start()
     sim.run(until=90_000)
     lora = mediums[2]
     pre = 3 * MB - (3 * MB - gateway.delivered[client.node_id])  # delivered total
@@ -120,8 +130,8 @@ def s2_blackout():
     }
 
 
-def s3_relay():
-    sim = Sim(3)
+def s3_relay(trace: list | None = None):
+    sim = Sim(3, trace=trace)
     client = Node(sim, "client")
     sat = Node(sim, "satellite", kiosk_vk=bytes(KIOSK_SK.verify_key))
     gateway = Node(sim, "gateway", kiosk_vk=bytes(KIOSK_SK.verify_key))
@@ -138,7 +148,10 @@ def s3_relay():
     admit(sim, client, sat, KIOSK_SK, lambda: None)
     sim.run()
     xfer = ClientTransfer(sim, client, "satellite", 1 * MB, receipt_every=100_000, window=8)
-    xfer.start()
+    if trace is not None:
+        xfer.start(on_done=lambda: trace.append((xfer.done_at, "done")))
+    else:
+        xfer.start()
     sim.run()
     assert xfer.done_at and not xfer.failed
     return {

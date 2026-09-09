@@ -32,11 +32,14 @@ import random
 
 
 class Sim:
-    def __init__(self, seed: int = 1):
+    def __init__(self, seed: int = 1, trace: list | None = None):
         self.now = 0.0
         self._q: list = []
         self._n = 0
         self.rng = random.Random(seed)
+        # Optional event trace: a caller-owned list that hook points append
+        # small tuples to. None (the default) costs a single `if` per hook.
+        self.trace = trace
 
     def at(self, t: float, fn):
         heapq.heappush(self._q, (t, self._n, fn))
@@ -84,7 +87,7 @@ class Medium:
     def score(self) -> float:
         return self.bps * (1.0 - min(self.loss_ewma, 0.99))
 
-    def observe(self, success: bool, now: float, failovers: list):
+    def observe(self, success: bool, now: float, failovers: list, trace: list | None = None):
         self.loss_ewma = 0.85 * self.loss_ewma + 0.15 * (0.0 if success else 1.0)
         if success:
             self.fail_streak = 0
@@ -94,6 +97,8 @@ class Medium:
                 self.quarantine_until = now + 2.0
                 self.fail_streak = 0
                 failovers.append((now, self.name))
+                if trace is not None:
+                    trace.append((now, "quarantine", self.name))
 
 
 def HOMEPLUG():
@@ -195,10 +200,16 @@ class Node:
         m.tx_frames += 1
         m.tx_bytes += wire
         m.airtime += air
-        if self.sim.rng.random() < m.loss:
+        lost = self.sim.rng.random() < m.loss
+        if lost:
             m.lost_frames += 1
         else:
             self.sim.at(arrival, lambda: dest._rx(f, m, self))
+        if self.sim.trace is not None:
+            self.sim.trace.append(
+                (self.sim.now, "tx", self.name, dest.name, m.name,
+                 int(f.ftype), wire, info["tries"], lost)
+            )
         timeout = (arrival - self.sim.now) * 2 + 4 * m.latency + 0.05
         self.sim.after(timeout, lambda: self._timeout(seq, info["tries"]))
 
@@ -206,7 +217,7 @@ class Node:
         info = self._pending.get(seq)
         if info is None or info["tries"] != at_try:
             return  # acked, or a newer attempt owns the timer
-        info["medium"].observe(False, self.sim.now, self.failovers)
+        info["medium"].observe(False, self.sim.now, self.failovers, self.sim.trace)
         if info["tries"] >= MAX_TRIES:
             self._pending.pop(seq)
             if info["on_fail"]:
@@ -234,11 +245,15 @@ class Node:
 
     def _rx(self, f: Frame, medium: Medium, sender: "Node"):
         medium.delivered_frames += 1
+        if self.sim.trace is not None:
+            self.sim.trace.append(
+                (self.sim.now, "rx", self.name, medium.name, int(f.ftype), len(f.payload))
+            )
         if f.ftype in (FrameType.DATA_ACK, FrameType.RECEIPT_ACK, FrameType.JOIN_ACK):
             (orig_seq,) = struct.unpack("<I", f.payload)
             info = self._pending.pop(orig_seq, None)
             if info is not None:
-                info["medium"].observe(True, self.sim.now, self.failovers)
+                info["medium"].observe(True, self.sim.now, self.failovers, self.sim.trace)
                 if info["on_ack"]:
                     info["on_ack"]()
             return
@@ -261,6 +276,8 @@ class Node:
             self.clients[cid] = client_vk
             self.proven.setdefault(cid, 0)
             self.delivered.setdefault(cid, 0)
+            if self.sim.trace is not None:
+                self.sim.trace.append((self.sim.now, "join", self.name, cid.hex()[:8]))
         elif f.ftype == FrameType.DATA:
             if f.src in self.clients:
                 self.delivered[f.src] = self.delivered.get(f.src, 0) + len(f.payload)
@@ -282,6 +299,10 @@ class Node:
             if r.cumulative_bytes > self.proven.get(f.src, 0):
                 self.proven[f.src] = r.cumulative_bytes
             self.receipts_verified += 1
+            if self.sim.trace is not None:
+                self.sim.trace.append(
+                    (self.sim.now, "receipt", self.name, f.src.hex()[:8], r.cumulative_bytes)
+                )
         elif f.ftype == FrameType.TELEMETRY:
             pass
 

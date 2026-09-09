@@ -1,0 +1,458 @@
+<title>xKoin Mesh Replay</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    color-scheme: light;
+    --ground: #eef1f4; --surface: #ffffff; --surface-2: #f6f8fa; --line: #d3dae1; --line-soft: #e6ebf0;
+    --ink: #17212b; --muted: #5c6b7a; --faint: #8a97a3;
+    --accent: #1e6f5c; --copper: #a85b2b;
+    --homeplug: #2a78d6; --kq130f: #eb6834; --lora: #1baf7a;
+    --critical: #d03b3b; --good: #0ca30c;
+    --schematic: #0d1117;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --ground: #0f1519; --surface: #172026; --surface-2: #1c262e; --line: #2a353e; --line-soft: #222d36;
+      --ink: #e6ecf0; --muted: #9aa8b4; --faint: #6f7d89;
+      --accent: #4fbf9f; --copper: #d68a55;
+      --homeplug: #3987e5; --kq130f: #d95926; --lora: #199e70;
+      --critical: #e66767; --good: #3bbf3b;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --ground: #0f1519; --surface: #172026; --surface-2: #1c262e; --line: #2a353e; --line-soft: #222d36;
+    --ink: #e6ecf0; --muted: #9aa8b4; --faint: #6f7d89;
+    --accent: #4fbf9f; --copper: #d68a55;
+    --homeplug: #3987e5; --kq130f: #d95926; --lora: #199e70;
+    --critical: #e66767; --good: #3bbf3b;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--ground); color: var(--ink); font-family: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif; font-size: 15px; line-height: 1.45; }
+  main { max-width: 1120px; margin: 0 auto; padding: 28px 20px 64px; display: flex; flex-direction: column; gap: 20px; }
+  h1 { font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif; font-weight: 600; font-size: 30px; letter-spacing: -0.01em; margin: 0; text-wrap: balance; }
+  h2 { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.09em; color: var(--muted); margin: 0 0 10px; }
+  p { margin: 0; }
+  .mono { font-family: "IBM Plex Mono", Consolas, monospace; font-variant-numeric: tabular-nums; }
+  .sub { color: var(--muted); max-width: 62ch; }
+  header { display: flex; flex-direction: column; gap: 6px; }
+
+  .tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+  .tab { font-family: "IBM Plex Sans Condensed", sans-serif; font-weight: 600; font-size: 15px; padding: 8px 14px; border: 1px solid var(--line); background: var(--surface); color: var(--muted); border-radius: 4px; cursor: pointer; }
+  .tab[aria-selected="true"] { color: var(--ink); border-color: var(--accent); box-shadow: inset 0 -3px 0 var(--accent); }
+  .tab:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .stage { display: grid; grid-template-columns: minmax(300px, 5fr) minmax(260px, 4fr); gap: 16px; }
+  @media (max-width: 760px) { .stage { grid-template-columns: 1fr; } }
+  .panel { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 14px 16px; }
+  .topo svg { width: 100%; height: auto; display: block; }
+  .topo .node rect { fill: var(--surface-2); stroke: var(--line); }
+  .topo .node text { fill: var(--ink); font-family: "IBM Plex Sans Condensed", sans-serif; font-weight: 600; font-size: 15px; }
+  .topo .node .role { fill: var(--muted); font-family: "IBM Plex Mono", monospace; font-weight: 400; font-size: 10.5px; }
+  .topo .lane { stroke-width: 2; stroke-linecap: round; }
+  .topo .lane.dead { stroke-dasharray: 3 5; opacity: 0.45; }
+  .topo .lane-label { font-family: "IBM Plex Mono", monospace; font-size: 10.5px; fill: var(--muted); }
+  .topo .pkt { r: 3.2; }
+  .topo .kes { font-family: "IBM Plex Mono", monospace; font-size: 11px; fill: var(--copper); }
+
+  .tiles { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .tile { background: var(--surface-2); border-radius: 4px; padding: 10px 12px; min-width: 0; }
+  .tile .n { font-family: "IBM Plex Mono", monospace; font-size: 22px; font-weight: 500; line-height: 1.15; }
+  .tile .l { font-size: 11.5px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 3px; }
+  .tile .u { font-size: 12px; color: var(--muted); }
+  .status { display: flex; flex-direction: column; gap: 6px; margin-top: 12px; }
+  .status div { display: grid; grid-template-columns: 14px 1fr auto; gap: 10px; align-items: center; font-size: 14px; }
+  .status .sw { width: 14px; height: 14px; border-radius: 3px; }
+  .status .st { font-family: "IBM Plex Mono", monospace; font-size: 12px; color: var(--muted); }
+  .status .st.down { color: var(--critical); }
+  .status .st.quar { color: var(--kq130f); }
+
+  .chart-wrap { position: relative; }
+  .chart-wrap svg { width: 100%; height: auto; display: block; }
+  .chart-wrap .axis text, .chart-wrap .row-label { font-family: "IBM Plex Mono", monospace; font-size: 10.5px; fill: var(--muted); }
+  .chart-wrap .grid { stroke: var(--line-soft); stroke-width: 1; }
+  .chart-wrap .row-name { font-family: "IBM Plex Sans Condensed", sans-serif; font-weight: 600; font-size: 12.5px; fill: var(--ink); }
+  .chart-wrap .ev-cut { stroke: var(--critical); stroke-dasharray: 4 3; stroke-width: 1.5; }
+  .chart-wrap .ev-rec { stroke: var(--good); stroke-dasharray: 4 3; stroke-width: 1.5; }
+  .chart-wrap .ev-done { stroke: var(--ink); stroke-width: 1.2; }
+  .chart-wrap .ev-txt { font-family: "IBM Plex Mono", monospace; font-size: 10.5px; }
+  .chart-wrap .receipt { fill: var(--copper); }
+  .chart-wrap .quar { fill: none; stroke: var(--kq130f); stroke-width: 1.5; }
+  .chart-wrap .playhead { stroke: var(--ink); stroke-width: 1.5; }
+  .chart-wrap .cross { stroke: var(--faint); stroke-width: 1; stroke-dasharray: 2 3; }
+  .tip { position: absolute; pointer-events: none; background: var(--surface); border: 1px solid var(--line); border-radius: 4px; padding: 6px 9px; font-size: 12.5px; box-shadow: 0 2px 8px rgba(0,0,0,0.12); white-space: nowrap; }
+  .tip b { font-weight: 500; }
+  .tip .row { display: grid; grid-template-columns: 10px 1fr auto; gap: 8px; align-items: center; }
+  .tip .sw { width: 10px; height: 10px; border-radius: 2px; }
+
+  .transport { display: grid; grid-template-columns: auto auto 1fr auto; gap: 12px; align-items: center; }
+  @media (max-width: 560px) { .transport { grid-template-columns: auto auto; } .transport input[type=range] { grid-column: 1 / -1; } }
+  .btn { font: inherit; font-weight: 500; padding: 7px 14px; border: 1px solid var(--line); background: var(--surface-2); color: var(--ink); border-radius: 4px; cursor: pointer; }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: #ffffff; }
+  select { font: inherit; padding: 6px 8px; border: 1px solid var(--line); border-radius: 4px; background: var(--surface-2); color: var(--ink); }
+  input[type=range] { width: 100%; accent-color: var(--accent); }
+  .clock { font-family: "IBM Plex Mono", monospace; font-size: 14px; min-width: 9ch; text-align: right; }
+
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 760px) { .two { grid-template-columns: 1fr; } }
+  .log { max-height: 260px; overflow-y: auto; display: flex; flex-direction: column; gap: 4px; font-size: 13.5px; }
+  .log div { display: grid; grid-template-columns: 7.5ch 1fr; gap: 10px; padding: 2px 4px; border-radius: 3px; }
+  .log div.now { background: var(--surface-2); }
+  .log div.future { opacity: 0.4; }
+  .log time { font-family: "IBM Plex Mono", monospace; color: var(--muted); font-size: 12.5px; }
+  .scroll { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+  th { text-align: left; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); padding: 6px 8px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  td { padding: 6px 8px; border-bottom: 1px solid var(--line-soft); vertical-align: top; }
+  tr:last-child td { border-bottom: 0; }
+  details summary { cursor: pointer; color: var(--muted); font-size: 13px; }
+  .schem { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 760px) { .schem { grid-template-columns: 1fr; } }
+  .schem figure { margin: 0; background: var(--schematic); border-radius: 6px; padding: 8px; overflow-x: auto; }
+  .schem svg { width: 100%; height: auto; min-width: 480px; display: block; }
+  .schem figcaption { color: var(--muted); font-size: 13px; margin-top: 8px; }
+  .legend { display: flex; gap: 16px; flex-wrap: wrap; font-size: 13px; color: var(--muted); }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .legend i { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+  .note { font-size: 13px; color: var(--muted); }
+  @media (prefers-reduced-motion: reduce) { .pkt { display: none; } }
+</style>
+
+<main>
+  <header>
+    <h1>xKoin Mesh Replay</h1>
+    <p class="sub">The protocol proof runner, replayed. Every frame below comes from the deterministic discrete-event simulator in <span class="mono">protocol/run_sim.py</span>; nothing is drawn that the trace did not record.</p>
+  </header>
+
+  <div class="tabs" role="tablist" id="tabs"></div>
+
+  <div class="stage">
+    <section class="panel topo">
+      <h2 id="topo-title">Topology</h2>
+      <svg id="topo" viewBox="0 0 520 250" aria-label="Network topology with live packets"></svg>
+      <div class="legend" id="legend"></div>
+    </section>
+    <section class="panel">
+      <h2>At the playhead</h2>
+      <div class="tiles">
+        <div class="tile"><div class="n mono" id="t-deliv">0.00</div><div class="l">Delivered <span class="u">MB</span></div></div>
+        <div class="tile"><div class="n mono" id="t-proven">0.00</div><div class="l">Proven by receipt <span class="u">MB</span></div></div>
+        <div class="tile"><div class="n mono" id="t-rate">0</div><div class="l">Goodput now <span class="u" id="t-rate-u">kbps</span></div></div>
+        <div class="tile"><div class="n mono" id="t-kes">0.000</div><div class="l">Value moved <span class="u">KES, placeholder price</span></div></div>
+      </div>
+      <div class="status" id="status"></div>
+      <p class="note" style="margin-top:10px">Price is the 500 uKES per 10 KB placeholder from the handover; the real price is deferred until backhaul cost is measured.</p>
+    </section>
+  </div>
+
+  <section class="panel chart-wrap">
+    <h2>Application bytes per medium</h2>
+    <svg id="chart" aria-label="Per-medium throughput over time"></svg>
+    <div class="tip" id="tip" hidden></div>
+  </section>
+
+  <section class="panel transport">
+    <button class="btn primary" id="play">Play</button>
+    <select id="speed" aria-label="Playback speed">
+      <option value="1">1x</option>
+      <option value="4" selected>4x</option>
+      <option value="16">16x</option>
+      <option value="64">64x</option>
+    </select>
+    <input type="range" id="scrub" min="0" max="1000" value="0" aria-label="Scrub time">
+    <div class="clock mono" id="clock">0.00 s</div>
+  </section>
+
+  <div class="two">
+    <section class="panel">
+      <h2>Events</h2>
+      <div class="log" id="log"></div>
+    </section>
+    <section class="panel">
+      <h2>Scenario result</h2>
+      <div class="scroll"><table id="summary"></table></div>
+      <details style="margin-top:10px"><summary>Throughput table (per bin)</summary><div class="scroll" style="max-height:260px;overflow-y:auto"><table id="bins"></table></div></details>
+    </section>
+  </div>
+
+  <section class="panel">
+    <h2>The boards the firmware targets</h2>
+    <div class="schem">
+      <figure><!--GATEWAY_SVG--><figcaption>xKoin-Gateway: ESP32-S3 with SX1262 on SPI, KQ-130F on UART2, W5500 and SIM7600E proposed. Pins from hardware/pinmap.md.</figcaption></figure>
+      <figure><!--SATELLITE_SVG--><figcaption>xKoin-Satellite: same radio map for firmware reuse, solar and 18650 power, deep sleep between beacons.</figcaption></figure>
+    </div>
+  </section>
+</main>
+
+<script>
+window.TRACE = /*__TRACE_JSON__*/null;
+</script>
+<script>
+(function () {
+  'use strict';
+  const TRACE = window.TRACE;
+  if (!TRACE) { document.body.insertAdjacentHTML('afterbegin', '<p style="padding:20px">No trace embedded. Run protocol/trace_sim.py then protocol/viz/build_replay.py.</p>'); return; }
+
+  const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const MEDIUM_COLOR = { 'homeplug': '--homeplug', 'kq130f': '--kq130f', 'lora-sf7': '--lora', 'gfsk-150k': '--lora' };
+  const MEDIUM_LABEL = { 'homeplug': 'HomePlug AV', 'kq130f': 'KQ-130F PLC', 'lora-sf7': 'LoRa SF7', 'gfsk-150k': 'GFSK 150k' };
+  const colorOf = (m) => css(MEDIUM_COLOR[m] || '--ink');
+  const UKES_PER_UNIT = 500, UNIT_BYTES = 10_000;
+
+  const order = ['s1', 's2', 's3'].filter((k) => TRACE.scenarios[k]);
+  let key = order[0];
+  let S = null;            // active scenario
+  let t = 0;               // virtual seconds
+  let playing = false;
+  let speed = 4;
+  let raf = 0, lastTs = 0;
+  let cum = {};            // cumulative delivered per medium per bin
+  let receiptsAt = [];     // [t, cumulative]
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const fmtMB = (b) => (b / 1e6).toFixed(2);
+  const fmtRate = (bps) => bps >= 1e6 ? [(bps / 1e6).toFixed(2), 'Mbps'] : [(bps / 1e3).toFixed(1), 'kbps'];
+  const fmtT = (s) => s.toFixed(2) + ' s';
+
+  // ---------- tabs ----------
+  const tabs = document.getElementById('tabs');
+  order.forEach((k) => {
+    const b = document.createElement('button');
+    b.className = 'tab'; b.role = 'tab'; b.textContent = TRACE.scenarios[k].title; b.dataset.k = k;
+    b.addEventListener('click', () => select(k));
+    tabs.appendChild(b);
+  });
+
+  function select(k) {
+    key = k; S = TRACE.scenarios[k]; t = 0; stop();
+    [...tabs.children].forEach((b) => b.setAttribute('aria-selected', String(b.dataset.k === k)));
+    cum = {};
+    for (const m in S.bins) { let a = 0; cum[m] = S.bins[m].map((v) => (a += v)); }
+    receiptsAt = S.events.filter((e) => e[1] === 'receipt').map((e) => [e[0], e[4]]).sort((a, b) => a[0] - b[0]);
+    buildTopo(); buildChart(); buildLog(); buildSummary(); buildBins();
+    render();
+  }
+
+  // ---------- topology ----------
+  const topo = document.getElementById('topo');
+  let lanes = [];  // {m, x1,y1,x2,y2, el, pkts:[{el, p}]}
+  let laneEls = {};
+  function buildTopo() {
+    const nodes = S.nodes;
+    const W = 520, H = 250;
+    const pos = {};
+    nodes.forEach((n, i) => { pos[n] = { x: 70 + i * ((W - 140) / Math.max(nodes.length - 1, 1)), y: H / 2 }; });
+    let svg = '';
+    lanes = []; laneEls = {};
+    S.links.forEach(([a, b, meds]) => {
+      const pa = pos[a], pb = pos[b];
+      const n = meds.length;
+      meds.forEach((m, j) => {
+        const off = (j - (n - 1) / 2) * 22;
+        const x1 = pa.x + 44, x2 = pb.x - 44, y1 = pa.y + off, y2 = pb.y + off;
+        const id = `lane-${a}-${b}-${m}`;
+        svg += `<line id="${id}" class="lane" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${colorOf(m)}"></line>`;
+        svg += `<text class="lane-label" x="${(x1 + x2) / 2}" y="${y1 - 6}" text-anchor="middle">${MEDIUM_LABEL[m] || m}</text>`;
+        lanes.push({ m, a, b, x1, y1, x2, y2, id, pkts: [], spawn: 0 });
+      });
+    });
+    nodes.forEach((n) => {
+      const p = pos[n];
+      const role = n === 'gateway' ? 'serves, verifies receipts' : n === 'satellite' ? 'relays, earns attribution' : 'pays per byte';
+      svg += `<g class="node"><rect x="${p.x - 44}" y="${p.y - 34}" width="88" height="68" rx="5"></rect>`;
+      svg += `<text x="${p.x}" y="${p.y - 4}" text-anchor="middle">${n}</text>`;
+      svg += `<text class="role" x="${p.x}" y="${p.y + 14}" text-anchor="middle">${role}</text></g>`;
+    });
+    svg += `<g id="pkts"></g><text id="kes" class="kes" x="${W - 12}" y="${H - 12}" text-anchor="end"></text>`;
+    topo.innerHTML = svg;
+    lanes.forEach((l) => { laneEls[l.id] = document.getElementById(l.id); });
+    const legend = document.getElementById('legend');
+    legend.innerHTML = Object.keys(S.mediums).map((m) => `<span><i style="background:${colorOf(m)}"></i>${MEDIUM_LABEL[m] || m} <span class="mono">${fmtRate(S.mediums[m].bps).join(' ')}</span></span>`).join('');
+    const st = document.getElementById('status');
+    st.innerHTML = Object.keys(S.mediums).map((m) => `<div><span class="sw" style="background:${colorOf(m)}"></span><span>${MEDIUM_LABEL[m] || m}</span><span class="st" data-m="${m}">live</span></div>`).join('');
+  }
+
+  // ---------- chart (small multiples, one row per medium, shared x) ----------
+  const chart = document.getElementById('chart');
+  const tip = document.getElementById('tip');
+  let CW = 1000, CH = 0, PL = 112, PR = 16, PT = 30, PB = 26, ROW = 78, GAP = 14;
+  let rows = [];
+  let playheadEl = null, crossEl = null;
+  const xOf = (s) => PL + (s / S.duration_s) * (CW - PL - PR);
+  function buildChart() {
+    rows = Object.keys(S.mediums);
+    CH = PT + rows.length * (ROW + GAP) + PB;
+    chart.setAttribute('viewBox', `0 0 ${CW} ${CH}`);
+    let svg = '';
+    // x grid and axis
+    const ticks = niceTicks(0, S.duration_s, 8);
+    ticks.forEach((tk) => {
+      svg += `<line class="grid" x1="${xOf(tk)}" x2="${xOf(tk)}" y1="${PT}" y2="${CH - PB}"></line>`;
+      svg += `<text class="axis" x="${xOf(tk)}" y="${CH - 8}" text-anchor="middle"><tspan>${tk} s</tspan></text>`;
+    });
+    rows.forEach((m, i) => {
+      const y0 = PT + i * (ROW + GAP), y1 = y0 + ROW;
+      const bins = S.bins[m];
+      const peak = Math.max(1, ...bins) * 8 / S.bin_s;   // bps
+      const scale = (v) => y1 - (v * 8 / S.bin_s / peak) * (ROW - 4);
+      let d = `M${xOf(0)},${y1}`;
+      bins.forEach((v, k) => { const x = xOf((k + 0.5) * S.bin_s); d += ` L${x.toFixed(1)},${scale(v).toFixed(1)}`; });
+      d += ` L${xOf(Math.min(bins.length * S.bin_s, S.duration_s))},${y1} Z`;
+      svg += `<line class="grid" x1="${PL}" x2="${CW - PR}" y1="${y1}" y2="${y1}"></line>`;
+      svg += `<path d="${d}" fill="${colorOf(m)}" fill-opacity="0.55" stroke="${colorOf(m)}" stroke-width="1.2"></path>`;
+      svg += `<text class="row-name" x="${PL - 8}" y="${y0 + 12}" text-anchor="end">${MEDIUM_LABEL[m] || m}</text>`;
+      const [pv, pu] = fmtRate(peak);
+      svg += `<text class="row-label" x="${PL - 8}" y="${y0 + 26}" text-anchor="end">peak ${pv} ${pu}</text>`;
+      svg += `<text class="row-label" x="${PL - 8}" y="${y1}" text-anchor="end">0</text>`;
+    });
+    // events
+    S.events.forEach((e) => {
+      const [et, kind] = e; const x = xOf(et);
+      if (kind === 'cut') svg += `<line class="ev-cut" x1="${x}" x2="${x}" y1="${PT - 6}" y2="${CH - PB}"></line><text class="ev-txt" x="${x + 4}" y="${PT - 10}" fill="${css('--critical')}">grid failure</text>`;
+      else if (kind === 'recovered') svg += `<line class="ev-rec" x1="${x}" x2="${x}" y1="${PT - 6}" y2="${CH - PB}"></line><text class="ev-txt" x="${x + 4}" y="${PT + 2}" fill="${css('--good')}">LoRa carries</text>`;
+      else if (kind === 'done') svg += `<line class="ev-done" x1="${x}" x2="${x}" y1="${PT - 6}" y2="${CH - PB}"></line><text class="ev-txt" x="${x - 4}" y="${PT - 10}" text-anchor="end" fill="${css('--ink')}">final receipt</text>`;
+      else if (kind === 'receipt') svg += `<path class="receipt" d="M${x},${PT - 16} l4,4 l-4,4 l-4,-4 z"><title>receipt at ${fmtT(et)}: ${fmtMB(e[4])} MB proven</title></path>`;
+      else if (kind === 'quarantine') { const i = rows.indexOf(e[2]); if (i >= 0) { const y = PT + i * (ROW + GAP) + 6; svg += `<circle class="quar" cx="${x}" cy="${y}" r="4"><title>${e[2]} quarantined at ${fmtT(et)}</title></circle>`; } }
+    });
+    svg += `<text class="row-label" x="${PL - 8}" y="${PT - 10}" text-anchor="end" fill="${css("--copper")}">receipts</text>`;
+    svg += `<line id="cross" class="cross" x1="0" x2="0" y1="${PT}" y2="${CH - PB}" visibility="hidden"></line>`;
+    svg += `<line id="playhead" class="playhead" x1="${PL}" x2="${PL}" y1="${PT - 18}" y2="${CH - PB}"></line>`;
+    chart.innerHTML = svg;
+    playheadEl = document.getElementById('playhead');
+    crossEl = document.getElementById('cross');
+  }
+  function niceTicks(a, b, n) {
+    const span = b - a, raw = span / n, p = Math.pow(10, Math.floor(Math.log10(raw)));
+    const step = [1, 2, 5, 10].map((s) => s * p).find((s) => span / s <= n) || 10 * p;
+    const out = []; for (let v = 0; v <= b + 1e-9; v += step) out.push(+v.toFixed(6)); return out;
+  }
+  chart.addEventListener('mousemove', (ev) => {
+    const r = chart.getBoundingClientRect();
+    const sx = (ev.clientX - r.left) / r.width * CW;
+    if (sx < PL || sx > CW - PR) { tip.hidden = true; crossEl.setAttribute('visibility', 'hidden'); return; }
+    const ts = (sx - PL) / (CW - PL - PR) * S.duration_s;
+    const k = Math.min(S.bins[rows[0]].length - 1, Math.floor(ts / S.bin_s));
+    crossEl.setAttribute('x1', sx); crossEl.setAttribute('x2', sx); crossEl.setAttribute('visibility', 'visible');
+    tip.innerHTML = `<b class="mono">${fmtT(ts)}</b>` + rows.map((m) => { const [v, u] = fmtRate(S.bins[m][k] * 8 / S.bin_s); return `<div class="row"><span class="sw" style="background:${colorOf(m)}"></span><span>${MEDIUM_LABEL[m] || m}</span><span class="mono">${v} ${u}</span></div>`; }).join('');
+    tip.hidden = false;
+    const wrap = chart.parentElement.getBoundingClientRect();
+    let lx = ev.clientX - wrap.left + 14; if (lx + tip.offsetWidth > wrap.width - 8) lx = ev.clientX - wrap.left - tip.offsetWidth - 14;
+    tip.style.left = lx + 'px'; tip.style.top = (ev.clientY - wrap.top - 10) + 'px';
+  });
+  chart.addEventListener('mouseleave', () => { tip.hidden = true; crossEl.setAttribute('visibility', 'hidden'); });
+  chart.addEventListener('click', (ev) => {
+    const r = chart.getBoundingClientRect(); const sx = (ev.clientX - r.left) / r.width * CW;
+    if (sx >= PL && sx <= CW - PR) { t = (sx - PL) / (CW - PL - PR) * S.duration_s; render(); }
+  });
+
+  // ---------- log, summary, bins ----------
+  const log = document.getElementById('log');
+  let logRows = [];
+  const EVENT_TEXT = {
+    join: (e) => `${e[2]} admitted client ${e[3]} on a kiosk-signed voucher`,
+    receipt: (e) => `${e[2]} verified receipt: ${fmtMB(e[4])} MB cumulative, signed by the client`,
+    quarantine: (e) => `${e[2]} quarantined for 2 s after 3 consecutive losses`,
+    cut: () => 'grid failure: HomePlug and KQ-130F go dark',
+    recovered: () => 'first application bytes delivered over LoRa after the cut',
+    done: () => 'final receipt acknowledged, transfer complete',
+  };
+  function buildLog() {
+    const evs = [...S.events].sort((a, b) => a[0] - b[0]);
+    log.innerHTML = evs.map((e) => `<div data-t="${e[0]}"><time>${e[0].toFixed(2)}s</time><span>${(EVENT_TEXT[e[1]] || ((x) => x[1]))(e)}</span></div>`).join('');
+    logRows = [...log.children];
+  }
+  function buildSummary() {
+    const tbl = document.getElementById('summary');
+    const s = S.summary || {};
+    const rowsHtml = Object.keys(s).map((k) => {
+      let v = s[k];
+      if (v && typeof v === 'object' && !Array.isArray(v)) v = Object.entries(v).map(([a, b]) => `${a}: ${typeof b === 'number' ? b.toLocaleString() : b}`).join('<br>');
+      else if (Array.isArray(v)) v = v.map((r) => typeof r === 'object' ? Object.entries(r).map(([a, b]) => `${a} ${b}`).join(', ') : r).join('<br>');
+      else if (typeof v === 'number') v = Number.isInteger(v) ? v.toLocaleString() : v.toFixed(3);
+      return `<tr><td>${k.replace(/_/g, ' ')}</td><td class="mono">${v}</td></tr>`;
+    }).join('');
+    tbl.innerHTML = `<tr><th>Metric</th><th>Value</th></tr>${rowsHtml}`;
+  }
+  function buildBins() {
+    const tbl = document.getElementById('bins');
+    const n = S.bins[rows[0]].length;
+    let h = `<tr><th>t (s)</th>${rows.map((m) => `<th>${MEDIUM_LABEL[m] || m} (bytes)</th>`).join('')}</tr>`;
+    for (let k = 0; k < n; k++) h += `<tr><td class="mono">${(k * S.bin_s).toFixed(2)}</td>${rows.map((m) => `<td class="mono">${S.bins[m][k].toLocaleString()}</td>`).join('')}</tr>`;
+    tbl.innerHTML = h;
+  }
+
+  // ---------- transport ----------
+  const playBtn = document.getElementById('play'), scrub = document.getElementById('scrub'), clock = document.getElementById('clock');
+  document.getElementById('speed').addEventListener('change', (e) => { speed = +e.target.value; });
+  playBtn.addEventListener('click', () => { playing ? stop() : start(); });
+  scrub.addEventListener('input', () => { t = scrub.value / 1000 * S.duration_s; render(); });
+  document.addEventListener('keydown', (e) => { if (e.code === 'Space' && e.target === document.body) { e.preventDefault(); playing ? stop() : start(); } });
+  function start() { if (t >= S.duration_s) t = 0; playing = true; playBtn.textContent = 'Pause'; lastTs = 0; raf = requestAnimationFrame(tick); }
+  function stop() { playing = false; playBtn.textContent = 'Play'; cancelAnimationFrame(raf); }
+  function tick(ts) {
+    if (!playing) return;
+    if (lastTs) t += (ts - lastTs) / 1000 * speed;
+    lastTs = ts;
+    if (t >= S.duration_s) { t = S.duration_s; render(); stop(); return; }
+    render(); raf = requestAnimationFrame(tick);
+  }
+
+  // ---------- render at time t ----------
+  function render() {
+    const k = Math.min(S.bins[rows[0]].length - 1, Math.floor(t / S.bin_s));
+    let delivered = 0, rate = 0;
+    rows.forEach((m) => { delivered += cum[m][k] || 0; rate += S.bins[m][k] * 8 / S.bin_s; });
+    let proven = 0; for (const [rt, cv] of receiptsAt) { if (rt <= t) proven = cv; else break; }
+    document.getElementById('t-deliv').textContent = fmtMB(delivered);
+    document.getElementById('t-proven').textContent = fmtMB(proven);
+    const [rv, ru] = fmtRate(rate); document.getElementById('t-rate').textContent = rv; document.getElementById('t-rate-u').textContent = ru;
+    const kes = Math.floor(proven / UNIT_BYTES) * UKES_PER_UNIT / 1e6;
+    document.getElementById('t-kes').textContent = kes.toFixed(3);
+    const kesEl = document.getElementById('kes'); if (kesEl) kesEl.textContent = proven > 0 ? `${(proven / UNIT_BYTES) | 0} units proven = ${kes.toFixed(3)} KES` : '';
+    clock.textContent = fmtT(t); scrub.value = Math.round(t / S.duration_s * 1000);
+    playheadEl.setAttribute('x1', xOf(t)); playheadEl.setAttribute('x2', xOf(t));
+    // medium status
+    const cutAt = (S.events.find((e) => e[1] === 'cut') || [Infinity])[0];
+    const quarantines = S.events.filter((e) => e[1] === 'quarantine');
+    document.querySelectorAll('.status .st').forEach((el) => {
+      const m = el.dataset.m;
+      const down = t >= cutAt && m !== 'lora-sf7' && m !== 'gfsk-150k';
+      const q = quarantines.some((e) => e[2] === m && t >= e[0] && t < e[0] + 2);
+      el.textContent = down ? 'down' : q ? 'quarantined' : 'live';
+      el.className = 'st' + (down ? ' down' : q ? ' quar' : '');
+      lanes.filter((l) => l.m === m).forEach((l) => laneEls[l.id].classList.toggle('dead', down || q));
+    });
+    // log highlight
+    let nowIdx = -1; logRows.forEach((r, i) => { const rt = +r.dataset.t; r.classList.toggle('future', rt > t); if (rt <= t) nowIdx = i; });
+    logRows.forEach((r, i) => r.classList.toggle('now', i === nowIdx));
+    if (nowIdx >= 0 && playing) logRows[nowIdx].scrollIntoView({ block: 'nearest' });
+    // packets
+    if (!reduced) animatePackets(k);
+  }
+  const pktLayer = () => document.getElementById('pkts');
+  function animatePackets(k) {
+    const layer = pktLayer(); if (!layer) return;
+    lanes.forEach((l) => {
+      const bytes = S.bins[l.m][k] || 0;
+      const frames = bytes / (S.mediums[l.m].mtu || 200);          // frames in this bin
+      const want = playing ? Math.min(6, Math.ceil(frames / 12)) : 0;
+      while (l.pkts.length < want) {
+        const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        c.setAttribute('class', 'pkt'); c.setAttribute('fill', colorOf(l.m)); layer.appendChild(c);
+        l.pkts.push({ el: c, p: Math.random() });
+      }
+      while (l.pkts.length > want) { l.pkts.pop().el.remove(); }
+      const v = playing ? 0.012 * Math.min(3, Math.max(0.6, Math.log10(1 + frames))) : 0;
+      l.pkts.forEach((p) => {
+        p.p = (p.p + v) % 1;
+        p.el.setAttribute('cx', l.x1 + (l.x2 - l.x1) * p.p);
+        p.el.setAttribute('cy', l.y1 + (l.y2 - l.y1) * p.p);
+      });
+    });
+  }
+
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => select(key));
+  select(key);
+})();
+</script>

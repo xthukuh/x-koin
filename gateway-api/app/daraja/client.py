@@ -24,7 +24,9 @@ class DarajaError(RuntimeError):
 class DarajaClient:
     def __init__(self, settings: Settings, http: httpx.AsyncClient | None = None):
         self._s = settings
-        self._http = http or httpx.AsyncClient(base_url=settings.daraja_base_url, timeout=30)
+        self._http = http or httpx.AsyncClient(
+            base_url=settings.daraja_base_url, timeout=30
+        )
         self._token: str | None = None
         self._token_expiry: float = 0.0
 
@@ -62,14 +64,18 @@ class DarajaClient:
 
     # -- on-ramp ------------------------------------------------------------
 
-    async def stk_push(self, phone_msisdn: str, amount_kes: int, account_ref: str) -> dict:
+    async def stk_push(
+        self, phone_msisdn: str, amount_kes: int, account_ref: str
+    ) -> dict:
         """Fire an STK push to the buyer's handset. Returns Daraja's ack, whose
         CheckoutRequestID keys the eventual callback."""
         token = await self.get_token()
         ts = self.timestamp()
         payload = {
             "BusinessShortCode": self._s.daraja_shortcode,
-            "Password": self.lipa_password(self._s.daraja_shortcode, self._s.daraja_passkey, ts),
+            "Password": self.lipa_password(
+                self._s.daraja_shortcode, self._s.daraja_passkey, ts
+            ),
             "Timestamp": ts,
             "TransactionType": "CustomerPayBillOnline",
             "Amount": amount_kes,
@@ -92,7 +98,9 @@ class DarajaClient:
 
     # -- off-ramp -----------------------------------------------------------
 
-    async def b2c_payment(self, phone_msisdn: str, amount_kes: int, remarks: str) -> dict:
+    async def b2c_payment(
+        self, phone_msisdn: str, amount_kes: int, remarks: str
+    ) -> dict:
         """Business-to-customer payout to a node admin's M-Pesa wallet."""
         token = await self.get_token()
         payload = {

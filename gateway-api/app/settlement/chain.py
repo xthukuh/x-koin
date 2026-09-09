@@ -136,10 +136,15 @@ class ChainBridge:
 
     # -- on-ramp ------------------------------------------------------------
 
-    def mint_for_fiat(self, client_address: str, amount_cents: int, fiat_ref: str) -> dict:
+    def mint_for_fiat(
+        self, client_address: str, amount_cents: int, fiat_ref: str
+    ) -> dict:
         ref = fiat_ref_hash(fiat_ref) if not self._s.dry_run else fiat_ref
         return self._send(
-            self._s.token_address, TOKEN_ABI, "bridgeMint", (client_address, amount_cents, ref)
+            self._s.token_address,
+            TOKEN_ABI,
+            "bridgeMint",
+            (client_address, amount_cents, ref),
         )
 
     # -- off-ramp -----------------------------------------------------------
@@ -148,7 +153,9 @@ class ChainBridge:
         """Burns the bridge's OWN balance (contract enforces self-only burn):
         payout flow is receive XKN -> fire B2C -> burn, in that order."""
         ref = fiat_ref_hash(fiat_ref) if not self._s.dry_run else fiat_ref
-        return self._send(self._s.token_address, TOKEN_ABI, "bridgeBurn", (amount_ukes, ref))
+        return self._send(
+            self._s.token_address, TOKEN_ABI, "bridgeBurn", (amount_ukes, ref)
+        )
 
     # -- settlement relay ----------------------------------------------------
 
@@ -164,5 +171,8 @@ class ChainBridge:
             for t in tickets
         ]
         return self._send(
-            self._s.escrow_address, ESCROW_ABI, "settleTicketBatch", (ordered, signatures)
+            self._s.escrow_address,
+            ESCROW_ABI,
+            "settleTicketBatch",
+            (ordered, signatures),
         )

@@ -50,14 +50,24 @@ def _payout_worker() -> PayoutWorker:
 
 def _services():
     s = get_settings()
-    issuer = VoucherIssuer(bytes.fromhex(s.kiosk_root_key_hex)) if s.kiosk_root_key_hex else None
+    issuer = (
+        VoucherIssuer(bytes.fromhex(s.kiosk_root_key_hex))
+        if s.kiosk_root_key_hex
+        else None
+    )
     signer = None
     try:
         with open(s.jenga_private_key_path, "rb") as fh:
             signer = JengaSigner(fh.read())
     except FileNotFoundError:
         pass
-    return s, DarajaClient(s), (JengaClient(s, signer) if signer else None), ChainBridge(s), issuer
+    return (
+        s,
+        DarajaClient(s),
+        (JengaClient(s, signer) if signer else None),
+        ChainBridge(s),
+        issuer,
+    )
 
 
 class BuyGasRequest(BaseModel):
@@ -76,7 +86,9 @@ async def health():
 async def buy_gas(req: BuyGasRequest):
     settings, daraja, jenga, _, _ = _services()
     if req.rail == "daraja":
-        ack = await daraja.stk_push(req.phone, req.amount_kes, account_ref=req.client_address[:12])
+        ack = await daraja.stk_push(
+            req.phone, req.amount_kes, account_ref=req.client_address[:12]
+        )
         order_key = ack["CheckoutRequestID"]
     else:
         if jenga is None:
@@ -141,6 +153,21 @@ async def jenga_payment_callback(body: dict):
     return {"accepted": True, "fulfilled": True, **result}
 
 
+@app.post("/jenga/mpesa-callback")
+async def jenga_mpesa_callback(body: dict):
+    """Jenga's M-Pesa STK push IPN: {"transaction": {"reference", "status", ...}}."""
+    txn = body.get("transaction", {})
+    status = str(txn.get("status", "")).upper()
+    # Our order key is the orderReference we sent, echoed back as customer.reference.
+    reference = body.get("customer", {}).get("reference") or txn.get("billNumber")
+    if status not in ("SUCCESS", "COMPLETED", "PAID"):
+        PENDING_ORDERS.pop(reference, None)
+        return {"accepted": True, "fulfilled": False}
+    amount = int(float(txn.get("amount", 0)))
+    result = _fulfil(reference, txn.get("reference") or reference, amount)
+    return {"accepted": True, "fulfilled": True, **result}
+
+
 class TicketModel(BaseModel):
     client: str
     nodeAdmin: str
@@ -184,4 +211,8 @@ async def daraja_b2c_timeout(body: dict):
 async def payouts(limit: int = 100):
     """Operator view of the payout ledger. Read-only; nothing here can move funds."""
     worker = _payout_worker()
-    return {"msisdn": worker.pin.msisdn, "beneficiary": worker.beneficiary, "rows": worker.ledger.all(limit)}
+    return {
+        "msisdn": worker.pin.msisdn,
+        "beneficiary": worker.beneficiary,
+        "rows": worker.ledger.all(limit),
+    }

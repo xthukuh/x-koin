@@ -155,3 +155,6 @@ firmware/xkoin-gateway/test/host/test_core.exe
 # Local anvil (chain 31337) broadcast logs are run artefacts, not source.
 contracts/broadcast/**/31337/
 *.sqlite3
+
+# PlatformIO build output
+.pio/

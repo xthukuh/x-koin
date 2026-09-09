@@ -40,7 +40,12 @@ class VoucherIssuer:
         return self._key.verify_key.encode().hex()
 
     def issue(
-        self, client_address: str, amount_ukes: int, fiat_ref: str, rail: str, ttl_seconds: int
+        self,
+        client_address: str,
+        amount_ukes: int,
+        fiat_ref: str,
+        rail: str,
+        ttl_seconds: int,
     ) -> dict:
         now = int(time.time())
         voucher = GasVoucher(
@@ -52,16 +57,23 @@ class VoucherIssuer:
             expires_at=now + ttl_seconds,
         )
         signature = self._key.sign(voucher.canonical_bytes()).signature
-        return {"voucher": asdict(voucher), "signature": base64.b64encode(signature).decode()}
+        return {
+            "voucher": asdict(voucher),
+            "signature": base64.b64encode(signature).decode(),
+        }
 
 
-def verify_voucher(bundle: dict, public_key_hex: str, now: int | None = None) -> GasVoucher:
+def verify_voucher(
+    bundle: dict, public_key_hex: str, now: int | None = None
+) -> GasVoucher:
     """Reference verifier mirroring what firmware does in C. Raises ValueError
     on any tamper, wrong key, or expiry."""
     voucher = GasVoucher(**bundle["voucher"])
     signature = base64.b64decode(bundle["signature"])
     try:
-        VerifyKey(bytes.fromhex(public_key_hex)).verify(voucher.canonical_bytes(), signature)
+        VerifyKey(bytes.fromhex(public_key_hex)).verify(
+            voucher.canonical_bytes(), signature
+        )
     except BadSignatureError as exc:
         raise ValueError("Voucher signature invalid") from exc
     if voucher.expires_at < (now if now is not None else int(time.time())):

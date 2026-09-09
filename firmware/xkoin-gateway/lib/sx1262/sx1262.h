@@ -103,7 +103,7 @@ int sx1262_set_mode(const sx1262_hal_t *h, sx1262_mode_t mode) {
         uint8_t mp[8];
         sx1262_gfsk_bitrate_bytes(150000u, mp);       // BR
         mp[3] = 0x09;                                 // Gaussian BT 0.5
-        mp[4] = 0x0B;                                 // RX BW ~234 kHz  VERIFY tbl 13-45
+        mp[4] = 0x0A;                                 // RX_BW_234300: Carson 2*(37.5k+75k)=225 kHz; DS tbl 13-45 verified 2026-09-09 (0x0B is 117.3 kHz)
         // Fdev = 37.5 kHz (h = 0.5): reg = fdev * 2^25 / 32 MHz
         uint32_t fd = (uint32_t)(((uint64_t)37500u << 25) / 32000000u);
         mp[5] = (uint8_t)(fd >> 16);

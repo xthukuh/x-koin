@@ -6,7 +6,9 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_prefix="XKOIN_", env_file=".env", extra="ignore")
+    model_config = SettingsConfigDict(
+        env_prefix="XKOIN_", env_file=".env", extra="ignore"
+    )
 
     # --- Safaricom Daraja ---------------------------------------------------
     daraja_base_url: str = "https://sandbox.safaricom.co.ke"
@@ -36,10 +38,16 @@ class Settings(BaseSettings):
 
     # --- Fee payout worker (spec s8.1 fiat leg) ------------------------------
     treasury_address: str = ""
-    beneficiary_address: str = ""  # dry-run source; live mode reads the treasury and cross-checks
-    bridge_address: str = ""  # dry-run source; live mode derives it from bridge_private_key
+    beneficiary_address: str = (
+        ""  # dry-run source; live mode reads the treasury and cross-checks
+    )
+    bridge_address: str = (
+        ""  # dry-run source; live mode derives it from bridge_private_key
+    )
     payout_msisdn: str = ""  # founder M-Pesa number, 254XXXXXXXXX
-    payout_msisdn_signature: str = ""  # EIP-191 signature by the beneficiary key, see app/payout/pin.py
+    payout_msisdn_signature: str = (
+        ""  # EIP-191 signature by the beneficiary key, see app/payout/pin.py
+    )
     payout_min_kes: int = 10  # Daraja B2C floor; smaller transfers are held
     payout_max_attempts: int = 5
     payout_ledger_path: str = "payout_ledger.sqlite3"

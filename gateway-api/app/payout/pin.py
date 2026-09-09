@@ -82,18 +82,24 @@ def _main() -> None:
     import os
     import sys
 
-    parser = argparse.ArgumentParser(description="Sign the payout MSISDN pin (offline).")
+    parser = argparse.ArgumentParser(
+        description="Sign the payout MSISDN pin (offline)."
+    )
     parser.add_argument("msisdn")
     parser.add_argument("--chain-id", type=int, required=True)
     parser.add_argument("--token", required=True, help="xKoinToken address")
     args = parser.parse_args()
     key = os.environ.get("XKOIN_PIN_SIGNER_KEY")
     if not key:
-        sys.exit("set XKOIN_PIN_SIGNER_KEY in the environment (never on the command line)")
+        sys.exit(
+            "set XKOIN_PIN_SIGNER_KEY in the environment (never on the command line)"
+        )
     if not MSISDN_RE.match(args.msisdn):
         sys.exit("MSISDN must match 254XXXXXXXXX")
     acct = Account.from_key(key)
-    sig = Account.sign_message(pin_message(args.msisdn, args.chain_id, args.token), key).signature
+    sig = Account.sign_message(
+        pin_message(args.msisdn, args.chain_id, args.token), key
+    ).signature
     print(f"signer:    {acct.address}")
     print(f"XKOIN_PAYOUT_MSISDN={args.msisdn}")
     print(f"XKOIN_PAYOUT_MSISDN_SIGNATURE=0x{sig.hex()}")
