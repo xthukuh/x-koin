@@ -120,6 +120,7 @@
 
   .tabs.top .tab { font-size: 14px; }
   .view { display: flex; flex-direction: column; gap: 20px; }
+  .view[hidden] { display: none; }
   .u { font-weight: 400; text-transform: none; letter-spacing: 0; }
   #flow { width: 100%; height: auto; display: block; }
   #flow .box { fill: var(--surface-2); stroke: var(--line); }
@@ -563,7 +564,9 @@ window.KIOSK = /*__KIOSK_JSON__*/null;
     document.querySelectorAll('.view').forEach((v) => { v.hidden = v.id !== 'view-' + b.dataset.view; });
     try { localStorage.setItem('xkoin-view', b.dataset.view); } catch (err) {}
   });
-  try { const v = localStorage.getItem('xkoin-view'); const b = v && top.querySelector(`[data-view="${v}"]`); if (b) b.click(); } catch (err) {}
+  const wanted = (location.hash || '').replace('#', '') || (() => { try { return localStorage.getItem('xkoin-view'); } catch (err) { return null; } })();
+  { const b = wanted && top.querySelector(`[data-view="${wanted}"]`); if (b) b.click(); }
+  window.addEventListener('hashchange', () => { const b = top.querySelector(`[data-view="${location.hash.replace('#', '')}"]`); if (b) b.click(); });
 
   const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
   const KES = (u) => (Number(u) / 1e6).toLocaleString(undefined, { minimumFractionDigits: 3, maximumFractionDigits: 3 });
@@ -578,8 +581,9 @@ window.KIOSK = /*__KIOSK_JSON__*/null;
     const byAddr = {};
     Object.entries(C.actors || {}).forEach(([n, a]) => { byAddr[String(a).toLowerCase()] = n; });
     Object.entries(C.contracts || {}).forEach(([n, a]) => { byAddr[String(a).toLowerCase()] = n; });
-    const known = (a) => byAddr[String(a || '').toLowerCase()];
-    const nameOf = (a) => known(a) || short(a) || '';
+    const addrOf = (a) => (a && typeof a === 'object') ? a.address : a;
+    const known = (a) => byAddr[String(addrOf(a) || '').toLowerCase()];
+    const nameOf = (a) => (a && typeof a === 'object' && a.name) || known(a) || short(addrOf(a)) || '';
     const kind = (a) => { const n = known(a); return ['token', 'escrow', 'treasury'].includes(n) ? n : ''; };
     const s = C.summary || {};
     const p = C.params || {};
@@ -625,7 +629,7 @@ window.KIOSK = /*__KIOSK_JSON__*/null;
     // tickets
     const tix = C.tickets || [];
     document.getElementById('tickets').innerHTML = '<tr><th>Holder</th><th>Units</th><th>MB</th><th>Gross KES</th><th>Fee KES</th><th>Net KES</th><th>Digest parity</th></tr>' +
-      tix.map((t) => `<tr><td>${t.holder}</td><td class="mono">${Number(t.units).toLocaleString()}</td><td class="mono">${(Number(t.units) * (p.unit_bytes || 10000) / 1e6).toFixed(2)}</td><td class="mono">${t.gross_ukes != null ? KES(t.gross_ukes) : ''}</td><td class="mono">${t.fee_ukes != null ? KES(t.fee_ukes) : ''}</td><td class="mono">${t.net_ukes != null ? KES(t.net_ukes) : ''}</td><td class="mono">${t.digest_match === false ? 'MISMATCH' : 'ok'} ${t.digest ? short(t.digest) : ''}</td></tr>`).join('');
+      tix.map((t) => `<tr><td>${t.holder}</td><td class="mono">${Number(t.units).toLocaleString()}</td><td class="mono">${(Number(t.units) * (p.unit_bytes || 10000) / 1e6).toFixed(2)}</td><td class="mono">${t.gross_ukes != null ? KES(t.gross_ukes) : ''}</td><td class="mono">${t.fee_ukes != null ? KES(t.fee_ukes) : ''}</td><td class="mono">${t.net_ukes != null ? KES(t.net_ukes) : ''}</td><td class="mono">${t.digest_match === false ? 'MISMATCH' : 'ok'} ${(t.digest || t.digest_local) ? short(t.digest || t.digest_local) : ''}</td></tr>`).join('');
     document.getElementById('ticket-note').textContent = `Settled by one settleTicketBatch call: ${Number(s.settle_gas || 0).toLocaleString()} gas. Tickets are EIP-712 signed by the client; the relayer cannot alter them.`;
 
     // tx table

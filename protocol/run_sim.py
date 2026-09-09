@@ -31,6 +31,12 @@ from xkp.sim import (
 KIOSK_SK = SigningKey(b"\x11" * 32)
 MB = 1_000_000
 
+# Populated by chain_settle() for consumers (e.g. trace_chain.py) that need the
+# real addresses/tickets it used, without changing its printed output or
+# return value. Empty until chain_settle() has run at least once.
+LAST_CHAIN_ACTORS: dict[str, str] = {}
+LAST_CHAIN_TICKETS: list = []
+
 
 def fmt_rate(bps):
     return f"{bps/1e6:.2f} Mbps" if bps >= 1e6 else f"{bps/1e3:.2f} kbps"
@@ -280,6 +286,17 @@ def chain_settle(gw_units: int, sat_units: int):
 
     client, gw, sat, relayer = (Account.create(f"xkoin-{i}") for i in range(4))
     a0 = Account.from_key(anvil0).address
+    bridge_addr = Account.from_key(bridge_key).address
+    LAST_CHAIN_ACTORS.clear()
+    LAST_CHAIN_ACTORS.update({
+        "deployer": a0,
+        "owner": a0,
+        "bridge": bridge_addr,
+        "client": client.address,
+        "gateway": gw.address,
+        "satellite": sat.address,
+        "relayer": relayer.address,
+    })
     for acct in (client, relayer):
         send(w3, anvil0, _transfer_fn(w3, a0, acct.address))
 
@@ -295,10 +312,17 @@ def chain_settle(gw_units: int, sat_units: int):
     t_sat = Ticket(client.address, sat.address, 10, sat_units, expiry)
     # gw: 2500 units (25 MB), sat: 100 units (1 MB) at 500 uKES/unit
 
+    LAST_CHAIN_TICKETS.clear()
     for t in (t_gw, t_sat):
         onchain = escrow.functions.hashTicket(t.as_tuple()).call()
         local = local_digest(t, chain_id, escrow_addr)
         assert onchain == local, "EIP-712 digest parity FAILED"
+        LAST_CHAIN_TICKETS.append({
+            "holder": "gateway" if t.nodeAdmin == gw.address else "satellite",
+            "ticket": t,
+            "digest_local": local,
+            "digest_onchain": onchain,
+        })
 
     sigs = [sign_ticket(client.key, t, chain_id, escrow_addr) for t in (t_gw, t_sat)]
     rcpt = send(w3, relayer.key,
@@ -317,6 +341,7 @@ def chain_settle(gw_units: int, sat_units: int):
     # the money can only land on the beneficiary cold address.
     treasury_c = w3.eth.contract(treasury_addr, abi=TREASURY_ABI)
     ben = treasury_c.functions.beneficiary().call()
+    LAST_CHAIN_ACTORS["beneficiary"] = ben
     ben_before = token.functions.balanceOf(ben).call()
     send(w3, relayer.key, treasury_c.functions.claim(token_addr))
     ben_after = token.functions.balanceOf(ben).call()
