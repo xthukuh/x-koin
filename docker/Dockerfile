@@ -82,17 +82,14 @@ FROM proofs AS firmware
 
 RUN pip install --no-cache-dir platformio
 
-# Pre-fetch the espressif32 platform (ESP-IDF toolchain) into this layer so
-# `docker compose run firmware` does not pull several GB on every run. This
-# uses a throwaway copy of platformio.ini, not the bind mount (unavailable
-# at build time), so the project directory referenced here is scratch space
-# only, never confused with /work/firmware/xkoin-gateway at runtime.
-#
-# If this step could not finish inside its time budget when the image was
-# built, it was deliberately left out (see the build report); the stage
-# still has PlatformIO Core installed and will fetch the platform on first
-# `pio run` instead.
-COPY firmware/xkoin-gateway/platformio.ini /tmp/pio-warm/platformio.ini
-RUN cd /tmp/pio-warm && pio pkg install -e esp32-s3 && rm -rf /tmp/pio-warm
+# Pre-fetching the espressif32 platform (ESP-IDF toolchain, several GB) into
+# this layer was attempted with `pio pkg install -e esp32-s3` against a
+# throwaway copy of platformio.ini, so a warm image would need no download on
+# `docker compose run firmware`. It did not finish inside a 25-minute budget
+# (timed out mid-download of tool-cmake; the ESP-IDF toolchain download alone
+# had already run past 20 minutes) and was deliberately left out rather than
+# baked in half-fetched. This stage ships PlatformIO Core only; the platform
+# downloads on the first `pio run` instead, and every run after that reuses
+# it from the platformio-cache named volume declared in docker/compose.yml.
 
 WORKDIR /work/firmware/xkoin-gateway
