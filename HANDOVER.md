@@ -38,6 +38,9 @@ on the 10 Mbps HomePlug model (97.7%); ~0.8 s grid-failure failover to LoRa;
 0/20,000 garbage frames accepted; 25 MB settles as 2500 units for 1.25 KES
 gross at the 500 uKES placeholder price.
 
+Same matrix, containerised (no local Python/Foundry/gcc needed): README.md
+section "Run the proofs in Docker", or `scripts/docker-proofs.sh` directly.
+
 ## 2. Locked decisions (do not silently revisit)
 
 1. Monorepo named `x-koin` (Martin's instruction overrides doc 02's

@@ -117,14 +117,59 @@
   .legend i { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
   .note { font-size: 13px; color: var(--muted); }
   @media (prefers-reduced-motion: reduce) { .pkt { display: none; } }
+
+  .tabs.top .tab { font-size: 14px; }
+  .view { display: flex; flex-direction: column; gap: 20px; }
+  .u { font-weight: 400; text-transform: none; letter-spacing: 0; }
+  #flow { width: 100%; height: auto; display: block; }
+  #flow .box { fill: var(--surface-2); stroke: var(--line); }
+  #flow .t { font-family: "IBM Plex Sans Condensed", sans-serif; font-weight: 600; font-size: 13px; fill: var(--ink); }
+  #flow .a { font-family: "IBM Plex Mono", monospace; font-size: 11.5px; fill: var(--muted); }
+  #flow .edge { fill: none; stroke-width: 2; opacity: 0.9; }
+  #flow .el { font-family: "IBM Plex Mono", monospace; font-size: 11px; fill: var(--ink); }
+  .chip { display: inline-block; font-family: "IBM Plex Mono", monospace; font-size: 11.5px; padding: 1px 7px; border-radius: 3px; background: var(--surface-2); border: 1px solid var(--line); white-space: nowrap; }
+  .chip.token { border-color: var(--homeplug); }
+  .chip.escrow { border-color: var(--lora); }
+  .chip.treasury { border-color: var(--copper); }
+  .chip.ev { background: transparent; }
+  .addr { font-family: "IBM Plex Mono", monospace; font-size: 12px; color: var(--muted); }
+  .steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0; }
+  .steps li { display: grid; grid-template-columns: 26px 92px 1fr; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--line-soft); align-items: start; }
+  .steps li:last-child { border-bottom: 0; }
+  .steps .n { font-family: "IBM Plex Mono", monospace; font-size: 12px; color: var(--muted); padding-top: 2px; }
+  .steps .actor { font-family: "IBM Plex Sans Condensed", sans-serif; font-weight: 600; font-size: 13px; padding: 1px 8px; border-radius: 3px; border-left: 3px solid var(--muted); background: var(--surface-2); }
+  .steps .actor.fiat { border-left-color: var(--copper); }
+  .steps .actor.chain { border-left-color: var(--homeplug); }
+  .steps .actor.kiosk { border-left-color: var(--muted); }
+  .steps details { margin-top: 4px; }
+  .steps pre { margin: 6px 0 0; font-family: "IBM Plex Mono", monospace; font-size: 11.5px; line-height: 1.4; background: var(--surface-2); padding: 8px 10px; border-radius: 4px; overflow-x: auto; max-height: 260px; }
+  .lane h3 { font-family: "IBM Plex Sans Condensed", sans-serif; font-weight: 600; font-size: 18px; margin: 0 0 2px; }
+  .lane .who { color: var(--muted); font-size: 13.5px; margin-bottom: 12px; max-width: 70ch; }
+  .lane .track { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 6px; }
+  .lane .step { flex: 0 0 190px; background: var(--surface-2); border-radius: 4px; padding: 9px 11px; border-top: 3px solid var(--muted); position: relative; }
+  .lane .step.mesh { border-top-color: var(--lora); }
+  .lane .step.fiat { border-top-color: var(--copper); }
+  .lane .step.chain { border-top-color: var(--homeplug); }
+  .lane .step .h { font-weight: 600; font-size: 13.5px; margin-bottom: 3px; }
+  .lane .step .d { font-size: 12.5px; color: var(--muted); line-height: 1.35; }
+  .lane .step .p { position: absolute; top: 8px; right: 9px; width: 7px; height: 7px; border-radius: 50%; background: var(--good); }
+  .lane .step .ev { font-family: "IBM Plex Mono", monospace; font-size: 11px; color: var(--muted); margin-top: 5px; }
+  .lane .arrow { align-self: center; color: var(--faint); flex: 0 0 auto; font-size: 16px; }
 </style>
 
 <main>
   <header>
     <h1>xKoin Mesh Replay</h1>
-    <p class="sub">The protocol proof runner, replayed. Every frame below comes from the deterministic discrete-event simulator in <span class="mono">protocol/run_sim.py</span>; nothing is drawn that the trace did not record.</p>
+    <p class="sub">Every number on this page was produced by running the code: the discrete-event simulator for the mesh, a local EVM chain with the deployed contracts for settlement, and the bridge service in dry-run for the kiosk. Nothing is drawn that a trace did not record.</p>
   </header>
 
+  <div class="tabs top" role="tablist" id="toptabs">
+    <button class="tab" role="tab" data-view="protocol" aria-selected="true">1 Protocol: data activity</button>
+    <button class="tab" role="tab" data-view="fiat" aria-selected="false">2 Crypto and fiat: kiosk and chain</button>
+    <button class="tab" role="tab" data-view="journeys" aria-selected="false">3 Journeys: user, node admin, founder</button>
+  </div>
+
+<div id="view-protocol" class="view">
   <div class="tabs" role="tablist" id="tabs"></div>
 
   <div class="stage">
@@ -183,10 +228,61 @@
       <figure><!--SATELLITE_SVG--><figcaption>xKoin-Satellite: same radio map for firmware reuse, solar and 18650 power, deep sleep between beacons.</figcaption></figure>
     </div>
   </section>
+</div>
+
+<div id="view-fiat" class="view" hidden>
+  <section class="panel">
+    <h2>Where the money went</h2>
+    <p class="note" id="flow-note"></p>
+    <svg id="flow" viewBox="0 0 1000 300" aria-label="Flow of value from mint to settlement"></svg>
+  </section>
+
+  <div class="two">
+    <section class="panel">
+      <h2>Contracts and actors on the proof chain</h2>
+      <div class="scroll"><table id="actors"></table></div>
+    </section>
+    <section class="panel">
+      <h2>Tickets settled in one batch</h2>
+      <div class="scroll"><table id="tickets"></table></div>
+      <p class="note" id="ticket-note" style="margin-top:8px"></p>
+    </section>
+  </div>
+
+  <section class="panel">
+    <h2>Every transaction, in block order</h2>
+    <div class="scroll"><table id="txs"></table></div>
+  </section>
+
+  <section class="panel">
+    <h2>XKN balances after each block <span class="u">(KES)</span></h2>
+    <div class="scroll"><table id="balances"></table></div>
+  </section>
+
+  <section class="panel">
+    <h2>Kiosk and payout, step by step</h2>
+    <p class="note" id="kiosk-mode" style="margin-bottom:10px"></p>
+    <div class="tabs" id="jtabs"></div>
+    <ol class="steps" id="steps"></ol>
+  </section>
+</div>
+
+<div id="view-journeys" class="view" hidden>
+  <section class="panel">
+    <h2>Three people, one network</h2>
+    <p class="note">Each lane is the shortest true story the code supports today. Colour says which layer does the work. Steps marked with a dot are already exercised by a proof on this page.</p>
+    <div class="legend" style="margin-top:8px"><span><i style="background:var(--lora)"></i>mesh, XKP frames</span><span><i style="background:var(--copper)"></i>fiat, Jenga or Daraja</span><span><i style="background:var(--homeplug)"></i>chain, Base Sepolia</span><span><i style="background:var(--muted)"></i>kiosk service</span></div>
+  </section>
+  <section class="panel lane" id="lane-user"></section>
+  <section class="panel lane" id="lane-admin"></section>
+  <section class="panel lane" id="lane-founder"></section>
+</div>
 </main>
 
 <script>
 window.TRACE = /*__TRACE_JSON__*/null;
+window.CHAIN = /*__CHAIN_JSON__*/null;
+window.KIOSK = /*__KIOSK_JSON__*/null;
 </script>
 <script>
 (function () {
@@ -454,5 +550,159 @@ window.TRACE = /*__TRACE_JSON__*/null;
 
   matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => select(key));
   select(key);
+})();
+</script>
+<script>
+(function () {
+  'use strict';
+  // ---------- top-level views ----------
+  const top = document.getElementById('toptabs');
+  top.addEventListener('click', (e) => {
+    const b = e.target.closest('.tab'); if (!b) return;
+    [...top.children].forEach((x) => x.setAttribute('aria-selected', String(x === b)));
+    document.querySelectorAll('.view').forEach((v) => { v.hidden = v.id !== 'view-' + b.dataset.view; });
+    try { localStorage.setItem('xkoin-view', b.dataset.view); } catch (err) {}
+  });
+  try { const v = localStorage.getItem('xkoin-view'); const b = v && top.querySelector(`[data-view="${v}"]`); if (b) b.click(); } catch (err) {}
+
+  const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const KES = (u) => (Number(u) / 1e6).toLocaleString(undefined, { minimumFractionDigits: 3, maximumFractionDigits: 3 });
+  const short = (a) => a && String(a).length > 12 ? String(a).slice(0, 6) + '..' + String(a).slice(-4) : a;
+  const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;');
+
+  // ---------- 2. chain ----------
+  const C = window.CHAIN;
+  if (!C) {
+    document.getElementById('flow-note').textContent = 'No chain trace embedded yet. Run protocol/trace_chain.py, then build_replay.py.';
+  } else {
+    const byAddr = {};
+    Object.entries(C.actors || {}).forEach(([n, a]) => { byAddr[String(a).toLowerCase()] = n; });
+    Object.entries(C.contracts || {}).forEach(([n, a]) => { byAddr[String(a).toLowerCase()] = n; });
+    const known = (a) => byAddr[String(a || '').toLowerCase()];
+    const nameOf = (a) => known(a) || short(a) || '';
+    const kind = (a) => { const n = known(a); return ['token', 'escrow', 'treasury'].includes(n) ? n : ''; };
+    const s = C.summary || {};
+    const p = C.params || {};
+    const ROLE = { deployer: 'owner, Ownable2Step', bridge: 'kiosk hot wallet: mints up to the daily cap, burns only its own balance', client: 'end user paying per byte', gateway: 'node admin', satellite: 'node admin', relayer: 'a stranger: submits the batch and the claim, gains nothing', beneficiary: 'founder cold key, only destination for fees' };
+
+    // flow diagram from the summary numbers
+    const gw = Number(s.gateway_earnings_ukes || 0), sat = Number(s.satellite_earnings_ukes || 0), fee = Number(s.treasury_fee_ukes || 0), left = Number(s.client_deposit_left_ukes || 0);
+    const minted = 100e6, deposited = 10e6;
+    document.getElementById('flow-note').textContent = `Micro-KES on the proof chain (id ${C.chain_id}). Price ${p.price_per_unit_ukes} uKES per 10 KB unit, fee ${p.fee_bps} bps. Solvency: escrow balance equals deposits plus earnings, asserted by the proof.`;
+    const boxes = {
+      bridge: { x: 20, y: 120, w: 130, label: 'bridge (kiosk)', amt: 'mints on fiat receipt' },
+      client: { x: 220, y: 120, w: 130, label: 'client', amt: `${KES(minted)} KES minted` },
+      escrow: { x: 420, y: 120, w: 130, label: 'escrow', amt: `${KES(deposited)} KES deposited` },
+      gateway: { x: 660, y: 20, w: 150, label: 'gateway earnings', amt: `${KES(gw)} KES` },
+      satellite: { x: 660, y: 95, w: 150, label: 'satellite earnings', amt: `${KES(sat)} KES` },
+      treasury: { x: 660, y: 170, w: 150, label: 'treasury fee', amt: `${KES(fee)} KES` },
+      leftover: { x: 660, y: 245, w: 150, label: 'still escrowed', amt: `${KES(left)} KES` },
+      founder: { x: 860, y: 170, w: 120, label: 'founder cold key', amt: `${KES(s.founder_claimed_ukes || 0)} KES claimed` },
+    };
+    const edge = (a, b, color, label) => {
+      const A = boxes[a], B = boxes[b];
+      const x1 = A.x + A.w, y1 = A.y + 22, x2 = B.x, y2 = B.y + 22, mx = (x1 + x2) / 2;
+      return `<path class="edge" stroke="${color}" d="M${x1},${y1} C${mx},${y1} ${mx},${y2} ${x2},${y2}"></path>` + (label ? `<text class="el" x="${mx}" y="${(y1 + y2) / 2 - 6}" text-anchor="middle">${label}</text>` : '');
+    };
+    let f = '';
+    f += edge('bridge', 'client', css('--homeplug'), 'bridgeMint');
+    f += edge('client', 'escrow', css('--lora'), 'deposit');
+    f += edge('escrow', 'gateway', css('--lora'), 'ticket, 2500 units');
+    f += edge('escrow', 'satellite', css('--lora'), 'ticket, 100 units');
+    f += edge('escrow', 'treasury', css('--copper'), 'fee floor per ticket');
+    f += edge('escrow', 'leftover', css('--faint'), '');
+    f += edge('treasury', 'founder', css('--copper'), 'claim by a stranger');
+    Object.values(boxes).forEach((b) => {
+      f += `<rect class="box" x="${b.x}" y="${b.y}" width="${b.w}" height="44" rx="4"></rect><text class="t" x="${b.x + 8}" y="${b.y + 17}">${b.label}</text><text class="a" x="${b.x + 8}" y="${b.y + 34}">${b.amt}</text>`;
+    });
+    document.getElementById('flow').innerHTML = f;
+
+    // actors table
+    document.getElementById('actors').innerHTML = '<tr><th>Name</th><th>Address</th><th>Role</th></tr>' +
+      Object.entries(C.contracts || {}).map(([n, a]) => `<tr><td><span class="chip ${n}">${n}</span></td><td class="addr">${a}</td><td>contract</td></tr>`).join('') +
+      Object.entries(C.actors || {}).map(([n, a]) => `<tr><td>${n}</td><td class="addr">${a}</td><td>${ROLE[n] || ''}</td></tr>`).join('');
+
+    // tickets
+    const tix = C.tickets || [];
+    document.getElementById('tickets').innerHTML = '<tr><th>Holder</th><th>Units</th><th>MB</th><th>Gross KES</th><th>Fee KES</th><th>Net KES</th><th>Digest parity</th></tr>' +
+      tix.map((t) => `<tr><td>${t.holder}</td><td class="mono">${Number(t.units).toLocaleString()}</td><td class="mono">${(Number(t.units) * (p.unit_bytes || 10000) / 1e6).toFixed(2)}</td><td class="mono">${t.gross_ukes != null ? KES(t.gross_ukes) : ''}</td><td class="mono">${t.fee_ukes != null ? KES(t.fee_ukes) : ''}</td><td class="mono">${t.net_ukes != null ? KES(t.net_ukes) : ''}</td><td class="mono">${t.digest_match === false ? 'MISMATCH' : 'ok'} ${t.digest ? short(t.digest) : ''}</td></tr>`).join('');
+    document.getElementById('ticket-note').textContent = `Settled by one settleTicketBatch call: ${Number(s.settle_gas || 0).toLocaleString()} gas. Tickets are EIP-712 signed by the client; the relayer cannot alter them.`;
+
+    // tx table
+    const fmtArg = (v) => {
+      if (v && typeof v === 'object') return JSON.stringify(v);
+      const n = known(v); if (n) return n;
+      const str = String(v); return str.length > 20 ? short(str) : str;
+    };
+    document.getElementById('txs').innerHTML = '<tr><th>Block</th><th>From</th><th>To</th><th>Call</th><th>Events</th><th>Gas</th></tr>' +
+      (C.txs || []).map((t) => {
+        const args = t.args ? Object.entries(t.args).map(([k, v]) => `${k}=${fmtArg(v)}`).join(', ') : '';
+        const evs = (t.logs || []).map((l) => {
+          const a = l.args || {};
+          const amt = a.amount != null ? ` ${KES(a.amount)} KES` : a.value != null ? ` ${KES(a.value)} KES` : a.gross != null ? ` gross ${KES(a.gross)} fee ${KES(a.fee)} net ${KES(a.net)} KES` : '';
+          const who = a.from != null && a.to != null ? ` ${nameOf(a.from)} to ${nameOf(a.to)}` : a.client != null && a.nodeAdmin != null ? ` ${nameOf(a.client)} to ${nameOf(a.nodeAdmin)}` : a.client != null ? ` ${nameOf(a.client)}` : a.nodeAdmin != null ? ` ${nameOf(a.nodeAdmin)}` : a.to != null ? ` to ${nameOf(a.to)}` : a.beneficiary != null ? ` to ${nameOf(a.beneficiary)}` : '';
+          return `<span class="chip ev ${kind(l.address) || ''}">${esc(l.event || short(l.topic0 || ''))}${who}${amt}</span>`;
+        }).join(' ');
+        const isCreate = String(t.fn || '').startsWith('create');
+        return `<tr><td class="mono">${t.block}</td><td>${nameOf(t.from)}</td><td><span class="chip ${isCreate ? '' : kind(t.to)}">${isCreate ? 'new contract' : nameOf(t.to)}</span></td><td class="mono">${esc(t.fn)}${args ? '(' + esc(args) + ')' : ''}${t.status === 0 || t.status === false ? ' REVERTED' : ''}</td><td>${evs}</td><td class="mono">${Number(t.gas_used || 0).toLocaleString()}</td></tr>`;
+      }).join('');
+
+    // balances table
+    const bal = C.balances || [];
+    if (bal.length) {
+      const names = Object.keys(bal[bal.length - 1].xkn);
+      document.getElementById('balances').innerHTML = `<tr><th>Actor</th>${bal.map((b) => `<th>block ${b.block}</th>`).join('')}</tr>` +
+        names.map((n) => `<tr><td>${n}</td>${bal.map((b, i) => { const v = Number(b.xkn[n] || 0); const prev = i ? Number(bal[i - 1].xkn[n] || 0) : 0; return `<td class="mono" style="${v !== prev ? 'font-weight:600' : 'color:var(--faint)'}">${KES(v)}</td>`; }).join('')}</tr>`).join('');
+    }
+  }
+
+  // ---------- 2b. kiosk journeys ----------
+  const K = window.KIOSK;
+  const jt = document.getElementById('jtabs'), st = document.getElementById('steps');
+  if (!K) {
+    document.getElementById('kiosk-mode').textContent = 'No kiosk trace embedded yet. Run gateway-api/trace_kiosk.py, then build_replay.py.';
+  } else {
+    document.getElementById('kiosk-mode').textContent = K.mode || '';
+    const show = (j) => {
+      [...jt.children].forEach((b) => b.setAttribute('aria-selected', String(b.dataset.id === j.id)));
+      st.innerHTML = (j.steps || []).map((sp) => `<li><span class="n">${sp.n}</span><span class="actor ${sp.layer || ''}">${esc(sp.actor)}</span><div><div>${esc(sp.action)}</div>${sp.evidence ? `<details><summary>evidence</summary><pre>${esc(JSON.stringify(sp.evidence, null, 2))}</pre></details>` : ''}</div></li>`).join('');
+    };
+    (K.journeys || []).forEach((j, i) => {
+      const b = document.createElement('button'); b.className = 'tab'; b.dataset.id = j.id; b.textContent = j.title; b.addEventListener('click', () => show(j)); jt.appendChild(b);
+      if (i === 0) show(j);
+    });
+  }
+
+  // ---------- 3. journeys ----------
+  const lanes = [
+    { id: 'lane-user', title: 'End user', who: 'Has a phone with M-Pesa or Equitel and a device near a node. Pays only for bytes that were delivered and signed for.', steps: [
+      ['fiat', 'Buys gas at the kiosk', 'STK prompt on the phone via Daraja or Jenga; pays KES.', true, 'tab 2, kiosk journeys'],
+      ['chain', 'XKN minted to the user', 'bridgeMint for the exact KES paid, tagged with the fiat receipt; capped per day per bridge.', true, 'tab 2, tx bridgeMint'],
+      ['kiosk', 'Gets a voucher', 'Ed25519 voucher bound to the user address, 24 h TTL, signed by the kiosk root key.', true, 'tab 2, evidence: voucher'],
+      ['chain', 'Deposits into escrow', 'deposit() locks XKN that tickets can draw on; withdrawable when no ticket claims it.', true, 'tab 2, tx deposit'],
+      ['mesh', 'Joins the mesh', 'JOIN_REQ carries the voucher; the serving node admits the client.', true, 'tab 1, event join'],
+      ['mesh', 'Browses', 'DATA frames over HomePlug, PLC or LoRa, whichever medium is live; failover in 0.8 s.', true, 'tab 1, S2 blackout'],
+      ['mesh', 'Signs receipts as bytes arrive', 'Cumulative Ed25519 receipt every 1 MB; the node stops serving if the unproven gap grows.', true, 'tab 1, copper diamonds'],
+      ['chain', 'Tickets settle against the deposit', 'Periodic EIP-712 ticket per serving node; anyone may relay the batch.', true, 'tab 2, tx settleTicketBatch'],
+    ] },
+    { id: 'lane-admin', title: 'Node admin', who: 'Runs a gateway on mains with a backhaul SIM, or a solar satellite that relays over LoRa. Earns per verified byte served.', steps: [
+      ['kiosk', 'Registers the node', 'Node key pair generated on the device; kiosk records it as a serving node.', false, 'planned: doc 02 phase 3'],
+      ['mesh', 'Serves clients', 'Verifies vouchers, delivers bytes, verifies receipts, keeps attribution when relaying.', true, 'tab 1, S3 satellite earns'],
+      ['chain', 'Tickets credited as earnings', 'settleTicketBatch moves net value to earnings[nodeAdmin]; the fee floor goes to the treasury.', true, 'tab 2, event TicketSettled'],
+      ['chain', 'Claims earnings', 'claimEarnings(to, amount) to any address the admin chooses.', true, 'contracts: 28 forge tests'],
+      ['fiat', 'Cashes out to a mobile wallet', 'Bridge burns the XKN it received and sends KES via Jenga send-to-mobile (Mpesa, Airtel, Equitel).', true, 'tab 2, tx bridgeBurn; gateway-api tests'],
+    ] },
+    { id: 'lane-founder', title: 'Founder', who: 'Holds the cold beneficiary key. Cannot burn user balances, cannot redirect fees, and the network keeps settling without him.', steps: [
+      ['chain', 'Fee floor accrues per ticket', 'Exact sum of per-ticket floors, never a percentage of gross, lands in the treasury.', true, 'tab 2, tx settleTicketBatch'],
+      ['chain', 'Anyone triggers the claim', 'claim() is callable by a stranger; funds can only reach the beneficiary.', true, 'tab 2, tx claim by relayer'],
+      ['chain', 'Beneficiary forwards to the bridge', 'A plain Transfer from the beneficiary to the bridge wallet is the only trigger the payout worker accepts.', true, 'tab 2, fee payout journey'],
+      ['fiat', 'B2C to the pinned number', 'MSISDN pinned by a signature from the beneficiary key; a compromised server can delay, never redirect.', true, 'tab 2, fee payout journey'],
+      ['chain', 'Bridge burns after confirmation', 'bridgeBurn only after Daraja confirms, so supply matches fiat paid out.', true, 'tab 2, fee payout journey'],
+    ] },
+  ];
+  lanes.forEach((l) => {
+    const el = document.getElementById(l.id);
+    el.innerHTML = `<h3>${l.title}</h3><p class="who">${l.who}</p><div class="track">` + l.steps.map(([layer, h, d, proven, ev], i) => `${i ? '<span class="arrow">&#8250;</span>' : ''}<div class="step ${layer}">${proven ? '<span class="p" title="exercised by a proof"></span>' : ''}<div class="h">${h}</div><div class="d">${d}</div><div class="ev">${ev}</div></div>`).join('') + '</div>';
+  });
 })();
 </script>

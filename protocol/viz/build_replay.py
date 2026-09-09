@@ -37,6 +37,16 @@ def build(trace_path: Path, out_path: Path) -> int:
         raise SystemExit("template marker missing")
     payload = json.dumps(trace, separators=(",", ":")).replace("</", "<\\/")
     html = html.replace(marker, payload, 1)
+    for name, extra in (("CHAIN", "chain.json"), ("KIOSK", "kiosk.json")):
+        extra_path = trace_path.parent / extra
+        extra_marker = f"/*__{name}_JSON__*/null"
+        if extra_path.exists() and extra_marker in html:
+            data = json.loads(extra_path.read_text(encoding="utf-8"))
+            html = html.replace(
+                extra_marker,
+                json.dumps(data, separators=(",", ":")).replace("</", "<\\/"),
+                1,
+            )
     html = html.replace("<!--GATEWAY_SVG-->", inline_svg(GATEWAY_SVG), 1)
     html = html.replace("<!--SATELLITE_SVG-->", inline_svg(SATELLITE_SVG), 1)
     out_path.parent.mkdir(parents=True, exist_ok=True)

@@ -61,3 +61,18 @@ callback confirms. The MSISDN is pinned by an EIP-191 signature from the
 beneficiary key and verified against the treasury's on-chain beneficiary, so a
 rewritten .env or a hostile event feed can delay a payout but never redirect
 it. Sign the pin offline with `python -m app.payout.pin` (see its docstring).
+
+## Run the proofs in Docker
+
+No local Python, Foundry, or gcc setup needed; the repo is bind-mounted into
+the container, nothing is baked into the image.
+
+    docker compose -f docker/compose.yml build proofs
+    docker compose -f docker/compose.yml run --rm proofs
+    docker compose -f docker/compose.yml run --rm firmware
+
+The first command builds the image (Python 3.12, gcc/make, Foundry). The
+second runs `scripts/bootstrap.sh` inside it, which is the same command
+`scripts/docker-proofs.sh` wraps as one step. The third builds the ESP32-S3
+firmware with PlatformIO; its espressif32 platform download is cached in a
+named volume so only the first run pays for it.

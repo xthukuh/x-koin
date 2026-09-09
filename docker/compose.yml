@@ -1,0 +1,33 @@
+# Run the proof matrix (and the firmware build) the same way on any host.
+#
+#   docker compose -f docker/compose.yml build proofs
+#   docker compose -f docker/compose.yml run --rm proofs
+#   docker compose -f docker/compose.yml run --rm firmware
+#
+# Both services bind-mount the repo at /work; nothing is baked into the
+# image, so edits on the host are what actually gets tested.
+
+services:
+  proofs:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+      target: proofs
+    volumes:
+      - ..:/work
+    working_dir: /work
+    command: ["scripts/bootstrap.sh"]
+
+  firmware:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+      target: firmware
+    volumes:
+      - ..:/work
+      - platformio-cache:/root/.platformio
+    working_dir: /work/firmware/xkoin-gateway
+    command: ["pio", "run", "-e", "esp32-s3"]
+
+volumes:
+  platformio-cache:
