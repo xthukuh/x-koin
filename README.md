@@ -35,6 +35,14 @@ Verified green on Windows 11 with Python 3.14 and Foundry 1.5.1 (2026-09-09).
     kiosk-web/     Next.js kiosk (phase 3 UI, pending)
     cloud-proxy/   WireGuard + Squid backhaul (phase 4, pending)
 
+## How it works
+
+`docs/how-it-works.md` explains the primitives (identity, token, bridge,
+voucher, escrow, receipts and tickets, treasury, relayer, mesh), how they
+interact, the reasoning behind each design decision, twelve user and
+operator journeys, and the proposed first-MVP feature list. Read it before
+HANDOVER.md if you are new to the product rather than to the code.
+
 ## Critical accounts and the real-chain test plan
 
 `docs/critical-accounts/` is the operating manual for the crypto layer:
