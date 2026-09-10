@@ -1,6 +1,6 @@
 # x-koin resume point
 
-Updated 2026-09-10, after session three (critical accounts). Pages:
+Updated 2026-09-11, after session three part two (how-it-works). Pages:
 - Bring-up board: https://claude.ai/code/artifact/ac423197-641a-4994-8c9f-6144aeb3fa4b
 - Mesh replay (protocol, chain and kiosk, journeys): https://claude.ai/code/artifact/f351573e-d847-4ce5-96fb-56924ce3a242
 - Investor demo: https://claude.ai/code/artifact/2360a9fa-beab-45bd-9f98-f976804601eb
@@ -10,6 +10,17 @@ One stack for pages (Martin's rule): `python demo/build.py` writes
 demo/dist/{index,landlord,replay}.html; `python demo/serve.py` serves them on
 http://127.0.0.1:8090/; the artifacts above are those files. No file://
 previews, no other ports.
+
+## Session three, part two (2026-09-11): how it works
+
+Commit 51e525c: docs/how-it-works.md answers Martin's product questions.
+Buy-once-use-anywhere is already given by the global escrow deposit; a
+per-node session credit rule is proposed (20 KES online, 5 KES offline).
+Free inter-user transfers: recommended as an escrow-internal relayed
+transfer (new function transferDeposit with EIP-712 authorisation), not
+built yet. Android companion app framed as the xKoin wallet, Kotlin
+recommended. Decisions with Martin: those three. Compliance is out of
+scope by his instruction; counsel owns it.
 
 ## Session three (2026-09-09 night): the crypto layer for real
 
