@@ -126,7 +126,7 @@ reserve ([01-registrations.md](01-registrations.md) section 1).
 5. From the Safe, `setBridge(bridge, true, 0)`: mint capacity zero until
    Equity's live onboarding completes. The contracts are live, owned, and
    inert.
-6. Sign the ownership statement from [docs/key-management.md](../key-management.md)
+6. Sign the ownership statement from [docs/ops/key-management.md](../key-management.md)
    section 6 on the device and hand it to counsel.
 
 Exit: contracts on Base, verified, owned by the Safe, beneficiary the

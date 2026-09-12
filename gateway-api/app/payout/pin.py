@@ -21,7 +21,7 @@ local proofs only, a throwaway key can sign directly:
         254722000000 --chain-id 84532 --token 0xTOKEN
 
 The key is read from the environment only, never from argv, and never leaves
-the process. See docs/key-management.md.
+the process. See docs/ops/key-management.md.
 """
 
 from __future__ import annotations

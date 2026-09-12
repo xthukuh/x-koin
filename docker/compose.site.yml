@@ -1,0 +1,40 @@
+# xKoin presentation site (the Vite SPA in web/, served by nginx).
+#
+# Local:
+#   docker compose -f docker/compose.site.yml up --build
+#   http://127.0.0.1:8090/
+#
+# VPS: same file, behind the Traefik instance already running on the host
+# (docs/ops/critical-accounts/06-vps-xkoin.thuku.dev.md). That Traefik runs on the
+# host network and reaches containers on their own compose network, so unlike
+# docker/compose.gateway.yml there is no external `proxy` network here and no
+# traefik.docker.network label. Entrypoint and certresolver match the rest of
+# the host: `websecure` and `letsencrypt`. Override the hostname with
+# XKOIN_SITE_HOST in the env file.
+
+services:
+  site:
+    build:
+      context: ..
+      dockerfile: docker/site.Dockerfile
+    image: xkoin-site:local
+    ports:
+      - "127.0.0.1:8090:80"
+    restart: unless-stopped
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "5"
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.xkoin-site.rule=Host(`${XKOIN_SITE_HOST:-xkoin.thuku.dev}`)
+      - traefik.http.routers.xkoin-site.entrypoints=websecure
+      - traefik.http.routers.xkoin-site.tls=true
+      - traefik.http.routers.xkoin-site.tls.certresolver=letsencrypt
+      - traefik.http.routers.xkoin-site.middlewares=xkoin-site-headers
+      - traefik.http.services.xkoin-site.loadbalancer.server.port=80
+      - traefik.http.middlewares.xkoin-site-headers.headers.stsSeconds=15552000
+      - traefik.http.middlewares.xkoin-site-headers.headers.contentTypeNosniff=true
+      - traefik.http.middlewares.xkoin-site-headers.headers.referrerPolicy=strict-origin-when-cross-origin
+      - traefik.http.middlewares.xkoin-site-headers.headers.customResponseHeaders.X-Powered-By=

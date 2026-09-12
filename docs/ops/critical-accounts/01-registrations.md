@@ -59,7 +59,7 @@ for the Binance login, the 2FA code, or the withdrawal confirmation.
 ## 2. Hardware wallet (order now, long lead)
 
 Purpose: the founder cold key, the treasury beneficiary. Full procedure in
-[docs/key-management.md](../key-management.md) section 3. Order two of the
+[docs/ops/key-management.md](../key-management.md) section 3. Order two of the
 same model from the maker's own site, never a reseller:
 
 - Ledger: https://shop.ledger.com (Nano S Plus is enough; Flex or Stax add a
@@ -138,12 +138,12 @@ rehearsal.
 2. Create a Safe with 3 owners and threshold 2. For the rehearsal the three
    owners are three testnet stand-in addresses that Martin controls. For
    mainnet they are the two hardware devices and the third signer from
-   [docs/key-management.md](../key-management.md) section 8.
+   [docs/ops/key-management.md](../key-management.md) section 8.
 3. Record the Safe address in the register. It is public.
 
 ## 8. Jenga sandbox (documented, in progress)
 
-Follow [docs/jenga-onboarding.md](../jenga-onboarding.md) step 1. The
+Follow [docs/ops/jenga-onboarding.md](../jenga-onboarding.md) step 1. The
 callback URL in step 2 is the VPS from
 [06-vps-xkoin.thuku.dev.md](06-vps-xkoin.thuku.dev.md). Nothing in the
 sandbox moves real KES.
@@ -179,6 +179,6 @@ An A record `xkoin` pointing at the VPS IP. Details and the compose file in
   gateway's own worker and Basescan address watch (free email alerts on
   https://basescan.org/myaddress) cover the pilot.
 - A hosted secrets manager for the VPS once the company exists
-  ([docs/key-management.md](../key-management.md) section 8).
+  ([docs/ops/key-management.md](../key-management.md) section 8).
 - Daraja sandbox, second bridge. Nothing in the contracts cares which bridge
   minted.

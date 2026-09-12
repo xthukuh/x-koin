@@ -6,10 +6,13 @@ Updated 2026-09-11, after session three part two (how-it-works). Pages:
 - Investor demo: https://claude.ai/code/artifact/2360a9fa-beab-45bd-9f98-f976804601eb
 - Landlord pilot page: https://claude.ai/code/artifact/7de94e3f-acf4-4d4a-b343-2a9051b87589
 
-One stack for pages (Martin's rule): `python demo/build.py` writes
-demo/dist/{index,landlord,replay}.html; `python demo/serve.py` serves them on
-http://127.0.0.1:8090/; the artifacts above are those files. No file://
-previews, no other ports.
+One stack for pages (Martin's rule), now Node rather than Python: `web/` is a
+Vite SPA. `npm run dev:web` serves it on http://localhost:5173/ and
+`docker compose -f docker/compose.site.yml up --build` serves the built site on
+http://127.0.0.1:8090/. `web/scripts/inline-data.mjs` runs before both and
+rebuilds the three legacy pages into web/public/legacy/{investors,landlord,
+replay}.html, byte for byte what demo/build.py used to write; the artifacts
+above are those files. No file:// previews, no other ports.
 
 ## Session three, part two (2026-09-11): how it works
 
@@ -32,7 +35,7 @@ untouched. Chain gas is not the binding cost (settle 0.35 KES, deploy 7.7
 KES at Base 0.006 gwei, ETH 2468.58, KES 123.29 measured 2026-09-09);
 fiat charges and backhaul are.
 
-- docs/critical-accounts/: README, 01 registrations, 02 wallet roles,
+- docs/ops/critical-accounts/: README, 01 registrations, 02 wallet roles,
   03 budget, 04 security, 05 test plan (five phases with exits),
   06 VPS xkoin.thuku.dev, registry.md (public addresses only).
 - scripts/gas_budget.py: offline and live (--rpc/--address) proven.
@@ -75,10 +78,10 @@ WSL Ubuntu-20.04 is unusable (no DNS, sudo needs a password). Docker Desktop
 
 ## Done this session
 
-- docs/regulatory-brief.md: 15 numbered questions for counsel with the CA
+- docs/ops/regulatory-brief.md: 15 numbered questions for counsel with the CA
   2022 SRD table (868.0-868.6 MHz: 25 mW ERP, 1% duty or LBT+AFA;
   869.4-869.65 MHz: 500 mW, 10%), CED licence (July 2026), PVoC, CBK.
-- docs/jenga-onboarding.md: sandbox steps, RSA key, live KYC list.
+- docs/ops/jenga-onboarding.md: sandbox steps, RSA key, live KYC list.
 - hardware/bom.md: procurement BOM, Kenya import notes, ask-before-ordering.
 - gateway-api: JengaClient.mpesa_stk_push, wallet param on send_to_mobile,
   /jenga/mpesa-callback keyed on customer.reference (our orderReference).
@@ -114,5 +117,5 @@ WSL Ubuntu-20.04 is unusable (no DNS, sudo needs a password). Docker Desktop
 
 - Pins marked `proposed` in hardware/pinmap.md.
 - Sandbox credentials, per-unit price, payout MSISDN pin signature.
-- TX power and sub-band decision (see docs/regulatory-brief.md section 2).
+- TX power and sub-band decision (see docs/ops/regulatory-brief.md section 2).
 - BOM "Ask before ordering" list in hardware/bom.md.

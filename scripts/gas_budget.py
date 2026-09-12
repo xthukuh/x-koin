@@ -15,7 +15,7 @@ Examples (repo root, Windows venv):
 
 Defaults are the values measured on 2026-09-09; pass today's numbers to
 refresh. Gas figures marked "measured" come from receipts; the others are
-estimates until phase 1 of docs/critical-accounts/05-test-plan.md replaces
+estimates until phase 1 of docs/ops/critical-accounts/05-test-plan.md replaces
 them.
 """
 

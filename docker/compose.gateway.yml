@@ -1,4 +1,4 @@
-# xKoin gateway on the VPS behind Traefik (docs/critical-accounts/06-vps-xkoin.thuku.dev.md).
+# xKoin gateway on the VPS behind Traefik (docs/ops/critical-accounts/06-vps-xkoin.thuku.dev.md).
 #
 #   docker compose -f docker/compose.gateway.yml --env-file /srv/xkoin/.env up -d --build
 #
@@ -37,7 +37,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.docker.network=proxy
-      - traefik.http.routers.xkoin.rule=Host(`${XKOIN_HOST:-xkoin.thuku.dev}`)
+      - traefik.http.routers.xkoin.rule=Host(`${XKOIN_HOST:-api.xkoin.thuku.dev}`)
       - traefik.http.routers.xkoin.entrypoints=websecure
       - traefik.http.routers.xkoin.tls=true
       - traefik.http.routers.xkoin.tls.certresolver=letsencrypt

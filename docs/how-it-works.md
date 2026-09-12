@@ -61,7 +61,7 @@ message, without holding any ETH.
 Why a KES-pegged token on an existing chain rather than an own coin: a unit of
 account users already think in, no exchange rate inside the product, and a
 settlement layer (Base) whose gas costs a third of a Kenyan cent per
-settlement (docs/critical-accounts/03-budget-and-sustainability.md) with no
+settlement (docs/ops/critical-accounts/03-budget-and-sustainability.md) with no
 validators to run. An own chain would cost more than the network earns.
 
 Why 6 decimals: the billing unit is 10 KB, and 0.05 KES per MB is 0.0005 KES
@@ -384,7 +384,7 @@ roam, and by what is already built.
 | 2 | Escrow-internal relayed transfer (option A) | Free sharing, trade-currency feel, gasless | ~40 lines Solidity, tests, one route |
 | 3 | Android app, minimum set from 5.2 | Durable identity, roaming, buy and send in one place | The largest item; Kotlin, four screens |
 | 4 | User off-ramp through the existing payout worker (J6) | Completes the loop for users, not only operators | Generalise the worker's MSISDN source |
-| 5 | Real-chain proof phases 1 to 5 | Confidence before Equity live | docs/critical-accounts/05-test-plan.md |
+| 5 | Real-chain proof phases 1 to 5 | Confidence before Equity live | docs/ops/critical-accounts/05-test-plan.md |
 
 Deferred without loss: chat, local resources, phone as cache or relay,
 federated kiosk keys, non-owner pricing. Each sits above the money layer and

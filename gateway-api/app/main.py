@@ -81,7 +81,7 @@ class BuyGasRequest(BaseModel):
 async def health():
     """Liveness plus the non-secret shape of the environment, so a VPS
     operator can confirm which chain and mode the service is in without
-    reading .env (docs/critical-accounts/06-vps-xkoin.thuku.dev.md)."""
+    reading .env (docs/ops/critical-accounts/06-vps-xkoin.thuku.dev.md)."""
     s = get_settings()
     return {
         "ok": True,

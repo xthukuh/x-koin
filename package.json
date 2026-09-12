@@ -1,0 +1,12 @@
+{
+  "name": "x-koin",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "xKoin presentation site: Vite SPA under web/, built into web/dist and served by docker/compose.site.yml.",
+  "scripts": {
+    "build:web": "npm --prefix web run build",
+    "dev:web": "npm --prefix web run dev",
+    "preview:web": "npm --prefix web run preview"
+  }
+}

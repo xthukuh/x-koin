@@ -82,3 +82,15 @@ need a fixed IP, the VPS has one.
 A new release is a new tag. On the VPS: fetch the tag, `docker compose up -d
 --build`, check `/health`, watch one callback land. Rolling back is the
 previous tag with the same two commands. `.env` is untouched by either.
+
+## Host name change (2026-09-12)
+
+Martin's decision in session four: the presentation site takes
+`xkoin.thuku.dev`, the gateway API moves to `api.xkoin.thuku.dev`
+(`docker/compose.gateway.yml` default), and the simulator runs at
+`velxio.thuku.dev`. Every `xkoin.thuku.dev` URL above for `/health`,
+`/buy-gas` and the callbacks now reads `api.xkoin.thuku.dev`; the DNS step
+becomes two A records, `xkoin` and `api.xkoin`. The compose file also
+needs its external `proxy` network dropped before it runs on this host,
+because Traefik there runs on the host network and reaches containers on
+their own compose network (see `docker/compose.site.yml` for the pattern).

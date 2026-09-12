@@ -1,0 +1,14 @@
+# Context exclusions for docker/site.Dockerfile only. BuildKit reads the
+# <dockerfile>.dockerignore file next to the Dockerfile, so the proofs and
+# gateway images keep their own context rules.
+.git
+**/node_modules
+**/__pycache__
+**/*.pyc
+web/dist
+web/public/legacy
+demo/dist
+contracts/out
+contracts/cache
+.venv
+.pio

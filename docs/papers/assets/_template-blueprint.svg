@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" font-family="IBM Plex Mono, Consolas, Menlo, monospace" font-size="13" fill="#e9f0ff">
+  <!--
+    xKoin blueprint template. Copy this file, keep the frame, grid, title block
+    and the style block, replace the drawing group and the title block text.
+    Palette: ground #0b3d91, grid rgba(255,255,255,0.10) minor / 0.22 major,
+    lines #ffffff, secondary #9fc0ff, warning #ffd166, callout leader 1px.
+    Units: millimetres in dimension strings; nothing is to scale unless the
+    title block says so.
+  -->
+  <defs>
+    <pattern id="minor" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255,255,255,0.10)" stroke-width="1"/>
+    </pattern>
+    <pattern id="major" width="100" height="100" patternUnits="userSpaceOnUse">
+      <rect width="100" height="100" fill="url(#minor)"/>
+      <path d="M 100 0 L 0 0 0 100" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="1"/>
+    </pattern>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#ffffff"/>
+    </marker>
+    <marker id="dim" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 5 L 10 5 M 5 0 L 5 10" stroke="#ffffff" stroke-width="1.5"/>
+    </marker>
+  </defs>
+  <style>
+    .line { fill: none; stroke: #ffffff; stroke-width: 1.5; }
+    .thin { fill: none; stroke: #9fc0ff; stroke-width: 1; }
+    .dash { fill: none; stroke: #9fc0ff; stroke-width: 1; stroke-dasharray: 6 4; }
+    .warn { fill: none; stroke: #ffd166; stroke-width: 1.5; }
+    .fillp { fill: #0b3d91; stroke: #ffffff; stroke-width: 1.5; }
+    .label { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
+    .small { font-size: 11px; fill: #c9d8ff; }
+    .title { font-size: 22px; letter-spacing: 0.08em; text-transform: uppercase; }
+    .lead { fill: none; stroke: #ffffff; stroke-width: 1; }
+    .dimline { fill: none; stroke: #ffffff; stroke-width: 1; marker-start: url(#dim); marker-end: url(#dim); }
+  </style>
+
+  <rect width="1200" height="800" fill="#0b3d91"/>
+  <rect width="1200" height="800" fill="url(#major)"/>
+  <rect x="30" y="30" width="1140" height="740" class="line"/>
+
+  <!-- drawing area: replace this group -->
+  <g id="drawing">
+    <text x="60" y="70" class="title">xKoin-Node</text>
+    <text x="60" y="92" class="label">Orthographic blueprint, top view</text>
+
+    <!-- example: a board outline with two modules, a dimension and two callouts -->
+    <rect x="180" y="180" width="520" height="340" rx="14" class="line"/>
+    <circle cx="205" cy="205" r="8" class="thin"/>
+    <circle cx="675" cy="205" r="8" class="thin"/>
+    <circle cx="205" cy="495" r="8" class="thin"/>
+    <circle cx="675" cy="495" r="8" class="thin"/>
+
+    <rect x="230" y="230" width="180" height="120" class="fillp"/>
+    <text x="240" y="252" class="label">ESP32-S3-WROOM-1</text>
+    <text x="240" y="270" class="small">N16R8</text>
+    <path d="M 240 300 h 160" class="dash"/>
+
+    <rect x="470" y="230" width="160" height="90" class="fillp"/>
+    <text x="480" y="252" class="label">SX1262</text>
+    <text x="480" y="270" class="small">868 MHz, 22 dBm</text>
+
+    <rect x="230" y="390" width="200" height="90" class="fillp"/>
+    <text x="240" y="412" class="label">KQ-130F</text>
+    <text x="240" y="430" class="small">UART 9600, 5 V</text>
+
+    <!-- dimension -->
+    <path d="M 180 560 H 700" class="dimline"/>
+    <text x="410" y="582" text-anchor="middle" class="small">120.00 mm</text>
+    <path d="M 740 180 V 520" class="dimline"/>
+    <text x="760" y="354" class="small">80.00 mm</text>
+
+    <!-- callouts -->
+    <path d="M 630 250 L 820 160 H 900" class="lead"/>
+    <circle cx="630" cy="250" r="3" fill="#ffffff"/>
+    <text x="906" y="164" class="label">LoRa radio</text>
+    <text x="906" y="180" class="small">SPI on GPIO 10 to 14, 21</text>
+
+    <path d="M 430 440 L 820 440 H 900" class="lead"/>
+    <circle cx="430" cy="440" r="3" fill="#ffffff"/>
+    <text x="906" y="444" class="label">Narrowband PLC</text>
+    <text x="906" y="460" class="small">UART2 on GPIO 17, 18</text>
+
+    <path d="M 900 500 h 60 v 40" class="warn"/>
+    <text x="906" y="560" class="small" fill="#ffd166">MAINS SIDE: isolated coupling only</text>
+  </g>
+
+  <!-- title block: keep, edit text -->
+  <g id="titleblock" transform="translate(780 640)">
+    <rect width="390" height="130" class="line" fill="#0b3d91"/>
+    <path d="M 0 26 H 390 M 0 52 H 390 M 0 78 H 390 M 0 104 H 390 M 110 0 V 130" class="thin"/>
+    <text x="10" y="18" class="label">Project</text><text x="120" y="18" class="small">xKoin proof of concept</text>
+    <text x="10" y="44" class="label">Drawing</text><text x="120" y="44" class="small">XK-NODE-TOP</text>
+    <text x="10" y="70" class="label">Date</text><text x="120" y="70" class="small">2026-09-12</text>
+    <text x="10" y="96" class="label">Units</text><text x="120" y="96" class="small">millimetres, not to scale</text>
+    <text x="10" y="122" class="label">Rev</text><text x="120" y="122" class="small">A</text>
+  </g>
+</svg>

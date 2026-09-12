@@ -101,7 +101,7 @@ owner, change threshold). Moving to a different Safe entirely means
 contracts, then `acceptOwnership()` from the new Safe on each.
 
 **Kiosk root key, Jenga RSA key, Daraja credentials.** Server-side only, as
-in [docs/key-management.md](../key-management.md) section 2; none of them
+in [docs/ops/key-management.md](../key-management.md) section 2; none of them
 touches the chain.
 
 ## The one address that must never change casually

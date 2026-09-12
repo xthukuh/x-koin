@@ -45,7 +45,7 @@ HANDOVER.md if you are new to the product rather than to the code.
 
 ## Critical accounts and the real-chain test plan
 
-`docs/critical-accounts/` is the operating manual for the crypto layer:
+`docs/ops/critical-accounts/` is the operating manual for the crypto layer:
 which accounts to open and how to harden them, one wallet per role, the
 gas budget with measured numbers (`scripts/gas_budget.py`), the security
 list, the five-phase test plan from anvil to a Base mainnet rehearsal, and
@@ -94,3 +94,20 @@ second runs `scripts/bootstrap.sh` inside it, which is the same command
 `scripts/docker-proofs.sh` wraps as one step. The third builds the ESP32-S3
 firmware with PlatformIO; its espressif32 platform download is cached in a
 named volume so only the first run pays for it.
+
+## Presentation site
+
+`web/` is a Vite SPA (React 19, Tailwind 4, React Router 7): an index of the
+routes, a markdown viewer over `docs/papers`, `docs/potential` and
+`docs/x-koin-beta`, the three legacy static pages, and the hardware shopping
+list. Node only; Python is left to firmware, the protocol simulation and
+gateway-api.
+
+    npm run dev:web                                      # http://localhost:5173
+    docker compose -f docker/compose.site.yml up --build  # http://127.0.0.1:8090
+
+The first is the dev server with hot reload. The second builds `web/dist` inside
+`docker/site.Dockerfile` and serves it on nginx, which is what the VPS runs
+behind Traefik. `web/scripts/inline-data.mjs` runs before both and rebuilds the
+legacy pages from `demo/` and `protocol/viz/` with `protocol/out/*.json` inlined.
+See `demo/README.md`.

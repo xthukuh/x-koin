@@ -1,0 +1,26 @@
+{
+  "name": "x-koin-web",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "predev": "node scripts/inline-data.mjs",
+    "dev": "vite --port 5173 --strictPort",
+    "prebuild": "node scripts/inline-data.mjs",
+    "build": "vite build",
+    "preview": "vite preview --port 4173 --strictPort"
+  },
+  "dependencies": {
+    "marked": "18.0.12",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "react-router-dom": "7.18.3"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "4.3.3",
+    "@vitejs/plugin-react": "5.2.0",
+    "tailwindcss": "4.3.3",
+    "vite": "6.4.3",
+    "vite-plugin-static-copy": "4.1.1"
+  }
+}

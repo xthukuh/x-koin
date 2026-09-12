@@ -51,9 +51,9 @@ those, not gas.
 | [06-vps-xkoin.thuku.dev.md](06-vps-xkoin.thuku.dev.md) | The public HTTPS endpoint Jenga needs, on Martin's VPS behind Traefik |
 | [registry.md](registry.md) | The address register: public addresses and account handles only, never secrets, committed so every session and every device sees the same map |
 
-Related, already in the repo: [docs/key-management.md](../key-management.md)
+Related, already in the repo: [docs/ops/key-management.md](../key-management.md)
 (the key inventory and the founder cold key procedure) and
-[docs/jenga-onboarding.md](../jenga-onboarding.md) (sandbox and live steps).
+[docs/ops/jenga-onboarding.md](../jenga-onboarding.md) (sandbox and live steps).
 This folder does not repeat them; it points at them.
 
 ## What Martin does, what the session does
