@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800">
+  <rect x="0" y="0" width="1200" height="800" fill="#ffffff"/>
+
+  <text x="30" y="40" font-family="monospace" font-size="22" fill="#14213d">Key hierarchy by storage tier, and what each key can reach</text>
+  <text x="30" y="66" font-family="monospace" font-size="13" fill="#0b3d91">One address per role. A key that does two jobs has two ways to be lost.</text>
+
+  <!-- COLD tier -->
+  <rect x="40" y="90" width="720" height="150" fill="#ffffff" stroke="#14213d" stroke-width="3"/>
+  <text x="60" y="118" font-family="monospace" font-size="16" fill="#14213d">COLD: hardware wallet, seed on steel, never on a server</text>
+
+  <rect x="70" y="132" width="310" height="88" fill="#ffffff" stroke="#0b3d91" stroke-width="2"/>
+  <text x="225" y="158" font-family="monospace" font-size="14" fill="#14213d" text-anchor="middle">Beneficiary (founder cold)</text>
+  <text x="225" y="180" font-family="monospace" font-size="12" fill="#0b3d91" text-anchor="middle">receives fees, vetoes a</text>
+  <text x="225" y="198" font-family="monospace" font-size="12" fill="#0b3d91" text-anchor="middle">beneficiary change, signs</text>
+  <text x="225" y="214" font-family="monospace" font-size="12" fill="#0b3d91" text-anchor="middle">the payout MSISDN pin</text>
+
+  <rect x="420" y="132" width="310" height="88" fill="#ffffff" stroke="#0b3d91" stroke-width="2"/>
+  <text x="575" y="158" font-family="monospace" font-size="14" fill="#14213d" text-anchor="middle">Owner: Safe 2-of-3 signers</text>
+  <text x="575" y="180" font-family="monospace" font-size="12" fill="#0b3d91" text-anchor="middle">price in band, fee under cap,</text>
+  <text x="575" y="198" font-family="monospace" font-size="12" fill="#0b3d91" text-anchor="middle">bridge allowlist, queue a</text>
+  <text x="575" y="214" font-family="monospace" font-size="12" fill="#0b3d91" text-anchor="middle">beneficiary change. No custody.</text>
+
+  <!-- WARM tier -->
+  <rect x="40" y="266" width="720" height="150" fill="#ffffff" stroke="#14213d" stroke-width="3"/>
+  <text x="60" y="294" font-family="monospace" font-size="16" fill="#14213d">WARM: laptop, used on named days only</text>
+
+  <rect x="70" y="308" width="310" height="88" fill="#ffffff" stroke="#0b3d91" stroke-width="2"/>
+  <text x="225" y="334" font-family="monospace" font-size="14" fill="#14213d" text-anchor="middle">Deployer</text>
+  <text x="225" y="356" font-family="monospace" font-size="12" fill="#0b3d91" text-anchor="middle">deploys, transfers ownership</text>
+  <text x="225" y="374" font-family="monospace" font-size="12" fill="#0b3d91" text-anchor="middle">to the Safe, then discarded.</text>
+  <text x="225" y="390" font-family="monospace" font-size="12" fill="#0b3d91" text-anchor="middle">Fresh key per deployment.</text>
+
+  <rect x="420" y="308" width="310" height="88" fill="#ffffff" stroke="#0b3d91" stroke-width="2"/>
+  <text x="575" y="334" font-family="monospace" font-size="14" fill="#14213d" text-anchor="middle">Gas reserve</text>
+  <text x="575" y="356" font-family="monospace" font-size="12" fill="#0b3d91" text-anchor="middle">holds ETH, tops up the hot</text>
+  <text x="575" y="374" font-family="monospace" font-size="12" fill="#0b3d91" text-anchor="middle">wallets in small amounts.</text>
+  <text x="575" y="390" font-family="monospace" font-size="12" fill="#0b3d91" text-anchor="middle">No privilege on any contract.</text>
+
+  <!-- HOT tier -->
+  <rect x="40" y="442" width="720" height="200" fill="#ffffff" stroke="#14213d" stroke-width="3"/>
+  <text x="60" y="470" font-family="monospace" font-size="16" fill="#14213d">HOT: VPS, mode 600, revocable and refillable</text>
+
+  <rect x="70" y="484" width="310" height="70" fill="#ffffff" stroke="#0b3d91" stroke-width="2"/>
+  <text x="225" y="508" font-family="monospace" font-size="14" fill="#14213d" text-anchor="middle">Bridge hot wallet</text>
+  <text x="225" y="528" font-family="monospace" font-size="12" fill="#0b3d91" text-anchor="middle">mints to the rolling daily cap,</text>
+  <text x="225" y="546" font-family="monospace" font-size="12" fill="#0b3d91" text-anchor="middle">burns only its own balance</text>
+
+  <rect x="420" y="484" width="310" height="70" fill="#ffffff" stroke="#0b3d91" stroke-width="2"/>
+  <text x="575" y="508" font-family="monospace" font-size="14" fill="#14213d" text-anchor="middle">Settlement relayer</text>
+  <text x="575" y="528" font-family="monospace" font-size="12" fill="#0b3d91" text-anchor="middle">no privilege at all; a leak</text>
+  <text x="575" y="546" font-family="monospace" font-size="12" fill="#0b3d91" text-anchor="middle">costs the gas in the wallet</text>
+
+  <rect x="70" y="566" width="660" height="60" fill="#ffffff" stroke="#0b3d91" stroke-width="2"/>
+  <text x="400" y="590" font-family="monospace" font-size="14" fill="#14213d" text-anchor="middle">Kiosk root key (Ed25519, server side)</text>
+  <text x="400" y="612" font-family="monospace" font-size="12" fill="#0b3d91" text-anchor="middle">signs admission vouchers. Theft buys free admission, never funds. Rotation is a firmware pubkey change.</text>
+
+  <!-- reachable objects -->
+  <rect x="820" y="120" width="340" height="60" fill="#ffffff" stroke="#14213d" stroke-width="2"/>
+  <text x="990" y="146" font-family="monospace" font-size="14" fill="#14213d" text-anchor="middle">xKoinTreasury</text>
+  <text x="990" y="166" font-family="monospace" font-size="12" fill="#b8741a" text-anchor="middle">pays the beneficiary and no one else</text>
+
+  <rect x="820" y="220" width="340" height="60" fill="#ffffff" stroke="#14213d" stroke-width="2"/>
+  <text x="990" y="246" font-family="monospace" font-size="14" fill="#14213d" text-anchor="middle">xKoinEscrow</text>
+  <text x="990" y="266" font-family="monospace" font-size="12" fill="#b8741a" text-anchor="middle">no owner function touches deposits</text>
+
+  <rect x="820" y="320" width="340" height="60" fill="#ffffff" stroke="#14213d" stroke-width="2"/>
+  <text x="990" y="346" font-family="monospace" font-size="14" fill="#14213d" text-anchor="middle">xKoinToken</text>
+  <text x="990" y="366" font-family="monospace" font-size="12" fill="#b8741a" text-anchor="middle">no key can burn a user balance</text>
+
+  <rect x="820" y="560" width="340" height="66" fill="#ffffff" stroke="#14213d" stroke-width="2"/>
+  <text x="990" y="586" font-family="monospace" font-size="14" fill="#14213d" text-anchor="middle">Node firmware (the edge)</text>
+  <text x="990" y="608" font-family="monospace" font-size="12" fill="#b8741a" text-anchor="middle">holds the 32-byte kiosk public key</text>
+
+  <!-- links -->
+  <line x1="380" y1="176" x2="814" y2="150" stroke="#0b3d91" stroke-width="2"/>
+  <polygon points="820,149 808,145 809,157" fill="#0b3d91"/>
+  <line x1="730" y1="176" x2="814" y2="250" stroke="#0b3d91" stroke-width="2"/>
+  <polygon points="820,255 808,249 816,241" fill="#0b3d91"/>
+  <line x1="730" y1="196" x2="814" y2="340" stroke="#0b3d91" stroke-width="2"/>
+  <polygon points="818,346 806,340 815,333" fill="#0b3d91"/>
+  <line x1="380" y1="510" x2="814" y2="360" stroke="#0b3d91" stroke-width="2"/>
+  <polygon points="820,358 808,354 812,366" fill="#0b3d91"/>
+  <line x1="730" y1="510" x2="814" y2="270" stroke="#0b3d91" stroke-width="2"/>
+  <polygon points="818,264 806,270 815,277" fill="#0b3d91"/>
+  <line x1="730" y1="596" x2="814" y2="594" stroke="#0b3d91" stroke-width="2"/>
+  <polygon points="820,594 808,588 808,600" fill="#0b3d91"/>
+
+  <text x="40" y="676" font-family="monospace" font-size="13" fill="#14213d">Client and operator keys sit outside this diagram: the EVM key signs tickets and transfers, the Ed25519 key</text>
+  <text x="40" y="696" font-family="monospace" font-size="13" fill="#14213d">signs receipts, both derive from one seed held by the user. No custodian holds either.</text>
+  <text x="40" y="726" font-family="monospace" font-size="13" fill="#b8741a">Blast radius by tier: cold key theft is a 7-day fire alarm; hot key theft costs one daily cap or the gas balance.</text>
+  <text x="40" y="752" font-family="monospace" font-size="12" fill="#0b3d91">Sources: docs/ops/critical-accounts/02-wallet-roles.md, protocol/spec.md sections 8 and 8.1</text>
+</svg>

@@ -1,0 +1,98 @@
+{
+  "id": "sma-attenuator-30db",
+  "line": "SMA fixed attenuator 30 dB",
+  "role": "bench path loss for demo D2",
+  "spec": "fixed coaxial attenuator, 30 dB, 50 ohm, DC to 3 GHz or better, 2 W, SMA male plug on one end and SMA female jack on the other so it sits inline between the board and the antenna",
+  "qty": 2,
+  "why": "Puts kilometres of simulated path loss on the bench so the LoRa link can be pushed to its sensitivity limit on a desk instead of across a valley.",
+  "recorded": "2026-09-12",
+  "chosen": "https://www.aliexpress.com/item/1005008423745338.html",
+  "candidates": [
+    {
+      "url": "https://www.aliexpress.com/item/1005008423745338.html",
+      "title": "LXAF 2W SMA DC-6GHz 8Ghz Coaxial Fixed Attenuators Frequency 6GHz SMA Fixed Connectors 40DB/30DB/20DB/10DB/6DB/3DB",
+      "price_kes": 267,
+      "price_note": "KSh 267 entry variant, listing range KSh 267 to KSh 387 across the dB values; 30 dB is one of the dearer variants so budget near KSh 387 each",
+      "shipping": "not shown",
+      "sold": "1,000+",
+      "rating": "4.8",
+      "reviews": 33,
+      "store": "AliExpress store 911934472 (store name not exposed in the page capture)",
+      "store_url": "https://www.aliexpress.com/store/911934472",
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/S99ddac29c17a44b087ec1fe4cc58fc97Q.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sff47250e7fca4da9870bfb6a677aa5fbo.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sa414f714e5d14815a9898ab9cf9e221fN.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S2b7cc42358d144049a1966932f8fe2d6h.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S848adb2ad25b49759cbc01b86790e0c6a.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S5d7400db4a684f96ba9d57e8cc6aa930H.jpg"
+      ],
+      "verdict": "chosen",
+      "notes": "Cheapest listing that clears the trust bar on its own numbers (1,000+ sold at 4.8). Photo check: the first two gallery images show six stainless barrels, each with a hex SMA male plug at one end and an SMA female jack with an external thread and a centre socket at the other, laser marked 3dB 8G, 10dB 8G, 6dB 8G, 20dB 8G, 30dB 8G and 40dB 8G, so a genuine 30 dB male to female part exists in this listing and the 8 GHz rating comfortably covers 868 MHz. Shipping to Kenya could not be read: the product page went to an anti-bot redirect before the shipping panel was captured, and the search card did not flag free shipping, so treat KSh 387 each as a floor, not a landed price."
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005007082918637.html",
+      "title": "SMA Attenuator 2W 8G DC-6GHz 8GHz Coaxial Fixed Attenuators 40DB/30DB/20DB/10DB/6DB/3DB SMA Fixed Connectors",
+      "price_kes": 517,
+      "price_note": "KSh 517 entry variant, listing range KSh 517 to KSh 900 across the dB values",
+      "shipping": "Free shipping",
+      "sold": "4,000+",
+      "rating": "4.9",
+      "reviews": 325,
+      "store": "AliExpress store 912613944 (store name not exposed in the page capture)",
+      "store_url": "https://www.aliexpress.com/store/912613944",
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sfb7227a877d84bf99050a9692aa7e534G.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sa618a834c7c449f0b1c6fa04e2bf1ce6M.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sa753292ca6b7466d9988bad26f6d49aet.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S2af1ad50410d42f8bbeb124a62be9e7aJ.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S06377b0d4d3d41bcacfdc4dd44580ecdk.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S7ce54499f5994e15ae64f418dd99eee4U.jpg"
+      ],
+      "verdict": "runner-up",
+      "notes": "The only strong attenuator listing with free shipping shown, and the best trust of the set (4,000+ sold, 4.9 over 325 reviews, review tags include sufficient attenuation (7)). Photo check: its first two gallery images are the identical stock shoot to the chosen listing, same six barrels marked 3dB to 40dB 8G, SMA male one end, SMA female the other. Take this one if the chosen listing charges shipping above roughly KSh 130 per unit, which would erase its price advantage."
+    },
+    {
+      "url": "https://www.aliexpress.com/item/4001006017614.html",
+      "title": "2W SMA DC-6GHz 8Ghz Coaxial Fixed Attenuators Frequency 6GHz SMA Fixed Connectors 40DB/30DB/20DB/10DB/6DB/3DB",
+      "price_kes": 242,
+      "price_note": "KSh 242 entry variant, listing range KSh 242 to KSh 346 across the dB values",
+      "shipping": "not shown",
+      "sold": "4,000+",
+      "rating": "4.5",
+      "reviews": 102,
+      "store": "AliExpress store 3431012 (store name not exposed in the page capture)",
+      "store_url": "https://www.aliexpress.com/store/3431012",
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/H162f986e6c0142f68a3950d264741f9bJ.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/H7d3ba42befe14d82ba008af34e2077a4v.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Hfd1e73c94eca45fc92d732ea90198d78H.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/H6934a674039a43aeaf3919e9bbfb0a79c.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/H59c618536e66400886cefcae66511a02P.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/H00f2e747544943eb89dc196be3088c26E.jpg"
+      ],
+      "verdict": "runner-up",
+      "notes": "The cheapest listing in the whole search and a long established store with 4,000+ sold, but the 4.5 rating falls below the 4.7 bar for a listing-level pass, so it only qualifies through the store clause. Gallery not opened for a gender check. Held as the price fallback."
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005006075206869.html",
+      "title": "2W SMA Attenuator 6dB 10dB 15dB 20dB 30dB 40dB 50dB 60dB 1dB 2dB 3dB 5dB DC-8GHz RF Coaxial Fixed Attenuator high Frequency",
+      "price_kes": 394,
+      "price_note": "KSh 394 as displayed; this is the recorded 20 dB fallback option, and the same listing also carries 30 dB",
+      "shipping": "not shown",
+      "sold": "1,000+",
+      "rating": "4.8",
+      "reviews": 94,
+      "store": "AliExpress store 1100090103 (store name not exposed in the page capture)",
+      "store_url": "https://www.aliexpress.com/store/1100090103",
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/S27bb40b653c6421fa86af857b7414e9ds.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S3fd9ca85f16b49dab3470fd6a5f0ee15t.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S350697125ba34f2b8f508119b9153256W.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Se1c387a1b890473bb3dd8449dbf44c16a.jpg"
+      ],
+      "verdict": "runner-up",
+      "notes": "Recorded as the 20 dB option asked for in the brief. DC to 8 GHz, 2 W, SMA male to female, 1,000+ sold at 4.8 over 94 reviews, and the review tags include damping within tolerance (3), which is the measurement that matters. Two of these in series give 40 dB, and one 20 dB plus one 30 dB gives a 50 dB step, so a mixed pair is a reasonable buy if 30 dB alone proves too coarse for demo D2. The chosen listing also sells a 20 dB variant at a lower price."
+    }
+  ]
+}

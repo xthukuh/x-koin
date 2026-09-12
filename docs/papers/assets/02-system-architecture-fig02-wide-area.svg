@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" font-family="IBM Plex Mono, Consolas, Menlo, monospace" font-size="13" fill="#14213d">
+  <!-- xKoin architecture paper, Figure 2. Wide-area view: two mains segments joined
+       by a LoRa hop across a transformer boundary, plus a solar Satellite. -->
+  <defs>
+    <marker id="ai" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#0b3d91"/>
+    </marker>
+  </defs>
+  <style>
+    .box { fill: #ffffff; stroke: #14213d; stroke-width: 2; }
+    .acc { fill: #eef2fa; stroke: #0b3d91; stroke-width: 2; }
+    .mon { fill: #fdf6ec; stroke: #b8741a; stroke-width: 2; }
+    .seg { fill: #f7f9fd; stroke: #14213d; stroke-width: 1.5; }
+    .flow { fill: none; stroke: #0b3d91; stroke-width: 2; marker-end: url(#ai); }
+    .radio { fill: none; stroke: #0b3d91; stroke-width: 2; stroke-dasharray: 7 5; marker-end: url(#ai); }
+    .bound { fill: none; stroke: #14213d; stroke-width: 2; stroke-dasharray: 10 6; }
+    .h { font-size: 14px; letter-spacing: 0.05em; fill: #14213d; }
+    .s { font-size: 12px; fill: #3c4a67; }
+  </style>
+
+  <rect width="1200" height="600" fill="#ffffff"/>
+
+  <text x="50" y="36" class="h">TWO MAINS SEGMENTS, ONE RADIO PLANE</text>
+
+  <!-- segment A -->
+  <rect x="50" y="200" width="280" height="280" class="seg"/>
+  <text x="62" y="224" class="s">SEGMENT A: one transformer, one riser</text>
+  <rect x="70" y="250" width="240" height="60" class="box"/>
+  <text x="82" y="276" class="s">phones on Wi-Fi</text>
+  <text x="82" y="296" class="s">and the companion app</text>
+  <rect x="70" y="370" width="240" height="90" class="acc"/>
+  <text x="82" y="396" class="h">xKoin-NODE</text>
+  <text x="82" y="416" class="s">backhaul, metering,</text>
+  <text x="82" y="436" class="s">HomePlug + KQ-130F</text>
+  <text x="82" y="454" class="s">+ SX1262</text>
+  <path d="M 190 370 V 314" class="flow"/>
+  <path d="M 190 110 V 196" class="flow"/>
+  <text x="200" y="104" class="s">backhaul: LTE, fibre or a phone hotspot</text>
+
+  <!-- boundary -->
+  <path d="M 470 150 V 520" class="bound"/>
+  <rect x="440" y="300" width="60" height="60" class="box"/>
+  <text x="452" y="326" class="s">TX</text>
+  <text x="452" y="346" class="s">11kV</text>
+  <text x="330" y="556" class="s">Distribution transformer, phase change or mains filter: the power-line carrier ends here.</text>
+
+  <!-- segment B -->
+  <rect x="610" y="200" width="280" height="280" class="seg"/>
+  <text x="622" y="224" class="s">SEGMENT B: its own riser</text>
+  <rect x="630" y="250" width="240" height="60" class="box"/>
+  <text x="642" y="276" class="s">phones on Wi-Fi,</text>
+  <text x="642" y="296" class="s">local traffic stays local</text>
+  <rect x="630" y="370" width="240" height="90" class="box"/>
+  <text x="642" y="396" class="h">NODE-SATELLITE</text>
+  <text x="642" y="416" class="s">bulk inside segment B,</text>
+  <text x="642" y="436" class="s">control over LoRa,</text>
+  <text x="642" y="454" class="s">its own receipts</text>
+  <path d="M 750 370 V 314" class="flow"/>
+
+  <!-- lora hop -->
+  <path d="M 310 400 Q 470 100 630 400" class="radio"/>
+  <rect x="330" y="228" width="290" height="26" fill="#ffffff"/>
+  <text x="340" y="246" class="s">LoRa 868.1 MHz SF7, ~5.4 kbps</text>
+
+  <!-- solar satellite -->
+  <polygon points="985,280 1155,280 1135,250 1005,250" class="acc"/>
+  <text x="1000" y="272" class="s">solar panel</text>
+  <rect x="960" y="300" width="200" height="100" class="box"/>
+  <text x="972" y="326" class="h">xKoin-SATELLITE</text>
+  <text x="972" y="346" class="s">18650 + TP4056,</text>
+  <text x="972" y="366" class="s">deep sleep,</text>
+  <text x="972" y="386" class="s">class C service only</text>
+  <path d="M 875 400 Q 930 340 956 352" class="radio"/>
+  <text x="884" y="326" class="s">LoRa</text>
+
+  <rect x="960" y="460" width="200" height="80" class="mon"/>
+  <text x="972" y="486" class="h" fill="#b8741a">FARM SENSOR</text>
+  <text x="972" y="506" class="s">soil moisture, temp</text>
+  <text x="972" y="526" class="s">free LAN, zero XKN</text>
+  <path d="M 1060 400 V 456" class="flow"/>
+
+  <text x="50" y="582" class="s">Power-line carrier moves bulk inside a segment. LoRa carries discovery, control and class C service between segments and off grid.</text>
+</svg>

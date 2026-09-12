@@ -1,0 +1,114 @@
+{
+  "id": "ra-01sh-sx1262",
+  "line": "Ai-Thinker Ra-01SH (SX1262, 868/915)",
+  "role": "LoRa ecosystem devices, farm sensor node radio",
+  "spec": "Ai-Thinker Ra-01SH, SX1262, ISM 803 to 930 MHz so 868 is in band, PA plus 22 dBm, SPI, IPEX or spring antenna variant noted per listing",
+  "qty": 1,
+  "why": "Radio for the third-party style farm sensor node that rides the free LAN plane, proving a foreign device can join without xKoin firmware on the radio.",
+  "recorded": "2026-09-12",
+  "chosen": "https://www.aliexpress.com/item/1005003087292795.html",
+  "candidates": [
+    {
+      "url": "https://www.aliexpress.com/item/1005003087292795.html",
+      "title": "SX1262 Ra-01SH LoRa RF WIFI Wireless Module Radio Frequency 803-930MHz IPX Antenna 3.3V SPI Interface Ra-01S",
+      "price_kes": 226,
+      "price_note": "226 is the default selected variant. A second price of 293 is on the page and the gallery shows exactly two builds, one with a bare antenna pad and one with an IPEX u.FL connector, so 293 is almost certainly the IPEX version. Budget 293 to get the IPEX variant the spec prefers. Cheapest Ra-01SH found by a wide margin.",
+      "shipping": "not shown",
+      "sold": "500+",
+      "rating": "5.0",
+      "reviews": 13,
+      "store": "store 4552038, trade name not exposed on the page",
+      "store_url": "https://www.aliexpress.com/store/4552038",
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/H87f69d7e86114bb490f50cc25cb46d07n.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Hd9f2f55219644f1db709a707f930c739e.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/H10b6c0ac8d0f49ceb47e39c2f671a81eB.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/H8e709dcc539d4f0782698d1aa5f66d0ez.jpg"
+      ],
+      "verdict": "chosen",
+      "notes": "Authenticity check on gallery images 1 and 2. Image 1 shows two modules side by side, both with the RF can laser-etched Ra-01SH over Ai-Thinker, the Ai logo with its radio arc, ISM:803-930MHz, PA:+22dBm, LoRa/(G)FSK, dimensioned 17mm by 16mm which matches the Ai-Thinker datasheet. The left unit has a bare antenna pad, the right unit has a gold IPEX u.FL connector at the lower left, so both antenna builds are sold under this listing. Image 2 is a three-quarter shot of the IPEX unit with the same etching and castellated edge pads. Genuine Ai-Thinker Ra-01SH, correct SX1262 part, 868 sits inside the 803 to 930 MHz band. Listing rule cleared on 500+ sold at a 5.0 rating. Shipping is not printed on the page and the review tag cloud carries high handling fees twice, so expect a shipping or handling charge at checkout. No antenna is bundled."
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005008486034463.html",
+      "title": "SX1262 LoRa Wireless Communication Module Ultra Long Range Spread Spectrum Communication 803MHz~930MHz Band Ra-01SH-P Module",
+      "price_kes": 550,
+      "price_note": "Free shipping confirmed on the page, so landed 550 with no checkout surprise. A second price of 714 is on the page, probably the higher quantity or the other antenna build.",
+      "shipping": "Free shipping",
+      "sold": "302",
+      "rating": "5.0",
+      "reviews": 10,
+      "store": "store 4552038, trade name not exposed on the page",
+      "store_url": "https://www.aliexpress.com/store/4552038",
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/S39706292c4de48b58c7f37668b76e1d5y.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Se1bac9f2c9004d0ba253b9dc02331a01A.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S2dbf0de38af8486a84db6dac328c8f1az.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S889e317ef64a49549024186b266a8d04N.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sad1c43b887dd490cb94a0fec75e208b9R.jpg"
+      ],
+      "verdict": "runner-up",
+      "notes": "Authenticity check on gallery images 1 and 2. Image 1 shows front and back: RF can etched Ra-01SH-P over Ai-Thinker, ISM:803-930MHz, PA:+29dBm, LoRa/(G)FSK, with an IPEX connector, and the reverse silkscreen gives the full pinout GND NSS MOSI MISO SCK RF_EN BUSY GND on one side and ANT GND 3V3 RESET VCCPA DIO1 DIO2 DIO3 on the other, with Ra-01SCH-P printed down the middle. Image 2 confirms the same etching in three-quarter view. Genuine Ai-Thinker, but the dash P is the high-power build at plus 29 dBm with a separate VCCPA supply rail, not the plain plus 22 dBm Ra-01SH the spec names, and the extra PA changes the current draw on a solar node. The published pinout on the back is a real advantage for wiring. Take this if a guaranteed free-shipping price and a legible pinout matter more than matching the part exactly, but expect to feed VCCPA."
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005004591979871.html",
+      "title": "LoRa SX1262 868-915MHz RF Module Ra-01SH",
+      "price_kes": 550,
+      "price_note": "Plus KSh 97 shipping shown on the page, so landed 647. Title pins the band to 868 to 915 MHz with no variant to choose.",
+      "shipping": "KSh 97",
+      "sold": "217",
+      "rating": "4.5",
+      "reviews": 10,
+      "store": "store 1102126606, trade name not exposed on the page",
+      "store_url": "https://www.aliexpress.com/store/1102126606",
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/S19f85ce3c8cb48a0a6e090529b36ad04b.png",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S1ca7f6f2bebf4a78b8bb1631965dae6eA.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S27ff7a0e2da8487c9722c71f05aede49c.png",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sad51d2f8e468479689231fc743d09a3dE.png",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S76abf0cea8514ec08f4d60334111c38ef.png",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sb302c35699f041ff80d80cf63eb87257R.jpg"
+      ],
+      "verdict": "runner-up",
+      "notes": "Plain Ra-01SH, the exact part, with shipping printed so the landed cost is certain at 647. Falls behind on the selection rule: 4.5 rating is under the 4.7 bar and 217 sold is under 500, so it clears neither the store nor the listing threshold. Photos not opened. Kept as a third source rather than a contender, since it costs 2.2 times the chosen listing for the same part."
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005009050271946.html",
+      "title": "1PCS SX1262 Ra-01SH -P LoRa RF WIFI Wireless Module Radio Frequency 803-930MHz 868MHz/915 IPX Antenna SPI Interface Ra-01S new",
+      "price_kes": 315,
+      "price_note": "Free shipping confirmed, so landed 315, the cheapest guaranteed landed price on this line.",
+      "shipping": "Free shipping",
+      "sold": "131",
+      "rating": "4.3",
+      "reviews": 6,
+      "store": "store 1102659881, trade name not exposed on the page",
+      "store_url": "https://www.aliexpress.com/store/1102659881",
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/S236b2067da3741e8a42d471c1b1d90b9o.png",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S1d591ef6b2f944a283d3d081fcdf478bI.png",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S149c9a62014741ffac8fef380642e9f87.png",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S1aa12d22d2fb4d6c83f4571c09ea0f31M.png",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sbe99bcf4cd0f432fb0f7dec6168a831dA.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S7ce120a972e346c7a080972e9bb14a4fX.jpg"
+      ],
+      "verdict": "rejected",
+      "notes": "Rejected on the trade rule, not on price. 4.3 rating fails the 4.7 bar and 131 sold fails the 500 bar, so it clears neither branch of the selection rule, and 6 reviews is too thin to argue round it. It is also the dash P high-power build rather than the plain Ra-01SH. Photos not opened. Free shipping at 315 makes it tempting if the chosen listing's checkout handling fee turns out to be steep, but the 4.3 rating is a real signal on a 300 KES part."
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005005139947355.html",
+      "title": "Ra-01 LoRa Wifi Wireless Transmit Module Ra-01SC Ra-01SH Ra-01S Ra-01H Lora Spread Spectrum Module 433MHZ 868MHZ LLCC68 SPI/UART",
+      "price_kes": 420,
+      "price_note": "Free shipping on the card, so landed 420, but the price shown is for whichever variant is default across a very wide dropdown.",
+      "shipping": "Free shipping",
+      "sold": "161",
+      "rating": null,
+      "reviews": null,
+      "store": "not read",
+      "store_url": null,
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sb7bd6b301a75434a9ec080c2dc2b3d29Y.jpg"
+      ],
+      "verdict": "rejected",
+      "notes": "Rejected on wrong-part risk. One listing covers Ra-01, Ra-01S, Ra-01H, Ra-01SC and Ra-01SH across 433 and 868 MHz, and mixes SX1262 with LLCC68 silicon and SPI with UART interfaces in the same dropdown. LLCC68 is explicitly excluded by the spec, 433 MHz is the wrong band, and no rating or review count was exposed, so there is no way to be sure which part arrives. Not worth 420 KES of risk when the chosen listing sells the exact part for less."
+    }
+  ]
+}

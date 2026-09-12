@@ -1,0 +1,127 @@
+{
+  "id": "usb-ttl-ch340",
+  "line": "USB to TTL serial adapter, CH340 or CP2102",
+  "role": "Bench console",
+  "spec": "USB to UART bridge on CH340 or CP2102 with a 3.3 V and 5 V selector, so the same lead can talk to an ESP32 at 3.3 V and to a 5 V part without a level shifter. TX, RX, GND, VCC broken out on 0.1 inch pins.",
+  "qty": 1,
+  "why": "The serial console for bringing up firmware on any board whose own USB bridge is busy or not yet flashed, and the only way to watch the boot log while the native USB port is doing something else.",
+  "recorded": "2026-09-12",
+  "chosen": "https://www.aliexpress.com/item/1005004824108230.html",
+  "candidates": [
+    {
+      "url": "https://www.aliexpress.com/item/1005004824108230.html",
+      "title": "1Pcs USB to TTL converter Micro UART module CH340G CH340 3.3V 5V switch for downloader pro mini",
+      "price_kes": 81,
+      "price_note": "KSh 81 for one piece with free shipping, so KSh 81 landed. A KSh 99 figure on the page is the next quantity step.",
+      "shipping": "Free shipping",
+      "sold": "500+",
+      "rating": "5.0",
+      "reviews": 18,
+      "store": "store id 1948124",
+      "store_url": "https://www.aliexpress.com/store/1948124",
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/S73d16f5fb7ff4c908b80d04181e4b460r.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sc03ab5de685b472e92632fe4163ceac9e.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S5ce4f3f16049463193af39a898c0465dJ.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sf997dcd8f6a24a32b5eb0555cd3095b2g.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S3425c4eb0ff54a10927fb76fc341a157w.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S17a49ec5baa54731b3b147f431eeaab2n.jpg"
+      ],
+      "verdict": "chosen",
+      "notes": "Both gallery photographs are sharp enough to read the parts. The SOP16 is printed CH340G with the WCH mark and a date code, next to a 12.000 MHz crystal, which is the correct pairing for a genuine CH340G. The board carries a white slide switch between silkscreened 5V and 3V3 pads, so the level select is a switch rather than a jumper block; that meets the intent of the spec and is harder to lose than a jumper. Header pads are silkscreened 3V3, R, T and the module ships with a right angle six pin header loose. Two things to know before ordering: the host side is micro USB, so a micro USB cable is needed rather than plugging straight into the laptop, and the review base is thin at 18. Cheapest landed of the line at KSh 81 with free shipping.",
+      "price_all_seen": ["KSh 81", "KSh 99", "KSh 274", "KSh 2,053"]
+    },
+    {
+      "url": "https://www.aliexpress.com/item/32809304504.html",
+      "title": "CH340G CH340E module USB to TTL converter UART module CH340 3.3V 5V",
+      "price_kes": 109,
+      "price_note": "KSh 109 headline. The listing carries both the CH340G six pin dongle and a smaller CH340E variant, so pick the CH340G one shown in image 1.",
+      "shipping": "not shown",
+      "sold": "500+",
+      "rating": "4.7",
+      "reviews": 55,
+      "store": "store id 731260",
+      "store_url": "https://www.aliexpress.com/store/731260",
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/S0a38e7f77303411d8a730f8ee31761afN.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S0dffa2d667a84a0498ef068fb3944b35X.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S2569ef6c4bba4746a0dcbbf0217abc2cf.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sb0695b13286b40cbb40c6bfc660c7060H.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S8ccb63005221404faf02bb3bea57eac28.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sbc8b33f2f38943c8a0dfc08a3b279936y.jpg"
+      ],
+      "verdict": "runner-up",
+      "notes": "Closest match to the letter of the spec and the better bench tool, for KSh 28 more. The photograph shows the classic gold edged CH340G dongle with a moulded USB-A plug, a 12.000 MHz crystal, a literal yellow jumper shunt straddling silkscreened 5V and 3V3, seven pins broken out as RTS, 5V, 3V3, TXD, RXD, GND, CTS, and a bundle of female to female dupont leads in the box. It plugs straight into the laptop with no cable and it exposes RTS and CTS, which matter if the auto reset circuit is ever wanted. Held back only because shipping was not shown and the chosen one is cheaper with confirmed free shipping. Take this one if Martin prefers a jumper and a direct USB-A plug.",
+      "price_all_seen": ["KSh 109", "KSh 274", "KSh 2,053", "KSh 210", "KSh 96"]
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005005264733361.html",
+      "title": "TZT USB to TTL Converter CH340G 1/2/5PCS",
+      "price_kes": 131,
+      "price_note": "KSh 131 for a single piece; KSh 128 and KSh 153 also appear for the other pack sizes.",
+      "shipping": "not shown",
+      "sold": "600+",
+      "rating": "5.0",
+      "reviews": 35,
+      "store": "store id 2347088",
+      "store_url": "https://www.aliexpress.com/store/2347088",
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/See62d5b60b71477eb73cb302a846dc49l.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S630952c4d0e24bc9bd7bc8c888396547F.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sb99dd47045c94c90a607ad981d7eb1487.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S2d59dc2c508c4a92be7f4832e52348050.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S9bb13e89eb174c699d931b8bf462f6cfA.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S7f01b01fa2054e27990d6ebd78c4e8c1c.jpg"
+      ],
+      "verdict": "runner-up",
+      "notes": "TZT is a known store with 600+ sold on this line and a 5.0 rating over 35 reviews. Dearer than both boards above with shipping unconfirmed, so no reason to prefer it. No photo check made.",
+      "price_all_seen": ["KSh 131", "KSh 128", "KSh 153", "KSh 274", "KSh 2,053"]
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005007892154895.html",
+      "title": "USB To TTL Converter UART Module CH340G CH340 3.3V 5V Switch Type-C",
+      "price_kes": 136,
+      "price_note": "KSh 136 headline for the single Type-C module.",
+      "shipping": "not shown",
+      "sold": "1,000+",
+      "rating": "4.9",
+      "reviews": 110,
+      "store": "store id 1104077326",
+      "store_url": "https://www.aliexpress.com/store/1104077326",
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sc02232d9323b41b59006c1a4dad299a7x.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sbdc47b1d650b429f84d437d1dcbb6afcl.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S66ce2007d5ab489a9fd44c3607bd0923o.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S1a3ff21386db44a88af668f9e91f18621.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S002e5a547778469a92f3d717587692548.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S81083b7e48bf4b59ac171dcfbd9630c3e.jpg"
+      ],
+      "verdict": "runner-up",
+      "notes": "Same CH340G module as the chosen one but with a USB-C host connector, which suits a modern laptop better, and a stronger review base at 1,000+ sold and 4.9 over 110 reviews. Costs KSh 55 more with shipping unconfirmed. Reasonable upgrade if Martin would rather not hunt for a micro USB cable.",
+      "price_all_seen": ["KSh 136", "KSh 135", "KSh 157", "KSh 1,284", "KSh 1,420"]
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005001621818602.html",
+      "title": "PL2303HX PL2303 USB To RS232 TTL Converter Adapter Module/USB TTL converter UART module CH340G CH340 module 3.3V 5V switch",
+      "price_kes": 82,
+      "price_note": "KSh 82 headline, but PL2303HX leads the title and CH340G is one of several options, so the headline figure is most likely the PL2303 part.",
+      "shipping": "not shown",
+      "sold": "1,000+",
+      "rating": "4.9",
+      "reviews": 110,
+      "store": "store id 910789017",
+      "store_url": "https://www.aliexpress.com/store/910789017",
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/S0145c5cc3fca4548b3146b8ce09f4e45J.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sf8fc19083e9a4bf8bdedf80ef0f8a425W.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Seae43d48587b4d1ba9a09587c7a688430.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sf40a143edb6d42dfaa1da90e74d2fa3aZ.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sd9d745d7704d4831b40710ecabced6fbZ.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sb47a7e32cc8d4f00b7413bebd0b8334fC.jpg"
+      ],
+      "verdict": "rejected",
+      "notes": "Rejected under the wrong-default-variant rule: the spec asks for CH340 or CP2102 and this listing defaults to PL2303HX, a part whose clones are blocked by current Windows drivers. One of the review tags scraped off the page is the word scam, which is one more reason to spend the extra KSh 27 elsewhere.",
+      "price_all_seen": ["KSh 82", "KSh 94", "KSh 274", "KSh 2,053", "KSh 210"]
+    }
+  ]
+}

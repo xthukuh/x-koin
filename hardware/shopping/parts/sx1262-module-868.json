@@ -1,0 +1,116 @@
+{
+  "id": "sx1262-module-868",
+  "line": "SX1262 SPI module 868 MHz",
+  "role": "xKoin-Node, xKoin-Node-Satellite",
+  "spec": "Semtech SX1262 on an SPI module covering 868 MHz, 22 dBm, IPEX or SMA. Ebyte E22-900M22S or Waveshare Core1262-868M or equivalent. Not SX1276, not LLCC68, and not the UART E22-900T22D.",
+  "qty": 2,
+  "why": "Gives the DevKitC-based Node and Node-Satellite a LoRa radio on the doc 02 SPI pin map, so the proven firmware pinout does not move.",
+  "recorded": "2026-09-12",
+  "chosen": "https://www.aliexpress.com/item/1005007265763652.html",
+  "candidates": [
+    {
+      "url": "https://www.aliexpress.com/item/1005007265763652.html",
+      "title": "SX1262 LoRa Wireless Maodule 32M High Precision TCXO E22-900M22S 22dBm 915MHz Long Range SMD RF Module Power Supply",
+      "price_kes": 556,
+      "price_note": "Free shipping confirmed on the page, so landed cost is 556 per module and 1112 for the pair. Title says 915MHz but the E22-900M22S is one part covering 850 to 930 MHz, so 868 is in band on the same hardware.",
+      "shipping": "Free shipping",
+      "sold": "234",
+      "rating": "4.8",
+      "reviews": 6,
+      "store": "store 1103816042, trade name not exposed on the page",
+      "store_url": "https://www.aliexpress.com/store/1103816042",
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/S8742bb40ecbf47ce83772bec61f7af85E.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S9a44b5e119ff4eb480c0d04bca662edbz.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sb76cf43a98b24944b69985ccd451c576i.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S4b71957fd7474b3cb397bf1ca7bd90f78.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sad7cefdd7e834755aef3c23d11f55dcfd.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S227c366a759649e1b8b14d3bd63611779.jpg"
+      ],
+      "verdict": "chosen",
+      "notes": "Authenticity check on gallery images 1 and 2. Image 1 is a straight-on shot of the module label: CDEBYTE wordmark top left, EBYTE logo with the radio arcs, SPI SMD LoRa Module, part number E22-900M22S in large type, RoHS and CE marks, Manufacturer Chengdu Ebyte Electronic Technology Co. Ltd., FCC ID 2ALPH-E22900M22S, with the IPEX u.FL connector clearly on the lower right corner of the board and castellated stamp holes all round. Image 2 repeats it with dimensions 20.00mm by 14.00mm, which matches the Ebyte datasheet for the E22-900M22S. Caption reads SX1262 22dBm 7km. Genuine Ebyte part, SPI not UART, IPEX connector present as the spec wants. Cheapest of every SX1262 SPI module checked and the only one with free shipping, so it wins on landed price."
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005009741346732.html",
+      "title": "170/433/868/915Mhz LoRa SX1262 Wireless Transceiver CDSENET E22 Series 22-33dBm Low Power 5-16km SMD TCXO Transmitter Receiver",
+      "price_kes": 591,
+      "price_note": "Plus KSh 520 shipping shown on the page, so landed 1111 for one and 1631 for the pair if shipping is charged once. 868MHz is named in the title, so the band variant is explicit.",
+      "shipping": "KSh 520",
+      "sold": "800+",
+      "rating": "5.0",
+      "reviews": 101,
+      "store": "store 911816065, trade name not exposed on the page",
+      "store_url": "https://www.aliexpress.com/store/911816065",
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/S921c78d4a46e477abeb1a2d3e696a70df.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sb29c2ba2dabb434682356db0abaf6ace7.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S5ef4ba45087e43638df4ab187cbbc00bM.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sb80ca18f86004c48a91a97a24485f5fcB.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S23336881d291468ea75f40b9f1e7eee9e.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S8a682529d54c4d1ba4b1b7658d39a433Y.jpg"
+      ],
+      "verdict": "runner-up",
+      "notes": "Strongest trade record of the line, 800+ sold at a 5.0 rating over 101 reviews. Authenticity check on gallery images 1 and 2: image 1 is a CDSENET family sheet, not a single-part photo, showing the whole E22-M range side by side with dimensions, and the 20mm by 14mm tile is labelled E22-170M22S / E22-400M22S / E22-900M22S with the IPEX connector visible. Image 2 is the same family layout. So the part is genuine Ebyte silicon but the photography does not isolate the 900M22S, and the buyer must pick the 868 or 915 variant from the dropdown. Not chosen because shipping doubles the landed price against the free-shipping winner."
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005006484442897.html",
+      "title": "SX1262 LoRa Wireless Maodule CDEBYTE E22-900M22S 22dBm 915MHz SMD 32M High-Precision TCXO RF Module for LDO DC-DC Power Supply",
+      "price_kes": 867,
+      "price_note": "Plus KSh 463 shipping shown on the page, so landed 1330 for one. A second price of 985 appears on the page, most likely the higher band or quantity variant.",
+      "shipping": "KSh 463",
+      "sold": "137",
+      "rating": null,
+      "reviews": null,
+      "store": "store 5489003, trade name not exposed on the page",
+      "store_url": "https://www.aliexpress.com/store/5489003",
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/Se2a00dc6b6d945ff90c7a73f884f11a2e.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S29fc156fc1bf4d668da4cedcc11ed736z.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S488e3072bff54bdfb78652d2df767c23r.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sc34c6d0e84a94b46b1a5f23feaa6497eO.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S99bcda97b494427e98f67febe1b52ba6b.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sb2fc8ff8c6f0493c800674126f70a9bcy.jpg"
+      ],
+      "verdict": "runner-up",
+      "notes": "Correct part named in full, CDEBYTE E22-900M22S, from a long-established store id 5489003 that also carries the rest of the Ebyte range. No rating or review count was exposed on the page, and 137 sold is under the 500 bar, so it clears the selection rule only on the store's overall breadth, which could not be read without a login. Landed 1330 is 2.4 times the chosen listing. Photos not opened; kept as a fallback source rather than a real contender."
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005008613131259.html",
+      "title": "Waveshare Core1262-868M LoRa Module SX1262 Anti-Interference EU868 Band",
+      "price_kes": 1295,
+      "price_note": "The named Waveshare alternative from the spec. EU868 band is fixed in the part number, so there is no variant to get wrong.",
+      "shipping": "not shown",
+      "sold": "104",
+      "rating": null,
+      "reviews": null,
+      "store": "not read",
+      "store_url": null,
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/S1e9f751d79c14bda8ed3c0b758b0ce80Q.jpg"
+      ],
+      "verdict": "runner-up",
+      "notes": "The only listing found whose part number pins the band to EU868 with no dropdown, which removes the single biggest ordering risk on this line. Waveshare Core1262 is a larger carrier board with an SMA or IPEX option and 0.1 inch headers, so it is easier to breadboard onto the DevKitC than a castellated Ebyte tile. Not chosen because it is 2.3 times the price of the winner and only 104 sold. Take it if the Ebyte band variant turns out not to be selectable at checkout. Photos not opened, so no silkscreen check was made."
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005005065401222.html",
+      "title": "SX1262 LoRa Module 868/915MHz CDEBYTE E22-900MM22S Ultra-Small Size 21.5dBm 7KM SMD RF Transceiver Module",
+      "price_kes": 748,
+      "price_note": "Cheap and well sold, but the part number is E22-900MM22S with a double M, not E22-900M22S.",
+      "shipping": "not shown",
+      "sold": "364",
+      "rating": "5.0",
+      "reviews": 9,
+      "store": "store 5489003, trade name not exposed on the page",
+      "store_url": "https://www.aliexpress.com/store/5489003",
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sde96c0655e2a425d8326161066cb1fb9N.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S623e5fb1f3714a99853963dc908ad976w.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S2e0803f8f9574107884313721eca0d5aj.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S8e0c7f7b96f9426c9c34d19fbbd0d0fb1.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S6f49163be9ba4c0a8c262ce8a8522e8ej.jpg"
+      ],
+      "verdict": "rejected",
+      "notes": "Rejected on spec. The E22-900MM22S is the 10mm by 10mm ultra-small member of the family at 21.5 dBm, confirmed by the Ebyte family sheet seen while checking the runner-up, which lists E22-400MM22S and E22-900MM22S as the 10mm tile separate from the 20mm by 14mm E22-900M22S. It has no IPEX connector, only an antenna pad, and is a full dB down on output. Not the 22 dBm SPI module the spec asks for."
+    }
+  ]
+}

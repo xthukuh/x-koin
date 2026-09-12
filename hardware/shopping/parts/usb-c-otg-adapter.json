@@ -1,0 +1,92 @@
+{
+  "id": "usb-c-otg-adapter",
+  "line": "USB-C male to USB-A female OTG adapter",
+  "role": "xKoin-Client OTG dongle lead",
+  "spec": "USB-C plug on the phone side, full size USB-A socket on the device side, wired for OTG so the phone acts as host. USB 3.0 pinout preferred. One piece, or a two pack when that is cheaper per unit.",
+  "qty": 1,
+  "why": "Joins the Client dongle to the phone so the companion app reaches LoRa directly when there is no Node in range.",
+  "recorded": "2026-09-12",
+  "chosen": "https://www.aliexpress.com/item/1005007791455111.html",
+  "candidates": [
+    {
+      "url": "https://www.aliexpress.com/item/1005007791455111.html",
+      "title": "Mini Type-C to USB Adapter 3.0 USB-C Male OTG A Female Data Connector For MacBook ProiPadMini 6/ProMacBookAirType CDevice",
+      "price_kes": 136,
+      "price_note": "KSh 136 headline for a single adapter with free shipping. Cheaper figures on the page, down to KSh 58, belong to the colour or multi pack variants and to recommended items; take the single black or white piece. No Choice or Welcome badge seen.",
+      "shipping": "Free shipping",
+      "sold": "50,000+",
+      "rating": "4.9",
+      "reviews": 7087,
+      "store": null,
+      "store_url": null,
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sc47fe0caaf9345b58dc54e379cd7cc76P.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S7f962cfaa2104764839c1d5de3a095c9W.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sb7534b5c217e4974ac323eeca02bb445G.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sfb950f044c954e49b0a8c45adb3567c4u.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S0832493c666a4095a45565a314f90a2cu.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S900cfe19b4d7489284a514b88791c929B.png"
+      ],
+      "verdict": "chosen",
+      "notes": "Photo check passes on both images. Image 1 shows the correct geometry, a USB-C plug on a short moulded body with a full size USB-A socket on the opposite face, in black and white, captioned 5Gbps USB 3.0. Image 2 is a labelled cutaway naming the USB 3.0 connector on one end and the Type-C interface on the other, and the socket photograph shows the blue insulator with the extra SuperSpeed contacts behind the four USB 2.0 pins, so it is a real USB 3.0 socket rather than a 2.0 part in a blue shell. Strongest trading record of anything sourced in this batch: 50,000+ sold, 4.9 over 7,087 reviews, free shipping. Note that the chosen and runner-up listings serve byte identical product photographs, so both are reselling the same generic part.",
+      "price_all_seen": ["KSh 136", "KSh 887", "KSh 1,023", "KSh 58", "KSh 115", "KSh 71", "KSh 144", "KSh 106"]
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005011743079355.html",
+      "title": "USB Type-C Mini to USB Adapter 3.0 USB-C Male OTG A Female DataConnector ForMacBook Pro iPad Mini6/ProMacBook AirType C Device",
+      "price_kes": 136,
+      "price_note": "KSh 136 headline with free shipping, the same figure as the chosen listing.",
+      "shipping": "Free shipping",
+      "sold": "5,000+",
+      "rating": "4.9",
+      "reviews": 570,
+      "store": null,
+      "store_url": null,
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sd27d610d2d4c4f24891162da074283f11.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S9c893f9e74234a81a455f44a92a817d68.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S65c34b5a84ea457ea9be45f41ba39ea0Z.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S01df7cdef99d43ac9232453be34ed5eeM.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sfe61887d12ee42fb9e635c48c4bcb72dF.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sd7d62385ff0c4053b5ad03a00b424ce1P.png"
+      ],
+      "verdict": "runner-up",
+      "notes": "Same part, same price, same free shipping, one tenth the trading record. The authenticity check produced a useful side result: the first two gallery files downloaded from this listing are byte for byte identical to the first two of the chosen listing, 50,097 and 65,624 bytes, under different image URLs. So the two sellers are shipping the same generic adapter and the sold count is the only thing separating them. Keep as the fallback if the chosen listing stops shipping to Kenya.",
+      "price_all_seen": ["KSh 136", "KSh 864", "KSh 1,000", "KSh 978", "KSh 842", "KSh 464", "KSh 58"]
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005009373904541.html",
+      "title": "3/5pcs NEW USB 3.0 OTG Adapter, Type-c to USB 3.0 OTG Adapter for Android Phone USB Disk Car U Disk Reader",
+      "price_kes": 448,
+      "price_note": "KSh 448 for the three piece pack on the search card, about KSh 149 a unit, so dearer per unit than the single adapters above. The item page could not be opened; AliExpress served an anti-bot interstitial on two attempts, so this row comes from the search card only.",
+      "shipping": "not shown",
+      "sold": "4,000+",
+      "rating": null,
+      "reviews": null,
+      "store": null,
+      "store_url": null,
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sdbc986bcabed44d49d3efa2f94d02e4eD.png"
+      ],
+      "verdict": "rejected",
+      "notes": "Checked because the brief allows a multi pack when it is cheaper per unit. It is not: KSh 149 a unit against KSh 136 for a single with free shipping, and shipping here is unknown, which can only widen the gap. No photo check made since the price rules it out.",
+      "price_all_seen": ["KSh 448"]
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005005335906454.html",
+      "title": "USB 3.0 Female to Female Adapter / Type C to USB 3.0 Adapter OTG USB C to Type C Male Female Converter Connector",
+      "price_kes": 94,
+      "price_note": "KSh 94 headline on the search card. The item page was not opened.",
+      "shipping": "not shown",
+      "sold": "1,000+",
+      "rating": null,
+      "reviews": null,
+      "store": null,
+      "store_url": null,
+      "images": [],
+      "verdict": "rejected",
+      "notes": "Rejected under the wrong-default-variant rule. The title bundles at least three different parts, a USB-A female to female coupler, a C to A adapter and a C to C adapter, and the headline KSh 94 is most likely the coupler rather than the C male to A female piece the dongle lead needs. Shipping is not shown either, so the apparent KSh 42 saving is not real.",
+      "price_all_seen": ["KSh 94"]
+    }
+  ]
+}

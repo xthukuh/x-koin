@@ -1,0 +1,122 @@
+{
+  "id": "heltec-lora32-v3-868",
+  "line": "Heltec WiFi LoRa 32 V3, 868 MHz",
+  "role": "xKoin-Satellite, xKoin-Client OTG dongle, farm node option",
+  "spec": "ESP32-S3FN8 plus SX1262, 0.96 inch OLED, 868 MHz band (listings say 863-928 or 868/915), antenna included, V3 or V3.1, not V2 and not V4",
+  "qty": 3,
+  "why": "Carries the LoRa survival plane on a board that needs no SPI wiring, and the OLED puts RSSI and node state on camera during the demo.",
+  "recorded": "2026-09-12",
+  "chosen": "https://www.aliexpress.com/item/1005008177147021.html",
+  "candidates": [
+    {
+      "url": "https://www.aliexpress.com/item/1005008177147021.html",
+      "title": "2PCS Heltec LoRa32 V3 868MHz 915MHz Development Board SX1262 0.96 Inch OLED Display BT+WIFI Lora Kit for Arduino IOT Meshtastic",
+      "price_kes": 5106,
+      "price_note": "2-pack, so 2553 per unit, the lowest per-unit price of any V3 listing found. Band named as 868MHz 915MHz in the title. No case in the box. Cheapest route to qty 3 is this pack plus one single from the store 1104785498 listing below, about 7840 for three boards.",
+      "shipping": "not shown",
+      "sold": "2,000+",
+      "rating": "4.8",
+      "reviews": 288,
+      "store": "store 1104139287, trade name not exposed on the page",
+      "store_url": "https://www.aliexpress.com/store/1104139287",
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/S35ddeef696a54ac0a29cdaa3f09a7a32b.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S363ffe38e709417e9ba3d65165acde00u.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sd33fb5d71a4d498289a2a40a47adc39a5.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sb940b29d0281406fac3bf69356bf6fccG.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S1169ebe37cf94cbfa0f42f8d7aaaf3b3h.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sdc7f273f5e54422c84329d6f0a82eeb3x.jpg"
+      ],
+      "verdict": "chosen",
+      "notes": "Authenticity check on gallery images 1 and 2. Image 1 shows two white-PCB boards whose edge silkscreen reads V3 and V3.1, each with Type-C, the 0.96 inch OLED, an IPEX1.0 pigtail and a stubby antenna, so the antenna is in the box. Image 2 is the annotated Heltec factory diagram: HELTEC AUTOMATION logo on the reverse, part number HTIT-WB32LAF, www.heltec.cn, ESP32-S3 QFN, SILABS CP2102 USB-serial, 40M and 32k crystals, SH1.25-2 lithium connector, LF and HF band pads, and board revision V3.2 beside the LoRa IPEX connector. Genuine Heltec V3 family, not a V2 and not a relabelled clone. Chosen on lowest per-unit landed cost with 288 reviews behind it. No case included."
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005008430005435.html",
+      "title": "2PCS Heltec LoRa32 V3 868MHz 915MHz Development Board SX1262 0.96 Inch OLED Display BT+WIFI Lora Kit for Arduino IOT Meshtastic",
+      "price_kes": 5287,
+      "price_note": "2-pack, 2644 per unit. Same product photography as the chosen listing, different reseller.",
+      "shipping": "not shown",
+      "sold": "3,000+",
+      "rating": "4.9",
+      "reviews": 403,
+      "store": "not shown on the page",
+      "store_url": null,
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/S35ddeef696a54ac0a29cdaa3f09a7a32b.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S363ffe38e709417e9ba3d65165acde00u.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sd33fb5d71a4d498289a2a40a47adc39a5.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sb940b29d0281406fac3bf69356bf6fccG.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S1169ebe37cf94cbfa0f42f8d7aaaf3b3h.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sdc7f273f5e54422c84329d6f0a82eeb3x.jpg"
+      ],
+      "verdict": "runner-up",
+      "notes": "Byte-identical gallery to the chosen listing, so the same V3 silkscreen evidence applies. More trade behind it, 3,000+ sold over 403 reviews at 4.9, but 91 KES dearer per unit. Take this if the chosen listing is out of stock or quotes punitive shipping at checkout."
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005008932368071.html",
+      "title": "Heltec LoRa 32(V3) Dev-board with SX1262 and ESP32-S3FN8 Chip OLED, Meshtastic Mesh Network Paxcounter Support Heltec V3 WiFi",
+      "price_kes": 2734,
+      "price_note": "Single board. Best single-unit price from a V3-only listing, so this is the natural third board on top of the chosen 2-pack.",
+      "shipping": "not shown",
+      "sold": "1,000+",
+      "rating": "4.9",
+      "reviews": 80,
+      "store": "store 1104785498, trade name not exposed on the page",
+      "store_url": "https://www.aliexpress.com/store/1104785498",
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/S0e269dfaa27444349f1a938f1ee08394S.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S22b405d28e66466fb0fb75cf4f0a55e8u.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sb08135e424b545a88083765cdca927da7.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S9e5a752c4bb44f4398f8298480e95d2bj.png",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S41c864e036924ea7981c31d2278d1c22k.png",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S817be3536d4d4397b8524c623bec772aP.png"
+      ],
+      "verdict": "runner-up",
+      "notes": "Gallery image 1 checked: white-PCB Heltec board on USB-C with the OLED lit and showing the HELTEC AUTOMATION splash, IPEX pigtail and stubby antenna attached, consistent with a genuine V3. The title names ESP32-S3FN8 so there is no V2 ambiguity. The page review tag cloud carries poor antenna quality with 5 mentions, so budget a better 868 MHz antenna if this board is bought."
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005007752194012.html",
+      "title": "Meshtastic Wifi Heltec LoRa 32 V3 With Case 868MHZ ESP32 Oled SX1262 0.96 Inch Blue OLED Display Development Board for Arduino",
+      "price_kes": 2882,
+      "price_note": "Single board with a plastic case included. Title states 868MHZ outright, so no band guessing at checkout.",
+      "shipping": "not shown",
+      "sold": "3,000+",
+      "rating": "4.8",
+      "reviews": 264,
+      "store": "store 1104144026, trade name not exposed on the page",
+      "store_url": "https://www.aliexpress.com/store/1104144026",
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sa1fbec8d1db24fef9514d57432035258c.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sb0582da6b1554b31923694e8a2a5a3a6q.png",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Seaa5dca42d4740e0a3c8b2cf01e69548V.png",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S12e6eb76f6af47fa8f0cd8d312fa0c5ex.png",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sc298ad1c4d3c4b56bfd576a4c8ad2847S.png",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S9de47f24d4434a3285678a6e018bc731f.jpg"
+      ],
+      "verdict": "runner-up",
+      "notes": "The only shortlisted listing that ships a case, and the only one that states 868 MHz in the title rather than leaving it to variant choice. 3,000+ sold at 4.8 over 264 reviews. Not chosen only on price, 329 KES per unit dearer than the 2-pack. Worth taking for the one board that goes outdoors for demo D2. Review tag cloud mentions programming issues 6 times, most likely the usual hold-PRG-then-reset entry to the CP2102 bootloader."
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005007571210078.html",
+      "title": "LORA 32 Heltec WiFi LoRa32 V4 & V3 Node Arduino Board LoRa 32 SX1262 ESP32-S3 Wifi BLE SMA Antenna for Meshtastic IoT Tracker",
+      "price_kes": 2661,
+      "price_note": "Cheapest single found and the only Heltec candidate with Free shipping confirmed on the page, so landed cost is 2661.",
+      "shipping": "Free shipping",
+      "sold": "900+",
+      "rating": "4.9",
+      "reviews": 110,
+      "store": "store 1104034632, trade name not exposed on the page",
+      "store_url": "https://www.aliexpress.com/store/1104034632",
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/S078d65194c004be187e8bbb336643611i.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S5f34cf21c95443b3a360a1c47ab564daD.png",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S11314689c11c4acea96f97cae4116d4dJ.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S0d319df56aaf41d3ba2ab605d2ac0a83h.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S8f352a13bfbb4ba891bd9a97c9618b75J.png",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Scb0ce9d595024b34bb969aa7c93d5086w.png"
+      ],
+      "verdict": "rejected",
+      "notes": "Rejected on variant risk despite the lowest landed price. Authenticity check on gallery images 1 and 2. Image 1 is only a white and green plastic case printed heltec.org, no board visible. Image 2 is the Heltec V4 marketing sheet: black PCB, V4 silkscreened next to the USB-C port, the screwed-down V4 display module, and the V4 headline figures 10 km and 28 plus or minus 1 dBm. The listing merges V4 and V3 under one product and the hero imagery is V4, so the default variant is very likely a V4 board, which the spec excludes. Buy here only if the V3 option is visibly selectable and priced at checkout."
+    }
+  ]
+}

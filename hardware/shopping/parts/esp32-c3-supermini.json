@@ -1,0 +1,104 @@
+{
+  "id": "esp32-c3-supermini",
+  "line": "ESP32-C3 SuperMini",
+  "role": "LoRa ecosystem device: farm sensor node",
+  "spec": "ESP32-C3FH4 on the SuperMini footprint, roughly 22 by 18 mm, USB-C, ceramic chip antenna, castellated edge pads, BOOT and RST buttons.",
+  "qty": 1,
+  "why": "Carries the soil moisture and temperature sensors on demo D6 and proves that a third party style node rides the free LAN plane without spending XKN.",
+  "recorded": "2026-09-12",
+  "chosen": "https://www.aliexpress.com/item/1005006406538478.html",
+  "candidates": [
+    {
+      "url": "https://www.aliexpress.com/item/1005006406538478.html",
+      "title": "TENSTAR ROBOT ESP32-C3 ESP32-S3 ESP32-H2 ESP32-C6 Development Board ESP32 C3 SuperMini WiFi Bluetooth ESP32C3",
+      "price_kes": 240,
+      "price_note": "KSh 240 is the figure the search shows for this listing on the ESP32-C3 SuperMini query, and the C3 is the base variant of the four. The listing also sells S3, C6 and H2 boards and a breakout board at higher prices, so select the C3 variant. No Choice or Welcome badge seen.",
+      "shipping": "Free shipping",
+      "sold": "10,000+",
+      "rating": "4.8",
+      "reviews": 710,
+      "store": "store id 334970",
+      "store_url": "https://www.aliexpress.com/store/334970",
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sa0575ff31c3e4bc997770ae770419218g.png",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sbd26542da1fe46f9ab003debc83ca9b2j.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sdf65d9f2ce7c4cbaa0f541ba9fde035dQ.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S87b26f1902494ecd86baf88fa94c61d9L.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S96db93f9ecae4389aece87a23cf9f3fdV.png",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S38b673d9c681495895718c544007110ei.png"
+      ],
+      "verdict": "chosen",
+      "notes": "Authenticity confirmed from three gallery photographs, all real photographs held in a hand rather than renders. Gallery image 3 shows the underside silkscreened ESP32 C3 Super Mini, and the top face shows the Espressif swirl on a QFN marked ESP32-C3 with a date code, the 40.000 MHz crystal, the USB-C shell, BOOT and RST buttons, castellated pads numbered 0 to 21, and the red ceramic chip antenna block printed C3 on the short edge. That is the reference SuperMini layout with the ceramic antenna the spec calls for. Cheapest landed price of the line at KSh 240 with free shipping, and the strongest record: 10,000+ sold, 4.8 over 710 reviews, in an old high volume store.",
+      "price_all_seen": ["KSh 240", "KSh 383", "KSh 623", "KSh 519", "KSh 1,814", "KSh 654", "KSh 1,037"]
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005010653281733.html",
+      "title": "PLR ESP32 Development Board ESP32-C3 SuperMini WiFi Bluetooth Expansion",
+      "price_kes": 313,
+      "price_note": "Item page showed KSh 313; the search card showed KSh 318. The listing bundles an expansion board, so the cheaper figure may be the bare board and the dearer one the pair.",
+      "shipping": "Free shipping",
+      "sold": "5,000+",
+      "rating": "4.9",
+      "reviews": 232,
+      "store": null,
+      "store_url": null,
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sd1c87e288ff84694a6ce640aba1f5031v.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S2493047b29f54d58a30fd27026f95ee1e.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Scda6207bb8a54a1fb8d855bfb4ef3740p.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S590af30d8a7347239c96f9d71090632ex.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sb947cdfc6279415aa6ddbd732a1fb0c2m.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S52820a3a59f54e9ba962e7d6f2d945344.jpg"
+      ],
+      "verdict": "runner-up",
+      "notes": "Photo check passes: image 2 is a clear shot of the bare SuperMini showing the ESP32-C3 QFN with the Espressif mark, the 40.000 MHz can, the ceramic antenna printed C3 and the 5V, G, 3.3 and RST edge labels. Image 1 shows it plugged into a screw-terminal expansion board, which is the headline product. Behind the chosen listing on price, on sold count and on the clarity of what arrives for the money. A good fallback if the TENSTAR C3 variant is out of stock.",
+      "price_all_seen": ["KSh 313", "KSh 1,079", "KSh 1,392", "KSh 654", "KSh 1,037", "KSh 383"]
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005008888302091.html",
+      "title": "1/5/10PCS ESP32-C3 Development Board ESP32 C3 SuperMini Development Board WiFi Bluetooth For Arduino",
+      "price_kes": 321,
+      "price_note": "Item page showed KSh 321 against KSh 415 on the search card, so a quantity or colour variant is selected by default. Pack sizes 1, 5 and 10.",
+      "shipping": "not shown",
+      "sold": "4,000+",
+      "rating": "4.8",
+      "reviews": 268,
+      "store": "store id 1104278440",
+      "store_url": "https://www.aliexpress.com/store/1104278440",
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/S8074a4e53b054317820c578de5936f82B.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S2d93db04cbb84e1d9fae2716850b6156c.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S4f86d95a3a234b12a2e3f163c10c60cf4.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S5c95ca5b30fb4d67a906bdee0a1005472.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S0eb7191ec17e4081a464f3f35f49ce4b8.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S58c4a01c0b9a401fb6ae72b36d966df1Q.jpg"
+      ],
+      "verdict": "runner-up",
+      "notes": "Sound record at 4,000+ sold and 4.8 over 268 reviews, but dearer than the chosen listing, shipping was not shown, and the price gap between the item page and the search card means the quantity variant has to be checked by hand. No photo check made, since two better priced candidates passed theirs.",
+      "price_all_seen": ["KSh 321", "KSh 383", "KSh 704", "KSh 491", "KSh 1,413", "KSh 136"]
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005010312887045.html",
+      "title": "1-10PCS ESP32-C3 Development Board ESP32 SuperMini Development Board ESP32 Development Board WiFi Bluetooth For Arduino XCW",
+      "price_kes": 350,
+      "price_note": "KSh 350 for the single board; figures up to KSh 6,984 on the page are the 10 piece packs.",
+      "shipping": "not shown",
+      "sold": "2,000+",
+      "rating": "4.7",
+      "reviews": 118,
+      "store": "store id 1105205703",
+      "store_url": "https://www.aliexpress.com/store/1105205703",
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/S27a51ee908ec4a0c8a22697512044819k.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S0027ed96d7d54a7da334f2ba6f48281ac.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S2455a9dc01294c9084595f5551e18ecfk.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S749c30c3677c4f13876869779fe34219b.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S3214f8b61d99499193b8c5cdce3063d8E.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S44e49929449d445d8d75e338d3ca644au.jpg"
+      ],
+      "verdict": "rejected",
+      "notes": "Dearest of the four at KSh 350 with shipping not shown, the smallest review base at 118, and the rating of 4.7 sits at the floor of the selection rule. Nothing wrong with it, simply beaten on every axis by the chosen listing.",
+      "price_all_seen": ["KSh 350", "KSh 1,115", "KSh 1,465", "KSh 2,558", "KSh 512"]
+    }
+  ]
+}

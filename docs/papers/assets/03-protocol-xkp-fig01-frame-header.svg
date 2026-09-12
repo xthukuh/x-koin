@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" width="1200" height="600">
+  <rect x="0" y="0" width="1200" height="600" fill="#ffffff"/>
+
+  <text x="60" y="70" font-family="monospace" font-size="26" fill="#14213d">XKP v1 frame: 27 B header + payload + 2 B CRC = 29 B overhead</text>
+  <text x="60" y="100" font-family="monospace" font-size="15" fill="#0b3d91">little-endian, magic 0x4B58 ("XK"), CRC16-CCITT poly 0x1021 init 0xFFFF</text>
+
+  <!-- offset ruler -->
+  <text x="60" y="185" font-family="monospace" font-size="14" fill="#0b3d91">0</text>
+  <text x="120" y="185" font-family="monospace" font-size="14" fill="#0b3d91">2</text>
+  <text x="150" y="185" font-family="monospace" font-size="14" fill="#0b3d91">3</text>
+  <text x="180" y="185" font-family="monospace" font-size="14" fill="#0b3d91">4</text>
+  <text x="210" y="185" font-family="monospace" font-size="14" fill="#0b3d91">5</text>
+  <text x="450" y="185" font-family="monospace" font-size="14" fill="#0b3d91">13</text>
+  <text x="690" y="185" font-family="monospace" font-size="14" fill="#0b3d91">21</text>
+  <text x="810" y="185" font-family="monospace" font-size="14" fill="#0b3d91">25</text>
+  <text x="870" y="185" font-family="monospace" font-size="14" fill="#0b3d91">27</text>
+  <text x="1035" y="185" font-family="monospace" font-size="14" fill="#0b3d91">27+N</text>
+
+  <!-- field boxes -->
+  <rect x="60" y="200" width="60" height="92" fill="#ffffff" stroke="#14213d" stroke-width="2"/>
+  <rect x="120" y="200" width="30" height="92" fill="#ffffff" stroke="#14213d" stroke-width="2"/>
+  <rect x="150" y="200" width="30" height="92" fill="#ffffff" stroke="#14213d" stroke-width="2"/>
+  <rect x="180" y="200" width="30" height="92" fill="#ffffff" stroke="#14213d" stroke-width="2"/>
+  <rect x="210" y="200" width="240" height="92" fill="#ffffff" stroke="#14213d" stroke-width="2"/>
+  <rect x="450" y="200" width="240" height="92" fill="#ffffff" stroke="#14213d" stroke-width="2"/>
+  <rect x="690" y="200" width="120" height="92" fill="#ffffff" stroke="#14213d" stroke-width="2"/>
+  <rect x="810" y="200" width="60" height="92" fill="#ffffff" stroke="#14213d" stroke-width="2"/>
+  <rect x="870" y="200" width="180" height="92" fill="#ffffff" stroke="#0b3d91" stroke-width="3" stroke-dasharray="8 5"/>
+  <rect x="1050" y="200" width="60" height="92" fill="#ffffff" stroke="#14213d" stroke-width="2"/>
+
+  <!-- field names -->
+  <text x="90" y="243" font-family="monospace" font-size="13" fill="#14213d" text-anchor="middle">magic</text>
+  <text x="90" y="262" font-family="monospace" font-size="12" fill="#0b3d91" text-anchor="middle">2 B</text>
+  <text x="135" y="243" font-family="monospace" font-size="12" fill="#14213d" text-anchor="middle">v|t</text>
+  <text x="135" y="262" font-family="monospace" font-size="12" fill="#0b3d91" text-anchor="middle">1</text>
+  <text x="165" y="243" font-family="monospace" font-size="12" fill="#14213d" text-anchor="middle">flg</text>
+  <text x="165" y="262" font-family="monospace" font-size="12" fill="#0b3d91" text-anchor="middle">1</text>
+  <text x="195" y="243" font-family="monospace" font-size="12" fill="#14213d" text-anchor="middle">ttl</text>
+  <text x="195" y="262" font-family="monospace" font-size="12" fill="#0b3d91" text-anchor="middle">1</text>
+  <text x="330" y="238" font-family="monospace" font-size="15" fill="#14213d" text-anchor="middle">src node id</text>
+  <text x="330" y="262" font-family="monospace" font-size="12" fill="#0b3d91" text-anchor="middle">8 B  SHA-256(pk)[:8]</text>
+  <text x="570" y="238" font-family="monospace" font-size="15" fill="#14213d" text-anchor="middle">dst node id</text>
+  <text x="570" y="262" font-family="monospace" font-size="12" fill="#0b3d91" text-anchor="middle">8 B  0xFF*8 = bcast</text>
+  <text x="750" y="238" font-family="monospace" font-size="14" fill="#14213d" text-anchor="middle">seq</text>
+  <text x="750" y="262" font-family="monospace" font-size="12" fill="#0b3d91" text-anchor="middle">4 B per-src</text>
+  <text x="840" y="238" font-family="monospace" font-size="13" fill="#14213d" text-anchor="middle">len</text>
+  <text x="840" y="262" font-family="monospace" font-size="12" fill="#0b3d91" text-anchor="middle">2 B</text>
+  <text x="960" y="238" font-family="monospace" font-size="15" fill="#14213d" text-anchor="middle">payload</text>
+  <text x="960" y="262" font-family="monospace" font-size="12" fill="#0b3d91" text-anchor="middle">N bytes</text>
+  <text x="1080" y="238" font-family="monospace" font-size="13" fill="#14213d" text-anchor="middle">CRC</text>
+  <text x="1080" y="262" font-family="monospace" font-size="12" fill="#0b3d91" text-anchor="middle">2 B</text>
+
+  <!-- header span bracket -->
+  <line x1="60" y1="320" x2="870" y2="320" stroke="#14213d" stroke-width="2"/>
+  <line x1="60" y1="310" x2="60" y2="330" stroke="#14213d" stroke-width="2"/>
+  <line x1="870" y1="310" x2="870" y2="330" stroke="#14213d" stroke-width="2"/>
+  <text x="465" y="348" font-family="monospace" font-size="14" fill="#14213d" text-anchor="middle">HEADER_SIZE = 27 B  (struct "&lt;HBBB8s8sIH")</text>
+
+  <!-- crc coverage bracket -->
+  <line x1="60" y1="390" x2="1050" y2="390" stroke="#0b3d91" stroke-width="2"/>
+  <line x1="60" y1="380" x2="60" y2="400" stroke="#0b3d91" stroke-width="2"/>
+  <line x1="1050" y1="380" x2="1050" y2="400" stroke="#0b3d91" stroke-width="2"/>
+  <text x="555" y="418" font-family="monospace" font-size="14" fill="#0b3d91" text-anchor="middle">CRC16 computed over bytes 0 .. 27+N-1</text>
+
+  <!-- type nibble detail -->
+  <rect x="60" y="450" width="520" height="110" fill="#ffffff" stroke="#14213d" stroke-width="2"/>
+  <text x="80" y="478" font-family="monospace" font-size="14" fill="#14213d">byte 2 = version nibble (high) | type nibble (low)</text>
+  <text x="80" y="502" font-family="monospace" font-size="13" fill="#0b3d91">0 BEACON  1 JOIN_REQ  2 JOIN_ACK  3 DATA</text>
+  <text x="80" y="522" font-family="monospace" font-size="13" fill="#0b3d91">4 DATA_ACK  5 RECEIPT  6 RECEIPT_ACK</text>
+  <text x="80" y="542" font-family="monospace" font-size="13" fill="#0b3d91">7 TELEMETRY  8 SETTLE_NOTIFY</text>
+
+  <rect x="620" y="450" width="490" height="110" fill="#ffffff" stroke="#14213d" stroke-width="2"/>
+  <text x="640" y="478" font-family="monospace" font-size="14" fill="#14213d">byte 3 flags</text>
+  <text x="640" y="502" font-family="monospace" font-size="13" fill="#0b3d91">bit0 ACK_REQ   bit1 ENCRYPTED   bit2 FRAGMENT</text>
+  <text x="640" y="526" font-family="monospace" font-size="14" fill="#14213d">byte 4 ttl: hops remaining, decremented per relay</text>
+  <text x="640" y="548" font-family="monospace" font-size="13" fill="#0b3d91">reject order: magic, version, type, length, CRC</text>
+</svg>

@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" font-family="IBM Plex Mono, Consolas, Menlo, monospace" font-size="13" fill="#14213d">
+  <!-- xKoin architecture paper, Figure 1. Building cutaway: mains riser, one Node,
+       two Node-Satellites, phones. Schematic style. -->
+  <defs>
+    <marker id="ai" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#0b3d91"/>
+    </marker>
+  </defs>
+  <style>
+    .box { fill: #ffffff; stroke: #14213d; stroke-width: 2; }
+    .acc { fill: #eef2fa; stroke: #0b3d91; stroke-width: 2; }
+    .mon { fill: #fdf6ec; stroke: #b8741a; stroke-width: 2; }
+    .flow { fill: none; stroke: #0b3d91; stroke-width: 2; marker-end: url(#ai); }
+    .slab { fill: none; stroke: #14213d; stroke-width: 1.5; stroke-dasharray: 8 5; }
+    .h { font-size: 14px; letter-spacing: 0.05em; fill: #14213d; }
+    .s { font-size: 12px; fill: #3c4a67; }
+  </style>
+
+  <rect width="1200" height="800" fill="#ffffff"/>
+
+  <text x="50" y="40" class="h">ONE BUILDING, ONE MAINS SEGMENT</text>
+
+  <!-- building shell -->
+  <rect x="70" y="60" width="680" height="690" class="box"/>
+  <path d="M 70 290 H 750 M 70 520 H 750" class="slab"/>
+  <text x="82" y="82" class="s">Floor 2</text>
+  <text x="82" y="312" class="s">Floor 1</text>
+  <text x="82" y="542" class="s">Ground</text>
+
+  <!-- mains riser -->
+  <rect x="170" y="90" width="18" height="630" class="acc"/>
+  <text x="200" y="84" class="s">mains riser, 230 V, one electrical segment</text>
+
+  <!-- meter -->
+  <rect x="96" y="650" width="66" height="60" class="box"/>
+  <text x="104" y="676" class="s">meter</text>
+  <text x="104" y="694" class="s">board</text>
+  <path d="M 162 680 H 170" stroke="#14213d" stroke-width="2" fill="none"/>
+
+  <!-- node -->
+  <rect x="250" y="580" width="420" height="130" class="acc"/>
+  <text x="266" y="608" class="h">xKoin-NODE</text>
+  <text x="266" y="630" class="s">backhaul termination, Wi-Fi AP, captive portal</text>
+  <text x="266" y="650" class="s">HomePlug AV injector + KQ-130F on UART2</text>
+  <text x="266" y="670" class="s">SX1262 radio, Ed25519 voucher and receipt checks</text>
+  <text x="266" y="690" class="s">packet classifier: free LAN versus paid WAN</text>
+  <path d="M 188 640 H 246" class="flow"/>
+
+  <!-- backhaul -->
+  <path d="M 10 560 H 250" class="flow"/>
+  <text x="14" y="548" class="s">backhaul in</text>
+
+  <!-- node-satellites -->
+  <rect x="250" y="350" width="300" height="110" class="box"/>
+  <text x="266" y="378" class="h">xKoin-NODE-SATELLITE</text>
+  <text x="266" y="400" class="s">wall socket, floor 1</text>
+  <text x="266" y="420" class="s">HomePlug extractor + Wi-Fi</text>
+  <text x="266" y="440" class="s">admission and metering at the edge</text>
+  <path d="M 188 405 H 246" class="flow"/>
+
+  <rect x="250" y="120" width="300" height="110" class="box"/>
+  <text x="266" y="148" class="h">xKoin-NODE-SATELLITE</text>
+  <text x="266" y="170" class="s">wall socket, floor 2</text>
+  <text x="266" y="190" class="s">HomePlug extractor + Wi-Fi</text>
+  <text x="266" y="210" class="s">admission and metering at the edge</text>
+  <path d="M 188 175 H 246" class="flow"/>
+
+  <!-- phones -->
+  <rect x="600" y="360" width="120" height="90" class="box"/>
+  <text x="612" y="388" class="s">phone</text>
+  <text x="612" y="408" class="s">Wi-Fi</text>
+  <text x="612" y="428" class="s">client</text>
+  <path d="M 550 405 H 596" class="flow"/>
+
+  <rect x="600" y="130" width="120" height="90" class="box"/>
+  <text x="612" y="158" class="s">phone</text>
+  <text x="612" y="178" class="s">Wi-Fi</text>
+  <text x="612" y="198" class="s">client</text>
+  <path d="M 550 175 H 596" class="flow"/>
+
+  <!-- right hand notes -->
+  <rect x="790" y="60" width="380" height="250" class="acc"/>
+  <text x="804" y="88" class="h">WHAT RUNS ON THE RISER</text>
+  <text x="804" y="116" class="s">HomePlug AV, modelled at ~10 Mbps</text>
+  <text x="804" y="136" class="s">goodput, 1400 B frame payload: bulk</text>
+  <text x="804" y="156" class="s">WAN data for browsing and video.</text>
+  <text x="804" y="184" class="s">KQ-130F narrowband, UART 9600 baud,</text>
+  <text x="804" y="204" class="s">~960 B/s, 128 B payload: telemetry,</text>
+  <text x="804" y="224" class="s">receipts and control. A 108 B receipt</text>
+  <text x="804" y="244" class="s">fits one frame by design.</text>
+  <text x="804" y="272" class="s">Wi-Fi 802.11 terminates at each</text>
+  <text x="804" y="292" class="s">satellite for client attach.</text>
+
+  <rect x="790" y="340" width="380" height="190" class="mon"/>
+  <text x="804" y="368" class="h" fill="#b8741a">WHAT IS METERED</text>
+  <text x="804" y="396" class="s">Free LAN: frames that stay inside this</text>
+  <text x="804" y="416" class="s">mesh cost zero XKN and need no voucher.</text>
+  <text x="804" y="444" class="s">Paid WAN: every byte the Node forwards</text>
+  <text x="804" y="464" class="s">upstream is metered. The client signs a</text>
+  <text x="804" y="484" class="s">cumulative receipt every RECEIPT_INTERVAL</text>
+  <text x="804" y="504" class="s">of acknowledged bytes; the node keeps</text>
+  <text x="804" y="524" class="s">only the latest one.</text>
+
+  <rect x="790" y="560" width="380" height="190" class="box"/>
+  <text x="804" y="588" class="h">WHERE THIS PICTURE STOPS</text>
+  <text x="804" y="616" class="s">Power-line carrier is bounded by the</text>
+  <text x="804" y="636" class="s">mains segment. A distribution</text>
+  <text x="804" y="656" class="s">transformer, a phase change or a mains</text>
+  <text x="804" y="676" class="s">filter stops it. Figure 2 shows the LoRa</text>
+  <text x="804" y="696" class="s">jump that carries control past that</text>
+  <text x="804" y="716" class="s">boundary, and demo D3 is the bench test</text>
+  <text x="804" y="736" class="s">that proves the filter blocks the carrier.</text>
+</svg>

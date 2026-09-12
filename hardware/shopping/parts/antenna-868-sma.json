@@ -1,0 +1,115 @@
+{
+  "id": "antenna-868-sma",
+  "line": "868 MHz antenna, SMA male",
+  "role": "every LoRa board: Heltec WiFi LoRa 32 V3, E22-900M22S, Waveshare Core1262, Ra-01SH",
+  "spec": "868 MHz (863-870, or 868/915 dual band) rubber duck or straight whip, 2 to 3 dBi, SMA male plug (centre pin) so it mates with the SMA female jacks on the modules; RP-SMA male will not fit",
+  "qty": 3,
+  "why": "Without a resonant 868 MHz antenna on every radio the link budget is meaningless and the PA can be damaged by the reflected power.",
+  "recorded": "2026-09-12",
+  "chosen": "https://www.aliexpress.com/item/1005002900905329.html",
+  "candidates": [
+    {
+      "url": "https://www.aliexpress.com/item/1005002900905329.html",
+      "title": "2PCS 868MHz 915MHz Antenna 3dbi SMA Male Connector GSM GPRS Antena outdoor signal repeater antenne waterproof Lorawan",
+      "price_kes": 22,
+      "price_note": "entry variant KSh 22; the listing shows a KSh 22 to KSh 30 range across variants, so the 868/915 3 dBi SMA male straight variant must be picked at checkout and may sit at the top of that range. Two packs of 2 cover the qty of 3.",
+      "shipping": "Free shipping",
+      "sold": "2,000+",
+      "rating": "4.5",
+      "reviews": 16,
+      "store": "AliExpress store 912181010 (store name not exposed in the page capture)",
+      "store_url": "https://www.aliexpress.com/store/912181010",
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/S3db817a9d512481cadf760748f099e39E.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S24160a54835140f9a428b93e7288d6e9V.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sebd94ffd85de4043819717f01234b1c8V.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S95528fbe612d46a485a9b2387f16b1f1Q.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S6ecde529208540259ea94698f19b43ddG.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S94a078e033504a3abf4c43260e678c1cq.jpg"
+      ],
+      "verdict": "chosen",
+      "notes": "Exact spec match on paper (868/915, 3 dBi, SMA male) and by far the cheapest landed price, with free shipping confirmed on the listing page. Photo check: the first two gallery images (STLXY watermark) show a family of eight black rubber antennas, four with straight gold SMA connectors and one with a plain black plastic nut; the straight gold heads carry an external thread with a centre pin, which is SMA male, and one head in the same shot is clearly a female jack with an internal thread, so the listing mixes genders across variants. Buy only the variant labelled SMA male (SMA-J). Risks recorded: rating is 4.5 over 16 reviews, below the 4.7 preferred, and the 2,000+ listing sales were used to infer the store clears 500 sold overall since AliExpress did not expose a store total. Variant prices could not be read: AliExpress started serving an anti-bot page part way through this run, so only the price range from the product page is recorded."
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005007354656390.html",
+      "title": "2PCS 868MHz 915MHz Antenna 3dbi SMA Male Connector GSM GPRS Antena outdoor signal repeater antenne waterproof Lorawan",
+      "price_kes": 205,
+      "price_note": "KSh 205 for the 2 pcs pack, listing range KSh 102 to KSh 588 across variants",
+      "shipping": "Free shipping",
+      "sold": "1,000+",
+      "rating": "4.6",
+      "reviews": 77,
+      "store": "AliExpress store 1103915212 (store name not exposed in the page capture)",
+      "store_url": "https://www.aliexpress.com/store/1103915212",
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sbb5fc408aec8479785a9248734a6760aD.png",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S2fb4a9dcf56042a5af587ce99f6e6c53h.png",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S1ed8fc7c1e4e48bca8886a6bba90bee9v.png",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sd082c13e19d444a38cd38cc2538329c8Y.png",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S2a257c0a2cf74ce19adfcbb5c1c49e3aR.png",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Se2e9c49917bb439eb23fafeeb9e51112T.png"
+      ],
+      "verdict": "runner-up",
+      "notes": "Same physical product from a different seller, with more review evidence (77 reviews, 4.6) than the chosen listing. Photo check: the first two gallery images are the same stock shoot under a different watermark, showing the straight gold SMA male heads and one female jack variant. Nine times the price of the chosen listing, so it is the fallback if the cheap listing turns out to be a bait variant. Review tags include incorrect product (3), which is a caution on variant handling."
+    },
+    {
+      "url": "https://www.aliexpress.com/item/4001105458127.html",
+      "title": "2PCS 868MHz 915MHz Antenna 3dbi SMA Male Connector GSM GPRS Antena outdoor signal repeater antenne waterproof Lorawan",
+      "price_kes": 535,
+      "price_note": "KSh 535 as shown on the search card; the product page was not opened because AliExpress began serving anti-bot pages",
+      "shipping": "Free shipping",
+      "sold": "499",
+      "rating": "4.7",
+      "reviews": null,
+      "store": "not captured",
+      "store_url": null,
+      "images": [],
+      "verdict": "runner-up",
+      "notes": "The only 3 dBi SMA male listing found that meets the stricter 4.7 rating bar with 100+ sold. Kept as the trust-first fallback, but at KSh 535 per pair it is the most expensive of the 3 dBi options and its gallery was not verified."
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005009229273188.html",
+      "title": "868MHz Antenna Lora Lorawan pbx 5dbi SMA Male Connector GSM 868 IOT antena antenne waterproof RP-SMA/u.FL Pigtail Cable",
+      "price_kes": 161,
+      "price_note": "KSh 161 entry variant, listing range KSh 161 to KSh 1,088",
+      "shipping": "Free shipping",
+      "sold": "3,000+",
+      "rating": "4.9",
+      "reviews": 159,
+      "store": "not captured",
+      "store_url": null,
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/Se2d8617a33e0430fbab85eb7165b08f3j.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sea6abff19b91494996fe2ba998fce1c4D.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S421519c70cf04e3db55aaf842861c8e2z.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S81fde790c1ab4a0aba008407f2c381f4N.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S70eb03500d6645eba8847b8cf5643fd4s.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S51cc0317ba644c64bf70d8f751f7253fn.jpg"
+      ],
+      "verdict": "rejected",
+      "notes": "Best trust signals of any candidate (3,000+ sold, 4.9 over 159 reviews, free shipping) but the gain is 5 dBi, outside the 2 to 3 dBi spec, and the title mixes SMA, RP-SMA and u.FL pigtail variants in one listing, which raises the chance of receiving the wrong gender. Rejected on spec, worth revisiting if the 3 dBi listings go out of stock."
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005001386195377.html",
+      "title": "2PCS 868MHz 915MHz Antenna 3dbi SMA Male Connector GSM, GPRS Antena Outdoor Signal Repeater Antenne Waterproof Glue Rod Antenna",
+      "price_kes": 608,
+      "price_note": "KSh 608 for the 2 pcs pack, listing range KSh 173 to KSh 608",
+      "shipping": "Free shipping",
+      "sold": "1,000+",
+      "rating": "4.5",
+      "reviews": 84,
+      "store": "AliExpress store 910348336 (store name not exposed in the page capture)",
+      "store_url": "https://www.aliexpress.com/store/910348336",
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/H68f653164deb4e7f93a266359de3a90dW.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/H60201f21fb7747e2aae6e66c4dcfd4cal.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Ha047ce44021e40a5977f353327626afbt.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/H3817e63ae91d4685afe7e8190ac9da8ai.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/H12c55a46efd04e8f90e0810c72da8700H.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Hf8e06bfd0657438a9716b54c6b54e83fV.jpg"
+      ],
+      "verdict": "rejected",
+      "notes": "Same 3 dBi SMA male product but the dearest of the pair packs at KSh 608, rating 4.5, and the buyer review tags include poorly tuned (4), which for an 868 MHz whip is the one defect that matters. Rejected on price and on the tuning complaints."
+    }
+  ]
+}

@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800">
+  <rect x="0" y="0" width="1200" height="800" fill="#ffffff"/>
+
+  <text x="30" y="40" font-family="monospace" font-size="22" fill="#14213d">Money flow: KES in at the kiosk, KES out at the phone, XKN in between</text>
+
+  <!-- Row A -->
+  <rect x="40" y="70" width="230" height="76" fill="#ffffff" stroke="#b8741a" stroke-width="3"/>
+  <text x="155" y="98" font-family="monospace" font-size="14" fill="#14213d" text-anchor="middle">Customer pays KES</text>
+  <text x="155" y="118" font-family="monospace" font-size="12" fill="#b8741a" text-anchor="middle">M-Pesa STK / Equitel</text>
+  <text x="155" y="136" font-family="monospace" font-size="12" fill="#b8741a" text-anchor="middle">float lands at the bank</text>
+
+  <rect x="330" y="70" width="230" height="76" fill="#ffffff" stroke="#14213d" stroke-width="2"/>
+  <text x="445" y="98" font-family="monospace" font-size="14" fill="#14213d" text-anchor="middle">gateway-api bridge</text>
+  <text x="445" y="118" font-family="monospace" font-size="12" fill="#0b3d91" text-anchor="middle">bank callback, fiatRef</text>
+  <text x="445" y="136" font-family="monospace" font-size="12" fill="#0b3d91" text-anchor="middle">daily mint cap on chain</text>
+
+  <rect x="620" y="70" width="230" height="76" fill="#ffffff" stroke="#14213d" stroke-width="2"/>
+  <text x="735" y="98" font-family="monospace" font-size="14" fill="#14213d" text-anchor="middle">xKoinToken</text>
+  <text x="735" y="118" font-family="monospace" font-size="12" fill="#0b3d91" text-anchor="middle">bridgeMint(to, amt, ref)</text>
+  <text x="735" y="136" font-family="monospace" font-size="12" fill="#0b3d91" text-anchor="middle">1 XKN = 1 KES, 6 dp</text>
+
+  <rect x="910" y="70" width="250" height="76" fill="#ffffff" stroke="#14213d" stroke-width="2"/>
+  <text x="1035" y="98" font-family="monospace" font-size="14" fill="#14213d" text-anchor="middle">User wallet + voucher</text>
+  <text x="1035" y="118" font-family="monospace" font-size="12" fill="#0b3d91" text-anchor="middle">XKN balance, 24 h voucher</text>
+  <text x="1035" y="136" font-family="monospace" font-size="12" fill="#0b3d91" text-anchor="middle">no ETH held by the user</text>
+
+  <line x1="270" y1="108" x2="324" y2="108" stroke="#b8741a" stroke-width="3"/>
+  <polygon points="330,108 318,102 318,114" fill="#b8741a"/>
+  <line x1="560" y1="108" x2="614" y2="108" stroke="#b8741a" stroke-width="3"/>
+  <polygon points="620,108 608,102 608,114" fill="#b8741a"/>
+  <line x1="850" y1="108" x2="904" y2="108" stroke="#b8741a" stroke-width="3"/>
+  <polygon points="910,108 898,102 898,114" fill="#b8741a"/>
+
+  <!-- Row B, right to left -->
+  <line x1="1035" y1="146" x2="1035" y2="224" stroke="#b8741a" stroke-width="3"/>
+  <polygon points="1035,230 1029,218 1041,218" fill="#b8741a"/>
+
+  <rect x="910" y="230" width="250" height="76" fill="#ffffff" stroke="#14213d" stroke-width="2"/>
+  <text x="1035" y="258" font-family="monospace" font-size="14" fill="#14213d" text-anchor="middle">xKoinEscrow deposit</text>
+  <text x="1035" y="278" font-family="monospace" font-size="12" fill="#0b3d91" text-anchor="middle">depositWithPermit, relayed</text>
+  <text x="1035" y="296" font-family="monospace" font-size="12" fill="#0b3d91" text-anchor="middle">deposits[user], withdrawable</text>
+
+  <rect x="620" y="230" width="230" height="76" fill="#ffffff" stroke="#14213d" stroke-width="2"/>
+  <text x="735" y="258" font-family="monospace" font-size="14" fill="#14213d" text-anchor="middle">Node relays WAN bytes</text>
+  <text x="735" y="278" font-family="monospace" font-size="12" fill="#0b3d91" text-anchor="middle">signed receipt per interval</text>
+  <text x="735" y="296" font-family="monospace" font-size="12" fill="#0b3d91" text-anchor="middle">latest receipt kept only</text>
+
+  <rect x="330" y="230" width="230" height="76" fill="#ffffff" stroke="#14213d" stroke-width="2"/>
+  <text x="445" y="258" font-family="monospace" font-size="14" fill="#14213d" text-anchor="middle">Ticket, EIP-712</text>
+  <text x="445" y="278" font-family="monospace" font-size="12" fill="#0b3d91" text-anchor="middle">cumulativeUnits, 10 KB each</text>
+  <text x="445" y="296" font-family="monospace" font-size="12" fill="#0b3d91" text-anchor="middle">client secp256k1 signature</text>
+
+  <rect x="40" y="230" width="230" height="76" fill="#ffffff" stroke="#b8741a" stroke-width="3"/>
+  <text x="155" y="258" font-family="monospace" font-size="14" fill="#14213d" text-anchor="middle">settleTicketBatch</text>
+  <text x="155" y="278" font-family="monospace" font-size="12" fill="#b8741a" text-anchor="middle">anyone may relay</text>
+  <text x="155" y="296" font-family="monospace" font-size="12" fill="#b8741a" text-anchor="middle">pays the delta, caps at deposit</text>
+
+  <line x1="910" y1="268" x2="856" y2="268" stroke="#0b3d91" stroke-width="2"/>
+  <polygon points="850,268 862,262 862,274" fill="#0b3d91"/>
+  <line x1="620" y1="268" x2="566" y2="268" stroke="#0b3d91" stroke-width="2"/>
+  <polygon points="560,268 572,262 572,274" fill="#0b3d91"/>
+  <line x1="330" y1="268" x2="276" y2="268" stroke="#b8741a" stroke-width="3"/>
+  <polygon points="270,268 282,262 282,274" fill="#b8741a"/>
+
+  <!-- Row C: split -->
+  <line x1="110" y1="306" x2="110" y2="384" stroke="#b8741a" stroke-width="3"/>
+  <polygon points="110,390 104,378 116,378" fill="#b8741a"/>
+  <line x1="200" y1="306" x2="200" y2="350" stroke="#b8741a" stroke-width="3"/>
+  <line x1="200" y1="350" x2="440" y2="350" stroke="#b8741a" stroke-width="3"/>
+  <line x1="440" y1="350" x2="440" y2="384" stroke="#b8741a" stroke-width="3"/>
+  <polygon points="440,390 434,378 446,378" fill="#b8741a"/>
+
+  <rect x="40" y="390" width="230" height="76" fill="#ffffff" stroke="#b8741a" stroke-width="3"/>
+  <text x="155" y="418" font-family="monospace" font-size="14" fill="#14213d" text-anchor="middle">earnings[nodeAdmin]</text>
+  <text x="155" y="438" font-family="monospace" font-size="12" fill="#b8741a" text-anchor="middle">95 percent of gross</text>
+  <text x="155" y="456" font-family="monospace" font-size="12" fill="#b8741a" text-anchor="middle">claimEarnings(to, amount)</text>
+
+  <rect x="330" y="390" width="230" height="76" fill="#ffffff" stroke="#b8741a" stroke-width="3"/>
+  <text x="445" y="418" font-family="monospace" font-size="14" fill="#14213d" text-anchor="middle">xKoinTreasury</text>
+  <text x="445" y="438" font-family="monospace" font-size="12" fill="#b8741a" text-anchor="middle">5 percent, capped at 10</text>
+  <text x="445" y="456" font-family="monospace" font-size="12" fill="#b8741a" text-anchor="middle">claim() to beneficiary only</text>
+
+  <!-- Row D -->
+  <line x1="155" y1="466" x2="155" y2="544" stroke="#b8741a" stroke-width="3"/>
+  <polygon points="155,550 149,538 161,538" fill="#b8741a"/>
+  <line x1="445" y1="466" x2="445" y2="544" stroke="#b8741a" stroke-width="3"/>
+  <polygon points="445,550 439,538 451,538" fill="#b8741a"/>
+
+  <rect x="40" y="550" width="230" height="76" fill="#ffffff" stroke="#14213d" stroke-width="2"/>
+  <text x="155" y="578" font-family="monospace" font-size="14" fill="#14213d" text-anchor="middle">Operator address</text>
+  <text x="155" y="598" font-family="monospace" font-size="12" fill="#0b3d91" text-anchor="middle">sends XKN to the bridge</text>
+  <text x="155" y="616" font-family="monospace" font-size="12" fill="#0b3d91" text-anchor="middle">any address, not a device</text>
+
+  <rect x="330" y="550" width="230" height="76" fill="#ffffff" stroke="#14213d" stroke-width="2"/>
+  <text x="445" y="578" font-family="monospace" font-size="14" fill="#14213d" text-anchor="middle">Beneficiary cold key</text>
+  <text x="445" y="598" font-family="monospace" font-size="12" fill="#0b3d91" text-anchor="middle">sends XKN to the bridge</text>
+  <text x="445" y="616" font-family="monospace" font-size="12" fill="#0b3d91" text-anchor="middle">7-day timelock, veto held</text>
+
+  <rect x="620" y="550" width="230" height="76" fill="#ffffff" stroke="#b8741a" stroke-width="3"/>
+  <text x="735" y="578" font-family="monospace" font-size="14" fill="#14213d" text-anchor="middle">Payout worker</text>
+  <text x="735" y="598" font-family="monospace" font-size="12" fill="#b8741a" text-anchor="middle">B2C / send-to-mobile</text>
+  <text x="735" y="616" font-family="monospace" font-size="12" fill="#b8741a" text-anchor="middle">KES to the phone</text>
+
+  <rect x="910" y="550" width="250" height="76" fill="#ffffff" stroke="#14213d" stroke-width="2"/>
+  <text x="1035" y="578" font-family="monospace" font-size="14" fill="#14213d" text-anchor="middle">bridgeBurn, self only</text>
+  <text x="1035" y="598" font-family="monospace" font-size="12" fill="#0b3d91" text-anchor="middle">after the result callback</text>
+  <text x="1035" y="616" font-family="monospace" font-size="12" fill="#0b3d91" text-anchor="middle">XKN in issue = float held</text>
+
+  <line x1="270" y1="588" x2="614" y2="588" stroke="#b8741a" stroke-width="3"/>
+  <polygon points="620,588 608,582 608,594" fill="#b8741a"/>
+  <line x1="560" y1="606" x2="614" y2="606" stroke="#b8741a" stroke-width="3"/>
+  <polygon points="620,606 608,600 608,612" fill="#b8741a"/>
+  <line x1="850" y1="588" x2="904" y2="588" stroke="#b8741a" stroke-width="3"/>
+  <polygon points="910,588 898,582 898,594" fill="#b8741a"/>
+
+  <!-- legend and measured costs -->
+  <rect x="40" y="660" width="1120" height="110" fill="#ffffff" stroke="#14213d" stroke-width="2"/>
+  <text x="60" y="688" font-family="monospace" font-size="14" fill="#14213d">Measured chain cost, Base at 0.006 gwei, ETH 2468.58 USDT, USDT 123.29 KES, 2026-09-09:</text>
+  <text x="60" y="712" font-family="monospace" font-size="13" fill="#b8741a">settle one ticket batch 191,698 gas = 0.35 KES     deploy all three contracts 4,207,312 gas = 7.7 KES</text>
+  <text x="60" y="736" font-family="monospace" font-size="13" fill="#0b3d91">Binding cost is elsewhere: backhaul KES per MB, plus the Jenga and Daraja charge on every fiat leg.</text>
+  <text x="60" y="758" font-family="monospace" font-size="12" fill="#0b3d91">accent lines: value moves    dark lines: proof and control    XKN never leaves the KES peg</text>
+</svg>
