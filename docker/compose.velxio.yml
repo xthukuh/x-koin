@@ -1,0 +1,54 @@
+# Self-hosted velxio simulator (docs/_plan/research/01-velxio-feasibility.md).
+#
+# Local authoring on the Windows host (http://127.0.0.1:3080):
+#   docker compose -f docker/compose.velxio.yml up -d
+#
+# VPS behind Traefik (Traefik there runs on the host network and reaches the
+# container on this compose network; no external proxy network exists):
+#   VELXIO_TRAEFIK=true VELXIO_HOST=velxio.thuku.dev docker compose -f docker/compose.velxio.yml up -d
+#
+# The image is upstream and unmodified (AGPLv3; source at
+# https://github.com/davidmonterocrespo24/velxio). xKoin demos are .vlx
+# files under hardware/velxio, imported through the Import button. The
+# five volumes keep arduino-cli cores, libraries, ccache and the ESP-IDF
+# build directory, so a compile after a restart takes seconds, not minutes.
+
+services:
+  velxio:
+    image: ghcr.io/davidmonterocrespo24/velxio:master
+    container_name: velxio
+    restart: unless-stopped
+    environment:
+      VELXIO_NEWS: "off"
+    ports:
+      - "127.0.0.1:${VELXIO_PORT:-3080}:80"
+    volumes:
+      - velxio-data:/app/data
+      - velxio-arduino-libs:/root/.arduino15
+      - velxio-arduino-user-libs:/root/Arduino
+      - velxio-ccache:/var/cache/ccache
+      - velxio-build:/var/lib/velxio-build
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1/health || curl -fs http://127.0.0.1/health || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+    labels:
+      - traefik.enable=${VELXIO_TRAEFIK:-false}
+      - traefik.http.routers.velxio.rule=Host(`${VELXIO_HOST:-velxio.thuku.dev}`)
+      - traefik.http.routers.velxio.entrypoints=websecure
+      - traefik.http.routers.velxio.tls=true
+      - traefik.http.routers.velxio.tls.certresolver=letsencrypt
+      - traefik.http.services.velxio.loadbalancer.server.port=80
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  velxio-data:
+  velxio-arduino-libs:
+  velxio-arduino-user-libs:
+  velxio-ccache:
+  velxio-build:
