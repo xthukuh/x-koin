@@ -1,0 +1,121 @@
+{
+  "id": "ipex-sma-pigtail",
+  "line": "IPEX (u.FL) to SMA female bulkhead pigtail, 10 to 15 cm",
+  "role": "bringing module antennas out to SMA on E22-900M22S, Ra-01SH and any board with an IPEX jack only",
+  "spec": "IPEX1 plug (the small 2 mm u.FL connector used on E22-900M22S and Ra-01SH) on RG1.13 or RG178 coax, 10 to 15 cm, terminated in a true SMA female bulkhead jack with nut and washer (marked SMA-K or SMA-KY, centre socket) so an SMA male antenna screws straight on; RP-SMA female has a centre pin and must be avoided",
+  "qty": 3,
+  "why": "The SX1262 modules only expose a u.FL jack, so the antenna has to be brought out to a panel SMA before any attenuator or external whip can be fitted.",
+  "recorded": "2026-09-12",
+  "chosen": "https://www.aliexpress.com/item/1005009812335103.html",
+  "candidates": [
+    {
+      "url": "https://www.aliexpress.com/item/1005009812335103.html",
+      "title": "5PCS IPX to SMA Connector Cable SMA Male to uFL/u.FL/IPX to SMA Female RF1.13 RF Coaxial WIFI Antenna Pigtail Extension Cable",
+      "price_kes": 380,
+      "price_note": "KSh 380 for the 5 pcs pack as displayed; the listing range runs KSh 76 to KSh 383, the low end being the single piece variant. Pick the IPX1-K to SMA-KY variant at 10 cm or 15 cm.",
+      "shipping": "Free shipping",
+      "sold": "4,000+",
+      "rating": "4.9",
+      "reviews": 246,
+      "store": "AliExpress store 1103915212 (store name not exposed in the page capture)",
+      "store_url": "https://www.aliexpress.com/store/1103915212",
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sf8e3edbfdf4c4e9dab886519c4fef288t.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sdb13af9038b3406288bccb11ea213183i.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S9f536f546ec44d728ef6d96935d0a145j.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S25b10a6c368449fd8051cf0ea1d42eaaY.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S0bd5d5ebca9d430fbc0aa2a0bf9b3bc7c.jpg"
+      ],
+      "verdict": "chosen",
+      "notes": "Five pieces covers the qty of 3 with spares, free shipping is shown on the search card, and the trust numbers are the best of the set (4,000+ sold, 4.9 over 246 reviews). Photo check: the second gallery image is a single cable labelled IPX1-K at the coax end and SMA-KY at the other, and the close up shows a bulkhead jack with a knurled nut, an internal thread and a white PTFE face with a centre hole, which is a true SMA female, not RP-SMA. The first image confirms the same store also sells RP-SMA-K on the identical cable, so the variant must be chosen carefully. Landed price is certain here because shipping is free; the cheaper runner-up does not show its shipping."
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005008815359328.html",
+      "title": "5PCS IPX to SMA Connector Cable SMA Male to uFL/u.FL/IPX to SMA Female RF1.13 RF Coaxial WIFI Antenna Pigtail Extension Cable",
+      "price_kes": 175,
+      "price_note": "KSh 175 as displayed, listing range KSh 175 to KSh 179",
+      "shipping": "not shown",
+      "sold": "4,000+",
+      "rating": "4.8",
+      "reviews": 289,
+      "store": "AliExpress store 1104734387 (store name not exposed in the page capture)",
+      "store_url": "https://www.aliexpress.com/store/1104734387",
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sf63c3f60b02241258f2f953594ae8b62D.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sbb88db28997648fd95991cb0742afbe1M.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S0e7b72ff7ffd443c99ce07c7edc352fct.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Se0b4d223c43a4547b0474ed371f4f57cw.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sbc3350d7e98340c086899db48a18fae2M.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S91d082b09e1d4e319398152dba4af600s.jpg"
+      ],
+      "verdict": "runner-up",
+      "notes": "Less than half the displayed price of the chosen listing with almost the same trust (4,000+ sold, 4.8 over 289 reviews), and it becomes the better buy if its shipping to Kenya turns out to be free or under about KSh 200. Photo check: the first gallery image (HAODS watermark) is a legend showing the u.FL welding head, the IPX-K plug and four end options, SMA Male, RPSMA Male, SMA Female and RPSMA Female, with the SMA Female shown as a knurled bulkhead nut over a centre socket; the second image shows three bulkhead jacks and three plugs, one of the bulkheads clearly carrying a centre pin, that is the RP-SMA female. Correct gender therefore depends entirely on picking SMA-K or SMA-KY. Shipping was not shown on the search card and the product page went to an anti-bot redirect before it could be read."
+    },
+    {
+      "url": "https://www.aliexpress.com/item/4000848776660.html",
+      "title": "5 Pcs/Lot IPX to SMA, SMA Connector Cable Female to UFL/ u.FL/ IPX/IPX, RF Coax Adapter Assembly Pigtail Cable 1.13MM",
+      "price_kes": 429,
+      "price_note": "KSh 429 as displayed for the 5 pcs lot, listing range KSh 86 to KSh 812",
+      "shipping": "Free shipping",
+      "sold": "4,000+",
+      "rating": "4.9",
+      "reviews": 306,
+      "store": "AliExpress store 5125146 (store name not exposed in the page capture)",
+      "store_url": "https://www.aliexpress.com/store/5125146",
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/Se6b5257b15c648989ebea5a684da0160V.png",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S9c6a1a3d1916433f9085f4e62f54cb070.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/H407ec4b2cac0483d90d0b0c026119d69D.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sbe0e7469901643d6b95f16cb6f5a6ebdb.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S125e449b70fc43ec8b5b1717cdc06f32H.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/H2d6d3e801dfe4c36b33d154db43e4ee6s.png"
+      ],
+      "verdict": "runner-up",
+      "notes": "An old, well reviewed store (4,000+ sold, 4.9 over 306 reviews) with free shipping, but the title and the page heading both read RP-SMA-K, so the default variant is the wrong gender and the SMA-K variant has to be found inside the option list. Dearer than the chosen listing for the same 5 pieces, so it is a second fallback only."
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005006316036199.html",
+      "title": "1pc U.FL to SMA Female 1.13mm Pigtail Cable 15CM",
+      "price_kes": 219,
+      "price_note": "KSh 219 for one piece, so KSh 657 for the qty of 3",
+      "shipping": "Free shipping",
+      "sold": "1,000+",
+      "rating": "4.9",
+      "reviews": 110,
+      "store": "AliExpress store 714180 (store name not exposed in the page capture)",
+      "store_url": "https://www.aliexpress.com/store/714180",
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/S1cfa5262faf649e5ba47e8cd275df7e52.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S7fe8b94922cb40788dccf970155e62d21.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sae25be784f014888bfacbed04249716ej.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sed2e775b51de412f858f438c44cc1e5fc.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S709e7b6f443c4b829f1999fa8bb9661dD.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S206299c0d43b496a916b2005558642071.jpg"
+      ],
+      "verdict": "runner-up",
+      "notes": "The single listing whose title fixes both the length (15 cm) and the gender (SMA female) with no variant ambiguity, free shipping confirmed on the product page, and a very old store id. Rejected as first choice only because three singles cost KSh 657 against KSh 380 for five. This is the safe buy if a wrong gender arrives from a multi variant listing."
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005005073187553.html",
+      "title": "SMA to IPX-1 Pigtail Jumper RP SMA Female to U.fl IPX RG178 1.13 Cable Sockets Jack Connectors Adapter for Wifi Router GPS AP",
+      "price_kes": 190,
+      "price_note": "KSh 190 as displayed, listing range KSh 190 to KSh 577",
+      "shipping": "Free shipping",
+      "sold": "10,000+",
+      "rating": "4.9",
+      "reviews": 748,
+      "store": "AliExpress store 1102515857 (store name not exposed in the page capture)",
+      "store_url": "https://www.aliexpress.com/store/1102515857",
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/S02c1fc9d0b4440ae8bfef36191428e33i.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S780e58c9a79f47bbbf759942971a389cv.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sbc26761e574b410dab031b8443c894c9W.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S0dea4535f75a468ea57d763281eb462bB.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S4592c91e9f3a4dd58125d8256be78f5cP.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sca182f682bc24fa99745842b1b7229b41.jpg"
+      ],
+      "verdict": "rejected",
+      "notes": "The highest volume pigtail listing found (10,000+ sold, 4.9 over 748 reviews) but the title sells RP SMA Female to u.FL as the headline product. An RP-SMA female jack carries a centre pin and will not accept the SMA male antennas on this list, so the listing is rejected on gender rather than on price or trust."
+    }
+  ]
+}
