@@ -1,0 +1,12 @@
+{
+  "id": "extension-strips",
+  "line": "4 way UK extension leads",
+  "role": "bench: demo D3 mains segments",
+  "spec": "Four way extension lead on a UK type G plug, 13 A fused, with a cable long enough to reach between two bench positions. Two of them, so demo D3 has one strip per powerline segment.",
+  "qty": 2,
+  "why": "Bought locally in Nairobi, not sourced here. UK type G extension leads are a commodity in any Nairobi hardware shop or supermarket at a price no AliExpress listing beats once shipping is added, and a mains strip that carries the PLC demo behind an RCD is the wrong thing to buy sight unseen from an overseas listing whose plug type, fuse and cable rating cannot be verified from a photograph.",
+  "recorded": "2026-09-13",
+  "chosen": null,
+  "candidates": [],
+  "notes": "Note only line, recorded deliberately with no candidates and no chosen listing. No AliExpress search was run for it. Two reasons it stays local. First, price: a four way UK extension lead is a commodity in Nairobi and the shipping on two of them from China would exceed the goods. Second, and the reason that would hold even if the price were equal, these strips carry the mains legs of demo D3 behind an RCD, and the safety rule in the revamp plan for that demo is that the KQ-130F is proven on a 12 V DC line before it ever touches a mains strip. A strip whose plug type, fuse rating and cable cross section can only be inferred from a listing photograph is the wrong component to put in that position. Buy two known good type G strips over the counter."
+}

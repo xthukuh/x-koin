@@ -1,0 +1,90 @@
+{
+  "id": "solar-panel-6v-2w",
+  "line": "Solar panel 6 V, 1.5 to 3 W, with leads",
+  "role": "LoRa ecosystem device: farm sensor node power",
+  "spec": "Mini photovoltaic panel, 6 V nominal, 1.5 to 3 W, with wire leads fitted rather than bare solder pads. Epoxy or PET laminate is fine; it feeds a TP4056 or CN3065 charge board, not a load directly.",
+  "qty": 1,
+  "why": "Supplies the 18650 that runs the ESP32-C3 farm node on demo D6, so the node can be shown running unattended on light rather than on a bench supply.",
+  "recorded": "2026-09-13",
+  "chosen": "https://www.aliexpress.com/item/1005008240068477.html",
+  "candidates": [
+    {
+      "url": "https://www.aliexpress.com/item/1005008240068477.html",
+      "title": "6 Type Solar Panel 6V 2W 0.35A/ 5.5V 50mA Solar Power DIY Mini Polycrystalline Silicon Solar Cell Module Solar Panel Epoxy Board",
+      "price_kes": 136,
+      "price_note": "KSh 136 with free shipping, so KSh 136 landed. The listing carries six panel types, hence the 6 Type in the title, so the 6 V 2 W 0.35 A variant has to be selected at checkout and the KSh 136 figure may belong to a smaller one. The item page rendered only its gallery, so the per variant prices could not be read.",
+      "shipping": "Free shipping",
+      "sold": "255",
+      "rating": "4.8",
+      "reviews": null,
+      "store": null,
+      "store_url": null,
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/S5af0db42d45e46d58482c37ab7139b08o.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S59f61bf5c93344dc9a0111fcc7c3fb03U.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Scf94f5066afe49c0997aecced0e10ae7p.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S4392dce23bbc43879eedeecfdbe23b82b.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S705f7e3acd5c4298814b9f3d0f663772D.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S20a4f1f1e4b14d438f1d588b309bc4faQ.jpg"
+      ],
+      "verdict": "chosen",
+      "notes": "Chosen because it is the only candidate whose ratings are arithmetically honest: 6 V at 0.35 A is 2.1 W, which matches the 2 W claimed. That is worth more than it sounds on this category, where most listings quote a wattage and a current that contradict each other by a factor of five. Joint cheapest on the line at KSh 136 and free shipping makes it the cheapest landed. Clears the rating threshold at 4.8; 255 sold is above the 100 floor. No photo check was required on this line and none was made, so whether the leads are fitted or the panel arrives with bare pads is unverified, and the title does not say.",
+      "price_all_seen": ["KSh 136"]
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005008240317081.html",
+      "title": "1/5/10pcs 6V 2W 70mA Solar Power 80MM DIY Mini Polycrystalline Silicon Solar Cell Module Circle Round Solar Panel Epoxy Board",
+      "price_kes": 136,
+      "price_note": "KSh 136 with free shipping for the single panel; the listing also sells 5 and 10 packs. Same price as the chosen listing.",
+      "shipping": "Free shipping",
+      "sold": "500+",
+      "rating": "4.9",
+      "reviews": null,
+      "store": null,
+      "store_url": null,
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sefc4a45e776d4e1fbc878b277ecf97dfP.jpg"
+      ],
+      "verdict": "runner-up",
+      "notes": "Better record than the chosen listing, 500+ sold at 4.9 against 255 at 4.8, at the same KSh 136 with free shipping, so on the selection rules alone it would win. It was held at runner-up on the physics: the title claims 6 V 2 W and 70 mA in the same breath, and 6 V at 70 mA is 0.42 W, a fifth of the 2 W claimed. An 80 mm round panel is also about 50 square centimetres of cell, which at typical mini panel efficiency supports the 0.42 W figure rather than the 2 W one. Assume this is a sub 0.5 W panel mislabelled 2 W; it would not keep an 18650 ahead of an ESP32-C3 duty cycle. Its item page was the one fetch on this line that failed outright, a DNS error during the network outage, so its figures come from the search card only.",
+      "price_all_seen": ["KSh 136"]
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005008888587788.html",
+      "title": "2W 6V Solar Panel Polysilicon Solar Cell Panel High Efficiency Portable Power Bank for Small Household Lighting",
+      "price_kes": 317,
+      "price_note": "KSh 317 with free shipping. A single fixed 2 W 6 V product rather than a multi variant listing, so the price is the price.",
+      "shipping": "Free shipping",
+      "sold": "491",
+      "rating": "4.5",
+      "reviews": null,
+      "store": null,
+      "store_url": null,
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/S5f4ba2629af543ab8e30f459e05f5f60a.jpg"
+      ],
+      "verdict": "runner-up",
+      "notes": "The one listing on the line that sells a single fixed 2 W 6 V panel with no variant menu to get wrong, which removes the main risk on this category: ordering a 0.4 W panel because the cheap variant was preselected. Nearly 500 sold. Rejected as first choice on price, KSh 317 against KSh 136, and on the 4.5 rating, which is below the 4.7 floor. Buy this one if the chosen listing's variant menu turns out not to offer a real 2 W panel at KSh 136.",
+      "price_all_seen": ["KSh 317"]
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005010123021643.html",
+      "title": "6V 1W 2W 3W 4.5W Solar Panel Outdoor DIY Battery Charger Portable Solar Cell Power Bank for Mobile Phone Hiking Camping",
+      "price_kes": 723,
+      "price_note": "KSh 723 with free shipping, the card figure, which on a listing running 1 W through 4.5 W is probably the 1 W variant rather than the 2 W.",
+      "shipping": "Free shipping",
+      "sold": "440",
+      "rating": "4.8",
+      "reviews": null,
+      "store": null,
+      "store_url": null,
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/S1887a285b60743859ac7bdbfca5e0896Z/154x64.png"
+      ],
+      "verdict": "rejected",
+      "notes": "Covers the whole 1 W to 4.5 W range including the 3 W top of the spec band, and clears both selection thresholds at 440 sold and 4.8. Rejected on price: KSh 723 is more than five times the chosen listing for a panel the bench demo does not need to be better, and the card price is likely the cheapest variant, so the 2 W part costs more still.",
+      "price_all_seen": ["KSh 723"]
+    }
+  ],
+  "notes": "Two searches, 6V 2W solar panel with wire DIY and mini solar panel 6V 2W 0.35A epoxy with cable, both returned plenty of genuine panels. The trap on this category is not authenticity but arithmetic: most listings quote a wattage in the title and a current in the same title that contradicts it, and the selection here was made on which numbers multiply out correctly rather than on sold count, which is why the listing with the better record was passed over. One item page rendered its gallery and no text; the other failed outright with a DNS error, net::ERR_NAME_NOT_RESOLVED, during the network outage on this machine, and was not retried. So store name, store URL, review count and the per variant prices are unverified for every candidate and all figures come from the search cards. Two things to check at checkout: that the variant selected is genuinely the 6 V 2 W 0.35 A one and not a smaller panel that shares the listing, and that leads are fitted, since the spec asks for leads and no title on this line mentions them."
+}

@@ -1,0 +1,95 @@
+{
+  "id": "temp-humidity-sensor",
+  "line": "DHT22 (AM2302) module, or AHT20 I2C module if cheaper",
+  "role": "LoRa ecosystem device: farm sensor node payload",
+  "spec": "A temperature and humidity sensor on a breakout board the ESP32-C3 can read directly: either a DHT22 or AM2302 on its single wire bus, or an AHT20 on I2C. The AHT20 is preferred if it lands cheaper.",
+  "qty": 1,
+  "why": "The second of the two readings the ESP32-C3 farm node publishes on demo D6, paired with soil moisture so the node has a real payload rather than synthetic traffic.",
+  "recorded": "2026-09-13",
+  "chosen": "https://www.aliexpress.com/item/1005008442736969.html",
+  "candidates": [
+    {
+      "url": "https://www.aliexpress.com/item/1005008442736969.html",
+      "title": "TZT AHT20+BMP280 Temperature Humidity and Air Pressure Sensors Module High-precision For Arduino",
+      "price_kes": 111,
+      "price_note": "KSh 111 on the search card. Shipping not shown and not free. The item page rendered only its gallery, so the variant list could not be read; the listing may sell the bare AHT20 and the AHT20 plus BMP280 combination at different prices.",
+      "shipping": "not shown",
+      "sold": "4,000+",
+      "rating": "4.9",
+      "reviews": null,
+      "store": null,
+      "store_url": null,
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/S52558cfbc195478c94591d63d53583993.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sc3b98e37de184522bb054b95474af924P.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S8d14bd41ece3406bbdb2a1681f7b4a03X.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S3428641fa4a747cbae77b6a693558e9dZ.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Saadb0be5c5934ae3a6a403e24535a572M.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sb75dc63719cc427381bb3a0daf74873d8.jpg"
+      ],
+      "verdict": "chosen",
+      "notes": "The brief allowed the AHT20 if it came out cheaper than the DHT22, and it does: KSh 111 against KSh 116 for the cheapest unambiguous DHT22 module on the line. The margin is only KSh 5, but the AHT20 wins on the merits too. It talks I2C, which the ESP32-C3 already has wired for the soil probe, where the DHT22 needs a bit banged single wire protocol with tight timing that is awkward under a radio stack. It settles in milliseconds rather than the DHT22's two second minimum sample interval, which matters on a node that wakes, reads and sleeps. And this board carries a BMP280 barometer alongside on the same bus at no extra cost. Strongest record on the line as well, 4,000+ sold at 4.9. TZT is a long established Shenzhen module house. No photo check was required on this line and none was made.",
+      "price_all_seen": ["KSh 111"]
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005008594024797.html",
+      "title": "AM2302 DHT22 Digital Temperature & Humidity Sensors Module For arduino Uno R3 TZT",
+      "price_kes": 116,
+      "price_note": "KSh 116 on the search card, KSh 5 above the chosen AHT20 board. Shipping not shown. Item page rendered only its gallery.",
+      "shipping": "not shown",
+      "sold": "1,000+",
+      "rating": "4.9",
+      "reviews": null,
+      "store": null,
+      "store_url": null,
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/S255988f02e924ff59613ef3d99ba1597n.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sdcbf03e595954b09a4cb7a6e410e9d4dP.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sf4e1f0f195174873aff78f83911841e8w.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S054ac42e06a441f096d60402e1f6121cp.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sc6283ee8b58d487d937e6dd8cba88fbaf.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S73ba7c5aff9e42d6820be81d2908eed0S.jpg"
+      ],
+      "verdict": "runner-up",
+      "notes": "The cheapest DHT22 on the line whose title names one part and only one part, so there is no variant to get wrong, from the same TZT house as the chosen board, at 1,000+ sold and 4.9. This is the first named option in the spec and the one to take if the DHT22 is wanted for compatibility with existing code or notes. It lost by KSh 5 and by the protocol argument set out above.",
+      "price_all_seen": ["KSh 116"]
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005008592678897.html",
+      "title": "Digital Temperature and Humidity Sensors TZT DHT11 DHT22 AM2302 AM2301 AM2320 MW33 Sensor And Module For Arduino electronic DIY",
+      "price_kes": 59,
+      "price_note": "KSh 59 on the search card, half the price of anything else on the line, but the listing covers DHT11, DHT22, AM2302, AM2301, AM2320 and MW33 on one page and the DHT11 is by far the cheapest of those, so KSh 59 is almost certainly the DHT11 price rather than the DHT22 price.",
+      "shipping": "not shown",
+      "sold": "2,000+",
+      "rating": "4.8",
+      "reviews": null,
+      "store": null,
+      "store_url": null,
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sbc11a74af04e4a958b35d7dddf890fa1r.jpg"
+      ],
+      "verdict": "rejected",
+      "notes": "Cheapest figure on the line by a wide margin and a good record at 2,000+ sold and 4.8, but the price cannot be trusted to belong to the part this line wants: six sensor types share the listing and the headline figure will be the DHT11, which is the cheap low resolution part the DHT22 exists to replace, one degree and one percent resolution against 0.1 and 0.1. Rejected because the variant risk on a six part listing is exactly how the wrong sensor arrives. Could be worth checking at the basket stage if the DHT22 variant turns out to be near KSh 59.",
+      "price_all_seen": ["KSh 59"]
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005008699139931.html",
+      "title": "Precision I2C Temperature Humidity Sensor Module AHT10 AHT20 AHT21 SHT20 Replacement with Accuracy for Arduino/Raspberry Pi",
+      "price_kes": 132,
+      "price_note": "KSh 132 on the search card, KSh 21 above the chosen board, for a bare AHT family module with no barometer.",
+      "shipping": "not shown",
+      "sold": "1,000+",
+      "rating": "4.8",
+      "reviews": null,
+      "store": null,
+      "store_url": null,
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sf8151d2d03cb47f496437b2cf3f2b366p.jpg"
+      ],
+      "verdict": "rejected",
+      "notes": "A plain AHT20 on I2C with nothing bolted on, which is arguably the tidier part for a node that only needs temperature and humidity. Rejected because it costs KSh 21 more than the chosen board while doing less, and because it shares a listing with the AHT10 and AHT21 so the revision has to be selected by hand. Nothing wrong with it, simply beaten.",
+      "price_all_seen": ["KSh 132"]
+    }
+  ],
+  "notes": "Two searches, DHT22 AM2302 temperature humidity sensor module and AHT20 I2C temperature humidity sensor module, both returned more than fifty genuine parts. The comparison the brief asked for came out in the AHT20's favour, though only just: KSh 111 against KSh 116 for the cheapest DHT22 whose title names one part unambiguously. Cheaper DHT22 figures exist, down to KSh 59, but every one of them sits on a listing that also sells the DHT11, and on those listings the headline price belongs to the DHT11. Neither item page rendered its text, both came back titled Aliexpress with no price, store, rating or shipping, so store name, store URL, review count, shipping and the variant prices are unverified for every candidate and all figures come from the search cards. No shipping figure was shown for any candidate on this line, and since the parts are KSh 111 to KSh 132 the shipping will dominate; order this with the rest of the small parts rather than alone."
+}

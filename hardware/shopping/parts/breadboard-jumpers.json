@@ -1,0 +1,94 @@
+{
+  "id": "breadboard-jumpers",
+  "line": "830 point breadboard plus a 120 piece jumper set",
+  "role": "bench: every demo",
+  "spec": "One MB-102 style 830 tie point solderless breadboard and a 120 piece Dupont jumper set covering male to male, male to female and female to female. One kit if a kit carries both, otherwise the two cheapest separate listings.",
+  "qty": 1,
+  "why": "Every node, radio, sensor and PLC module on the bench is wired through this, so it is the one line whose absence stops all six demos rather than one.",
+  "recorded": "2026-09-13",
+  "chosen": "https://www.aliexpress.com/item/1005005256190573.html",
+  "candidates": [
+    {
+      "url": "https://www.aliexpress.com/item/1005005256190573.html",
+      "title": "3.3V/5V MB102 Breadboard power module+MB-102 830 points Prototype Bread board for arduino kit +65 jumper wires wholesale",
+      "price_kes": 130,
+      "price_note": "KSh 130 on the search card for the three piece bundle: the MB-102 830 point board, the MB102 dual rail power module and 65 flexible jumper wires. Shipping not shown. The item page rendered only its gallery, so any variant list could not be read.",
+      "shipping": "not shown",
+      "sold": "1,000+",
+      "rating": "4.9",
+      "reviews": null,
+      "store": null,
+      "store_url": null,
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/Seb98f4de6dd74366856f080b1d3d13cfl.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sf8af5fcf8c274c58a7c2c30a7d7f1536D.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sb117abaf9a8a4f14902a9e2955e65e6fj.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sa2534eb706fd420ba0e622b7b8d68b8aP.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sb22acb5bc99549c88d8166791f4c645dP.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S1159b9192de747a39c366472027411d1t.jpg"
+      ],
+      "verdict": "chosen",
+      "notes": "This is half of the line, and the line needs both halves: buy this AND the jumper set recorded below. Cheapest 830 point board found that comes with anything else in the box, at KSh 130 for board, power module and 65 jumpers, and it clears both selection rules at 1,000+ sold and 4.9. The MB102 power module is not in the spec but is worth having free: it drops a 6.5 to 12 V input onto the board's rails at a selectable 3.3 V or 5 V, which is exactly what a bench full of 3.3 V ESP32 nodes and 5 V PLC modules needs. The 65 jumpers it carries are the stiff preformed kind, useful for short hops but not a substitute for a 120 piece Dupont set.",
+      "price_all_seen": ["KSh 130"]
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005006205169394.html",
+      "title": "40 / 120pcs 40PIN 20CM Dupont Line Male To Male + Female And Female To Female Jumper Dupont Wire Cable For Arduino DIY KIT IBUW",
+      "price_kes": 136,
+      "price_note": "KSh 136 on the search card, but the listing runs 40 pcs and 120 pcs variants and the card figure will be the 40 piece one, so the 120 piece set the spec asks for costs more, likely around KSh 300 on the pattern of the other listings on this page. Shipping not shown. Item page rendered only its gallery.",
+      "shipping": "not shown",
+      "sold": "5,000+",
+      "rating": "4.8",
+      "reviews": null,
+      "store": null,
+      "store_url": null,
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/S46222ebb7fb444dba5ed747a67eabc99L.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S282492dd277940b4888b00e6171edd65v.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S71bbf130435441dfb2fd199c78d92f7ey.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Se190f641b76b41f8ab79a7533d68da7cA.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S236241bb9a244ff6b00ae0847159036e7.jpg"
+      ],
+      "verdict": "runner-up",
+      "notes": "Marked runner-up only because the schema allows one chosen URL per line; in practice this is the SECOND HALF OF THE PURCHASE and should be bought alongside the board above. It is the cheapest 120 piece Dupont set found, covers all three end combinations at 20 cm, and has the best record of any jumper listing at 5,000+ sold and 4.8. Select the 120 pcs variant, not the 40 pcs one that the KSh 136 card figure belongs to. Together the two listings come to roughly KSh 430 before shipping, against KSh 604 to KSh 999 for the single listing kits that bundle a board and wires, so buying the two separately is the cheaper route as well as the one that actually delivers 120 jumpers.",
+      "price_all_seen": ["KSh 136"]
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005008395520302.html",
+      "title": "MB-102 MB102 SYB-170 Breadboard 400 830 Point Solderless Bread Board Test Develop For Dupont line DIY for arduino laboratory",
+      "price_kes": 91,
+      "price_note": "KSh 91 on the search card, the cheapest breadboard figure found, but the listing covers the SYB-170 mini board, the 400 point board and the 830 point board, and KSh 91 will be the SYB-170, which is a 170 tie point stub the size of a matchbox.",
+      "shipping": "not shown",
+      "sold": "1,000+",
+      "rating": "4.8",
+      "reviews": null,
+      "store": null,
+      "store_url": null,
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sa6bcb902ce954a4580548c186c44f678U.jpg"
+      ],
+      "verdict": "rejected",
+      "notes": "Cheapest board on the line at KSh 91 with a sound record, 1,000+ sold and 4.8, and if the 830 point variant is near that figure it would beat the chosen listing. Rejected because three board sizes share the page and the headline price belongs to the smallest, so the saving is probably illusory, and because it is a bare board: no power module and no jumpers, where the chosen listing bundles both for KSh 39 more.",
+      "price_all_seen": ["KSh 91"]
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005004532352681.html",
+      "title": "NEW MB-102 MB102 Breadboard 400 830 Point Solderless PCB Bread Board Jumper Wire Dupont Line Test Develop DIY for Arduino kit",
+      "price_kes": 604,
+      "price_note": "KSh 604 with free shipping, so KSh 604 landed, for a board and wire kit in one listing.",
+      "shipping": "Free shipping",
+      "sold": "3,000+",
+      "rating": "4.8",
+      "reviews": null,
+      "store": null,
+      "store_url": null,
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/S7f531d48a7d54ad1baddff76a593e83aN.jpg"
+      ],
+      "verdict": "rejected",
+      "notes": "The best of the single listing kits that carry both a board and Dupont wires, with free shipping and 3,000+ sold at 4.8, so it answers the line in one purchase with no shipping surprise. Rejected on price: KSh 604 landed against roughly KSh 430 for the two separate listings, and it does not state that the wire count reaches 120. The brief allowed either route and the two listing route came out cheaper.",
+      "price_all_seen": ["KSh 604"]
+    }
+  ],
+  "notes": "This line resolves to TWO purchases, not one, as the brief allowed: the MB-102 board bundle at KSh 130 and the 120 piece Dupont set at KSh 136 plus whatever the 120 piece variant costs over the 40 piece one. The schema carries a single chosen URL so the board is recorded as chosen and the jumper set as runner-up, but the runner-up verdict on that entry means companion purchase, not alternative. Two searches were run, 830 point breadboard with 120pcs jumper wires kit and 120pcs dupont jumper wire male female breadboard, and both returned dozens of genuine parts. Neither item page rendered its text, both came back titled Aliexpress with no price, store, rating or shipping, so store name, store URL, review count, shipping and the variant prices are unverified for every candidate and all figures come from the search cards. The variant trap is worse on this line than any other: nearly every listing prices a small board or a 40 piece wire set as the headline figure while advertising the 830 point board and the 120 piece set in the title, so the true cost of the correct variants will be higher than the KSh 266 the two card figures suggest."
+}

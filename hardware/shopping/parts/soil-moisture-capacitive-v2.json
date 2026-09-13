@@ -1,0 +1,93 @@
+{
+  "id": "soil-moisture-capacitive-v2",
+  "line": "Capacitive soil moisture sensor v1.2 or v2.0",
+  "role": "LoRa ecosystem device: farm sensor node payload",
+  "spec": "Capacitive soil moisture probe of the common v1.2 or v2.0 design: single piece corrosion resistant board, analogue output, 3.3 to 5.5 V supply, three pin lead. Capacitive rather than the resistive fork, which corrodes away in weeks.",
+  "qty": 1,
+  "why": "One of the two readings the ESP32-C3 farm node publishes on demo D6, which is what makes the node a real third party device with something to say rather than a traffic generator.",
+  "recorded": "2026-09-13",
+  "chosen": "https://www.aliexpress.com/item/1005008145000162.html",
+  "candidates": [
+    {
+      "url": "https://www.aliexpress.com/item/1005008145000162.html",
+      "title": "1/3 PCS Capacitive Soil Moisture Sensor Corrosion Resistant for R3 Board Moisture Detection Garden Watering DIY",
+      "price_kes": 136,
+      "price_note": "KSh 136 with free shipping, so KSh 136 landed, for the single sensor; the listing also sells a 3 pack. Item page rendered only its gallery, so the pack prices could not be read. No Choice or Welcome deal badge seen.",
+      "shipping": "Free shipping",
+      "sold": "2,000+",
+      "rating": "4.9",
+      "reviews": null,
+      "store": null,
+      "store_url": null,
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/S87588226be43431f8f57167d343c1ba8y.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sb150058da76b4863a6af79e6cef72983Z.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S8c75a2630d684f65a59e07aecb69669cP.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S45f2d0cf59464b8fbd02f9fbbebff484B.jpg"
+      ],
+      "verdict": "chosen",
+      "notes": "Cheapest landed price on the line at KSh 136 with free shipping, and the strongest evidence of any candidate that clears both rules: 2,000+ sold at a genuine 4.9. Every capacitive sensor on this page is the same reference board, so the choice is really about which seller to trust, and this one has the record. The title does not state v1.2 or v2.0, which is the one gap against the spec, but the board in the gallery is the standard single piece capacitive probe with the three pin lead, and the two revisions differ only in the regulator fitted. No photo check was required on this line and none was made beyond reading the gallery thumbnails.",
+      "price_all_seen": ["KSh 136"]
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005008554770126.html",
+      "title": "1-10PCS Capacitive Soil Moisture Sensor Module Wide Voltage 3.3V Corrosion Resistant W/ Gravity for Arduino Soil Moisture Sensor",
+      "price_kes": 141,
+      "price_note": "KSh 141 with free shipping, KSh 5 above the chosen listing. Pack sizes 1 through 10. Item page rendered only its gallery.",
+      "shipping": "Free shipping",
+      "sold": "4,000+",
+      "rating": "4.9",
+      "reviews": null,
+      "store": null,
+      "store_url": null,
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/S2872c9c1cd5e491bb6fc91c4a1dc7ce5W.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sede2b50154a24d69aa1136515f33be6fF.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sf82ed5f957b14dfa80bb1d2df7b39b5dn.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S223280db723142238075fbe1ae621e9bL.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S6907d320a2094a2f8583942c7ac289cdG.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S4675f87889af4d5b9e4d70eb427e47c04.jpg"
+      ],
+      "verdict": "runner-up",
+      "notes": "Twice the sold count of the chosen listing at 4,000+, the same 4.9 rating and the same free shipping, for KSh 5 more. On a line where KSh 5 is noise this is arguably the better buy, and it is the one to take if the chosen listing is out of stock or if the two are ordered together anyway. Held at runner-up strictly on the lowest landed price rule.",
+      "price_all_seen": ["KSh 141"]
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005007953078865.html",
+      "title": "Capacitive soil moisture sensor module Corrosion Resistant wide voltage wire Analog Capacitive Soil Moisture Sensor V1.2",
+      "price_kes": 56,
+      "price_note": "KSh 56 on the search card, the cheapest on the line, but shipping is not shown and not free, so the landed price is unknown and could easily exceed the chosen listing's KSh 136.",
+      "shipping": "not shown",
+      "sold": "500+",
+      "rating": null,
+      "reviews": null,
+      "store": null,
+      "store_url": null,
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/S5efe9a37755e44cfa878e2e714900709h/48x48.png"
+      ],
+      "verdict": "runner-up",
+      "notes": "The only candidate whose title names the V1.2 revision the spec asks for by name, and the cheapest board on the line at KSh 56, so on an exact spec match rule it has a real claim. Held at runner-up for two reasons. Shipping is not shown and not free, and on a KSh 56 part the shipping decides the landed price entirely. And its rating is unknown: the scraper reported 1.2 for this listing, which is not a rating at all but the V1.2 in the title being read as one, so nothing is known about how buyers rate it. Take this only if its shipping turns out to be near zero.",
+      "price_all_seen": ["KSh 56"]
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005006982328635.html",
+      "title": "Capacitive Soil Moisture Sensor Module Not Easy to Corrode Wide Voltage Wire 3.3~5.5V Corrosion Resistant W/ Gravity for Arduino",
+      "price_kes": 182,
+      "price_note": "KSh 182 with free shipping.",
+      "shipping": "Free shipping",
+      "sold": "2,000+",
+      "rating": null,
+      "reviews": null,
+      "store": null,
+      "store_url": null,
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sda9f08f4b93544a58ec54e2080d5b012A.jpg"
+      ],
+      "verdict": "rejected",
+      "notes": "Same reference board, same 2,000+ sold as the chosen listing, but KSh 46 dearer with nothing to show for it, and its rating is unknown for the same reason as the V1.2 listing above: the 3.3 the scraper reported is the 3.3~5.5V in the title, not a star rating. Five separate listings on this page share that title and all five reported a phantom 3.3. Rejected on price with no offsetting evidence.",
+      "price_all_seen": ["KSh 182"]
+    }
+  ],
+  "notes": "One search, capacitive soil moisture sensor v1.2 corrosion resistant, returned fifty genuine capacitive sensors, so no second search was run. Every listing on the page is the same reference board, so this line was decided on seller record and landed price rather than on the part. One trap worth recording for later scouts: the search card scraper reads a number out of the title when the card carries no rating, so listings titled 3.3~5.5V reported a rating of 3.3 and listings titled V1.2 reported 1.2. Those are not ratings and were treated as unknown here; any scout reading these files should not take a sub 4.0 figure on this category at face value. Neither item page rendered its text, both came back titled Aliexpress with no price, store, rating or shipping, so store name, store URL, review count and pack prices are unverified for every candidate and all figures come from the search cards."
+}
