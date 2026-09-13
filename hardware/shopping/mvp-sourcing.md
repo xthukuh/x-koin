@@ -158,9 +158,12 @@ the courier actually charges as the figure.
    800 (284). Adds about 4,000 KES for having the two MCU lines this week
    rather than on Sep 25. Not worth it unless the AliExpress parcel slips.
 
-One thing only Martin can do: call Pixel Electric about a KQ-130F restock
-(1,800 each, genuine pinout on their page, sold out on 2026-09-14), which would
-cut 1,616 KES and the 569 shipping.
+KQ-130F source, decided 2026-09-14 on the recommendation: order the two
+KQ-130F+ on AliExpress now rather than wait on a Pixel Electric restock (1,800
+each, sold out on the day, no restock date). A restock would have saved about
+2,200 KES, but an open-ended wait on the one line that gates D1, D4 and D5 is
+worth more than that. Pixel stays the stage-two source for the third module if
+it restocks. What remains is placing the orders from mvp-checkout.json.
 
 ## What changed against the scouted list
 

@@ -203,3 +203,8 @@ Decision 2026-09-14 (late): the farm node radio is a second E22-900M22S, not
 the Ra-01SH (all Ra-01SH listings shipped mid November). Kit is now 26,986
 KES before shipping (569), VAT and customs; farm node 1,578. Only the Pixel
 Electric restock call and the orders remain with Martin.
+
+Decision 2026-09-14 (last): KQ-130F source is the AliExpress KQ-130F+
+listing now, no wait on a Pixel Electric restock; Pixel is the stage-two
+source. Every sourcing decision is closed; placing the orders is Martin's.
+Pushed to origin/main (45b0851 and this commit).
