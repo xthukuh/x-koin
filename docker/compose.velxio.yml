@@ -7,9 +7,10 @@
 # container on this compose network; no external proxy network exists):
 #   VELXIO_TRAEFIK=true VELXIO_HOST=velxio.thuku.dev docker compose -f docker/compose.velxio.yml up -d
 #
-# The image is upstream and unmodified (AGPLv3; source at
-# https://github.com/davidmonterocrespo24/velxio). xKoin demos are .vlx
-# files under hardware/velxio, imported through the Import button. The
+# The image is the upstream master by default or, with VELXIO_IMAGE, the
+# build of Martin's fork (AGPLv3, https://github.com/xthukuh/velxio) that
+# carries the ESP32 chip-net patch offered upstream as PR 324. xKoin demos
+# are .vlx files under hardware/velxio, imported through the Import button. The
 # five volumes keep arduino-cli cores, libraries, ccache and the ESP-IDF
 # build directory, so a compile after a restart takes seconds, not minutes.
 
