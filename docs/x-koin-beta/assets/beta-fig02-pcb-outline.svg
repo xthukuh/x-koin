@@ -1,0 +1,185 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" font-family="IBM Plex Mono, Consolas, Menlo, monospace" font-size="13" fill="#e9f0ff">
+  <defs>
+    <pattern id="minor" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255,255,255,0.10)" stroke-width="1"/>
+    </pattern>
+    <pattern id="major" width="100" height="100" patternUnits="userSpaceOnUse">
+      <rect width="100" height="100" fill="url(#minor)"/>
+      <path d="M 100 0 L 0 0 0 100" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="1"/>
+    </pattern>
+    <marker id="dim" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 5 L 10 5 M 5 0 L 5 10" stroke="#ffffff" stroke-width="1.5"/>
+    </marker>
+    <pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse">
+      <path d="M 0 8 L 8 0" stroke="#ffd166" stroke-width="1.2" fill="none"/>
+    </pattern>
+  </defs>
+  <style>
+    .line { fill: none; stroke: #ffffff; stroke-width: 1.5; }
+    .thin { fill: none; stroke: #9fc0ff; stroke-width: 1; }
+    .dash { fill: none; stroke: #9fc0ff; stroke-width: 1.2; stroke-dasharray: 6 4; }
+    .warn { fill: none; stroke: #ffd166; stroke-width: 1.5; }
+    .fillp { fill: #0b3d91; stroke: #ffffff; stroke-width: 1.5; }
+    .fillv { fill: #0b3d91; stroke: #9fc0ff; stroke-width: 1.5; stroke-dasharray: 5 4; }
+    .label { font-size: 11.5px; letter-spacing: 0.05em; }
+    .small { font-size: 10px; fill: #c9d8ff; }
+    .title { font-size: 22px; letter-spacing: 0.08em; }
+    .dimline { fill: none; stroke: #ffffff; stroke-width: 1; marker-start: url(#dim); marker-end: url(#dim); }
+    .bub { fill: #0b3d91; stroke: #ffffff; stroke-width: 1.4; }
+    .bnum { font-size: 11px; fill: #ffffff; text-anchor: middle; }
+  </style>
+
+  <rect width="1200" height="800" fill="#0b3d91"/>
+  <rect width="1200" height="800" fill="url(#major)"/>
+  <rect x="30" y="30" width="1140" height="740" class="line"/>
+
+  <g id="drawing">
+    <text x="60" y="70" class="title">XKOIN BETA BOARD</text>
+    <text x="60" y="92" class="label">PCB OUTLINE, TOP VIEW, 108.00 x 58.00 mm, 4 LAYER</text>
+
+    <rect x="200" y="160" width="780" height="410" rx="10" class="line"/>
+
+    <circle cx="224" cy="184" r="9" class="thin"/>
+    <circle cx="956" cy="184" r="9" class="thin"/>
+    <circle cx="224" cy="546" r="9" class="thin"/>
+    <circle cx="956" cy="546" r="9" class="thin"/>
+
+    <rect x="200" y="378" width="780" height="14" fill="url(#hatch)" stroke="#ffd166" stroke-width="1.5"/>
+    <text x="206" y="372" class="small" fill="#ffd166">ISOLATION SLOT 2.00 mm, routed through all four layers, V-score coincident</text>
+
+    <path d="M 176 354 V 416" class="dimline"/>
+    <text x="62" y="380" class="small">8.00 mm creepage,</text>
+    <text x="62" y="396" class="small">5.50 mm clearance</text>
+
+    <path d="M 200 606 H 980" class="dimline"/>
+    <text x="590" y="626" text-anchor="middle" class="small">108.00 mm</text>
+    <path d="M 1014 160 V 570" class="dimline"/>
+    <text x="1026" y="368" class="small">58.00 mm</text>
+
+    <rect x="238" y="164" width="176" height="50" class="dash"/>
+    <text x="246" y="182" class="small">ANTENNA KEEP-OUT</text>
+    <text x="246" y="198" class="small">no copper L1 to L4, 15 mm</text>
+
+    <rect x="250" y="216" width="152" height="150" class="fillp"/>
+    <text x="260" y="240" class="label">U1</text>
+    <text x="260" y="258" class="small">ESP32-S3-</text>
+    <text x="260" y="274" class="small">WROOM-1</text>
+    <text x="260" y="290" class="small">N16R8</text>
+    <text x="260" y="312" class="small">25.5 x 18.0 mm</text>
+    <circle cx="410" cy="222" r="11" class="bub"/><text x="410" y="226" class="bnum">1</text>
+
+    <rect x="440" y="238" width="130" height="96" class="fillp"/>
+    <text x="450" y="260" class="label">U2 SX1262</text>
+    <text x="450" y="278" class="small">QFN-24 + TCXO</text>
+    <text x="450" y="294" class="small">pi match + LPF</text>
+    <text x="450" y="316" class="small">50 ohm, +/-10 pct</text>
+    <circle cx="566" cy="246" r="11" class="bub"/><text x="566" y="250" class="bnum">2</text>
+
+    <path d="M 570 262 H 618" class="line"/>
+    <circle cx="628" cy="262" r="10" class="thin"/>
+    <text x="602" y="236" class="small">J3 IPEX</text>
+    <path d="M 628 252 V 176" class="dash"/>
+    <text x="640" y="184" class="small">to SMA bulkhead</text>
+    <circle cx="628" cy="300" r="11" class="bub"/><text x="628" y="304" class="bnum">3</text>
+
+    <rect x="700" y="206" width="94" height="94" class="fillp"/>
+    <text x="710" y="228" class="label">U3</text>
+    <text x="710" y="246" class="small">QCA7005</text>
+    <text x="710" y="262" class="small">QFN-68</text>
+    <text x="710" y="278" class="small">10 x 10 mm</text>
+    <circle cx="790" cy="214" r="11" class="bub"/><text x="790" y="218" class="bnum">4</text>
+
+    <rect x="812" y="206" width="60" height="42" class="fillp"/>
+    <text x="820" y="226" class="label">U4</text>
+    <text x="820" y="242" class="small">NOR flash</text>
+    <circle cx="868" cy="214" r="11" class="bub"/><text x="868" y="218" class="bnum">5</text>
+
+    <rect x="700" y="318" width="110" height="48" class="fillp"/>
+    <text x="710" y="338" class="label">U5 ST7540</text>
+    <text x="710" y="356" class="small">TSSOP-28</text>
+    <circle cx="806" cy="326" r="11" class="bub"/><text x="806" y="330" class="bnum">6</text>
+
+    <rect x="828" y="268" width="120" height="66" class="fillp"/>
+    <text x="838" y="290" class="label">POWER TREE</text>
+    <text x="838" y="308" class="small">5 V and 3V3 buck,</text>
+    <text x="838" y="324" class="small">1V2 LDO for U3</text>
+    <circle cx="944" cy="276" r="11" class="bub"/><text x="944" y="280" class="bnum">7</text>
+
+    <rect x="186" y="286" width="64" height="46" class="fillp"/>
+    <text x="192" y="306" class="label">J2</text>
+    <text x="192" y="322" class="small">USB-C</text>
+    <circle cx="246" cy="294" r="11" class="bub"/><text x="246" y="298" class="bnum">8</text>
+
+    <rect x="828" y="346" width="120" height="24" class="fillv"/>
+    <text x="836" y="363" class="small">U7 CN3065 + J4 cell</text>
+    <circle cx="944" cy="352" r="11" class="bub"/><text x="944" y="356" class="bnum">9</text>
+
+    <circle cx="440" cy="356" r="5" class="thin"/>
+    <circle cx="466" cy="356" r="5" class="thin"/>
+    <circle cx="492" cy="356" r="5" class="thin"/>
+    <circle cx="518" cy="356" r="5" class="thin"/>
+    <circle cx="544" cy="356" r="5" class="thin"/>
+    <circle cx="570" cy="356" r="5" class="thin"/>
+    <text x="596" y="360" class="small">TP1 to TP6</text>
+    <circle cx="424" cy="356" r="11" class="bub"/><text x="424" y="360" class="bnum">10</text>
+
+    <rect x="220" y="424" width="122" height="116" class="fillp"/>
+    <text x="230" y="446" class="label">J1 MAINS IN</text>
+    <text x="230" y="464" class="small">L / N / E pads</text>
+    <text x="230" y="480" class="small">to BS1363 pins</text>
+    <circle cx="338" cy="432" r="11" class="bub"/><text x="338" y="436" class="bnum">11</text>
+
+    <rect x="358" y="444" width="62" height="76" class="fillp"/>
+    <text x="366" y="466" class="label">F1</text>
+    <text x="366" y="484" class="small">13 A</text>
+
+    <rect x="436" y="432" width="112" height="100" class="fillp"/>
+    <text x="446" y="454" class="label">EMI</text>
+    <text x="446" y="472" class="small">MOV, X2 cap,</text>
+    <text x="446" y="488" class="small">CM choke</text>
+    <circle cx="544" cy="440" r="11" class="bub"/><text x="544" y="444" class="bnum">12</text>
+
+    <rect x="564" y="404" width="184" height="146" class="fillp"/>
+    <text x="574" y="426" class="label">PS1 HLK-5M12</text>
+    <text x="574" y="444" class="small">38 x 23 x 18 mm</text>
+    <text x="574" y="460" class="small">12 V 5 W, 3 kV</text>
+    <circle cx="744" cy="412" r="11" class="bub"/><text x="744" y="416" class="bnum">13</text>
+
+    <rect x="766" y="404" width="80" height="66" class="fillp"/>
+    <text x="774" y="426" class="label">T1</text>
+    <text x="774" y="444" class="small">NB xfmr</text>
+
+    <rect x="766" y="484" width="80" height="66" class="fillp"/>
+    <text x="774" y="506" class="label">T2</text>
+    <text x="774" y="524" class="small">HPAV xfmr</text>
+    <circle cx="842" cy="492" r="11" class="bub"/><text x="842" y="496" class="bnum">14</text>
+
+    <rect x="862" y="362" width="34" height="46" class="warn"/>
+    <text x="866" y="424" class="small" fill="#ffd166">CY1</text>
+    <rect x="912" y="362" width="34" height="46" class="warn"/>
+    <text x="916" y="424" class="small" fill="#ffd166">CY2</text>
+    <circle cx="900" cy="348" r="11" class="bub"/><text x="900" y="352" class="bnum">15</text>
+
+    <rect x="866" y="482" width="86" height="20" class="fillv"/>
+    <text x="870" y="522" class="small">J5 KQ-130F</text>
+    <text x="870" y="538" class="small">9-pin alternate</text>
+    <circle cx="948" cy="488" r="11" class="bub"/><text x="948" y="492" class="bnum">16</text>
+
+    <text x="62" y="470" class="label">LAYER STACK</text>
+    <rect x="62" y="482" width="110" height="12" class="fillp"/><text x="62" y="506" class="small">L1 sig + parts, 1 oz</text>
+    <rect x="62" y="514" width="110" height="12" class="fillp"/><text x="62" y="538" class="small">L2 GND pour, 0.5 oz</text>
+    <rect x="62" y="546" width="110" height="12" class="fillp"/><text x="62" y="570" class="small">L3 power, 0.5 oz</text>
+    <rect x="62" y="578" width="110" height="12" class="fillp"/><text x="62" y="602" class="small">L4 sig + RF rtn, 1 oz</text>
+    <text x="62" y="624" class="small">1.6 mm, ENIG, FR-4 TG150</text>
+  </g>
+
+  <g id="titleblock" transform="translate(780 640)">
+    <rect width="390" height="130" class="line" fill="#0b3d91"/>
+    <path d="M 0 26 H 390 M 0 52 H 390 M 0 78 H 390 M 0 104 H 390 M 110 0 V 130" class="thin"/>
+    <text x="10" y="18" class="label">Project</text><text x="120" y="18" class="small">xKoin beta, merged board</text>
+    <text x="10" y="44" class="label">Drawing</text><text x="120" y="44" class="small">XK-BETA-PCB-02</text>
+    <text x="10" y="70" class="label">Date</text><text x="120" y="70" class="small">2026-09-12</text>
+    <text x="10" y="96" class="label">Units</text><text x="120" y="96" class="small">millimetres, not to scale</text>
+    <text x="10" y="122" class="label">Rev</text><text x="120" y="122" class="small">A, outline proposal</text>
+  </g>
+</svg>

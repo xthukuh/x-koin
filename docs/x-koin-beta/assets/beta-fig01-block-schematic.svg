@@ -1,0 +1,166 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" font-family="IBM Plex Mono, Consolas, Menlo, monospace" font-size="13" fill="#e9f0ff">
+  <defs>
+    <pattern id="minor" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255,255,255,0.10)" stroke-width="1"/>
+    </pattern>
+    <pattern id="major" width="100" height="100" patternUnits="userSpaceOnUse">
+      <rect width="100" height="100" fill="url(#minor)"/>
+      <path d="M 100 0 L 0 0 0 100" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="1"/>
+    </pattern>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#ffffff"/>
+    </marker>
+  </defs>
+  <style>
+    .line { fill: none; stroke: #ffffff; stroke-width: 1.5; }
+    .thin { fill: none; stroke: #9fc0ff; stroke-width: 1; }
+    .dash { fill: none; stroke: #9fc0ff; stroke-width: 1.5; stroke-dasharray: 6 4; }
+    .warn { fill: none; stroke: #ffd166; stroke-width: 2; }
+    .fillp { fill: #0b3d91; stroke: #ffffff; stroke-width: 1.5; }
+    .fillv { fill: #0b3d91; stroke: #9fc0ff; stroke-width: 1.5; stroke-dasharray: 6 4; }
+    .label { font-size: 12px; letter-spacing: 0.06em; }
+    .small { font-size: 10.5px; fill: #c9d8ff; }
+    .title { font-size: 22px; letter-spacing: 0.08em; }
+    .lead { fill: none; stroke: #ffffff; stroke-width: 1; }
+    .bus { fill: none; stroke: #ffffff; stroke-width: 1.5; marker-end: url(#arrow); }
+  </style>
+
+  <rect width="1200" height="800" fill="#0b3d91"/>
+  <rect width="1200" height="800" fill="url(#major)"/>
+  <rect x="30" y="30" width="1140" height="740" class="line"/>
+
+  <g id="drawing">
+    <text x="60" y="70" class="title">XKOIN BETA BOARD</text>
+    <text x="60" y="92" class="label">BLOCK SCHEMATIC, ONE PCB, FOUR POPULATIONS</text>
+
+    <path d="M 455 118 V 700" class="warn" stroke-dasharray="10 6"/>
+    <text x="248" y="716" class="small" fill="#ffd166">MAINS ISOLATION BARRIER: 8.0 mm creepage, 5.5 mm clearance, no copper on any layer</text>
+    <text x="352" y="112" class="small" fill="#ffd166">230 V SIDE</text>
+    <text x="470" y="112" class="small" fill="#ffd166">SELV SIDE</text>
+
+    <rect x="60" y="150" width="170" height="58" class="fillp"/>
+    <text x="70" y="172" class="label">J1 BS1363 INLET</text>
+    <text x="70" y="190" class="small">13 A fuse, type G pins</text>
+
+    <rect x="60" y="240" width="170" height="58" class="fillp"/>
+    <text x="70" y="262" class="label">EMI FRONT END</text>
+    <text x="70" y="280" class="small">MOV, X2 cap, CM choke</text>
+
+    <rect x="60" y="330" width="170" height="58" class="fillp"/>
+    <text x="70" y="352" class="label">L / N BUS</text>
+    <text x="70" y="370" class="small">3 taps, mains copper 2 mm</text>
+
+    <rect x="255" y="150" width="170" height="70" class="fillp"/>
+    <text x="265" y="172" class="label">PS1 HLK-5M12</text>
+    <text x="265" y="190" class="small">12 V 5 W, 3 kV isolation</text>
+    <text x="265" y="206" class="small">LCSC C209907 family</text>
+
+    <rect x="255" y="252" width="170" height="70" class="fillp"/>
+    <text x="265" y="274" class="label">T1 NB COUPLING</text>
+    <text x="265" y="292" class="small">1:1 xfmr, 2x Y2 4.7 nF</text>
+    <text x="265" y="308" class="small">125 kHz band</text>
+
+    <rect x="255" y="354" width="170" height="70" class="fillp"/>
+    <text x="265" y="376" class="label">T2 HPAV COUPLING</text>
+    <text x="265" y="394" class="small">line xfmr, 2x Y2 + L/N</text>
+    <text x="265" y="410" class="small">2 to 30 MHz</text>
+
+    <path d="M 145 208 V 236" class="bus"/>
+    <path d="M 145 298 V 326" class="bus"/>
+    <path d="M 230 359 H 244 V 185 H 251" class="thin"/>
+    <path d="M 244 287 H 251" class="thin"/>
+    <path d="M 244 389 H 251" class="thin"/>
+
+    <path d="M 425 185 H 486" class="bus"/>
+    <path d="M 425 287 H 486" class="bus"/>
+    <path d="M 425 389 H 486" class="bus"/>
+
+    <rect x="490" y="150" width="180" height="70" class="fillp"/>
+    <text x="500" y="172" class="label">POWER TREE</text>
+    <text x="500" y="190" class="small">12 V in, 5 V buck,</text>
+    <text x="500" y="206" class="small">3V3 buck, 1V2 LDO</text>
+
+    <rect x="490" y="252" width="180" height="70" class="fillp"/>
+    <text x="500" y="274" class="label">U5 ST7540</text>
+    <text x="500" y="292" class="small">FSK narrowband PLC</text>
+    <text x="500" y="308" class="small">alt: KQ-130F on J5</text>
+
+    <rect x="490" y="354" width="180" height="70" class="fillp"/>
+    <text x="500" y="376" class="label">U3 QCA7005</text>
+    <text x="500" y="394" class="small">HomePlug Green PHY 1.1</text>
+    <text x="500" y="410" class="small">U4 SPI NOR boot flash</text>
+
+    <rect x="720" y="214" width="220" height="200" class="fillp"/>
+    <text x="732" y="240" class="label">U1 ESP32-S3-WROOM-1</text>
+    <text x="732" y="258" class="small">N16R8: 16 MB flash,</text>
+    <text x="732" y="274" class="small">8 MB octal PSRAM</text>
+    <text x="732" y="298" class="small">Wi-Fi AP + STA 2.4 GHz</text>
+    <text x="732" y="314" class="small">on the module PCB antenna</text>
+    <text x="732" y="338" class="small">Ed25519 admission,</text>
+    <text x="732" y="354" class="small">receipt counters, metering</text>
+    <text x="732" y="384" class="small">GPIO33-37 unavailable:</text>
+    <text x="732" y="400" class="small">octal PSRAM uses them</text>
+
+    <path d="M 670 185 H 696 V 250 H 716" class="bus"/>
+    <text x="676" y="176" class="small">3V3 / 5 V</text>
+    <path d="M 670 287 H 716" class="bus"/>
+    <text x="676" y="278" class="small">UART2 9600, 3 ctrl</text>
+    <path d="M 670 389 H 700 V 370 H 716" class="bus"/>
+    <text x="676" y="404" class="small">SPI2 10 MHz + INT</text>
+
+    <rect x="980" y="214" width="170" height="86" class="fillp"/>
+    <text x="990" y="236" class="label">U2 SX1262</text>
+    <text x="990" y="254" class="small">bare IC, 868.1 MHz</text>
+    <text x="990" y="270" class="small">32 MHz TCXO 2 ppm</text>
+    <text x="990" y="286" class="small">match + LPF, DIO2 sw</text>
+
+    <path d="M 940 250 H 976" class="bus"/>
+    <text x="940" y="212" class="small">SPI3</text>
+
+    <rect x="980" y="330" width="170" height="60" class="fillp"/>
+    <text x="990" y="352" class="label">J3 RF OUT</text>
+    <text x="990" y="370" class="small">IPEX to SMA bulkhead</text>
+    <path d="M 1065 300 V 326" class="bus"/>
+
+    <rect x="720" y="452" width="220" height="66" class="fillp"/>
+    <text x="732" y="474" class="label">J2 USB-C</text>
+    <text x="732" y="492" class="small">native USB on GPIO19/20,</text>
+    <text x="732" y="508" class="small">CDC console + 5 V in</text>
+    <path d="M 830 414 V 448" class="bus"/>
+
+    <rect x="490" y="452" width="180" height="86" class="fillv"/>
+    <text x="500" y="474" class="label">U7 CN3065</text>
+    <text x="500" y="492" class="small">solar charge, 6 V panel</text>
+    <text x="500" y="508" class="small">SATELLITE ONLY</text>
+    <text x="500" y="528" class="small">VBAT sense to GPIO1</text>
+
+    <rect x="980" y="452" width="170" height="86" class="fillv"/>
+    <text x="990" y="474" class="label">J4 CELL</text>
+    <text x="990" y="492" class="small">18650 + DW01A</text>
+    <text x="990" y="508" class="small">+ FS8205A protection</text>
+    <text x="990" y="528" class="small">SATELLITE ONLY</text>
+    <path d="M 670 495 H 976" class="dash"/>
+    <path d="M 600 452 V 420 H 716 V 414" class="dash"/>
+
+    <rect x="60" y="452" width="360" height="192" class="line" fill="#0b3d91"/>
+    <text x="72" y="476" class="label">POPULATION KEY</text>
+    <text x="72" y="500" class="small">NODE: every block; SMA bulkhead fitted;</text>
+    <text x="72" y="516" class="small">USB-C carries a backhaul dongle.</text>
+    <text x="72" y="540" class="small">NODE-SATELLITE: every block; IPEX to an</text>
+    <text x="72" y="556" class="small">internal antenna; no SMA bulkhead.</text>
+    <text x="72" y="580" class="small">SATELLITE: SELV core plus U7 and J4;</text>
+    <text x="72" y="596" class="small">mains, ST7540 and QCA7005 depopulated.</text>
+    <text x="72" y="620" class="small">CLIENT DONGLE: SELV core only, snapped</text>
+    <text x="72" y="636" class="small">off at the V-score on the isolation slot.</text>
+  </g>
+
+  <g id="titleblock" transform="translate(780 640)">
+    <rect width="390" height="130" class="line" fill="#0b3d91"/>
+    <path d="M 0 26 H 390 M 0 52 H 390 M 0 78 H 390 M 0 104 H 390 M 110 0 V 130" class="thin"/>
+    <text x="10" y="18" class="label">Project</text><text x="120" y="18" class="small">xKoin beta, merged board</text>
+    <text x="10" y="44" class="label">Drawing</text><text x="120" y="44" class="small">XK-BETA-BLK-01</text>
+    <text x="10" y="70" class="label">Date</text><text x="120" y="70" class="small">2026-09-12</text>
+    <text x="10" y="96" class="label">Units</text><text x="120" y="96" class="small">millimetres, not to scale</text>
+    <text x="10" y="122" class="label">Rev</text><text x="120" y="122" class="small">A, block level</text>
+  </g>
+</svg>
