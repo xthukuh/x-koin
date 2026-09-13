@@ -10,7 +10,7 @@ const ROUTES = [
   { to: '/investors', label: '/investors', text: 'Investor demo: what powers xKoin, with the real proof figures inlined.' },
   { to: '/landlord', label: '/landlord', text: 'Landlord pilot page: the incentive for a building owner, no internals.' },
   { to: '/replay', label: '/replay', text: 'Protocol replay: frame trace, chain settlement, kiosk journeys, board schematics.' },
-  { to: '/shop', label: '/shop', text: 'Hardware shopping list for the pilot build. Empty until the parts list is compiled.' },
+  { to: '/shop', label: '/shop', text: 'Proof of concept parts list compiled from hardware/shopping/parts, with galleries, prices in KES and per-role subtotals.' },
 ];
 
 const PROOFS = [
