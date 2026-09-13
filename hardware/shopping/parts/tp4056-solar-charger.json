@@ -1,0 +1,95 @@
+{
+  "id": "tp4056-solar-charger",
+  "line": "TP4056 lithium charge board with protection",
+  "role": "LoRa ecosystem device: farm sensor node power",
+  "spec": "TP4056 single cell lithium charge board carrying the DW01 plus FS8205 protection pair, so the cell has over charge, over discharge and short circuit protection on the board. USB-C input preferred over micro USB. A CN3065 solar charge variant is worth noting if it is cheaper and better suited.",
+  "qty": 1,
+  "why": "Charges the 18650 that runs the ESP32-C3 farm node on demo D6, so the node can be shown surviving on solar rather than on a bench supply, which is the whole point of a third party node riding the free LAN plane.",
+  "recorded": "2026-09-13",
+  "chosen": "https://www.aliexpress.com/item/1005006321708812.html",
+  "candidates": [
+    {
+      "url": "https://www.aliexpress.com/item/1005006321708812.html",
+      "title": "1/5/10PCS TP4056 1A 3.7V Lithium Battery Charging and Discharging Board with Protection Type-C USB Li-ion Battery Charging Board",
+      "price_kes": 69,
+      "price_note": "KSh 69 on the search card for the single board; the listing also sells 5 and 10 packs. The item page rendered only its gallery, so the pack variant prices could not be read. No Choice or Welcome deal badge seen.",
+      "shipping": "not shown",
+      "sold": "1,000+",
+      "rating": "4.9",
+      "reviews": null,
+      "store": null,
+      "store_url": null,
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/S81f5c57c63bc4764a4a008ede8b67f6ec.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sad65ee40fa2a4c218a9e1a173c448590h.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Se463091bb0764b9685fcf4dd9d4c20c8A.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S821e9067f2594498be35b51d6adf3db1K.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S861962451c044afa803e258b8a27fa89e.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S85efee23b4aa41b6b316999ea6dba539T.jpg"
+      ],
+      "verdict": "chosen",
+      "notes": "Photo check made on the first gallery image. It is a seller composite showing three board variants at high magnification, captioned TP4056 Charging Board With Protection. The charger IC is legible on two of them, an SOP-8 marked 4056H 3200360 and another marked 4056C, which confirms a genuine TP4056 rather than a relabelled clone, and the USB-C shell is unmistakable on the front board. What the photo does NOT confirm is the DW01 plus FS8205 protection pair the spec asks for by name: the passives and small SOT-23 parts around the charger are too small to read markings on, and no second SOP-8 of the size an FS8205 dual MOSFET occupies is clearly visible on the main board. So protection is claimed in the title and on the caption but unverified on the silicon, and that must be checked when the board arrives before a cell is ever left on charge unattended. Cheapest board on the line at KSh 69, and clears both selection thresholds at 1,000+ sold and 4.9.",
+      "price_all_seen": ["KSh 69"]
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005012977919797.html",
+      "title": "2/5PCS 5V 1A Micro/Type-c/Mini 18650 TP4056 Lithium Battery Charger Module Charging Board With Protection Dual Functions Li-ion",
+      "price_kes": 136,
+      "price_note": "KSh 136 on the search card, but the listing sells in 2 and 5 packs rather than singly, so KSh 136 is most likely the price of two boards, about KSh 68 each, which is level with the chosen listing. Item page rendered only its gallery.",
+      "shipping": "not shown",
+      "sold": "10,000+",
+      "rating": "4.9",
+      "reviews": null,
+      "store": null,
+      "store_url": null,
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/S7a48c37f622d436db1f1e34c0c463b73y.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S16c6678385c9469cb64af2d736de3dd5R.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S95e55658ea2d4be2aed570a8c0906f72y.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S56980972ee3f4637af914777cec846931.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S041ad0fba2fc476d84e1b1ae3eaa5b67F.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S6aae541e2c0b4cabb9dbe19905dd5317w.jpg"
+      ],
+      "verdict": "runner-up",
+      "notes": "The strongest record on the whole line, 10,000+ sold at 4.9, an order of magnitude above the chosen listing, and per board it costs about the same once the two pack is unpicked. Held at runner-up only because the line needs one board and this listing will not sell one; buying two to get one is the sort of small waste a zero budget line should avoid, and the micro USB, Type-C and mini variants on the same page mean the USB-C one has to be picked correctly anyway. Swap to this if the chosen listing is out of stock.",
+      "price_all_seen": ["KSh 136"]
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005008498698320.html",
+      "title": "500Ma Mini Solar Lipo Charger Board CN3065 Lithium Battery Charge Chip DIY Outdoor Charging Board Module For Arduino",
+      "price_kes": 82,
+      "price_note": "KSh 82 on the search card, KSh 13 above the chosen TP4056 board. The cheapest CN3065 board found; the better selling CN3065 listings sat at KSh 137 and KSh 146.",
+      "shipping": "not shown",
+      "sold": "113",
+      "rating": "4.9",
+      "reviews": null,
+      "store": null,
+      "store_url": null,
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/S3a7c8b508f1c4270b5bf8dc4597582bbv.jpg"
+      ],
+      "verdict": "runner-up",
+      "notes": "This is the CN3065 solar variant the brief asked to note. On the merits it is the better part for a solar node: the CN3065 is built for an unregulated solar input and holds its input voltage at the panel's maximum power point instead of collapsing it the way a TP4056 does when the panel cannot supply the full charge current, which on the 6 V 2 W panel of line 8 is the difference between charging and stalling in cloud. It is not cheaper, at KSh 82 against KSh 69, and the gap is KSh 13. It was still held at runner-up rather than chosen for one reason: CN3065 boards of this size carry the charger and nothing else, with no DW01 plus FS8205 protection pair, and the spec puts protection first. The right answer may well be to buy both, KSh 151 the pair, and run the CN3065 for the panel with the TP4056 protection board guarding the cell.",
+      "price_all_seen": ["KSh 82"]
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005005702554121.html",
+      "title": "Type-C USB TP4057 1A Lithium Battery Charging Protection Board Module Polymer Battery Over TP4056 With Temperature Protection",
+      "price_kes": 45,
+      "price_note": "KSh 45, the cheapest board seen anywhere on this line.",
+      "shipping": "not shown",
+      "sold": "3,000+",
+      "rating": "4.9",
+      "reviews": null,
+      "store": null,
+      "store_url": null,
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/S32d10afc697849fa9ceecd30fac114d4r.jpg"
+      ],
+      "verdict": "rejected",
+      "notes": "Cheapest of everything at KSh 45 with a strong record, 3,000+ sold at 4.9, and the TP4057 is a genuine improvement on the TP4056 with battery temperature sensing built in. Rejected because the spec names the TP4056 and the surrounding firmware and wiring notes in the repo are written against it; swapping the charger IC to save KSh 24 on a single board buys nothing and costs a divergence between the parts list and the documents. Worth reconsidering only if the whole line is revised.",
+      "price_all_seen": ["KSh 45"]
+    }
+  ],
+  "notes": "Two searches, TP4056 Type-C charging module with protection DW01 and CN3065 solar lithium battery charger module, both returned dense pages of genuine parts. Neither item page rendered its text, both came back with title Aliexpress and no price, store, rating or shipping, so store name, store URL, review count, shipping and the pack variant prices are unverified for every candidate and all figures come from the search cards. The photo check confirmed the TP4056 charger IC and the USB-C connector but could not confirm the DW01 plus FS8205 protection pair, which is the part of the spec that matters for safety; verify it on the board when it arrives. The CN3065 comparison the brief asked for came out as follows: the cheapest CN3065 is KSh 82 against KSh 69 for the TP4056, so it is not cheaper, and although it is the better charger for a solar input it carries no cell protection, so it does not replace the TP4056 board on its own."
+}

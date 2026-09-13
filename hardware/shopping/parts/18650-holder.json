@@ -1,0 +1,93 @@
+{
+  "id": "18650-holder",
+  "line": "Single 18650 cell holder with leads",
+  "role": "LoRa ecosystem device: farm sensor node power",
+  "spec": "One slot 18650 holder, 3.7 V, with flying wire leads already fitted rather than solder tags only.",
+  "qty": 1,
+  "why": "Holds the 18650 that runs the ESP32-C3 farm node on demo D6. The cell itself is bought locally in Nairobi, not shipped: carriers refuse loose lithium cells, so ordering one from AliExpress means the whole parcel is held or returned.",
+  "recorded": "2026-09-13",
+  "chosen": "https://www.aliexpress.com/item/1005007715783636.html",
+  "candidates": [
+    {
+      "url": "https://www.aliexpress.com/item/1005007715783636.html",
+      "title": "Black Plastic 1x 2x 3x 4x 18650 Battery Storage Box Case 1 2 3 4 Slot Way DIY Batteries Clip Holder Container With Wire Lead Pin",
+      "price_kes": 10,
+      "price_note": "KSh 10 on the search card, which is the 1 slot variant, the base of a listing that runs 1, 2, 3 and 4 slots. The item page rendered only its gallery so the per slot prices could not be read, but 1 slot is both the cheapest variant and the one this line wants, so the card figure should be the right one.",
+      "shipping": "not shown",
+      "sold": "3,000+",
+      "rating": "4.8",
+      "reviews": null,
+      "store": null,
+      "store_url": null,
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/S2de51a516f4e47ffa45fcf61d0434743l.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sbde568bc1fa748198dcd9ef3f55af8704.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sf7021fbab78646f8b08f5ea2c9599a2ab.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sb0017cf9e18043908331ef66b7397c4ff.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sfa35c882d2154aaa9dd49e01a462d7a73.jpg"
+      ],
+      "verdict": "chosen",
+      "notes": "Cheapest part in the entire shopping list at KSh 10, and it still clears both selection thresholds: 3,000+ sold at 4.8. Title confirms the wire lead is fitted rather than solder tags only, which is what the spec asks for. No photo check was required on this line and none was made. Shipping is not shown and will dominate the price, so add this to a basket with the other small parts rather than ordering it alone.",
+      "price_all_seen": ["KSh 10"]
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005004429543070.html",
+      "title": "New 18650 Power Bank Cases 1X 2X 3X 4X 18650 Battery Holder Storage Box Case 1 2 3 4 Slot Batteries Container With Wire Lead",
+      "price_kes": 45,
+      "price_note": "KSh 45 on the search card for the 1 slot variant. Item page rendered only its gallery.",
+      "shipping": "not shown",
+      "sold": "10,000+",
+      "rating": "4.9",
+      "reviews": null,
+      "store": null,
+      "store_url": null,
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/S63ab732cf24747708b1625ef206e814cU.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sc86af7e32cfb497aaf876f4b065fe880H.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sdffd2bac5499482f842a6903518849f9I.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sc4f898a2df7340ab86827c385b7e5e0cq.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sa36e04ec297e441d9bc8f4dd9da6ba2dz.jpg"
+      ],
+      "verdict": "runner-up",
+      "notes": "The best record on the line, 10,000+ sold at 4.9, more than three times the chosen listing's volume, for KSh 35 more on a part that costs KSh 10. On any other line that trade would decide it; here the part is a plastic clip with two wires and the failure modes are visible on arrival, so the cheaper listing carries no real risk. Use this if the chosen listing is out of stock.",
+      "price_all_seen": ["KSh 45"]
+    },
+    {
+      "url": "https://www.aliexpress.com/item/32580480645.html",
+      "title": "Plastic Standard Size AA/18650 Battery Holder Box Case Black With Wire Lead 3.7V/1.5V Clip",
+      "price_kes": 40,
+      "price_note": "KSh 40 on the search card. The listing covers AA as well as 18650, so the cell size has to be selected.",
+      "shipping": "not shown",
+      "sold": "1,000+",
+      "rating": null,
+      "reviews": null,
+      "store": null,
+      "store_url": null,
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/S4cc95cf7d2484350bc57d8da5bc00661c.jpg"
+      ],
+      "verdict": "rejected",
+      "notes": "Four times the price of the chosen listing, no rating at all, and it mixes AA and 18650 on one page so the wrong size can be shipped by mistake. Nothing recommends it.",
+      "price_all_seen": ["KSh 40"]
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005002304643015.html",
+      "title": "High Quality 1 18650 Battery Holder THM with Pins 18650 Battery Storage Box TBH-18650-1C-THM",
+      "price_kes": 74,
+      "price_note": "KSh 74 on the search card. A named part, TBH-18650-1C-THM, a through hole PCB mount holder.",
+      "shipping": "not shown",
+      "sold": "800+",
+      "rating": null,
+      "reviews": null,
+      "store": null,
+      "store_url": null,
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/S5efe9a37755e44cfa878e2e714900709h/48x48.png"
+      ],
+      "verdict": "rejected",
+      "notes": "A proper named through hole holder, which would be the better part on a real PCB. Rejected on the spec: THM means it terminates in board pins, not the flying wire leads this line asks for, so it would need a PCB or hand soldered tails to be useful on a breadboard bench. Seven times the price of the chosen listing with no rating.",
+      "price_all_seen": ["KSh 74"]
+    }
+  ],
+  "notes": "One search, 18650 battery holder single with wire leads, returned fifty genuine holders, so no further searching was needed. Neither item page rendered its text, both came back with title Aliexpress and no price, store, rating or shipping, so store name, store URL, review count and shipping are unverified for every candidate and all figures come from the search cards. The cell that goes in this holder is deliberately NOT sourced here: it is bought locally in Nairobi, because carriers refuse loose lithium cells and an 18650 in the parcel risks the whole order being held or returned. Buy a protected 18650 over the counter at home, not on this list."
+}
