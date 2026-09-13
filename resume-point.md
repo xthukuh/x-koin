@@ -112,3 +112,17 @@ remaining part lines.
 WSL Ubuntu-20.04 is unusable (no DNS, sudo needs a password). Docker
 Desktop 29.2.1 works. The Windows `python` alias without a script hangs
 and spins CPU; always call .venv/Scripts/python.exe with a script path.
+
+## Addendum 2026-09-13 (later in session four)
+
+Committed since the snapshot above: landing page (da1fef3), shop page
+(596a19c), papers 05 to 14 (252ea5d, 3b26fd7), beta set (1223a2e), W5500
+pin move (f6b8600), slides (c6fd02d), chip models (364be1b), all 19 scout
+lines (ea1fc57). Martin's fifth decision: fork velxio to patch the ESP32
+backend for chip-to-chip nets (fork https://github.com/xthukuh/velxio,
+working copy D:\velxio, branch feat/esp32-chip-nets, agent in flight;
+review before push). Scout caveats: no HomePlug Wi-Fi kit on AliExpress
+(buy in Nairobi), the KQ-130F listing photographs a KQ-330 (confirm the
+variant at checkout), most shipping figures unverified. The local velxio
+container holds a manual wasi-sdk install that the fork's Dockerfile must
+replace.
