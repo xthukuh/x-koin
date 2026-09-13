@@ -1,0 +1,90 @@
+{
+  "id": "hlk-pm01-5v-psu",
+  "line": "Hi-Link HLK-PM01 230 V AC to 5 V DC isolated module",
+  "role": "xKoin-Node, xKoin-Node-Satellite: mains power for the PLC bench",
+  "spec": "Hi-Link HLK-PM01 or HLK-5M05, 100 to 240 V AC input, isolated 5 V DC output, 3 W or better, PCB mount, CE and RoHS marked. A 5 V 1 A variant is accepted as the runner-up.",
+  "qty": 2,
+  "why": "Powers the two mains side PLC nodes of demo D3 from the same wire that carries the carrier signal, so the bench needs no second supply and no USB brick hanging off each node.",
+  "recorded": "2026-09-13",
+  "chosen": "https://www.aliexpress.com/item/1005007958278787.html",
+  "candidates": [
+    {
+      "url": "https://www.aliexpress.com/item/1005007958278787.html",
+      "title": "Hi-Link HLK-PM01 3M05B 3M03B 3M09B ACDC MIni Size LED Converter 220V to 5V 3W 0.6A Step Down Switching Power Supply Module IC",
+      "price_kes": 199,
+      "price_note": "KSh 199 on the search card, the cheapest variant on a listing that also carries 3M05B, 3M03B and 3M09B, so the HLK-PM01 variant must be selected at checkout. The item page rendered only far enough to yield the gallery, so the per variant price list could not be read. No Choice or Welcome deal badge seen.",
+      "shipping": "not shown",
+      "sold": "5,000+",
+      "rating": "4.9",
+      "reviews": null,
+      "store": null,
+      "store_url": null,
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sdf7b6c65a3bf43e28c87d462cb974e4ce.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S240b9cc78f7748a2833b64d8a41448fe4.png",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S1bcfb889a39b427c8e65c7378e650c6bC.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S92f959cc7ed748798163004bdef992f28.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S58718f95bd2c4cc1ab146af170f70c3e4.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S20101b9196be4e1f997d66073bbb51a5W.png"
+      ],
+      "verdict": "chosen",
+      "notes": "Photo check made on the first gallery image. It shows three black potted Hi-Link bricks with the Hi-Link wordmark and star logo. The one labelled HLK-PM01 reads P/N: HLK-PM01, INPUT 100-240VAC 0.2A 50-60Hz, OUTPUT 5VDC 0.6A 3W, with CE and RoHS marks and the two AC pads on one end against +Vo and -Vo on the other. That is the exact part and the exact rating the spec calls for. The image is the manufacturer's product artwork rather than a hand held photograph, so it proves the part number claimed and not the goods in the seller's bin; the seller's record carries the rest of the weight. Clears every selection rule: 5,000+ sold and 4.9 rating, and joint cheapest of the Hi-Link branded listings at KSh 199. Beats the KSh 156 listing on record by two orders of magnitude of sold count for KSh 43 more per piece, which is KSh 86 across the two.",
+      "price_all_seen": ["KSh 199"]
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005006018496818.html",
+      "title": "Hi-Link 5M05 5V 5W 1A Output AC DC Power Supply Transformer HLK-5M05 Mini Size Isolated Convertor",
+      "price_kes": 226,
+      "price_note": "KSh 226 on the search card for the HLK-5M05, the 5 W 5 V 1 A part. Shipping not shown. Item page not opened; the line only needed one item call and it went to the chosen listing.",
+      "shipping": "not shown",
+      "sold": "371",
+      "rating": null,
+      "reviews": null,
+      "store": null,
+      "store_url": null,
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/S52358301bd2d49f6bc8d783e471bee5cx.png"
+      ],
+      "verdict": "runner-up",
+      "notes": "This is the 5 V 1 A variant the brief asked to record as the runner-up, and it is the cheapest HLK-5M05 found: the other 5M05 listings sat at KSh 988, KSh 996 and KSh 1,094, four to five times this price. At KSh 226 it costs only KSh 27 more than the chosen 3 W part and delivers 1 A rather than 0.6 A, so it is the better buy if a node ever needs the headroom. Held at runner-up because the line is specified as HLK-PM01 first, the listing carries no rating at all, and 371 sold is well below the chosen listing's 5,000+.",
+      "price_all_seen": ["KSh 226"]
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005006211006819.html",
+      "title": "HLK-PM01 HLK-PM03 HLK-PM12 AC-DC 220V to 5V/3.3V/12V mini power supply module,intelligent household switch power supply module",
+      "price_kes": 156,
+      "price_note": "KSh 156 with free shipping, the lowest landed price on the line. The listing carries PM01, PM03 and PM12 variants, so KSh 156 is likely the cheapest of the three rather than the PM01 price.",
+      "shipping": "Free shipping",
+      "sold": "124",
+      "rating": null,
+      "reviews": null,
+      "store": null,
+      "store_url": null,
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/S62498ac40f7a472281cd68d489b4d7faY.jpg"
+      ],
+      "verdict": "runner-up",
+      "notes": "Cheapest landed price on the line at KSh 156 with free shipping, against KSh 199 plus unstated shipping for the chosen listing, so it may well come out ahead once shipping is added at checkout. Held at runner-up because it carries no rating and no brand claim in the title, 124 sold is thin, and the price shown is almost certainly for a variant other than the PM01. Worth a look at checkout if the chosen listing's shipping turns out to be dear.",
+      "price_all_seen": ["KSh 156"]
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005008232108711.html",
+      "title": "Free Shipping 5 pcs HLK-PM01 PM12 3M05B 3M03B 3M09B 220V to 5V 3W 0.6A Step Down Switching Power Supply Module ACDC MIni Module",
+      "price_kes": 1822,
+      "price_note": "KSh 1,822 for a pack of five with free shipping, so KSh 364 per piece against KSh 199 for the chosen single.",
+      "shipping": "Free shipping",
+      "sold": "128",
+      "rating": "4.2",
+      "reviews": null,
+      "store": null,
+      "store_url": null,
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/S3176d0490c694a8ea00e3a3beb937ac0G.png"
+      ],
+      "verdict": "rejected",
+      "notes": "Rejected on price and on rating. The pack of five costs KSh 1,822 where two of the chosen listing cost KSh 398, and the 4.2 rating is the worst on the whole line and well under the 4.7 floor. Free shipping does not close a gap of that size.",
+      "price_all_seen": ["KSh 1,822"]
+    }
+  ],
+  "notes": "Two searches, HLK-PM01 220V to 5V power module and HLK-5M05 AC DC 5V 1A power supply module, both returned dense pages of genuine Hi-Link parts, so this line was easy. One item call on the chosen listing rendered only partially, title Aliexpress and no price or store, but it did yield the six image gallery, which was all the photo check needed. A first item call carrying three URLs timed out at the 180 second limit, so item calls on this run are made one URL at a time. Store name, store URL, review count and shipping remain unverified for all four candidates because no item page rendered its text. The chosen listing is the only candidate that clears both selection thresholds, 5,000+ sold and 4.9 rating."
+}

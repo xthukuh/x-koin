@@ -11,6 +11,7 @@ const ROUTES = [
   { to: '/landlord', label: '/landlord', text: 'Landlord pilot page: the incentive for a building owner, no internals.' },
   { to: '/replay', label: '/replay', text: 'Protocol replay: frame trace, chain settlement, kiosk journeys, board schematics.' },
   { to: '/shop', label: '/shop', text: 'Proof of concept parts list compiled from hardware/shopping/parts, with galleries, prices in KES and per-role subtotals.' },
+  { to: '/slides', label: '/slides', text: 'The explainer deck: sixteen cards in reveal.js, speaker notes carrying the narration, captured to PNG by web/scripts/capture-slides.mjs.' },
 ];
 
 const PROOFS = [

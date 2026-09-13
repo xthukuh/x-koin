@@ -1,0 +1,91 @@
+{
+  "id": "homeplug-av-wifi-kit",
+  "line": "HomePlug AV kit with a Wi-Fi extender on one unit",
+  "role": "xKoin-Node: bulk data plane for demo D3",
+  "spec": "A HomePlug AV kit of two adapters where one unit also acts as a Wi-Fi extender, AV600 class or better, EU or UK plug. Kenya uses the UK type G socket, so a UK plug is wanted; an EU plug plus a travel adapter is acceptable if it is much cheaper and must be recorded as such. TP-Link TL-WPA4220 KIT, Tenda PH5 or a generic equivalent.",
+  "qty": 1,
+  "why": "Carries the bulk data plane of demo D3 over the building mains while the ESP32 node handles admission and metering, which is the dual tier design doc 05 decision point 2 recommends over putting the ESP32 in the HomePlug data path.",
+  "recorded": "2026-09-13",
+  "chosen": "https://www.aliexpress.com/item/1005006208139181.html",
+  "candidates": [
+    {
+      "url": "https://www.aliexpress.com/item/1005006208139181.html",
+      "title": "7inova AV500 Powerline Network Adapter Start Kit| HomePlug AV Powerline Adapter|Atheros7420 |Nano| Plug&Play",
+      "price_kes": 6029,
+      "price_note": "KSh 6,029 on the search card for the start kit, which is the pair. The item page rendered only far enough to yield the gallery, so the plug region variants and their prices could not be read and the KSh 6,029 figure may be for a plug type other than UK. No Choice or Welcome deal badge seen.",
+      "shipping": "not shown",
+      "sold": "89",
+      "rating": "4.5",
+      "reviews": null,
+      "store": null,
+      "store_url": null,
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/S0398a5ffdad3401d9c9a7676f85af3dbF.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sd1be8c058d224e3f82307fb4ee970e328.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S20293bb16cbc4a1c8ede503a743d1029R.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S7712bb54b7b34b7a94bc67518910390aS.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S31bd12fb4cc541f895fab4b3e6872b01Q.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sbf6b644d9ce44f0391da46847cf407b4z.jpg"
+      ],
+      "verdict": "chosen",
+      "notes": "Chosen as the best available compromise, not as a spec match, and it misses the spec on two counts that matter. Photo check on the first gallery image: it shows two white adapters moulded 7inova and HOMEPLUG AV Mini 500Mbps, each with one yellow RJ45 socket, a Security and Reset button and three status LEDs. So it is genuinely a HomePlug AV pair, which is the part that matters most. But it is AV500, one class below the AV600 floor the brief set, and neither unit carries a Wi-Fi radio: it has an RJ45 socket and nothing else. The plug pins visible on the left hand unit are two flat parallel blades, a US type A plug, not EU and not UK, so a region variant must be selected at checkout and a UK type G variant may not exist on this listing at all. Selected over the alternatives because it is the only HomePlug AV pair on AliExpress at a sane price that has a real sold count and a rating: 89 sold at 4.5. The 4.5 rating sits below the 4.7 floor, but no powerline listing found clears 4.7, and only one clears 100 sold at all.",
+      "price_all_seen": ["KSh 6,029"]
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005006209326425.html",
+      "title": "7inova AV500 Passthrough Powerline Adapter Start Kit| HomePlug AV Adapter With Outlet|Atheros7420 |Plug&Play",
+      "price_kes": 7247,
+      "price_note": "KSh 7,247 for the pair, KSh 1,218 more than the chosen kit. The passthrough outlet is the reason for the premium.",
+      "shipping": "not shown",
+      "sold": "10",
+      "rating": null,
+      "free_shipping": false,
+      "reviews": null,
+      "store": null,
+      "store_url": null,
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/A427e17883d8b4b0293117ab73aaae396y.jpg"
+      ],
+      "verdict": "runner-up",
+      "notes": "Same AV500 class and the same Atheros 7420 chipset as the chosen kit, from the same seller, but with a passthrough mains outlet on each adapter. That outlet is genuinely useful on a crowded bench where every socket is already carrying a node or a PSU, and it is the honest answer to the missing Wi-Fi unit: the kit cannot extend Wi-Fi but at least it does not consume a socket. Held at runner-up on price, KSh 1,218 above the chosen kit on a zero budget line, and on record, 10 sold against 89 with no rating at all.",
+      "price_all_seen": ["KSh 7,247"]
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005006104538143.html",
+      "title": "7inova 7HP200| AV600 | Powerline Network Adapter For IP Camera/NVR/CCTV Installation/Elevator Wiring-Free Video Surveillance/",
+      "price_kes": 4936,
+      "price_note": "KSh 4,936 for a single adapter, not a pair. A HomePlug link needs two, so the real cost of an AV600 pair from this listing plus its receiver sibling 7HP200-R at KSh 4,852 is KSh 9,788.",
+      "shipping": "not shown",
+      "sold": "7",
+      "rating": null,
+      "reviews": null,
+      "store": null,
+      "store_url": null,
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/S90807d48452a44a9885934ebe57c8677U.png"
+      ],
+      "verdict": "rejected",
+      "notes": "The only AV600 class powerline hardware found anywhere in five searches, so it is the one candidate that clears the speed class the brief asked for. Rejected anyway: it is sold as single adapters aimed at CCTV installers, so making a pair costs KSh 9,788 against KSh 6,029 for the chosen kit, 62 percent more, on a line whose speed class matters far less than having two units that pair out of the box. Seven sold, no rating, no reviews.",
+      "price_all_seen": ["KSh 4,936"]
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005006205866663.html",
+      "title": "7inova AV200 Ethernet Powerline Adapter Start Kit| HomePlug AV Adapters| Mini Size|Plug&Play",
+      "price_kes": 5882,
+      "price_note": "KSh 5,882 for the pair, KSh 147 below the chosen kit.",
+      "shipping": "not shown",
+      "sold": "31",
+      "rating": null,
+      "reviews": null,
+      "store": null,
+      "store_url": null,
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sd41b356270ea4c09a2f9b72466a61dafi.jpg"
+      ],
+      "verdict": "rejected",
+      "notes": "Cheapest HomePlug pair found, but only by KSh 147, and it is AV200, two classes below the AV600 floor and slow enough that the bulk data plane of demo D3 would be the bottleneck rather than the mains. Thirty one sold, no rating. The KSh 147 saving does not buy that.",
+      "price_all_seen": ["KSh 5,882"]
+    }
+  ],
+  "notes": "No HomePlug AV kit with a Wi-Fi extender exists on AliExpress as far as five searches could reach, so this line is NOT a spec match and Martin has to decide what to do about it. Searches tried: powerline adapter wifi extender kit AV600, TL-WPA4220 KIT powerline, powerline ethernet adapter homeplug 600Mbps pair, powerline network adapter, and 7inova powerline wifi extender. The first three returned Wi-Fi repeaters, USB dongles, OTG adapters and camera clamps with not one powerline product among them; the search sorts by units sold, which buries a niche category completely. Only powerline network adapter and 7inova powerline wifi extender reached real powerline hardware, and every powerline listing on both pages came from one seller, 7inova. Not one of them carries a Wi-Fi radio, and the named parts the brief suggested, TP-Link TL-WPA4220 KIT and Tenda PH5, do not appear on AliExpress at all. Three gaps against the spec on the chosen kit: it is AV500 rather than AV600 or better, it has no Wi-Fi extender unit, and the gallery photograph shows a US type A plug rather than EU or UK, so the region variant must be checked at checkout and a UK type G variant may not be offered. If the Wi-Fi extender leg of demo D3 is load bearing, buy it from a Nairobi retailer instead, where TP-Link TL-WPA4220 KIT is a stocked line. Every item page on this line rendered only its gallery, title Aliexpress and no price, store, rating or shipping text, so store name, store URL, review count, shipping and the plug variant prices are unverified for all four candidates."
+}

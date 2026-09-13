@@ -1,0 +1,94 @@
+{
+  "id": "mains-plc-blocking-filter",
+  "line": "Inline mains EMI or RFI blocking filter",
+  "role": "xKoin-Node: demo D3 segment boundary",
+  "spec": "Inline 230 V mains EMI or RFI filter rated at least 6 A, or an explicit powerline adapter blocking filter. It must attenuate the 2 to 30 MHz HomePlug band and the 120 to 135 kHz KQ carrier band enough to cut a segment off from its neighbour.",
+  "qty": 1,
+  "why": "Draws the boundary of demo D3: it is what makes one powerline segment genuinely separate from the next, so a metered plane can be shown to end somewhere rather than leaking down the whole building riser.",
+  "recorded": "2026-09-13",
+  "chosen": "https://www.aliexpress.com/item/4000389130535.html",
+  "candidates": [
+    {
+      "url": "https://www.aliexpress.com/item/4000389130535.html",
+      "title": "Anti-interference AC 220V Power Supply Filter EMI Line Audio Purifier CW1B 50/60Hz 1A/3A/6A/10A Power Filter",
+      "price_kes": 197,
+      "price_note": "KSh 197 on the search card, which is almost certainly the 1 A variant since the listing runs 1 A, 3 A, 6 A and 10 A on one page. The 6 A variant is the minimum the spec allows and will cost more; the item page rendered only its gallery, so the per variant prices could not be read. Budget two to three times the card price for the 6 A or 10 A part.",
+      "shipping": "not shown",
+      "sold": "1,000+",
+      "rating": "4.9",
+      "reviews": null,
+      "store": null,
+      "store_url": null,
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/Hfa8a31190e264f7b82224270da2341761.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Hf4c09e6b77b046dfa8d50978558410a70.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/H3f02efb702574d1f9f6c683e260f606ax.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/H66efab1745a442e8831fd64af220e96bj.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S387b61b6fdaf46e6ac7199fe327c169cv.jpg"
+      ],
+      "verdict": "chosen",
+      "notes": "The CW1B is the standard single stage chassis mount mains EMI filter: a metal can with a common mode choke, X and Y capacitors and four spade terminals, offered here in the 6 A and 10 A ratings the spec asks for. Clears both selection thresholds comfortably, 1,000+ sold at 4.9, which is the best record of any filter found, and it is by a wide margin the cheapest at KSh 197 against KSh 529 for the next candidate and KSh 1,100 to KSh 2,000 for the multi stage boards. The catch is that it is a bare terminal block, not a plug in unit, so it has to be wired into a mains lead by hand and the bench must treat it as live metalwork behind an RCD. Select the 6 A or 10 A variant at checkout, never the 1 A.",
+      "price_all_seen": ["KSh 197"]
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005003680397375.html",
+      "title": "MOFI Gold-Plated AC Power Tail Plug-In 10A EMI Filter Socket For HiFi Audio (New Design)",
+      "price_kes": 529,
+      "price_note": "KSh 529 with free shipping, so KSh 529 landed, against KSh 197 plus unstated shipping for the chosen filter. Item page rendered only its gallery, so no variant list was readable.",
+      "shipping": "Free shipping",
+      "sold": "362",
+      "rating": "4.9",
+      "reviews": null,
+      "store": null,
+      "store_url": null,
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/H9075c1c335ab45c8b80e5d30d734ee4dF.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/H95e6d51344d34cbe925438b42087a95cU.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Hf7fc4aa8b7fd4c80afe464e2936005dbm.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Hd2cbd32ce15548689eb384c6d9187fa2a.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/H84f893ac2ee147948e93a32aeb6c1bca6.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/H01b8207121b540f18173a149439ceccdm.jpg"
+      ],
+      "verdict": "runner-up",
+      "notes": "The one candidate that is a plug in unit rather than a terminal block: a 10 A inline filter in a moulded shell that goes between a socket and a lead with no wiring, which on a demo bench with a live mains segment is worth a great deal more than the KSh 332 it costs over the chosen filter. It clears both selection thresholds, 362 sold at 4.9, and free shipping may well make it the cheaper of the two landed. Held at runner-up only because the line is specified as cheapest and the CW1B is cheaper on the figures actually shown. If Martin would rather not wire a filter into a mains lead by hand, buy this one instead: the safety case is stronger than the KSh 332.",
+      "price_all_seen": ["KSh 529"]
+    },
+    {
+      "url": "https://www.aliexpress.com/item/4000509082619.html",
+      "title": "TOMZN Single-phase T-socket AC 220V anti-interference EMI purifier CW1D-T1A 3A 6A 10A power supply filter",
+      "price_kes": 596,
+      "price_note": "KSh 596 with free shipping. The T socket form takes an IEC style connector rather than bare terminals.",
+      "shipping": "Free shipping",
+      "sold": "395",
+      "rating": null,
+      "reviews": null,
+      "store": null,
+      "store_url": null,
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sd0ce8c7b1ba14b38a8e099b2af2988015.jpg"
+      ],
+      "verdict": "rejected",
+      "notes": "TOMZN is a known brand and the T socket form is easier to wire than the chosen CW1B, with the same 1 A to 10 A range. Rejected because it costs three times the chosen filter, the listing carries no rating at all despite 395 sold, and it does nothing the chosen CW1B or the MOFI plug in does not.",
+      "price_all_seen": ["KSh 596"]
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005008100586362.html",
+      "title": "6A 10A AC 110V 220V EMI Filter 4-Stage Electromagnetic Interference Suppressor Power EMC Audio Amplifier Purifier Computer",
+      "price_kes": 1447,
+      "price_note": "KSh 1,447 with free shipping for the four stage board.",
+      "shipping": "Free shipping",
+      "sold": "357",
+      "rating": "4.7",
+      "reviews": null,
+      "store": null,
+      "store_url": null,
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/S8e0d2d281ce3402aadf8859a1f3ec456E.jpg"
+      ],
+      "verdict": "rejected",
+      "notes": "Four cascaded filter stages rather than one, so it would attenuate the HomePlug 2 to 30 MHz band far harder than the chosen single stage can and is technically the better blocking filter for demo D3. Rejected on price: KSh 1,447 is seven times the chosen filter on a zero budget line, and a single stage CW1B is already enough to show a segment boundary on a bench. Worth revisiting only if the single stage filter turns out to leak enough HomePlug carrier that the two segments will not separate. Clears both selection thresholds at 357 sold and 4.7.",
+      "price_all_seen": ["KSh 1,447"]
+    }
+  ],
+  "notes": "The brief allowed for nothing suitable being cheap and asked for a ferrite clamp fallback in that case. That fallback is not needed: one search, EMI filter 220V 10A power line filter, returned more than fifty genuine mains EMI filters, several of them well under KSh 600, so no second or third search was run on this line. Both item pages fetched rendered only their galleries, title Aliexpress with no price, store, rating or shipping text, so store name, store URL, review count, shipping and the per ampere variant prices are unverified for every candidate; all figures come from the search cards. The one caveat that matters for buying: the chosen listing prices 1 A, 3 A, 6 A and 10 A variants on a single page and the KSh 197 card figure is almost certainly the 1 A part, which is below the 6 A the spec sets, so the real cost of the correct variant is unknown and higher. No candidate is marketed as a powerline blocking filter specifically; all four are audio and EMC filters whose attenuation is specified for conducted emissions rather than for HomePlug or for the 120 to 135 kHz KQ carrier band, so how well any of them cuts a segment off is an untested assumption that the bench has to settle."
+}

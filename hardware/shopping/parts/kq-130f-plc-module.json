@@ -1,0 +1,85 @@
+{
+  "id": "kq-130f-plc-module",
+  "line": "KQ-130F narrowband power line carrier module",
+  "role": "xKoin-Node, xKoin-Node-Satellite: narrowband PLC link",
+  "spec": "Genuine KQ-130F narrowband power line carrier module: UART at 9600 baud, 5 V supply, 120 to 135 kHz carrier, coupling network on board, works on a 230 V AC mains line, on a 12 V DC line and on twisted pair. KQ-330F and KQ-130F-B are accepted as fallbacks and must be recorded as such.",
+  "qty": 3,
+  "why": "Carries the narrowband PLC leg of demo D3, where the node meters and admits traffic over the building mains rather than over radio, and is first proven on a 12 V DC line before any mains strip behind an RCD.",
+  "recorded": "2026-09-13",
+  "chosen": "https://www.aliexpress.com/item/1005007367356882.html",
+  "candidates": [
+    {
+      "url": "https://www.aliexpress.com/item/1005007367356882.html",
+      "title": "KQ-130F KQ130F KQ330 KQ-330 Power Line Carrier Module Board",
+      "price_kes": 1029,
+      "price_note": "KSh 1,029 is the figure the search card showed. The listing title covers KQ-130F, KQ130F, KQ330 and KQ-330, so it carries several variants and the KQ-130F variant has to be selected by hand at checkout; the KSh 1,029 figure is most likely the cheapest variant rather than the KQ-130F one. The item page could not be opened to read the variant list, so the per-variant price is unverified. No Choice or Welcome deal badge was shown on the card.",
+      "shipping": "not shown",
+      "sold": "62",
+      "rating": null,
+      "reviews": null,
+      "store": null,
+      "store_url": null,
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/S394ed79b8a664fc9b4c1a07a8a0e58dfF.jpg"
+      ],
+      "verdict": "chosen",
+      "notes": "Cheapest of the four genuine KQ hits by a wide margin and the only one with a meaningful sold count. Photo check made on the first gallery image (the only one reachable, since the item page was blocked): it is a real photograph of a green carrier board carrying a black potted brick embossed KQ330, with a yellow X2 class mains safety capacitor, a common mode choke, two electrolytics, a 6 pin logic header and a 2 pin mains header. That is the on-board coupling network the spec calls for, and it confirms a real KQ family carrier module rather than a lamp or a garment. It does NOT confirm KQ-130F silkscreen: the part shown is the KQ-330, which the brief accepts as a noted fallback. Treat the line as KQ-330 unless the KQ-130F variant is confirmed at checkout. The store name, rating and review count were not shown on the card and the item page was blocked, so the 100 sold and 4.7 rating rule could not be applied to this line at all; no listing on AliExpress for this part reaches those numbers.",
+      "price_all_seen": ["KSh 1,029"]
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005012362472528.html",
+      "title": "KQ-130F+ KQ130F KQ-130 Brand new zero-crossing power line communication module, specially designed for long-distance environment",
+      "price_kes": 2608,
+      "price_note": "KSh 2,608 on the search card. Titled KQ-130F+, a zero crossing long distance variant, so it is a later revision of the wanted part rather than the plain KQ-130F. Item page blocked, so the variant list is unverified.",
+      "shipping": "not shown",
+      "sold": "4",
+      "rating": null,
+      "reviews": null,
+      "store": null,
+      "store_url": null,
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/S69ce9ee08c2d46dcbb558c018a1b5bc6V.jpg"
+      ],
+      "verdict": "runner-up",
+      "notes": "The closest title match to a genuine KQ-130F of the four, and the zero crossing long distance revision would suit the mains leg of demo D3 well. Rejected as the first choice only on price: KSh 2,608 each against KSh 1,029, which is KSh 4,737 more across the three pieces on a zero budget line. Four sold and no rating, so nothing about the seller can be checked. Worth buying one of these alongside two of the chosen listing if the chosen listing turns out to ship KQ-330 only and the KQ-130F carrier is genuinely needed.",
+      "price_all_seen": ["KSh 2,608"]
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005012905062325.html",
+      "title": "5Pcs KQ-130F Power Line Carrier Modules No Need For Any Peripheral Components Long Distance From Mains",
+      "price_kes": 7410,
+      "price_note": "KSh 7,410 for a pack of five, so KSh 1,482 per piece. Buying the five pack would cost KSh 7,410 against KSh 3,087 for three of the chosen listing.",
+      "shipping": "not shown",
+      "sold": "1",
+      "rating": null,
+      "reviews": null,
+      "store": null,
+      "store_url": null,
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sb9cdd38b93ff4e04a4e3f22381d0eb562.jpg"
+      ],
+      "verdict": "rejected",
+      "notes": "Title says KQ-130F outright and no peripheral components needed, which matches the on-board coupling requirement, but the minimum purchase is five pieces where three are wanted, the per piece price is 44 percent above the chosen listing and the total is 140 percent above it. One sold, no rating, no reviews. Rejected on landed price and on the forced pack size.",
+      "price_all_seen": ["KSh 7,410"]
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005011942166454.html",
+      "title": "KQ-130F KQ130F KQ330 KQ-330 Power Line Carrier Module Board",
+      "price_kes": 3119,
+      "price_note": "KSh 3,119 on the search card. Same title and apparently the same product as the chosen listing, from a different seller, at three times the price.",
+      "shipping": "not shown",
+      "sold": null,
+      "rating": null,
+      "reviews": null,
+      "store": null,
+      "store_url": null,
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/S0b03239d31fc4dc296aba4a544d5996dH.jpg"
+      ],
+      "verdict": "rejected",
+      "notes": "Identical title to the chosen listing but three times the price, with no sold count at all and no rating. Nothing recommends it over the chosen listing.",
+      "price_all_seen": ["KSh 3,119"]
+    }
+  ],
+  "notes": "AliExpress handles this part number badly, as the brief warned. The bare query KQ-130F returned dash cams, fishing lures and a women's belt, and power line carrier module 9600 UART returned LoRa boards and RS485 converters; neither produced a single relevant card. The query that worked was KQ130F power line carrier, which returned exactly four results, all of them genuine KQ family carrier modules, and KQ-330 power line carrier module confirmed the same two of those four among fifteen unrelated cards. So the genuine part number does exist on AliExpress, but only through that one phrasing, and the whole market for it is four listings. Every item page for those four listings was blocked: the scout was redirected to the _____tmd_____/punish anti-bot interstitial, captcha false, rendered false, on the first attempt and again on a retry thirty seconds later, so every figure in this file comes from the search card only. Store name, store URL, rating, review count, shipping and the variant price breakdown are therefore unknown for all four candidates. The selection rule asking for 100 or more sold and a 4.7 rating cannot be met on this line: the best sold count in the entire market for this part is 62 and not one of the four listings carries a rating. Selection fell back to lowest landed price among listings whose photograph shows a real KQ carrier module."
+}

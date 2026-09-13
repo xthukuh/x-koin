@@ -1,0 +1,95 @@
+{
+  "id": "homeplug-av-plain-pair",
+  "line": "HomePlug AV plain pair, cheapest",
+  "role": "xKoin-Node: demo D3 segment B",
+  "spec": "The cheapest HomePlug AV pair of adapters with no Wi-Fi, AV600 class or better, EU or UK plug; or, if it lands cheaper, a single extra adapter that pairs with the kit on line 3.",
+  "qty": 1,
+  "why": "Gives demo D3 a second powerline segment so the node can be shown admitting and metering traffic on one segment while another segment carries none, which is what separates a metered plane from a shared wire.",
+  "recorded": "2026-09-13",
+  "chosen": "https://www.aliexpress.com/item/1005006205866663.html",
+  "candidates": [
+    {
+      "url": "https://www.aliexpress.com/item/1005006205866663.html",
+      "title": "7inova AV200 Ethernet Powerline Adapter Start Kit| HomePlug AV Adapters| Mini Size|Plug&Play",
+      "price_kes": 5882,
+      "price_note": "KSh 5,882 on the search card for the start kit, which is the pair. The item page rendered only its gallery, so the price could not be reconfirmed and shipping is unknown. The sibling listing in the same 7inova store showed shipping of KSh 1,419 to Kenya, so budget roughly KSh 7,300 landed.",
+      "shipping": "not shown; sibling listing in the same store charged KSh 1,419",
+      "sold": "31",
+      "rating": null,
+      "reviews": null,
+      "store": null,
+      "store_url": null,
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sd41b356270ea4c09a2f9b72466a61dafi.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sc95554dec33e4e2290025d3b3e5ec5cc4.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S1da19fdabd764510a4972ea8fdb68fe9Y.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S3a16f28409464da085c075b51b1f8db5W.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sb8f173088243451ab02796435f2a0f529.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S5d641a1fb17149fdb582758dbb7dfd09H.jpg"
+      ],
+      "verdict": "chosen",
+      "notes": "Cheapest HomePlug AV pair that exists on AliExpress, and the line asks for the cheapest pair. It misses the AV600 floor badly at AV200, which is the honest cost of the choice: segment B would run at a fraction of segment A. That is tolerable here because segment B exists to show that a second powerline segment is present and unmetered, not to carry throughput. Thirty one sold and no rating, which fails the selection rule, but no powerline listing on AliExpress carries a rating above 4.5 or a sold count above 89, so the rule cannot be met on this category at all. Same seller as line 3, so the two kits ship together and pair over the same HomePlug AV standard.",
+      "price_all_seen": ["KSh 5,882"]
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005006104538143.html",
+      "title": "7inova 7HP200| AV600 | Powerline Network Adapter For IP Camera/NVR/CCTV Installation/Elevator Wiring-Free Video Surveillance/",
+      "price_kes": 4936,
+      "price_note": "Item page rendered in full: KSh 4,936 for the default variant, shipping KSh 1,419, so KSh 6,355 landed for one adapter. The page also showed KSh 3,486 as the cheapest figure and KSh 12,090 as the dearest across its variants, so a cheaper variant may exist; which one it is could not be read because the SKU list came back empty. Rating 5.0 over 1 review, 7 sold, store 1102744223.",
+      "shipping": "KSh 1,419",
+      "sold": "7",
+      "rating": "5.0",
+      "reviews": 1,
+      "store": "store id 1102744223",
+      "store_url": "https://www.aliexpress.com/store/1102744223",
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/S90807d48452a44a9885934ebe57c8677U.png",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S02cc8584b9c44f06b7260076e072c1a52.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S322bd67e22ba4b0a8ce26e45e9da5d936.png",
+        "https://ae-pic-a1.aliexpress-media.com/kf/Sd0ef93d498ac446e8b8b04f45cd1a743H.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S45b32a95117044e2bf4721c30a2340cbX.jpg",
+        "https://ae-pic-a1.aliexpress-media.com/kf/S860a44e62c5b493d93c972efe3759bd42.jpg"
+      ],
+      "verdict": "runner-up",
+      "notes": "This is the single extra adapter route the line allows, and it is the only AV600 class powerline hardware on AliExpress, so on paper it is the spec match. It was rejected as first choice on landed price, which is the measurement that decided this line: the item page is the one powerline page that rendered in full, and it showed shipping of KSh 1,419 on top of KSh 4,936, giving KSh 6,355 landed for ONE adapter against KSh 5,882 for a PAIR. The single adapter route only wins if it is cheaper, and once shipping is counted it is not. Worth revisiting if the KSh 3,486 variant seen on the page turns out to be this adapter rather than an accessory, in which case it lands at KSh 4,905 and wins.",
+      "price_all_seen": ["KSh 4,936", "KSh 3,486", "KSh 12,090", "KSh 8,604", "KSh 4,709", "KSh 5,244", "KSh 5,462", "KSh 7,875"]
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005009216386112.html",
+      "title": "7inova 7HP200-R| AV600 |Ethernet Powerline Network Adapter Receiver For IP Camera Video Transmission",
+      "price_kes": 4852,
+      "price_note": "KSh 4,852 on the search card, the cheapest single powerline adapter found. Shipping not shown; the sibling listing in the same store charged KSh 1,419, which would put it at roughly KSh 6,271 landed.",
+      "shipping": "not shown; sibling listing in the same store charged KSh 1,419",
+      "sold": "12",
+      "rating": null,
+      "reviews": null,
+      "store": null,
+      "store_url": null,
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/S5efe9a37755e44cfa878e2e714900709h/48x48.png"
+      ],
+      "verdict": "rejected",
+      "notes": "Cheapest single adapter on the line at KSh 4,852, but rejected on two counts. The R suffix and the word Receiver in the title say this is the receive half of a transmitter and receiver pair sold for CCTV runs, so it may be role locked and refuse to pair with the line 3 kit, which is exactly the failure mode that makes a single adapter purchase worthless. And once the store's KSh 1,419 shipping is added it lands at roughly KSh 6,271, still above the KSh 5,882 pair. Twelve sold, no rating, no reviews.",
+      "price_all_seen": ["KSh 4,852"]
+    },
+    {
+      "url": "https://www.aliexpress.com/item/1005006209326425.html",
+      "title": "7inova AV500 Passthrough Powerline Adapter Start Kit| HomePlug AV Adapter With Outlet|Atheros7420 |Plug&Play",
+      "price_kes": 7247,
+      "price_note": "KSh 7,247 for the pair, the dearest powerline option found.",
+      "shipping": "not shown",
+      "sold": "10",
+      "rating": null,
+      "reviews": null,
+      "store": null,
+      "store_url": null,
+      "images": [
+        "https://ae-pic-a1.aliexpress-media.com/kf/A427e17883d8b4b0293117ab73aaae396y.jpg"
+      ],
+      "verdict": "rejected",
+      "notes": "AV500 with a passthrough outlet on each adapter, which is a real convenience on a crowded bench, but this line is explicitly the cheapest pair and this is the dearest of the four options at KSh 7,247, KSh 1,365 above the chosen kit. Ten sold, no rating. Rejected on price alone.",
+      "price_all_seen": ["KSh 7,247"]
+    }
+  ],
+  "notes": "Sourced from the same five searches as line 3 plus a sixth, homeplug AV powerline adapter, which returned the same three 7inova kits among USB chargers, cable organisers and Starlink adapters and confirmed there is nothing else on the platform. Every powerline listing on AliExpress reachable by these searches comes from the single seller 7inova, and the whole category is four kits and three single adapters. One item page on this line rendered in full, the 7HP200 AV600, and it settled the choice: it showed shipping of KSh 1,419 to Kenya, which pushed a single AV600 adapter to KSh 6,355 landed, above the KSh 5,882 asked for a complete pair. That KSh 1,419 figure is the only shipping cost verified anywhere on lines 3 and 4 and it is quoted against the other candidates as a store level estimate, not as a read figure. The chosen kit is AV200 and therefore fails the AV600 floor, as does every pair on the platform; the one AV600 class product is sold only as single adapters aimed at CCTV installers. Plug region is unverified for all four candidates: the line 3 gallery showed a US type A plug on the same seller's AV500 kit, so the UK type G variant must be confirmed at checkout and may not be offered."
+}
