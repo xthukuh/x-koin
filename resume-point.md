@@ -149,3 +149,10 @@ period can drop from 40 ms; fix the KQ-130F decode over the bridge;
 live test through the Chrome extension against velxio.thuku.dev after
 DNS; reconcile the paper figure conflicts and TODO markers with Martin;
 the two pin sign-offs (W5500 move, Heltec per-board headers).
+
+## Addendum 2026-09-13, after Martin's push approval
+
+Fork branch pushed, fork master fast-forwarded to it, upstream PR opened:
+https://github.com/davidmonterocrespo24/velxio/pull/324. The forked image
+velxio-xkoin:dev (5.3 GB) is being shipped to the VPS; compose.velxio.yml
+takes VELXIO_IMAGE and the VPS .env sets it to the fork image.
