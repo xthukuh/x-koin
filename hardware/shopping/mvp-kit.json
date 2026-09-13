@@ -1,0 +1,252 @@
+{
+  "recorded": "2026-09-14",
+  "rule": "One unit per device role, the fewest parts that let every medium and every basic user journey run on camera. Everything else is stage two. Part ids refer to hardware/shopping/parts/<id>.json; prices and links come from mvp-checkout.json (verified 2026-09-14).",
+  "devices": [
+    {
+      "key": "node",
+      "name": "xKoin-Node",
+      "journey": "Backhaul in, meters every WAN byte, injects the bulk plane onto the mains, carries the narrowband receipt plane and the LoRa survival plane. Demos D1, D2, D4, D5, D6.",
+      "parts": [
+        {
+          "id": "esp32-s3-devkitc-n16r8",
+          "qty": 1,
+          "source": "ali"
+        },
+        {
+          "id": "sx1262-module-868",
+          "qty": 1,
+          "source": "ali"
+        },
+        {
+          "id": "ipex-sma-pigtail",
+          "qty": 1,
+          "source": "ali"
+        },
+        {
+          "id": "antenna-868-sma",
+          "qty": 1,
+          "source": "ali"
+        },
+        {
+          "id": "kq-130f-plc-module",
+          "qty": 1,
+          "source": "ali"
+        },
+        {
+          "id": "homeplug-av-wifi-kit",
+          "qty": 1,
+          "source": "local",
+          "price_kes": 9000,
+          "store": "brightsource",
+          "note": "TL-WPA4220KIT: the TL-PA4010 half sits at the Node as injector, the TL-WPA4220 half is the Node-Satellite's Wi-Fi extractor"
+        }
+      ],
+      "owned": [
+        "USB 5 V phone charger for the board and the KQ-130F",
+        "the home router or a phone hotspot as backhaul"
+      ]
+    },
+    {
+      "key": "node-satellite",
+      "name": "xKoin-Node-Satellite",
+      "journey": "Wall-socket relay on the same mains segment: pulls the bulk plane off the mains, regenerates Wi-Fi for the phone, enforces admission through the captive portal. Demos D1, D4, D5.",
+      "parts": [
+        {
+          "id": "esp32-s3-devkitc-n16r8",
+          "qty": 1,
+          "source": "ali"
+        },
+        {
+          "id": "kq-130f-plc-module",
+          "qty": 1,
+          "source": "ali"
+        }
+      ],
+      "owned": [
+        "USB 5 V phone charger",
+        "the TL-WPA4220 half of the Node's kit"
+      ]
+    },
+    {
+      "key": "satellite",
+      "name": "xKoin-Satellite",
+      "journey": "Off-grid LoRa remote on solar and a cell, deep sleep, class C service through 60 dB of simulated distance. Demos D2, D6.",
+      "parts": [
+        {
+          "id": "heltec-lora32-v3-868",
+          "qty": 1,
+          "source": "ali"
+        },
+        {
+          "id": "tp4056-solar-charger",
+          "qty": 1,
+          "source": "local",
+          "store": "ktechnics",
+          "price_kes": 130
+        },
+        {
+          "id": "18650-holder",
+          "qty": 1,
+          "source": "local",
+          "store": "ktechnics",
+          "price_kes": 70
+        },
+        {
+          "id": "18650-cell",
+          "qty": 1,
+          "source": "local",
+          "price_kes": 400,
+          "store": "nerokas",
+          "note": "cells do not ship; INR 2600 mAh listing, or esp-ke at 280"
+        },
+        {
+          "id": "solar-panel-6v-2w",
+          "qty": 1,
+          "source": "ali"
+        }
+      ],
+      "owned": []
+    },
+    {
+      "key": "client",
+      "name": "xKoin-Client OTG dongle",
+      "journey": "A phone with no Wi-Fi in reach plugs the dongle in and chats, checks balance and redeems a voucher over LoRa. The Wi-Fi client journey needs no parts: it is the phone on the Node-Satellite's Wi-Fi.",
+      "parts": [
+        {
+          "id": "heltec-lora32-v3-868",
+          "qty": 1,
+          "source": "ali"
+        },
+        {
+          "id": "usb-c-otg-adapter",
+          "qty": 1,
+          "source": "ali"
+        }
+      ],
+      "owned": [
+        "Martin's phone"
+      ]
+    },
+    {
+      "key": "farm-node",
+      "name": "LoRa ecosystem farm node",
+      "journey": "A third-party style sensor node rides the free LAN plane: soil moisture and temperature land on the Node dashboard with zero XKN spent. Demo D6.",
+      "parts": [
+        {
+          "id": "esp32-c3-supermini",
+          "qty": 1,
+          "source": "ali"
+        },
+        {
+          "id": "ra-01sh-sx1262",
+          "qty": 1,
+          "source": "ali",
+          "note": "Ra-01SH Adapter variant (IPX), takes one spare pigtail and one spare antenna from the Node's packs; ships mid November, see mvp-sourcing.md for the E22 alternative"
+        },
+        {
+          "id": "soil-moisture-capacitive-v2",
+          "qty": 1,
+          "source": "ali"
+        },
+        {
+          "id": "temp-humidity-sensor",
+          "qty": 1,
+          "source": "local",
+          "store": "ask",
+          "price_kes": 350
+        }
+      ],
+      "owned": []
+    },
+    {
+      "key": "bench",
+      "name": "Bench",
+      "journey": "What every demo shares: the simulated distance for D2, one mains strip for D1, the console lead and the breadboard.",
+      "parts": [
+        {
+          "id": "sma-attenuator-30db",
+          "qty": 2,
+          "source": "ali"
+        },
+        {
+          "id": "breadboard-jumpers",
+          "qty": 1,
+          "source": "local",
+          "store": "ask+ktechnics",
+          "price_kes": 650
+        },
+        {
+          "id": "usb-ttl-ch340",
+          "qty": 1,
+          "source": "local",
+          "store": "ask",
+          "price_kes": 400
+        },
+        {
+          "id": "extension-strips",
+          "qty": 1,
+          "source": "local",
+          "price_kes": 800,
+          "store": "supermarket",
+          "note": "4 way UK strip; price is a budget figure, not a checked listing"
+        }
+      ],
+      "owned": [
+        "USB-C data cables",
+        "plug-in RCD if the KQ-130F goes on mains"
+      ]
+    }
+  ],
+  "stage_two": [
+    {
+      "id": "heltec-lora32-v3-868",
+      "qty": 1,
+      "why": "third board flashed with Meshtastic for the interop story"
+    },
+    {
+      "id": "homeplug-av-plain-pair",
+      "qty": 1,
+      "why": "demo D3 segment B"
+    },
+    {
+      "id": "esp32-s3-devkitc-n16r8",
+      "qty": 1,
+      "why": "demo D3 second Node-Satellite on strip B"
+    },
+    {
+      "id": "kq-130f-plc-module",
+      "qty": 1,
+      "why": "demo D3 segment B, plus a spare"
+    },
+    {
+      "id": "sx1262-module-868",
+      "qty": 1,
+      "why": "demo D3 LoRa hop across the filter"
+    },
+    {
+      "id": "antenna-868-sma",
+      "qty": 2,
+      "why": "demo D3 module and spare"
+    },
+    {
+      "id": "ipex-sma-pigtail",
+      "qty": 2,
+      "why": "demo D3 module and spare"
+    },
+    {
+      "id": "mains-plc-blocking-filter",
+      "qty": 1,
+      "why": "demo D3 segment boundary"
+    },
+    {
+      "id": "hlk-pm01-5v-psu",
+      "qty": 2,
+      "why": "tidy mains power once the boards leave the bench"
+    },
+    {
+      "id": "extension-strips",
+      "qty": 1,
+      "why": "demo D3 second segment"
+    }
+  ]
+}

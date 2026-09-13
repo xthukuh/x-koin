@@ -5,8 +5,8 @@
   "spec": "Title or variant states N16R8 (16 MB flash, 8 MB PSRAM). Module is ESP32-S3-WROOM-1 with the PCB antenna, not the -1U external-antenna part. Two USB-C ports preferred (native USB plus UART bridge). 44 pin DevKitC-1 footprint.",
   "qty": 2,
   "why": "The main MCU of the gateway and of the mains relay: 16 MB flash holds the captive portal and the receipt log, 8 MB PSRAM holds the session table, and the two USB-C ports let the native USB port stay free while the bridge carries the console.",
-  "recorded": "2026-09-12",
-  "chosen": "https://www.aliexpress.com/item/1005008957932920.html",
+  "recorded": "2026-09-14",
+  "chosen": "https://www.aliexpress.com/item/1005006737960797.html",
   "candidates": [
     {
       "url": "https://www.aliexpress.com/item/1005008957932920.html",
@@ -27,16 +27,24 @@
         "https://ae-pic-a1.aliexpress-media.com/kf/S1d81ecc82ca143919be0f5cd26bc357cN.jpg",
         "https://ae-pic-a1.aliexpress-media.com/kf/Scf3f786694b748b6b01710b31c7ad1906.jpg"
       ],
-      "verdict": "chosen",
-      "notes": "Only candidate where the module label was legible and genuine. Gallery image 2, the pin definition sheet, shows the shield printed ESP32-S3 with the CE mark, ID 2ACZ2-ESPS3WROOM1, IC 21098-ESPS3WROOM1 and N16R8 underneath. Those are Espressif's own FCC and IC identifiers for ESP32-S3-WROOM-1, so the module is the real part and not a relabelled clone. The same drawing shows the black PCB antenna at the top of the shield, 44 broken-out pins, and two USB-C connectors wired to GPIO19 and GPIO20 (native USB) and to the bridge. Landed cost for the pair is KSh 1,144 plus whatever shipping the cart adds; the scraper could not read the shipping line, so treat shipping as unconfirmed.",
-      "price_all_seen": ["KSh 572", "KSh 383", "KSh 955", "KSh 286", "KSh 9,993", "KSh 1,033", "KSh 1,416"]
+      "verdict": "rejected",
+      "notes": "Verified in Chrome 2026-09-14: the 572 figure is the S3 Expansion Board B variant and no variant of this listing names N16R8. Only candidate where the module label was legible and genuine. Gallery image 2, the pin definition sheet, shows the shield printed ESP32-S3 with the CE mark, ID 2ACZ2-ESPS3WROOM1, IC 21098-ESPS3WROOM1 and N16R8 underneath. Those are Espressif's own FCC and IC identifiers for ESP32-S3-WROOM-1, so the module is the real part and not a relabelled clone. The same drawing shows the black PCB antenna at the top of the shield, 44 broken-out pins, and two USB-C connectors wired to GPIO19 and GPIO20 (native USB) and to the bridge. Landed cost for the pair is KSh 1,144 plus whatever shipping the cart adds; the scraper could not read the shipping line, so treat shipping as unconfirmed.",
+      "price_all_seen": [
+        "KSh 572",
+        "KSh 383",
+        "KSh 955",
+        "KSh 286",
+        "KSh 9,993",
+        "KSh 1,033",
+        "KSh 1,416"
+      ]
     },
     {
       "url": "https://www.aliexpress.com/item/1005006737960797.html",
       "title": "ESP32-S3-DevKitC-1 ESP32-S3 WiFi Bluetooth-compatible BLE 5.0 Mesh Development Board ESP32 Wireless Module N16R8 N8R8 N8R2",
-      "price_kes": 470,
-      "price_note": "KSh 470 is the headline figure. The listing carries N16R8, N8R8 and N8R2 in one title, so the headline figure is probably the N8R2 variant; other figures on the page run to KSh 853.",
-      "shipping": "Free shipping",
+      "price_kes": 749,
+      "price_note": "N16R8 weld variant selected on the page 2026-09-14",
+      "shipping": "Free shipping, delivery Sep 21 - 25 to Kenya",
       "sold": "10,000+",
       "rating": "4.9",
       "reviews": 869,
@@ -50,9 +58,15 @@
         "https://ae-pic-a1.aliexpress-media.com/kf/Sdac81c886d7b486d9825e08a19c140654.jpg",
         "https://ae-pic-a1.aliexpress-media.com/kf/Sdcac3d51a6c84a9884e10cb5a937d96cS.jpg"
       ],
-      "verdict": "runner-up",
-      "notes": "Best trading record of the five: 10,000+ sold, 4.9 over 869 reviews, free shipping, and the cheapest headline price. Held back only because the authenticity check failed to settle the variant. Both gallery images checked are CAD renders rather than photographs, and the module shield is drawn blank, so the label cannot be read. The board outline is right: 44 pins, dual USB-C, PCB antenna tab. Worth taking if the N16R8 option is selectable at or near KSh 470 when the page is opened in a browser.",
-      "price_all_seen": ["KSh 470", "KSh 383", "KSh 853", "KSh 137", "KSh 3,422"]
+      "verdict": "chosen",
+      "notes": "Verified in Chrome 2026-09-14 with ship-to Kenya: title says ESP32-S3-DevKitC-1, variant N16R8 weld (headers soldered) at KSh 749, free shipping.",
+      "price_all_seen": [
+        "KSh 470",
+        "KSh 383",
+        "KSh 853",
+        "KSh 137",
+        "KSh 3,422"
+      ]
     },
     {
       "url": "https://www.aliexpress.com/item/1005005033083303.html",
@@ -70,7 +84,9 @@
       ],
       "verdict": "runner-up",
       "notes": "The clearest authenticity check of the whole line. The product photo is a real photograph, not a render, and the shield is printed ESPRESSIF ESP32-S3-WROOM-1 with the PCB antenna tab, dual USB-C and two loose 22 pin headers. If Martin wants zero doubt about the module, this is the listing. Rejected as the chosen one on price: KSh 1,098 each is close to double the chosen board, KSh 2,196 for the pair, and no rating or store record could be read because the item page is blocked.",
-      "price_all_seen": ["KSh 1,098"]
+      "price_all_seen": [
+        "KSh 1,098"
+      ]
     },
     {
       "url": "https://www.aliexpress.com/item/1005009045226863.html",
@@ -93,7 +109,14 @@
       ],
       "verdict": "rejected",
       "notes": "Rejected on the photo check. The first gallery image is a sharp close-up and the module shield reads SparkleIoT, MODEL XH-S3E, N16R8, with a local SRRC mark and a U.FL connector fitted next to the PCB antenna. That is a third party module in the WROOM-1 footprint, not an Espressif ESP32-S3-WROOM-1, so the firmware pin map may hold but the RF part and the flash vendor are unknown. Second reason: image 2 prints N8R2 / N16R8 as the choice, so the headline price is not certainly the 16 MB part.",
-      "price_all_seen": ["KSh 552", "KSh 1,318", "KSh 1,870", "KSh 886", "KSh 1,269", "KSh 383"]
+      "price_all_seen": [
+        "KSh 552",
+        "KSh 1,318",
+        "KSh 1,870",
+        "KSh 886",
+        "KSh 1,269",
+        "KSh 383"
+      ]
     },
     {
       "url": "https://www.aliexpress.com/item/1005008209678136.html",
@@ -111,7 +134,13 @@
       ],
       "verdict": "rejected",
       "notes": "Rejected under the wrong-default-variant rule. N8R2 leads the title and the page shows a second figure of KSh 939 that is probably the N16R8, which would make it dearer than the chosen board. The single gallery image is a four-up render with a blank module shield, so no authenticity check was possible.",
-      "price_all_seen": ["KSh 556", "KSh 383", "KSh 939", "KSh 890", "KSh 1,273"]
+      "price_all_seen": [
+        "KSh 556",
+        "KSh 383",
+        "KSh 939",
+        "KSh 890",
+        "KSh 1,273"
+      ]
     }
   ]
 }

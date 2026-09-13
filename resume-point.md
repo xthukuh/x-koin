@@ -156,3 +156,37 @@ Fork branch pushed, fork master fast-forwarded to it, upstream PR opened:
 https://github.com/davidmonterocrespo24/velxio/pull/324. The forked image
 velxio-xkoin:dev (5.3 GB) now runs on the VPS (healthy, compile-chip available); compose.velxio.yml
 takes VELXIO_IMAGE and the VPS .env sets it to the fork image.
+
+## Addendum 2026-09-14, session five (MVP sourcing)
+
+Martin's asks this session: Nairobi vendors for the MVP parts with the fewest
+shops on a tight budget; exact matches only (product name and spec, no
+substitutes); direct checkout links with shipping to Nairobi confirmed; per
+device budgets for the bare minimum investor kit covering every medium and
+basic journey; HD YouTube through the HomePlug path is the D5 success bar.
+
+Delivered, all under hardware/shopping: mvp-sourcing.md (the plan and ranked
+shop-count options), mvp-kit.json (parts per device, stage two list),
+mvp-checkout.json (one verified link per line, variant, price, shipping,
+delivery window, seller), local-vendors.json (every Nairobi candidate with a
+verdict), and scripts/scout/local.mjs (six-store scout). Three chosen links in
+parts/ were corrected (esp32-s3, antenna, kq-130f). Board:
+https://claude.ai/code/artifact/5aa42d77-8773-44c0-ad02-e46a2d6a44f8
+
+Kit: 26,404 KES before AliExpress shipping (635), HomePlug VAT (1,440 if
+charged) and customs; AliExpress 14,604 across 12 lines in one checkout,
+Nairobi 11,800 across Brightsource (TL-WPA4220KIT 9,000 ex VAT, UK plug),
+K-Technics, ASK Electronics, Nerokas (cell) and a supermarket (strip). Main
+parcel lands Sep 21 to 30; only the Ra-01SH lands Nov 14.
+
+Waiting on Martin: farm node radio (Ra-01SH as specified, or a second
+E22-900M22S that lands Sep 25, recommended); a restock call to Pixel Electric
+for the KQ-130F at 1,800; placing the orders. Pending: per-device budgets on
+the SPA /shop page. Known: `npm run build:web` fails on the clean tree with a
+missing @rollup/rollup-win32-x64-msvc optional dependency (npm issue 4828);
+reinstall web/node_modules before the next site build.
+
+Tooling notes: AliExpress item pages render only in Martin's own Chrome
+session (Claude in Chrome); the headless scout and the in-app browser get the
+empty shell, and the /w/ search pages are shells everywhere. Node fetch on
+this host needs the resolver-backed lookup in local.mjs (KNOWNS.md item 9).

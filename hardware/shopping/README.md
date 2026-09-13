@@ -6,6 +6,16 @@ the web app compiles these files. Prices are in KES as AliExpress shows them
 to a Kenyan visitor on the day recorded; shipping is what the listing page
 displayed without a login.
 
+Beside the part files, from 2026-09-14:
+
+- `mvp-sourcing.md`: the per-device budgets for the bare minimum investor kit,
+  the ranked shop-count options, and the Nairobi store findings.
+- `mvp-kit.json`: which lines each device needs, and the stage two list.
+- `mvp-checkout.json`: one verified checkout link per line with the variant to
+  select, the price, the shipping line and the delivery window to Kenya.
+- `local-vendors.json`: every Nairobi candidate examined, with a verdict.
+- `scripts/scout/local.mjs`: the Nairobi store scout (plain fetch, six stores).
+
 Schema of `parts/<id>.json`:
 
     {

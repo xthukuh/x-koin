@@ -5,8 +5,8 @@
   "spec": "868 MHz (863-870, or 868/915 dual band) rubber duck or straight whip, 2 to 3 dBi, SMA male plug (centre pin) so it mates with the SMA female jacks on the modules; RP-SMA male will not fit",
   "qty": 3,
   "why": "Without a resonant 868 MHz antenna on every radio the link budget is meaningless and the PA can be damaged by the reflected power.",
-  "recorded": "2026-09-12",
-  "chosen": "https://www.aliexpress.com/item/1005002900905329.html",
+  "recorded": "2026-09-14",
+  "chosen": "https://www.aliexpress.com/item/1005007354656390.html",
   "candidates": [
     {
       "url": "https://www.aliexpress.com/item/1005002900905329.html",
@@ -27,15 +27,15 @@
         "https://ae-pic-a1.aliexpress-media.com/kf/S6ecde529208540259ea94698f19b43ddG.jpg",
         "https://ae-pic-a1.aliexpress-media.com/kf/S94a078e033504a3abf4c43260e678c1cq.jpg"
       ],
-      "verdict": "chosen",
-      "notes": "Exact spec match on paper (868/915, 3 dBi, SMA male) and by far the cheapest landed price, with free shipping confirmed on the listing page. Photo check: the first two gallery images (STLXY watermark) show a family of eight black rubber antennas, four with straight gold SMA connectors and one with a plain black plastic nut; the straight gold heads carry an external thread with a centre pin, which is SMA male, and one head in the same shot is clearly a female jack with an internal thread, so the listing mixes genders across variants. Buy only the variant labelled SMA male (SMA-J). Risks recorded: rating is 4.5 over 16 reviews, below the 4.7 preferred, and the 2,000+ listing sales were used to infer the store clears 500 sold overall since AliExpress did not expose a store total. Variant prices could not be read: AliExpress started serving an anti-bot page part way through this run, so only the price range from the product page is recorded."
+      "verdict": "rejected",
+      "notes": "Verified in Chrome 2026-09-14: the 22 figure is the GSM spring antenna variant; the 10CM whip is 96 for two with KSh 83 shipping and delivery Nov 14. Exact spec match on paper (868/915, 3 dBi, SMA male) and by far the cheapest landed price, with free shipping confirmed on the listing page. Photo check: the first two gallery images (STLXY watermark) show a family of eight black rubber antennas, four with straight gold SMA connectors and one with a plain black plastic nut; the straight gold heads carry an external thread with a centre pin, which is SMA male, and one head in the same shot is clearly a female jack with an internal thread, so the listing mixes genders across variants. Buy only the variant labelled SMA male (SMA-J). Risks recorded: rating is 4.5 over 16 reviews, below the 4.7 preferred, and the 2,000+ listing sales were used to infer the store clears 500 sold overall since AliExpress did not expose a store total. Variant prices could not be read: AliExpress started serving an anti-bot page part way through this run, so only the price range from the product page is recorded."
     },
     {
       "url": "https://www.aliexpress.com/item/1005007354656390.html",
       "title": "2PCS 868MHz 915MHz Antenna 3dbi SMA Male Connector GSM GPRS Antena outdoor signal repeater antenne waterproof Lorawan",
-      "price_kes": 205,
-      "price_note": "KSh 205 for the 2 pcs pack, listing range KSh 102 to KSh 588 across variants",
-      "shipping": "Free shipping",
+      "price_kes": 347,
+      "price_note": "11CM male variant, pack of 2, selected on the page 2026-09-14",
+      "shipping": "Free shipping, delivery Sep 21 - 27 to Kenya",
       "sold": "1,000+",
       "rating": "4.6",
       "reviews": 77,
@@ -49,8 +49,8 @@
         "https://ae-pic-a1.aliexpress-media.com/kf/S2a257c0a2cf74ce19adfcbb5c1c49e3aR.png",
         "https://ae-pic-a1.aliexpress-media.com/kf/Se2e9c49917bb439eb23fafeeb9e51112T.png"
       ],
-      "verdict": "runner-up",
-      "notes": "Same physical product from a different seller, with more review evidence (77 reviews, 4.6) than the chosen listing. Photo check: the first two gallery images are the same stock shoot under a different watermark, showing the straight gold SMA male heads and one female jack variant. Nine times the price of the chosen listing, so it is the fallback if the cheap listing turns out to be a bait variant. Review tags include incorrect product (3), which is a caution on variant handling."
+      "verdict": "chosen",
+      "notes": "Verified in Chrome 2026-09-14 with ship-to Kenya: 2 pcs 868/915 3 dBi SMA male straight 11 cm at KSh 347, free shipping, same seller as the pigtail pack."
     },
     {
       "url": "https://www.aliexpress.com/item/4001105458127.html",

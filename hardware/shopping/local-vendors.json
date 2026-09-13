@@ -1,0 +1,97 @@
+{
+  "recorded": "2026-09-14",
+  "method": "scripts/scout/local.mjs searched six Nairobi electronics stores per shopping line (hardware/shopping/parts), then every candidate below was opened and its title, price and stock text read on 2026-09-14. Exact spec matches only; near matches are listed with verdict rejected and the reason.",
+  "stores": {
+    "ktechnics": { "name": "K-Technics", "url": "https://www.ktechnics.com/", "platform": "Shopify", "notes": "Nairobi; stock text per product; M-Pesa" },
+    "ask": { "name": "ASK Electronics", "url": "https://askelectronics.co.ke/", "platform": "WooCommerce", "notes": "Nairobi; WhatsApp +254795642534" },
+    "nerokas": { "name": "Nerokas", "url": "https://store.nerokas.co.ke/", "platform": "OpenCart", "notes": "Nairobi; prices on the search page, product pages show In Stock or a lead time" },
+    "ardu": { "name": "ArduinoTech Kenya", "url": "https://arduinotech.co.ke/", "platform": "custom", "notes": "Nairobi CBD; stock text per product" },
+    "pixel": { "name": "Pixel Electric", "url": "https://www.pixelelectric.com/", "platform": "BigCommerce", "notes": "every line checked on 2026-09-14 showed Sold Out, including the only Nairobi KQ-130F listing" },
+    "espke": { "name": "esp-ke", "url": "https://www.esp-ke.com/", "platform": "custom", "notes": "catalog JSON with stock counts; cells and tools, few modules" },
+    "brightsource": { "name": "Brightsource Kenya", "url": "https://www.brighttech.co.ke/", "platform": "WooCommerce", "notes": "Salama House, Wabera Street; same-day Nairobi dispatch" },
+    "kentique": { "name": "Kentique", "url": "https://kentique.co.ke/", "platform": "WooCommerce", "notes": "Tubman Road; stock and plug type not stated" },
+    "tdk": { "name": "TDK Solutions", "url": "https://www.tdk.co.ke/", "platform": "WooCommerce", "notes": "Kai Plaza, Tom Mboya Street; prices ex VAT" },
+    "vds": { "name": "VDS Technology", "url": "https://www.vds.co.ke/", "platform": "custom", "notes": "quote request only" }
+  },
+  "lines": {
+    "esp32-s3-devkitc-n16r8": [
+      { "store": "ktechnics", "title": "ESP32-S3 Development Board ESP32-S3-WROOM-1 N16R8", "price_kes": 2500, "stock": "In stock", "url": "https://www.ktechnics.com/products/esp32-s3-development-board-esp32-s3-wroom-1-n16r8", "verdict": "exact", "notes": "16 MB flash, 8 MB PSRAM, dual USB-C (CH340 UART plus native USB); WROOM-1 in the title, antenna type not spelled out on the page" },
+      { "store": "nerokas", "title": "ESP32-S3 Development Board ESP32-S3-WROOM-1 N16R8", "price_kes": 4000, "stock": "In Stock", "url": "https://store.nerokas.co.ke/SKU-3981", "verdict": "exact", "notes": "page states WROOM-1, integrated antenna, two USB-C; 1,500 dearer than K-Technics" },
+      { "store": "ardu", "title": "ESP32-S3 Dual Type-C Development Board", "price_kes": 1800, "stock": "Low Stock", "url": "https://arduinotech.co.ke/product/esp32-s3-dual-type-c-development-board-esp32-s3-devkitc-n16r8-wi-fi-bluetooth", "verdict": "confirm", "notes": "N16R8 and dual USB-C stated; module (WROOM-1 versus 1U) and antenna not stated, so ask before buying" },
+      { "store": "pixel", "title": "ESP32-S3 Development Board ESP32-S3-WROOM-1 N16R8", "price_kes": 2500, "stock": "Sold Out", "url": "https://www.pixelelectric.com/espressif-dev-boards-modules/esp32-s3-development-board-esp32-s3-wroom-1-n16r8/", "verdict": "rejected", "notes": "sold out" }
+    ],
+    "heltec-lora32-v3-868": [],
+    "sx1262-module-868": [],
+    "ra-01sh-sx1262": [],
+    "sma-attenuator-30db": [],
+    "mains-plc-blocking-filter": [],
+    "ipex-sma-pigtail": [
+      { "store": "nerokas", "title": "Interface Cable SMA to U.FL", "price_kes": 200, "stock": "In Stock", "url": "https://store.nerokas.co.ke/SKU-870", "verdict": "confirm", "notes": "10 cm U.FL to SMA; the page does not say SMA female versus RP-SMA female, and the spec forbids RP-SMA" },
+      { "store": "pixel", "title": "Antenna WiFi Pigtail Cable IPX to SMA Female", "price_kes": 150, "stock": "Sold Out", "url": "https://www.pixelelectric.com/antennas-gsm-gps/antenna-wifi-pigtail-cable-ipx-to-sma-female/", "verdict": "rejected", "notes": "specs say RP-SMA female, and sold out" }
+    ],
+    "kq-130f-plc-module": [
+      { "store": "pixel", "title": "KQ-130F Power Cable Carrier Module- 135KHZ, 9600bps, +5V.", "price_kes": 1800, "stock": "SOLD OUT", "url": "https://www.pixelelectric.com/power-sensor/kq-130f-power-cable-carrier-module/", "verdict": "rejected", "notes": "the only Nairobi listing; genuine KQ-130F pinout on the page; sold out on 2026-09-14, worth a restock call" }
+    ],
+    "antenna-868-sma": [
+      { "store": "nerokas", "title": "LoRa Antenna 868Mhz RF SMA Male", "price_kes": 600, "stock": "In Stock", "url": "https://store.nerokas.co.ke/SKU-2966", "verdict": "exact", "notes": "868 MHz, SMA male; gain and length not published" },
+      { "store": "ktechnics", "title": "3dBi Omnidirectional LoRa & LoRaWAN Antenna (868MHz / 915MHz)", "price_kes": null, "stock": "In stock", "url": "https://www.ktechnics.com/products/3dbi-omnidirectional-lora-lorawan-antenna-868mhz-915mhz", "verdict": "confirm", "notes": "page offers SMA male or RP-SMA male and 868 or 915 variants but publishes no price (0.00 in the store data); ask for the 868 SMA male price" },
+      { "store": "pixel", "title": "LoRa Antenna 868Mhz RF SMA Male", "price_kes": 200, "stock": "Sold Out", "url": "https://www.pixelelectric.com/sensors/iot-and-wireless/antennas-gsm-gps/lora-antenna-868mhz-rf-sma-male/", "verdict": "rejected", "notes": "sold out" }
+    ],
+    "homeplug-av-wifi-kit": [
+      { "store": "brightsource", "title": "TP-LINK TL-WPA4220KIT AV500 Powerline 300 M Wi-Fi Extender/Wi-Fi", "price_kes": 9000, "stock": "In stock, same-day Nairobi dispatch", "url": "https://www.brighttech.co.ke/product/tp-link-tl-wpa4220kit-av500-powerline-300-m-wi-fi-extender-wi-fi/", "verdict": "exact", "notes": "kit lists one TL-WPA4220 and one TL-PA4010, plug options EU, UK, US; price marked Exc. Tax so confirm the VAT-inclusive figure" },
+      { "store": "kentique", "title": "TP-Link TL-WPA4220KIT 2-Port Powerline Adapter", "price_kes": 8000, "stock": "not stated", "url": "https://kentique.co.ke/product/tp-link-tl-wpa4220kit-2-port-powerline-adapter/", "verdict": "confirm", "notes": "cheapest quoted, but stock and plug type are not on the page" },
+      { "store": "tdk", "title": "TP-Link TL-WPA4220 Kit AV 600 Powerline", "price_kes": 12000, "stock": "available", "url": "https://www.tdk.co.ke/product/tp-link-tl-wpa4220-kit-av-600/", "verdict": "rejected", "notes": "ex VAT and EU plug" }
+    ],
+    "homeplug-av-plain-pair": [
+      { "store": "vds", "title": "TP-Link TL-PA4010 KIT Powerline Adapter", "price_kes": null, "stock": "quote request", "url": "https://www.vds.co.ke/africa/tplink-tl-pa4010-kit-kenya/", "verdict": "rejected", "notes": "US plug, no price" }
+    ],
+    "hlk-pm01-5v-psu": [
+      { "store": "ask", "title": "HLK-PM01 HLK-PM03 HLK-PM12 AC-DC 220V to 5V/3.3V/12V mini power supply module", "price_kes": 700, "stock": "In stock", "url": "https://askelectronics.co.ke/product/hlk-pm01-hlk-pm03-hlk-pm12-ac-dc-220v-to-5v-3-3v-12v-mini-power-supply-moduleintelligent-household-switch-power-supply-module/", "verdict": "exact", "notes": "pick the HLK-PM01 5 V variant; 600 mA, 2500 VAC isolation" },
+      { "store": "nerokas", "title": "5V / 5W SMPS Module (Hi-Link)", "price_kes": 650, "stock": "In Stock", "url": "https://store.nerokas.co.ke/SKU-3060", "verdict": "exact", "notes": "HLK-5M05, the accepted equivalent in the spec" },
+      { "store": "ktechnics", "title": "HI-LINK HLK-PM01 3W AC-DC Power Supply Module (5V - PCB Mount)", "price_kes": null, "stock": "out of stock", "url": "https://www.ktechnics.com/products/hi-link-hlk-pm01-3w-ac-dc-power-supply-module-5v-pcb-mount", "verdict": "rejected", "notes": "out of stock" }
+    ],
+    "tp4056-solar-charger": [
+      { "store": "ktechnics", "title": "TP4056 1A Lithium Battery Charger Type-C with Protection", "price_kes": 130, "stock": "In stock", "url": "https://www.ktechnics.com/products/tp4056-1a-lithium-battery-charger-type-c-with-protection", "verdict": "exact", "notes": "USB-C, DW01A plus FS8205A on the page" },
+      { "store": "nerokas", "title": "TP4056 / TC4056A Lithium Battery Charger and Protection Module", "price_kes": 150, "stock": "In Stock", "url": "https://store.nerokas.co.ke/SKU-3425", "verdict": "confirm", "notes": "DW01A and FS8205A stated, USB connector type not stated" }
+    ],
+    "18650-holder": [
+      { "store": "ktechnics", "title": "1-Cell 18650 Battery Holder with Pre-Attached Wire Leads", "price_kes": 70, "stock": "In stock", "url": "https://www.ktechnics.com/products/1-cell-18650-battery-holder-with-pre-attached-wire-leads", "verdict": "exact", "notes": "15 cm leads" },
+      { "store": "ardu", "title": "18650 Battery Holder for 3.7V Lithium-Ion Cells", "price_kes": 100, "stock": "In Stock", "url": "https://arduinotech.co.ke/product/18650-battery-holder-for-3-7v-lithium-ion-cells-single-slot-battery-case-with-wire-leads-for-diy-electronics-and-arduino-projects", "verdict": "exact", "notes": "single slot with wire leads" }
+    ],
+    "18650-cell": [
+      { "store": "nerokas", "title": "18650 Lithium Ion Battery INR 3.7V Cell (2600mAh)", "price_kes": 400, "stock": "not checked", "url": "https://store.nerokas.co.ke/SKU-3968", "verdict": "confirm", "notes": "no cell line exists in parts/ because cells cannot ship; listing price from the search page, brand not stated" },
+      { "store": "espke", "title": "18650 Li-ion cell (New)", "price_kes": 280, "stock": "40 in stock", "url": "https://www.esp-ke.com/product/119", "verdict": "confirm", "notes": "unbranded; capacity not stated" }
+    ],
+    "solar-panel-6v-2w": [
+      { "store": "ktechnics", "title": "3W 6V 500mA Mini Solar Panel", "price_kes": 900, "stock": "In stock", "url": "https://www.ktechnics.com/products/3w-6v-500ma-mini-solar-panel", "verdict": "confirm", "notes": "6 V 3 W, 145 mm square; leads versus bare pads not stated" },
+      { "store": "nerokas", "title": "Solar Cell 6V 330mA", "price_kes": 800, "stock": "2-3 Days", "url": "https://store.nerokas.co.ke/SKU-2025", "verdict": "confirm", "notes": "6 V 2 W, 136 by 110 mm; leads not stated" }
+    ],
+    "soil-moisture-capacitive-v2": [
+      { "store": "ktechnics", "title": "Analog Capacitive Soil Moisture Sensor Corrosion Resistant", "price_kes": 200, "stock": "In stock", "url": "https://www.ktechnics.com/products/analog-capacitive-soil-moisture-sensor-corrosion-resistant", "verdict": "exact", "notes": "3.3 to 5.5 V, analogue out, PH2.0-3P lead" },
+      { "store": "ardu", "title": "Capacitive Soil Moisture Sensor", "price_kes": 300, "stock": "In stock", "url": "https://arduinotech.co.ke/product/capacitive-soil-moisture-sensor-corrosion-resistant-analog-soil-humidity-sensor-for-arduino-esp32-and-smart-garden-projects", "verdict": "exact", "notes": "" }
+    ],
+    "temp-humidity-sensor": [
+      { "store": "ask", "title": "AHT20 I2C temperature and humidity sensor module", "price_kes": 350, "stock": "In stock", "url": "https://askelectronics.co.ke/product/aht20-i2c-temperature-and-humidity-sensor-module-high-precision-humidity-sensor-probe-dht11-aht10-upgraded-version-for-arduino/", "verdict": "exact", "notes": "the spec prefers the AHT20 when cheaper" },
+      { "store": "ardu", "title": "DHT22 AM2302 Digital Temperature and Humidity Sensor Module", "price_kes": 600, "stock": "In stock", "url": "https://arduinotech.co.ke/product/dht22-am2302-digital-temperature-and-humidity-sensor-module-for-arduino-and-raspberry-pi-high-accuracy-environmental-sensor", "verdict": "exact", "notes": "" },
+      { "store": "ktechnics", "title": "DHT22 AM2302 Temperature Humidity Sensor", "price_kes": 700, "stock": "In stock", "url": "https://www.ktechnics.com/products/dht22-am2302-temperature-humidity-sensor", "verdict": "confirm", "notes": "bare sensor or module not stated" }
+    ],
+    "esp32-c3-supermini": [
+      { "store": "ardu", "title": "ESP32-C3 Super Mini Development Board", "price_kes": 800, "stock": "In Stock", "url": "https://arduinotech.co.ke/product/esp32-c3-super-mini-development-board-32-bit-single-core-wifi-bluetooth-module-with-type-c-and-16-pins", "verdict": "exact", "notes": "name exact; USB-C, 16 pins" },
+      { "store": "ktechnics", "title": "ESP32C3 PRO MINI development board type C", "price_kes": 700, "stock": "In stock", "url": "https://www.ktechnics.com/products/esp32c3-pro-mini-development-board-type-c", "verdict": "rejected", "notes": "22.5 by 18 mm, USB-C, boot and reset, 4 MB flash: the SuperMini footprint under another name; rejected under the exact-name rule" }
+    ],
+    "usb-ttl-ch340": [
+      { "store": "ask", "title": "CP2102 USB 2.0 to TTL UART Module 6Pin Serial Converter STC Replace FT232 Adapter Module 3.3V/5V Power", "price_kes": 400, "stock": "not stated", "url": "https://askelectronics.co.ke/product/cp2102-usb-2-0-to-ttl-uart-module-6pin-serial-converter-stc-replace-ft232-adapter-module-3-3v-5v-power/", "verdict": "exact", "notes": "3.3 V and 5 V power pins, USB-A plug" },
+      { "store": "ktechnics", "title": "CP2102 USB Micro USB to UART TTL Serial Converter Module", "price_kes": 300, "stock": "In stock", "url": "https://www.ktechnics.com/products/cp2102-usb-micro-usb-to-uart-ttl-serial-converter-module", "verdict": "rejected", "notes": "3.3 V logic only, no 5 V selector" },
+      { "store": "ask", "title": "CH340 module USB to TTL CH340G", "price_kes": 300, "stock": "In stock", "url": "https://askelectronics.co.ke/product/ch340-module-usb-to-ttl-ch340g-upgrade-download-a-small-wire-brush-plate-stc-microcontroller-board-usb-to-serial/", "verdict": "confirm", "notes": "no description on the page; selector unknown" }
+    ],
+    "breadboard-jumpers": [
+      { "store": "ask", "title": "Breadboard 830 Point PCB Board MB-102 MB102", "price_kes": 200, "stock": "In stock", "url": "https://askelectronics.co.ke/product/breadboard-830-point-pcb-board-mb-102-mb102/", "verdict": "exact", "notes": "breadboard half of the line" },
+      { "store": "ktechnics", "title": "Breadboard MB102 Solderless Type 830 points", "price_kes": 250, "stock": "In stock", "url": "https://www.ktechnics.com/products/breadboard-mb102-solderless-type-830-points", "verdict": "exact", "notes": "breadboard half of the line" },
+      { "store": "ktechnics", "title": "Male-Male, Male-Female and Female-Female jumper wires, 40 pcs 20 cm each", "price_kes": 450, "stock": "In stock", "url": "https://www.ktechnics.com/products/male-male-jumper-wire-connectors-40pcs-20cm", "verdict": "exact", "notes": "three packs at 150 make the 120 piece set; the M-F and F-F packs are sibling listings" }
+    ],
+    "usb-c-otg-adapter": [
+      { "store": "nerokas", "title": "USB OTG Cable", "price_kes": 400, "stock": "In Stock", "url": "https://store.nerokas.co.ke/SKU-1137", "verdict": "rejected", "notes": "micro-A, not USB-C; buy the USB-C OTG adapter at any phone accessories shop" }
+    ],
+    "extension-strips": []
+  }
+}
