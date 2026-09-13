@@ -1,10 +1,11 @@
 import { Link } from 'react-router-dom';
 
 /**
- * A plain index of what exists, not a landing page. The real landing page is a
- * later design job; this route only has to make every other route reachable.
+ * A plain index of what exists. The landing page took over `/` and this route
+ * moved to `/map`, where it only has to make every other route reachable.
  */
 const ROUTES = [
+  { to: '/', label: '/', text: 'The landing page: what xKoin is, the three mediums, the money, the devices, the Laws.' },
   { to: '/docs', label: '/docs', text: 'Markdown viewer for docs/papers, docs/potential and docs/x-koin-beta.' },
   { to: '/investors', label: '/investors', text: 'Investor demo: what powers xKoin, with the real proof figures inlined.' },
   { to: '/landlord', label: '/landlord', text: 'Landlord pilot page: the incentive for a building owner, no internals.' },

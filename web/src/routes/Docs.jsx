@@ -8,7 +8,7 @@ function Sidebar({ current }) {
   const groups = docsByFolder();
   return (
     <nav className="w-full shrink-0 border-b border-neutral-300 p-4 text-sm md:w-64 md:border-b-0 md:border-r">
-      <Link className="font-medium underline" to="/">
+      <Link className="font-medium underline" to="/map">
         xKoin index
       </Link>
       {DOCS.length === 0 ? (

@@ -1,5 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 
+import Landing from './landing/Landing.jsx';
 import Docs from './routes/Docs.jsx';
 import Home from './routes/Home.jsx';
 import Legacy from './routes/Legacy.jsx';
@@ -9,7 +10,8 @@ import Shop from './routes/Shop.jsx';
 export default function App() {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
+      <Route path="/" element={<Landing />} />
+      <Route path="/map" element={<Home />} />
       <Route path="/docs" element={<Docs />} />
       <Route path="/docs/*" element={<Docs />} />
       <Route

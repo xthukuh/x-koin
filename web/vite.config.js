@@ -10,6 +10,7 @@ import { viteStaticCopy } from 'vite-plugin-static-copy';
 const WEB = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(WEB, '..');
 const DOCS = path.join(ROOT, 'docs');
+const HARDWARE = path.join(ROOT, 'hardware');
 
 /** Folders under docs/ that the markdown viewer reads. */
 const DOC_FOLDERS = ['papers', 'potential', 'x-koin-beta'];
@@ -41,8 +42,9 @@ export default defineConfig({
     port: 5173,
     strictPort: true,
     fs: {
-      // The markdown glob reads ../docs, which is outside the Vite root.
-      allow: [WEB, DOCS],
+      // The markdown glob reads ../docs and the landing page's part photos read
+      // ../hardware, both outside the Vite root.
+      allow: [WEB, DOCS, HARDWARE],
     },
   },
   preview: {
