@@ -190,3 +190,11 @@ Tooling notes: AliExpress item pages render only in Martin's own Chrome
 session (Claude in Chrome); the headless scout and the in-app browser get the
 empty shell, and the /w/ search pages are shells everywhere. Node fetch on
 this host needs the resolver-backed lookup in local.mjs (KNOWNS.md item 9).
+
+Later on 2026-09-14: Martin's layout rule, compact uniform product listings
+with brief text. The /shop page now opens with the MVP kit as one
+fixed-column table per device (from mvp-kit.json and mvp-checkout.json via
+data.js) and lists the scouted lines as same-height tiles, long text behind
+a More toggle; the carousel is gone. web/node_modules was reinstalled, so
+`npm run build:web` passes again. .claude/launch.json starts the dev server
+for the in-app browser. The board was redone in the same layout.

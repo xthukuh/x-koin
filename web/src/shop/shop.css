@@ -1,14 +1,17 @@
 /*
- * Shopping list page styling. Plain CSS rather than utility classes, for the
- * same reason the landing page uses plain CSS: one fixed design, one consumer,
- * and a print sheet that has to override a lot at once.
+ * Shopping list page styling. Plain CSS rather than utility classes: one fixed
+ * design, one consumer, and a print sheet that has to override a lot at once.
  *
  * The colour tokens carry the same names and values as landing/landing.css but
  * are declared here again, scoped to a document that actually contains the
  * page, so this route does not depend on the landing bundle being loaded and
  * cannot change any other route. index.css pins the app to a light surface, so
  * the page takes the body back while it is mounted and hands it over on route
- * change, again as the landing page does.
+ * change, as the landing page does.
+ *
+ * Layout rule (Martin, 2026-09-14): products sit in uniform compact shapes.
+ * The kit is a fixed-column table per device; the scouted list is a grid of
+ * same-height tiles with everything long behind a "More" toggle.
  */
 
 :root:has(.xk-shop) {
@@ -46,7 +49,7 @@
     --xk-good: #53c98c;
     --xk-warn: #d9a34e;
     --xk-critical: #f08585;
-    --xk-photo: #f2f2f0;
+    --xk-photo: #ffffff;
   }
 }
 
@@ -65,7 +68,7 @@
   --xk-good: #53c98c;
   --xk-warn: #d9a34e;
   --xk-critical: #f08585;
-  --xk-photo: #f2f2f0;
+  --xk-photo: #ffffff;
 }
 
 :root:has(.xk-shop) body {
@@ -77,10 +80,10 @@
   background: var(--xk-ground);
   color: var(--xk-ink);
   font-family: 'IBM Plex Sans', ui-sans-serif, system-ui, 'Segoe UI', Roboto, Arial, sans-serif;
-  font-size: 16px;
-  line-height: 1.6;
+  font-size: 15px;
+  line-height: 1.5;
   overflow-x: hidden;
-  padding: clamp(1.25rem, 4vw, 2.75rem) clamp(1rem, 4vw, 2.75rem) 4rem;
+  padding: clamp(1.25rem, 4vw, 2.5rem) clamp(1rem, 4vw, 2.5rem) 4rem;
 }
 
 .xk-shop *,
@@ -103,6 +106,16 @@
   color: var(--xk-accent);
 }
 
+.xk-shop a:focus-visible,
+.xk-shop summary:focus-visible {
+  outline: 2px solid var(--xk-accent);
+  outline-offset: 2px;
+}
+
+.xk-shop-dim {
+  color: var(--xk-faint);
+}
+
 .xk-shop-back {
   font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Consolas, monospace;
   font-size: 0.8rem;
@@ -114,40 +127,41 @@
 
 .xk-shop-head {
   border-bottom: 1px solid var(--xk-line);
-  padding-bottom: 1.5rem;
+  padding-bottom: 1.25rem;
 }
 
 .xk-shop-title {
-  font-size: clamp(1.6rem, 4.5vw, 2.3rem);
+  font-size: clamp(1.5rem, 4vw, 2.1rem);
   font-weight: 600;
   letter-spacing: -0.01em;
   line-height: 1.15;
-  margin: 1rem 0 0;
+  margin: 0.75rem 0 0;
+  text-wrap: balance;
 }
 
 .xk-shop-lede {
   color: var(--xk-muted);
-  margin: 0.75rem 0 0;
+  margin: 0.5rem 0 0;
   max-width: 68ch;
 }
 
 .xk-shop-summary {
   display: grid;
-  gap: 0.75rem;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  margin-top: 1.5rem;
+  gap: 0.6rem;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  margin-top: 1.1rem;
 }
 
 .xk-shop-figure {
   background: var(--xk-surface);
   border: 1px solid var(--xk-line);
-  padding: 0.75rem 0.9rem;
+  padding: 0.6rem 0.8rem;
 }
 
 .xk-shop-figure-value {
   display: block;
   font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Consolas, monospace;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-variant-numeric: tabular-nums;
   font-weight: 600;
   line-height: 1.2;
@@ -157,9 +171,9 @@
   color: var(--xk-faint);
   display: block;
   font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Consolas, monospace;
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   letter-spacing: 0.06em;
-  margin-top: 0.35rem;
+  margin-top: 0.3rem;
   text-transform: uppercase;
 }
 
@@ -173,10 +187,185 @@
   margin: 0.75rem 0 0;
 }
 
-/* Role groups ------------------------------------------------------------- */
+/* Sections ---------------------------------------------------------------- */
+
+.xk-shop-section {
+  margin-top: 2.25rem;
+}
+
+.xk-shop-section-head {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1rem;
+  justify-content: space-between;
+}
+
+.xk-shop-section-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.xk-shop-section-sub {
+  color: var(--xk-muted);
+  font-size: 0.8rem;
+  margin: 0;
+}
+
+/* Kit by device: one fixed-column table per device -------------------------- */
+
+.xk-shop-device {
+  background: var(--xk-surface);
+  border: 1px solid var(--xk-line);
+  margin-top: 1rem;
+  padding: 0.85rem 1rem 0.9rem;
+}
+
+.xk-shop-device-head {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+  justify-content: space-between;
+}
+
+.xk-shop-device-name {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.xk-shop-device-sum {
+  display: flex;
+  font-size: 0.8rem;
+  gap: 0.75rem;
+}
+
+.xk-shop-device-sum strong {
+  color: var(--xk-money);
+  font-size: 0.95rem;
+}
+
+.xk-shop-device-why {
+  color: var(--xk-muted);
+  font-size: 0.85rem;
+  margin: 0.25rem 0 0.6rem;
+  max-width: 80ch;
+}
+
+.xk-shop-owned {
+  color: var(--xk-faint);
+  font-size: 0.78rem;
+  margin: 0.5rem 0 0;
+}
+
+.xk-shop-scroll {
+  overflow-x: auto;
+}
+
+.xk-shop-table {
+  border-collapse: collapse;
+  font-size: 0.82rem;
+  min-width: 560px;
+  width: 100%;
+}
+
+.xk-shop-table th,
+.xk-shop-table td {
+  border-bottom: 1px solid var(--xk-line-soft);
+  padding: 0.4rem 0.55rem;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.xk-shop-table th {
+  color: var(--xk-faint);
+  font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.xk-shop-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.xk-shop-kit-table {
+  min-width: 760px;
+}
+
+.xk-shop-kit-table td.xk-shop-mono {
+  white-space: nowrap;
+}
+
+.xk-shop-num {
+  text-align: right !important;
+  white-space: nowrap;
+}
+
+.xk-shop-kit-name {
+  align-items: center;
+  display: flex;
+  font-weight: 500;
+  gap: 0.5rem;
+  min-width: 200px;
+}
+
+.xk-shop-kit-thumb {
+  background: var(--xk-photo);
+  border: 1px solid var(--xk-line-soft);
+  display: inline-block;
+  flex: none;
+  height: 32px;
+  object-fit: contain;
+  width: 32px;
+}
+
+.xk-shop-src {
+  border-radius: 2px;
+  display: inline-block;
+  font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 0.66rem;
+  letter-spacing: 0.04em;
+  padding: 0.05rem 0.35rem;
+  text-transform: uppercase;
+}
+
+.xk-shop-src-ali {
+  background: var(--xk-accent-soft);
+  color: var(--xk-accent);
+}
+
+.xk-shop-src-local {
+  background: var(--xk-surface-2);
+  color: var(--xk-good);
+}
+
+.xk-shop-buy {
+  border: 1px solid var(--xk-accent);
+  border-radius: 2px;
+  display: inline-block;
+  font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+  padding: 0.1rem 0.55rem;
+  text-decoration: none;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.xk-shop-buy:hover {
+  background: var(--xk-accent);
+  color: var(--xk-surface);
+}
+
+/* Scouted lines: uniform tiles in a grid ---------------------------------- */
 
 .xk-shop-group {
-  margin-top: 2.75rem;
+  margin-top: 1.5rem;
 }
 
 .xk-shop-group-head {
@@ -184,22 +373,21 @@
   border-bottom: 1px solid var(--xk-line);
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem 1rem;
+  gap: 0.25rem 1rem;
   justify-content: space-between;
-  padding-bottom: 0.5rem;
+  padding-bottom: 0.35rem;
 }
 
 .xk-shop-group-title {
-  font-size: 1.15rem;
+  font-size: 1rem;
   font-weight: 600;
   margin: 0;
 }
 
 .xk-shop-group-sub {
   color: var(--xk-muted);
-  font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Consolas, monospace;
-  font-size: 0.8rem;
-  font-variant-numeric: tabular-nums;
+  font-size: 0.78rem;
+  margin: 0;
 }
 
 .xk-shop-group-sub strong {
@@ -207,309 +395,145 @@
   font-weight: 600;
 }
 
-.xk-shop-group-why {
-  color: var(--xk-faint);
-  font-size: 0.85rem;
-  margin: 0.6rem 0 0;
-  max-width: 68ch;
+.xk-shop-grid {
+  display: grid;
+  gap: 0.6rem;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  margin-top: 0.6rem;
 }
 
-/* Part card --------------------------------------------------------------- */
-
-.xk-shop-card {
+.xk-shop-tile {
   background: var(--xk-surface);
   border: 1px solid var(--xk-line);
   display: grid;
-  gap: 1.25rem;
-  /* minmax(0, 1fr) rather than 1fr: the candidates table carries a min-width so
-     it stays readable, and an auto minimum would let that min-content width
-     stretch the whole card past the viewport. */
-  grid-template-columns: minmax(0, 1fr);
-  margin-top: 1.25rem;
-  padding: 1rem;
+  gap: 0.7rem;
+  grid-template-columns: 72px 1fr;
+  min-height: 172px;
+  padding: 0.65rem;
 }
 
-.xk-shop-card > * {
-  min-width: 0;
-}
-
-@media (min-width: 880px) {
-  .xk-shop-card {
-    grid-template-columns: minmax(260px, 360px) minmax(0, 1fr);
-    padding: 1.25rem;
-  }
-}
-
-.xk-shop-card-body {
-  min-width: 0;
-}
-
-.xk-shop-line {
-  font-size: 1.05rem;
-  font-weight: 600;
-  margin: 0;
-}
-
-.xk-shop-role {
-  color: var(--xk-faint);
-  font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Consolas, monospace;
-  font-size: 0.72rem;
-  letter-spacing: 0.04em;
-  margin: 0.25rem 0 0;
-}
-
-.xk-shop-why {
-  color: var(--xk-muted);
-  margin: 0.6rem 0 0;
-}
-
-.xk-shop-spec {
-  border-left: 2px solid var(--xk-line);
-  color: var(--xk-muted);
-  font-size: 0.88rem;
-  margin: 0.75rem 0 0;
-  padding-left: 0.75rem;
-}
-
-.xk-shop-price {
-  align-items: baseline;
-  border-top: 1px solid var(--xk-line-soft);
-  border-bottom: 1px solid var(--xk-line-soft);
-  display: flex;
-  flex-wrap: wrap;
-  font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Consolas, monospace;
-  font-variant-numeric: tabular-nums;
-  gap: 0.35rem 0.6rem;
-  margin: 0.9rem 0 0;
-  padding: 0.6rem 0;
-}
-
-.xk-shop-price-total {
-  color: var(--xk-money);
-  font-size: 1.1rem;
-  font-weight: 600;
-}
-
-.xk-shop-chosen {
-  margin: 0.9rem 0 0;
-}
-
-.xk-shop-chosen-title {
-  font-weight: 500;
-}
-
-.xk-shop-facts {
-  display: grid;
-  gap: 0.4rem 1.25rem;
-  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-  margin: 0.9rem 0 0;
-}
-
-.xk-shop-fact {
-  border-top: 1px solid var(--xk-line-soft);
-  font-size: 0.85rem;
-  padding-top: 0.35rem;
-}
-
-.xk-shop-fact dt {
-  color: var(--xk-faint);
-  font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Consolas, monospace;
-  font-size: 0.68rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
-.xk-shop-fact dd {
-  margin: 0.15rem 0 0;
-  overflow-wrap: anywhere;
-}
-
-.xk-shop-prose {
-  color: var(--xk-muted);
-  font-size: 0.85rem;
-  margin: 0.9rem 0 0;
-}
-
-.xk-shop-prose-label {
-  color: var(--xk-faint);
-  font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Consolas, monospace;
-  font-size: 0.68rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
-/* Carousel ---------------------------------------------------------------- */
-
-.xk-shop-gallery {
-  min-width: 0;
-}
-
-.xk-shop-frame {
-  aspect-ratio: 4 / 3;
+.xk-shop-thumb {
+  align-items: center;
   background: var(--xk-photo);
-  border: 1px solid var(--xk-line);
-  overflow: hidden;
-  position: relative;
-  width: 100%;
-}
-
-.xk-shop-frame:focus-visible {
-  outline: 2px solid var(--xk-accent);
-  outline-offset: 2px;
-}
-
-.xk-shop-track {
+  border: 1px solid var(--xk-line-soft);
+  color: var(--xk-faint);
   display: flex;
-  height: 100%;
-  transition: transform 180ms ease-out;
-  width: 100%;
+  font-size: 0.65rem;
+  height: 72px;
+  justify-content: center;
+  overflow: hidden;
+  text-align: center;
+  width: 72px;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .xk-shop-track {
-    transition: none;
-  }
-}
-
-.xk-shop-slide {
-  flex: 0 0 100%;
-  height: 100%;
-  width: 100%;
-}
-
-.xk-shop-slide img {
-  display: block;
+.xk-shop-thumb img {
   height: 100%;
   object-fit: contain;
   width: 100%;
 }
 
-.xk-shop-arrow {
-  align-items: center;
-  background: rgba(255, 255, 255, 0.86);
-  border: 1px solid var(--xk-line);
-  color: #14213d;
-  cursor: pointer;
-  display: flex;
-  font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Consolas, monospace;
-  font-size: 1rem;
-  height: 2.25rem;
-  justify-content: center;
-  line-height: 1;
-  padding: 0;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 2.25rem;
+.xk-shop-tile-body {
+  display: grid;
+  gap: 0.2rem;
+  grid-template-rows: auto auto auto auto 1fr;
+  min-width: 0;
 }
 
-.xk-shop-arrow:hover {
-  background: #ffffff;
-}
-
-.xk-shop-arrow-prev {
-  left: 0.4rem;
-}
-
-.xk-shop-arrow-next {
-  right: 0.4rem;
-}
-
-.xk-shop-dots {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.35rem;
-  justify-content: center;
-  margin-top: 0.5rem;
-}
-
-.xk-shop-dot {
-  background: var(--xk-line);
-  border: 0;
-  cursor: pointer;
-  height: 0.5rem;
-  padding: 0;
-  width: 1.1rem;
-}
-
-.xk-shop-dot[aria-current='true'] {
-  background: var(--xk-accent);
-}
-
-.xk-shop-count {
-  color: var(--xk-faint);
-  font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Consolas, monospace;
-  font-size: 0.7rem;
-  letter-spacing: 0.04em;
-  margin-top: 0.35rem;
-  text-align: center;
-}
-
-.xk-shop-nophoto {
-  align-items: center;
-  aspect-ratio: 4 / 3;
-  background: var(--xk-surface-2);
-  border: 1px dashed var(--xk-line);
-  color: var(--xk-faint);
-  display: flex;
-  font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Consolas, monospace;
-  font-size: 0.75rem;
-  justify-content: center;
-  text-align: center;
-  width: 100%;
-}
-
-/* Other candidates -------------------------------------------------------- */
-
-.xk-shop-others {
-  border-top: 1px solid var(--xk-line);
-  grid-column: 1 / -1;
-  margin-top: 0.25rem;
-  padding-top: 0.75rem;
-}
-
-.xk-shop-others summary {
-  cursor: pointer;
-  font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Consolas, monospace;
-  font-size: 0.78rem;
-  letter-spacing: 0.04em;
-}
-
-.xk-shop-scroll {
-  margin-top: 0.75rem;
-  max-width: 100%;
-  overflow-x: auto;
-}
-
-.xk-shop-table {
-  border-collapse: collapse;
-  font-size: 0.78rem;
-  min-width: 720px;
-  width: 100%;
-}
-
-.xk-shop-table th,
-.xk-shop-table td {
-  border: 1px solid var(--xk-line-soft);
-  padding: 0.35rem 0.5rem;
-  text-align: left;
-  vertical-align: top;
-}
-
-.xk-shop-table th {
-  background: var(--xk-surface-2);
+.xk-shop-tile-name {
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  display: -webkit-box;
+  font-size: 0.92rem;
   font-weight: 600;
+  line-height: 1.25;
+  margin: 0;
+  overflow: hidden;
+}
+
+.xk-shop-tile-why {
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  color: var(--xk-muted);
+  display: -webkit-box;
+  font-size: 0.8rem;
+  line-height: 1.35;
+  margin: 0;
+  overflow: hidden;
+}
+
+.xk-shop-tile-money {
+  display: flex;
+  font-size: 0.85rem;
+  gap: 0.5rem;
+  margin: 0.1rem 0 0;
+}
+
+.xk-shop-tile-money strong {
+  color: var(--xk-money);
+  margin-left: auto;
+}
+
+.xk-shop-tile-facts {
+  color: var(--xk-faint);
+  font-size: 0.74rem;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.xk-shop-table td:last-child {
-  min-width: 22rem;
+.xk-shop-tile-actions {
+  align-items: end;
+  display: flex;
+  gap: 0.6rem;
+  justify-content: space-between;
+}
+
+.xk-shop-more {
+  font-size: 0.78rem;
+}
+
+.xk-shop-more summary {
+  color: var(--xk-accent);
+  cursor: pointer;
+  font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  list-style: none;
+  text-transform: uppercase;
+}
+
+.xk-shop-more summary::-webkit-details-marker {
+  display: none;
+}
+
+.xk-shop-more summary::after {
+  content: ' +';
+}
+
+.xk-shop-more[open] summary::after {
+  content: ' -';
+}
+
+/* An open tile spans the row so the long text reads at full width. */
+.xk-shop-tile:has(.xk-shop-more[open]) {
+  grid-column: 1 / -1;
+}
+
+.xk-shop-more-body {
+  color: var(--xk-muted);
+  display: grid;
+  gap: 0.35rem;
+  margin-top: 0.5rem;
+}
+
+.xk-shop-more-body p {
+  margin: 0;
 }
 
 .xk-shop-verdict {
   font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Consolas, monospace;
-  font-size: 0.7rem;
-  letter-spacing: 0.04em;
+  font-size: 0.72rem;
   text-transform: uppercase;
   white-space: nowrap;
 }
@@ -526,21 +550,8 @@
   color: var(--xk-good);
 }
 
-/* Note card --------------------------------------------------------------- */
-
-.xk-shop-notecard {
-  background: var(--xk-surface);
-  border: 1px dashed var(--xk-line);
-  margin-top: 1.25rem;
-  padding: 1rem;
-}
-
-.xk-shop-tag {
-  color: var(--xk-warn);
-  font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Consolas, monospace;
-  font-size: 0.7rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+.xk-shop-empty {
+  color: var(--xk-faint);
 }
 
 /* Footer ------------------------------------------------------------------ */
@@ -550,22 +561,14 @@
   color: var(--xk-faint);
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem 1.5rem;
   font-size: 0.8rem;
+  gap: 0.5rem 1.5rem;
   justify-content: space-between;
-  margin-top: 3rem;
-  padding-top: 1rem;
+  margin-top: 2.5rem;
+  padding-top: 0.75rem;
 }
 
-.xk-shop-empty {
-  border: 1px dashed var(--xk-line);
-  color: var(--xk-muted);
-  margin-top: 2rem;
-  padding: 2rem 1rem;
-  text-align: center;
-}
-
-/* Print ------------------------------------------------------------------- */
+/* Print -------------------------------------------------------------------- */
 
 @media print {
   :root:has(.xk-shop) body {
@@ -576,44 +579,32 @@
   .xk-shop {
     background: #ffffff;
     color: #000000;
-    font-size: 10pt;
+    font-size: 9pt;
     padding: 0;
   }
 
   .xk-shop-back,
-  .xk-shop-arrow,
-  .xk-shop-dots,
-  .xk-shop-count {
+  .xk-shop-buy {
     display: none !important;
   }
 
-  /* Cards stack: one column, photo above the text, no page break inside. */
-  .xk-shop-card {
+  .xk-shop-device,
+  .xk-shop-tile {
     border: 1px solid #999999;
     break-inside: avoid;
-    grid-template-columns: 1fr;
     page-break-inside: avoid;
   }
 
-  .xk-shop-gallery {
-    max-width: 9cm;
+  .xk-shop-grid {
+    grid-template-columns: 1fr 1fr;
   }
 
-  /* Carousels print the first image only. */
-  .xk-shop-track {
-    transform: none !important;
-  }
-
-  .xk-shop-slide + .xk-shop-slide {
-    display: none !important;
-  }
-
-  /* An open candidates table prints in full width instead of scrolling. */
   .xk-shop-scroll {
     overflow-x: visible;
   }
 
-  .xk-shop-table {
+  .xk-shop-table,
+  .xk-shop-kit-table {
     min-width: 0;
   }
 

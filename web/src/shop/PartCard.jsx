@@ -1,4 +1,3 @@
-import Carousel from './Carousel.jsx';
 import { kes } from './data.js';
 
 const VERDICT_CLASS = {
@@ -7,171 +6,104 @@ const VERDICT_CLASS = {
   rejected: 'xk-shop-verdict xk-shop-verdict-rejected',
 };
 
-function Fact({ label, children }) {
-  if (children === null || children === undefined || children === '') {
-    return null;
-  }
-  return (
-    <div className="xk-shop-fact">
-      <dt>{label}</dt>
-      <dd>{children}</dd>
-    </div>
-  );
-}
-
-function Prose({ label, text }) {
-  if (!text) {
-    return null;
-  }
-  return (
-    <p className="xk-shop-prose">
-      <span className="xk-shop-prose-label">{label}</span>
-      <br />
-      {text}
-    </p>
-  );
-}
-
-/**
- * Every candidate the scout did not take, as a compact table. It scrolls inside
- * its own container so a long listing title cannot widen the page, and it sits
- * behind a details element because the reader wants the chosen row first.
- */
+/** Every candidate the scout did not take, one compact row each. */
 function OtherCandidates({ others }) {
   if (others.length === 0) {
     return null;
   }
   return (
-    <details className="xk-shop-others">
-      <summary>
-        Other candidates ({others.length})
-      </summary>
-      <div className="xk-shop-scroll">
-        <table className="xk-shop-table">
-          <thead>
-            <tr>
-              <th>Listing</th>
-              <th>Price</th>
-              <th>Sold</th>
-              <th>Rating</th>
-              <th>Verdict</th>
-              <th>Notes</th>
+    <div className="xk-shop-scroll">
+      <table className="xk-shop-table">
+        <thead>
+          <tr>
+            <th>Other listing</th>
+            <th>Price</th>
+            <th>Sold</th>
+            <th>Verdict</th>
+          </tr>
+        </thead>
+        <tbody>
+          {others.map((candidate) => (
+            <tr key={candidate.url ?? candidate.title}>
+              <td>
+                {candidate.url ? (
+                  <a href={candidate.url} rel="noreferrer" target="_blank">
+                    {candidate.title ?? candidate.url}
+                  </a>
+                ) : (
+                  candidate.title ?? 'untitled'
+                )}
+              </td>
+              <td className="xk-shop-mono">{kes(candidate.price_kes)}</td>
+              <td className="xk-shop-mono">{candidate.sold ?? '-'}</td>
+              <td className={VERDICT_CLASS[candidate.verdict] ?? 'xk-shop-verdict'}>
+                {candidate.verdict ?? 'unrated'}
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {others.map((candidate) => (
-              <tr key={candidate.url ?? candidate.title}>
-                <td>
-                  {candidate.url ? (
-                    <a href={candidate.url} rel="noreferrer" target="_blank">
-                      {candidate.title ?? candidate.url}
-                    </a>
-                  ) : (
-                    candidate.title ?? 'untitled'
-                  )}
-                </td>
-                <td className="xk-shop-mono">{kes(candidate.price_kes)}</td>
-                <td className="xk-shop-mono">{candidate.sold ?? '-'}</td>
-                <td className="xk-shop-mono">
-                  {candidate.rating
-                    ? `${candidate.rating}${candidate.reviews ? ` / ${candidate.reviews}` : ''}`
-                    : '-'}
-                </td>
-                <td className={VERDICT_CLASS[candidate.verdict] ?? 'xk-shop-verdict'}>
-                  {candidate.verdict ?? 'unrated'}
-                </td>
-                <td>{candidate.notes ?? ''}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </details>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+function Thumb({ src, alt }) {
+  return (
+    <div className="xk-shop-thumb">
+      {src ? <img alt={alt} loading="lazy" src={src} /> : <span>no photo</span>}
+    </div>
   );
 }
 
 /**
- * A line the scout marked for local purchase, or one nobody has priced yet.
- * It carries no gallery and no money, only the reason it is on the list.
+ * One scouted line as a fixed-shape tile: photo, name, one-line purpose, the
+ * money row, the seller facts, and the buy link. Everything longer sits behind
+ * "More" so every tile in a grid is the same height.
  */
-function NoteCard({ part }) {
-  return (
-    <article className="xk-shop-notecard">
-      <p className="xk-shop-tag">{part.local ? 'buy locally' : 'not scouted yet'}</p>
-      <h3 className="xk-shop-line">{part.line}</h3>
-      <p className="xk-shop-role xk-shop-mono">
-        {part.roleText} | qty {part.qty}
-      </p>
-      {part.why ? <p className="xk-shop-why">{part.why}</p> : null}
-      {part.spec ? <p className="xk-shop-spec">{part.spec}</p> : null}
-      <OtherCandidates others={part.others} />
-    </article>
-  );
-}
-
 export default function PartCard({ part }) {
   const chosen = part.chosen;
-  if (!chosen) {
-    return <NoteCard part={part} />;
-  }
-
-  const title = chosen.title ?? part.line;
+  const title = chosen?.title ?? part.line;
+  const facts = chosen
+    ? [chosen.store, chosen.shipping, chosen.sold ? `${chosen.sold} sold` : null, chosen.rating ? `${chosen.rating} rating` : null]
+    : [part.local ? 'buy in Nairobi' : 'not scouted yet'];
 
   return (
-    <article className="xk-shop-card">
-      <Carousel alt={title} images={chosen.images} />
-
-      <div className="xk-shop-card-body">
-        <h3 className="xk-shop-line">{part.line}</h3>
-        <p className="xk-shop-role xk-shop-mono">
-          {part.roleText} | qty {part.qty}
+    <article className="xk-shop-tile">
+      <Thumb alt={title} src={part.image} />
+      <div className="xk-shop-tile-body">
+        <h3 className="xk-shop-tile-name" title={part.line}>{part.line}</h3>
+        <p className="xk-shop-tile-why">{part.why}</p>
+        <p className="xk-shop-tile-money xk-shop-mono">
+          {chosen ? (
+            <>
+              <span>{kes(part.unitKes)}</span>
+              <span className="xk-shop-dim">x {part.qty}</span>
+              <strong>{kes(part.lineKes)}</strong>
+            </>
+          ) : (
+            <span className="xk-shop-dim">qty {part.qty}</span>
+          )}
         </p>
-        {part.why ? <p className="xk-shop-why">{part.why}</p> : null}
-        {part.spec ? <p className="xk-shop-spec">{part.spec}</p> : null}
-
-        <p className="xk-shop-chosen">
-          <span className="xk-shop-chosen-title">
-            {chosen.url ? (
-              <a href={chosen.url} rel="noreferrer" target="_blank">
-                {title}
-              </a>
-            ) : (
-              title
-            )}
-          </span>
-        </p>
-
-        <p className="xk-shop-price">
-          <span>{kes(part.unitKes)}</span>
-          <span>x {part.qty}</span>
-          <span>=</span>
-          <span className="xk-shop-price-total">{kes(part.lineKes)}</span>
-        </p>
-
-        <dl className="xk-shop-facts">
-          <Fact label="Shipping">{chosen.shipping ?? 'not shown'}</Fact>
-          <Fact label="Sold">{chosen.sold ?? 'not shown'}</Fact>
-          <Fact label="Rating">
-            {chosen.rating
-              ? `${chosen.rating}${chosen.reviews ? ` over ${chosen.reviews} reviews` : ''}`
-              : 'not shown'}
-          </Fact>
-          <Fact label="Store">
-            {chosen.store_url ? (
-              <a href={chosen.store_url} rel="noreferrer" target="_blank">
-                {chosen.store ?? 'store page'}
-              </a>
-            ) : (
-              chosen.store ?? 'not shown'
-            )}
-          </Fact>
-        </dl>
-
-        <Prose label="Price note" text={chosen.price_note} />
-        <Prose label="Authenticity and why this one" text={chosen.notes} />
+        <p className="xk-shop-tile-facts">{facts.filter(Boolean).join(' | ')}</p>
+        <div className="xk-shop-tile-actions">
+          {chosen?.url ? (
+            <a className="xk-shop-buy" href={chosen.url} rel="noreferrer" target="_blank">
+              Open listing
+            </a>
+          ) : null}
+          <details className="xk-shop-more">
+            <summary>More</summary>
+            <div className="xk-shop-more-body">
+              {chosen?.title ? <p><span className="xk-shop-dim">Listing:</span> {chosen.title}</p> : null}
+              {part.spec ? <p><span className="xk-shop-dim">Spec:</span> {part.spec}</p> : null}
+              {chosen?.price_note ? <p><span className="xk-shop-dim">Price:</span> {chosen.price_note}</p> : null}
+              {chosen?.notes ? <p><span className="xk-shop-dim">Check:</span> {chosen.notes}</p> : null}
+              <p><span className="xk-shop-dim">Role:</span> {part.roleText}</p>
+              <OtherCandidates others={part.others} />
+            </div>
+          </details>
+        </div>
       </div>
-
-      <OtherCandidates others={part.others} />
     </article>
   );
 }
