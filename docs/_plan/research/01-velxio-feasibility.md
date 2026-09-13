@@ -128,3 +128,14 @@ Traefik and others. Each ESP32-S3 board is a QEMU subprocess; a three-board
 demo will be slow there. Author and test on the Windows host with Docker
 Desktop, deploy the same image to the VPS for sharing, and expect to stop
 idle simulations.
+
+## Decision update (2026-09-13)
+
+Martin chose the unmodified image plus .vlx files first; the chip models
+then showed that velxio's ESP32 backend carries no chip-to-chip net
+(hardware/velxio/README.md, Limits), so a multi-board ESP32-S3 demo cannot
+run on stock velxio. Martin then chose the fork route: the fork lives at
+https://github.com/xthukuh/velxio (AGPLv3), branch feat/esp32-chip-nets
+adds net fan-out inside a worker, a cross-board bridge, the UART binding
+fix and the wasi-sdk compile toolchain; the patch is published and offered
+upstream, while the xKoin demos stay .vlx files in this private repo.
