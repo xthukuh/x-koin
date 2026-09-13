@@ -198,3 +198,8 @@ data.js) and lists the scouted lines as same-height tiles, long text behind
 a More toggle; the carousel is gone. web/node_modules was reinstalled, so
 `npm run build:web` passes again. .claude/launch.json starts the dev server
 for the in-app browser. The board was redone in the same layout.
+
+Decision 2026-09-14 (late): the farm node radio is a second E22-900M22S, not
+the Ra-01SH (all Ra-01SH listings shipped mid November). Kit is now 26,986
+KES before shipping (569), VAT and customs; farm node 1,578. Only the Pixel
+Electric restock call and the orders remain with Martin.

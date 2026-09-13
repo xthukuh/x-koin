@@ -34,7 +34,7 @@
     {
       "id": "sx1262-module-868",
       "buy": "ali",
-      "qty": 1,
+      "qty": 2,
       "url": "https://www.aliexpress.com/item/1005007265763652.html",
       "variant": "single, no variants",
       "price_kes": 556,
@@ -43,7 +43,7 @@
       "seller": "XHCIOT Wholesale Store",
       "sold": "235",
       "rating": 4.8,
-      "note": "E22-900M22S covers 850 to 930 MHz; the title says 915MHz"
+      "note": "E22-900M22S covers 850 to 930 MHz; the title says 915MHz. One for the Node, one for the farm node (Martin chose it over the Ra-01SH, whose listings all ship mid November)."
     },
     {
       "id": "ipex-sma-pigtail",
@@ -130,20 +130,6 @@
       "sold": "10,000+",
       "rating": 4.8,
       "note": "not the PLUS variant at 368"
-    },
-    {
-      "id": "ra-01sh-sx1262",
-      "buy": "ali",
-      "qty": 1,
-      "url": "https://www.aliexpress.com/item/1005003087292795.html",
-      "variant": "Ra-01SH Adapter",
-      "price_kes": 226,
-      "shipping": "KSh 66.00",
-      "delivery": "Nov. 14",
-      "seller": "IC components Store",
-      "sold": "500+",
-      "rating": 5,
-      "note": "every Ra-01SH listing found ships for mid November. Fast alternative: a second E22-900M22S at 556 free shipping Sep 21 - 25, using the spare pigtail and antenna already in the packs."
     },
     {
       "id": "soil-moisture-capacitive-v2",

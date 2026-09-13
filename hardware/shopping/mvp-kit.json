@@ -138,10 +138,22 @@
           "source": "ali"
         },
         {
-          "id": "ra-01sh-sx1262",
+          "id": "sx1262-module-868",
           "qty": 1,
           "source": "ali",
-          "note": "Ra-01SH Adapter variant (IPX), takes one spare pigtail and one spare antenna from the Node's packs; ships mid November, see mvp-sourcing.md for the E22 alternative"
+          "note": "Martin 2026-09-14: second E22-900M22S instead of the Ra-01SH, which ships mid November"
+        },
+        {
+          "id": "ipex-sma-pigtail",
+          "qty": 1,
+          "source": "ali",
+          "note": "one of the Node pack"
+        },
+        {
+          "id": "antenna-868-sma",
+          "qty": 1,
+          "source": "ali",
+          "note": "one of the Node pack"
         },
         {
           "id": "soil-moisture-capacitive-v2",

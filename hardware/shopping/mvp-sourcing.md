@@ -9,9 +9,9 @@ Nairobi stores is `scripts/scout/local.mjs`.
 
 ## The answer in three lines
 
-Six lines of the kit exist nowhere in Nairobi (Heltec V3, E22-900M22S, Ra-01SH,
-SMA attenuators, EMI filter, IPEX to SMA pigtail with a true SMA jack), so one
-AliExpress order is unavoidable; the only Nairobi KQ-130F listing (Pixel
+Four kit lines exist nowhere in Nairobi (Heltec V3, E22-900M22S, SMA
+attenuators, IPEX to SMA pigtail with a true SMA jack), nor do the Ra-01SH and
+the EMI filter, so one AliExpress order is unavoidable; the only Nairobi KQ-130F listing (Pixel
 Electric, 1,800) was sold out on the day, so that line ships too.
 
 Everything else that is in stock in Nairobi costs two to three times the
@@ -21,8 +21,8 @@ small lines whose AliExpress listings ship in mid November (TP4056, cell holder,
 AHT20, breadboard and jumpers, console lead), where paying about 1,000 KES more
 buys them the same day.
 
-The bare minimum kit that runs every medium and every basic journey is 26,404
-KES before AliExpress shipping (635), before VAT on the HomePlug kit (1,440 if
+The bare minimum kit that runs every medium and every basic journey is 26,986
+KES before AliExpress shipping (569), before VAT on the HomePlug kit (1,440 if
 charged) and before customs on the parcel. Stops: one AliExpress checkout,
 Brightsource, K-Technics, ASK Electronics, Nerokas, a supermarket.
 
@@ -32,7 +32,7 @@ Brightsource, K-Technics, ASK Electronics, Nerokas, a supermarket.
 |---|---|---|
 | HomePlug AV broadband PLC (bulk data, the HD YouTube bar) | TL-WPA4220KIT between Node and Node-Satellite | D1, D4, D5 |
 | KQ-130F narrowband PLC (receipts, control) | one module at the Node, one at the Node-Satellite | D1, D4 |
-| LoRa SX1262 (survival plane, distance) | E22-900M22S at the Node, Heltec V3 at the Satellite and the Client dongle, Ra-01SH at the farm node | D2, D4, D6 |
+| LoRa SX1262 (survival plane, distance) | E22-900M22S at the Node and the farm node, Heltec V3 at the Satellite and the Client dongle | D2, D4, D6 |
 | Wi-Fi client attach and captive portal | the phone on the TL-WPA4220's Wi-Fi | D1, D4, D5 |
 
 Journeys covered: buy and browse over PLC (D1), chat, balance and voucher over
@@ -99,15 +99,17 @@ Device: 2,697. Owned: the phone.
 | Line | Qty | Variant | Unit | Cost | Source | Arrives |
 |---|---|---|---|---|---|---|
 | ESP32-C3 SuperMini | 1 | C3 Super mini | 284 | 284 | AliExpress, TENSTAR | Sep 21 to 25 |
-| Ra-01SH | 1 | Ra-01SH Adapter | 226 | 226 | AliExpress, IC components | Nov 14 |
+| E22-900M22S SX1262 | 1 | single | 556 | 556 | AliExpress, XHCIOT | Sep 21 to 25 |
+| IPEX to SMA-K pigtail | 1 of 5 | 15 cm | 78 | 78 | AliExpress, STX Store | Sep 21 to 25 |
+| 868 MHz SMA male antenna | 1 of 2 | 11 cm, 3 dBi | 174 | 174 | AliExpress, STX Store | Sep 21 to 27 |
 | Capacitive soil moisture | 1 | 1 PCS | 136 | 136 | AliExpress | Sep 21 to 27 |
 | AHT20 I2C module | 1 | module | 350 | 350 | ASK Electronics | same day |
 
-Device: 996 (AliExpress 646, local 350). The Ra-01SH takes one spare pigtail
-and one spare antenna from the Node's packs. Every Ra-01SH listing found ships
-in mid November; the fast alternative is a second E22-900M22S (556, Sep 21 to
-25), which is the same SX1262 radio and needs Martin's word because the spec
-names the Ra-01SH.
+Device: 1,578 (AliExpress 1,228, local 350). Martin chose the second
+E22-900M22S on 2026-09-14 over the Ra-01SH named in the spec, because every
+Ra-01SH listing found ships in mid November (226 plus 66 shipping, Nov 14);
+the E22 lands with the rest of the parcel and takes one pigtail and one
+antenna from the Node's packs.
 
 ### Bench
 
@@ -126,11 +128,11 @@ figure; no listing was checked.
 
 | | KES |
 |---|---|
-| AliExpress lines | 14,604 |
-| AliExpress shipping (KQ-130F 569, Ra-01SH 66; every other line free) | 635 |
+| AliExpress lines | 15,186 |
+| AliExpress shipping (KQ-130F 569; every other line free) | 569 |
 | Nairobi lines | 11,800 |
 | VAT on the HomePlug kit if Brightsource adds 16 percent at checkout | 1,440 |
-| Kit before customs | 26,404 to 28,479 |
+| Kit before customs | 26,986 to 28,426 |
 
 Customs on the AliExpress parcel is not in the table: `hardware/bom.md` puts
 duty at 0 to 25 percent by HS line plus 16 percent VAT and 3.75 percent of
@@ -141,7 +143,7 @@ the courier actually charges as the figure.
 
 1. **Recommended: one AliExpress checkout plus four Nairobi stops (this plan).**
    Everything that matters lands Sep 21 to 30, bring-up starts the same day the
-   bench lines are collected, and 26,404 KES is the floor for an exact-match
+   bench lines are collected, and 26,986 KES is the floor for an exact-match
    kit. Cons: four shops in town (Brightsource, K-Technics, ASK, Nerokas) plus
    the supermarket; the KQ-130F+ costs 2,608 each because the cheaper listings
    either photograph a KQ-330 or carry 1,419 shipping.
@@ -156,10 +158,9 @@ the courier actually charges as the figure.
    800 (284). Adds about 4,000 KES for having the two MCU lines this week
    rather than on Sep 25. Not worth it unless the AliExpress parcel slips.
 
-Two things only Martin can do: call Pixel Electric about a KQ-130F restock
+One thing only Martin can do: call Pixel Electric about a KQ-130F restock
 (1,800 each, genuine pinout on their page, sold out on 2026-09-14), which would
-cut 1,616 KES and the 569 shipping; and decide Ra-01SH versus a second
-E22-900M22S for the farm node.
+cut 1,616 KES and the 569 shipping.
 
 ## What changed against the scouted list
 
