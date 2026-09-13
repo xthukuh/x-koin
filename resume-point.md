@@ -126,3 +126,26 @@ review before push). Scout caveats: no HomePlug Wi-Fi kit on AliExpress
 variant at checkout), most shipping figures unverified. The local velxio
 container holds a manual wasi-sdk install that the fork's Dockerfile must
 replace.
+
+## Addendum 2026-09-13, end of session four
+
+Fork patch proven: D:\velxio branch feat/esp32-chip-nets (9 commits, 23
+files, 15 backend and 9 frontend tests added, suites green apart from
+pre-existing failures) makes chip-to-chip nets work on ESP32 boards and
+across two QEMU workers; two ESP32-S3 boards exchanged 11 of 12 "xkoin
+ping" frames at a 40 ms bit period (bridge latency 2.3 to 24 ms). Not
+pushed: Martin reviews, then push and open the upstream PR. The fork's
+Dockerfile.standalone ships wasi-sdk; build the image from the fork for the
+VPS (velxio-xkoin:dev locally) once pushed. Site deployed on the VPS
+(scripts/deploy-site.sh, /docker/xkoin-site, Traefik routes
+xkoin.thuku.dev; certificate waits for DNS). Board and wireframe URLs at
+the top of this file.
+
+Next, in order: push the fork and rebuild the VPS simulator from it;
+per-device .vlx demos (Node, Node-Satellite, Satellite, Client dongle,
+farm node) under hardware/velxio/demos with the real firmware where it
+compiles in velxio; a frame-level net message in the fork so the bit
+period can drop from 40 ms; fix the KQ-130F decode over the bridge;
+live test through the Chrome extension against velxio.thuku.dev after
+DNS; reconcile the paper figure conflicts and TODO markers with Martin;
+the two pin sign-offs (W5500 move, Heltec per-board headers).
