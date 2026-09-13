@@ -134,7 +134,7 @@ void loop() {
   sendPacket(msg);
 
   unsigned long t0 = millis();
-  while (digitalRead(PIN_DIO1) == LOW && millis() - t0 < 3000) delay(1);
+  while (digitalRead(PIN_DIO1) == LOW && millis() - t0 < 60000) delay(1); // 40 ms bit period over the worker bridge: a frame takes about 6 s
   uint16_t irq = getIrq();
   if (irq & IRQ_TX_DONE) {
     Serial.print("boardA: sent \"");

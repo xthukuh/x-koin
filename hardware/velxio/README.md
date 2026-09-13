@@ -400,3 +400,21 @@ Not verified, in the order they would bite:
   in `/opt/wasi-sdk` and the SDK header in `/app/sdk`. Both live in the
   container layer, not in a volume, so `docker rm` loses them and the
   commands above have to be repeated.
+
+## Update 2026-09-13: the fork carries the nets
+
+Martin chose to fork velxio (https://github.com/xthukuh/velxio, branch
+feat/esp32-chip-nets, working copy D:\velxio). The branch adds chip-net
+fan-out inside a QEMU worker, a bridge between workers, the UART binding
+fix and the wasi-sdk compile toolchain in the image; its
+docs/xkoin-chip-nets.md carries the design, the measurements and the
+serial proof. Measured one-way bridge latency is 2.3 ms minimum, 5 ms
+average, 24 ms maximum, so the bit-level medium needs `bit_period_us`
+40000 (half cell 20 ms); the proof projects and build_vlx.py now use
+that, and the sender waits 60 s for TX_DONE. At that period a 12 byte
+frame takes about 6 s, which is fine for a visible demo and useless for
+throughput: the next step is a frame-level net message (one bridge
+message per frame instead of per edge) so the period can drop back to
+microseconds. The KQ-130F pair transmits across the bridge but the
+receiver does not decode yet at 40 ms; first suspect is its 4 ms UART gap
+timer sharing the worker timer thread.

@@ -96,14 +96,14 @@ def build(kind: str) -> dict:
         chip, pins = "sx1262", LORA_PINS
         sketch_a, sketch_b = "lora_sender.ino", "lora_receiver.ino"
         shared_pin, shared_colour, name = "ANT", "#d946ef", "xKoin LoRa two board proof"
-        attrs_a = {"rssi_dbm": -80, "drop_percent": 0, "bit_period_us": 20,
+        attrs_a = {"rssi_dbm": -80, "drop_percent": 0, "bit_period_us": 40000,
                    "label": "radioA"}
         attrs_b = dict(attrs_a, label="radioB")
     else:
         chip, pins = "kq130f", PLC_PINS
         sketch_a, sketch_b = "plc_sender.ino", "plc_receiver.ino"
         shared_pin, shared_colour, name = "LINE", "#f59e0b", "xKoin PLC two board proof"
-        attrs_a = {"line_noise_percent": 0, "bit_period_us": 200, "label": "plcA"}
+        attrs_a = {"line_noise_percent": 0, "bit_period_us": 40000, "label": "plcA"}
         attrs_b = dict(attrs_a, label="plcB")
 
     ga, gb = "group-boardA", "group-boardB"
