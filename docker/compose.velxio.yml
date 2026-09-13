@@ -15,7 +15,7 @@
 
 services:
   velxio:
-    image: ghcr.io/davidmonterocrespo24/velxio:master
+    image: ${VELXIO_IMAGE:-ghcr.io/davidmonterocrespo24/velxio:master}
     container_name: velxio
     restart: unless-stopped
     environment:
@@ -56,3 +56,6 @@ volumes:
   velxio-arduino-user-libs:
   velxio-ccache:
   velxio-build:
+# VELXIO_IMAGE selects the image: the upstream master by default, or
+# velxio-xkoin:dev built from the fork (github.com/xthukuh/velxio, branch
+# master, which carries the ESP32 chip-net patch offered upstream as PR 324).
