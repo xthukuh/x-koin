@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" font-family="IBM Plex Mono, Consolas, Menlo, monospace" font-size="13" fill="#14213d">
+  <!-- xKoin Satellite paper, Figure 1. Block diagram of the off-grid solar LoRa
+       remote on a Heltec WiFi LoRa 32 V3. Schematic style. -->
+  <defs>
+    <marker id="ai" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#0b3d91"/>
+    </marker>
+    <marker id="am" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#b8741a"/>
+    </marker>
+  </defs>
+  <style>
+    .box { fill: #ffffff; stroke: #14213d; stroke-width: 2; }
+    .acc { fill: #eef2fa; stroke: #0b3d91; stroke-width: 2; }
+    .mon { fill: #fdf6ec; stroke: #b8741a; stroke-width: 2; }
+    .seg { fill: #f7f9fd; stroke: #14213d; stroke-width: 1.5; stroke-dasharray: 8 5; }
+    .flow { fill: none; stroke: #0b3d91; stroke-width: 2; marker-end: url(#ai); }
+    .pwr { fill: none; stroke: #b8741a; stroke-width: 2.5; marker-end: url(#am); }
+    .radio { fill: none; stroke: #0b3d91; stroke-width: 2; stroke-dasharray: 7 5; marker-end: url(#ai); }
+    .h { font-size: 14px; letter-spacing: 0.05em; fill: #14213d; }
+    .s { font-size: 12px; fill: #3c4a67; }
+    .m { font-size: 12px; fill: #8a5612; }
+  </style>
+
+  <rect width="1200" height="800" fill="#ffffff"/>
+
+  <text x="50" y="40" class="h">xKoin-SATELLITE: ENERGY PATH IN ORANGE, SIGNAL PATH IN BLUE</text>
+
+  <!-- energy chain -->
+  <polygon points="60,120 260,120 236,80 84,80" class="mon"/>
+  <text x="92" y="110" class="m">SOLAR PANEL 6 V 2 W bench / 10 W field</text>
+
+  <rect x="60" y="180" width="200" height="96" class="mon"/>
+  <text x="74" y="206" class="h" fill="#b8741a">TP4056 + PROT</text>
+  <text x="74" y="226" class="s">CC/CV 4.2 V, 1 A max</text>
+  <text x="74" y="244" class="s">needed only when the</text>
+  <text x="74" y="262" class="s">panel feeds the cell</text>
+
+  <rect x="60" y="320" width="200" height="80" class="mon"/>
+  <text x="74" y="346" class="h" fill="#b8741a">18650 CELL</text>
+  <text x="74" y="366" class="s">3.7 V nominal, 3400 mAh</text>
+  <text x="74" y="386" class="s">12.6 Wh, bought in Nairobi</text>
+
+  <path d="M 160 124 V 176" class="pwr"/>
+  <path d="M 160 280 V 316" class="pwr"/>
+  <path d="M 264 360 H 336" class="pwr"/>
+  <text x="270" y="350" class="s">VBAT to the JST 1.25</text>
+
+  <!-- the board -->
+  <rect x="340" y="120" width="470" height="440" class="seg"/>
+  <text x="356" y="148" class="h">HELTEC WiFi LoRa 32 V3 (one board)</text>
+  <text x="356" y="168" class="s">ESP32-S3FN8 + SX1262 + SSD1306, 868 MHz, on-board charger</text>
+
+  <rect x="360" y="196" width="200" height="120" class="acc"/>
+  <text x="374" y="222" class="h">ESP32-S3FN8</text>
+  <text x="374" y="242" class="s">8 MB flash, no PSRAM</text>
+  <text x="374" y="262" class="s">deep sleep between</text>
+  <text x="374" y="282" class="s">beacon windows</text>
+  <text x="374" y="302" class="s">DIO1 and timer wake</text>
+
+  <rect x="600" y="196" width="190" height="120" class="acc"/>
+  <text x="614" y="222" class="h">SX1262</text>
+  <text x="614" y="242" class="s">868.1 MHz SF7</text>
+  <text x="614" y="262" class="s">GFSK 150 kbps</text>
+  <text x="614" y="282" class="s">DIO2 drives the</text>
+  <text x="614" y="302" class="s">RF switch, DIO3 the TCXO</text>
+
+  <path d="M 564 240 H 596" class="flow"/>
+  <text x="520" y="336" class="s">SPI: SCK 9, MISO 11, MOSI 10, NSS 8, RESET 12, BUSY 13, IRQ 14</text>
+
+  <rect x="360" y="360" width="200" height="86" class="box"/>
+  <text x="374" y="386" class="h">SSD1306 OLED</text>
+  <text x="374" y="406" class="s">0.96 in, I2C 17 / 18</text>
+  <text x="374" y="426" class="s">held off by Vext 36</text>
+
+  <rect x="600" y="360" width="190" height="86" class="box"/>
+  <text x="614" y="386" class="h">VBAT DIVIDER</text>
+  <text x="614" y="406" class="s">ADC on GPIO1</text>
+  <text x="614" y="426" class="s">gated by ADC_CTRL 37</text>
+
+  <rect x="360" y="478" width="430" height="62" class="mon"/>
+  <text x="374" y="504" class="h" fill="#b8741a">ON-BOARD CHARGER AND 3V3 LDO</text>
+  <text x="374" y="524" class="s">JST 1.25 battery header; this is why the TP4056 is optional</text>
+  <path d="M 336 360 H 356" class="pwr"/>
+  <path d="M 460 474 V 450" class="pwr"/>
+  <path d="M 690 474 V 450" class="pwr"/>
+
+  <!-- antenna and link -->
+  <path d="M 814 256 H 880" class="flow"/>
+  <rect x="884" y="220" width="130" height="72" class="box"/>
+  <text x="898" y="246" class="h">SMA JACK</text>
+  <text x="898" y="266" class="s">868 MHz whip</text>
+  <text x="898" y="284" class="s">3 dBi</text>
+
+  <path d="M 1020 256 Q 1110 180 1140 120" class="radio"/>
+  <text x="880" y="170" class="s">LoRa to the nearest Node</text>
+
+  <rect x="884" y="360" width="270" height="180" class="acc"/>
+  <text x="898" y="386" class="h">WHAT IT CARRIES</text>
+  <text x="898" y="412" class="s">BEACON, discovery</text>
+  <text x="898" y="432" class="s">JOIN_REQ and voucher check</text>
+  <text x="898" y="452" class="s">class C frames: balances,</text>
+  <text x="898" y="472" class="s">messages, kiosk operations</text>
+  <text x="898" y="492" class="s">RECEIPT relay to the Node</text>
+  <text x="898" y="512" class="s">free LAN traffic, zero XKN</text>
+
+  <!-- duty schedule strip -->
+  <rect x="60" y="600" width="1094" height="110" class="box"/>
+  <text x="76" y="626" class="h">DUTY SCHEDULE, THE THING THAT MAKES THE POWER BUDGET WORK</text>
+  <text x="76" y="652" class="s">deep sleep 298 s  |  wake, listen and beacon 2 s  |  TX burst 60 ms  |  repeat</text>
+  <path d="M 76 672 h 300" stroke="#14213d" stroke-width="3" fill="none"/>
+  <path d="M 376 672 v -18 h 40 v 18 h 300 v -18 h 40 v 18 h 300" stroke="#0b3d91" stroke-width="3" fill="none"/>
+  <text x="76" y="696" class="s">The flat stretches are deep sleep at tens of microamps; the steps are the beacon windows. Class C listening adds a continuous 5 mA only while a session is open.</text>
+
+  <text x="50" y="754" class="s">Every figure in this paper is drawn against the Heltec V3 pin assignment read from the Meshtastic variant header and the Espressif Arduino variant header, not against the doc 02 map.</text>
+  <text x="50" y="776" class="s">The doc 02 SPI pins collide with this board on six of seven lines; the remap table in section 5 states each collision.</text>
+</svg>

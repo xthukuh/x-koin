@@ -1,0 +1,143 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" font-family="IBM Plex Mono, Consolas, Menlo, monospace" font-size="13" fill="#e9f0ff">
+  <!--
+    xKoin-Satellite wiring blueprint. Copied from _template-blueprint.svg:
+    frame, grid, defs, style block and title block are unchanged; only the
+    drawing group and the title block text differ.
+  -->
+  <defs>
+    <pattern id="minor" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255,255,255,0.10)" stroke-width="1"/>
+    </pattern>
+    <pattern id="major" width="100" height="100" patternUnits="userSpaceOnUse">
+      <rect width="100" height="100" fill="url(#minor)"/>
+      <path d="M 100 0 L 0 0 0 100" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="1"/>
+    </pattern>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#ffffff"/>
+    </marker>
+    <marker id="dim" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 5 L 10 5 M 5 0 L 5 10" stroke="#ffffff" stroke-width="1.5"/>
+    </marker>
+  </defs>
+  <style>
+    .line { fill: none; stroke: #ffffff; stroke-width: 1.5; }
+    .thin { fill: none; stroke: #9fc0ff; stroke-width: 1; }
+    .dash { fill: none; stroke: #9fc0ff; stroke-width: 1; stroke-dasharray: 6 4; }
+    .warn { fill: none; stroke: #ffd166; stroke-width: 1.5; }
+    .fillp { fill: #0b3d91; stroke: #ffffff; stroke-width: 1.5; }
+    .label { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
+    .small { font-size: 11px; fill: #c9d8ff; }
+    .title { font-size: 22px; letter-spacing: 0.08em; text-transform: uppercase; }
+    .lead { fill: none; stroke: #ffffff; stroke-width: 1; }
+    .dimline { fill: none; stroke: #ffffff; stroke-width: 1; marker-start: url(#dim); marker-end: url(#dim); }
+  </style>
+
+  <rect width="1200" height="800" fill="#0b3d91"/>
+  <rect width="1200" height="800" fill="url(#major)"/>
+  <rect x="30" y="30" width="1140" height="740" class="line"/>
+
+  <g id="drawing">
+    <text x="60" y="70" class="title">xKoin-Satellite</text>
+    <text x="60" y="92" class="label">Wiring blueprint, solar charge path and radio</text>
+
+    <!-- solar panel -->
+    <polygon points="70,150 250,150 232,118 88,118" class="fillp"/>
+    <text x="96" y="142" class="label">Solar panel</text>
+    <text x="70" y="172" class="small">6 V 2 W bench, 10 W field. Never 12 V: it overvolts the TP4056 input.</text>
+
+    <!-- TP4056 -->
+    <rect x="70" y="210" width="230" height="130" class="fillp"/>
+    <text x="84" y="234" class="label">TP4056 + protection</text>
+    <text x="84" y="254" class="small">IN+   IN-</text>
+    <text x="84" y="274" class="small">B+    B-</text>
+    <text x="84" y="294" class="small">OUT+  OUT-</text>
+    <text x="84" y="322" class="small">OPTIONAL, see note 1</text>
+    <path d="M 160 154 V 206" class="line"/>
+    <text x="168" y="184" class="small">panel + to IN+, panel - to IN-</text>
+
+    <!-- cell -->
+    <rect x="70" y="400" width="230" height="96" class="fillp"/>
+    <text x="84" y="424" class="label">18650 cell</text>
+    <text x="84" y="444" class="small">3.7 V nom, 3400 mAh, 12.6 Wh</text>
+    <text x="84" y="464" class="small">B+ to cell +, B- to cell -</text>
+    <text x="84" y="484" class="small">holder with a fuse link</text>
+    <path d="M 160 344 V 396" class="line"/>
+
+    <!-- board outline -->
+    <rect x="400" y="150" width="440" height="430" rx="14" class="line"/>
+    <text x="416" y="178" class="label">Heltec WiFi LoRa 32 V3</text>
+    <text x="416" y="196" class="small">ESP32-S3FN8 + SX1262 + SSD1306, on-board charger and 3V3 LDO</text>
+    <circle cx="420" cy="170" r="6" class="thin"/>
+    <circle cx="820" cy="170" r="6" class="thin"/>
+    <circle cx="420" cy="560" r="6" class="thin"/>
+    <circle cx="820" cy="560" r="6" class="thin"/>
+
+    <!-- pads on the board -->
+    <rect x="420" y="230" width="120" height="34" class="fillp"/>
+    <text x="430" y="252" class="small">5V pin</text>
+    <rect x="420" y="280" width="120" height="34" class="fillp"/>
+    <text x="430" y="302" class="small">GND pin</text>
+    <rect x="420" y="330" width="160" height="34" class="fillp"/>
+    <text x="430" y="352" class="small">JST 1.25 BAT</text>
+    <rect x="420" y="400" width="160" height="34" class="fillp"/>
+    <text x="430" y="422" class="small">GPIO1 ADC (VBAT)</text>
+    <rect x="420" y="450" width="160" height="34" class="fillp"/>
+    <text x="430" y="472" class="small">GPIO37 ADC_CTRL</text>
+    <rect x="620" y="230" width="200" height="90" class="fillp"/>
+    <text x="632" y="254" class="label">SX1262</text>
+    <text x="632" y="274" class="small">SCK9 MISO11 MOSI10</text>
+    <text x="632" y="292" class="small">NSS8 RST12 BUSY13</text>
+    <text x="632" y="310" class="small">DIO1 14 (wake)</text>
+    <rect x="620" y="360" width="200" height="70" class="fillp"/>
+    <text x="632" y="384" class="label">SSD1306 OLED</text>
+    <text x="632" y="404" class="small">SDA17 SCL18 RST21</text>
+    <text x="632" y="422" class="small">power gate Vext 36</text>
+    <rect x="620" y="470" width="200" height="66" class="fillp"/>
+    <text x="632" y="494" class="label">SMA jack</text>
+    <text x="632" y="514" class="small">on-board, 868 MHz</text>
+
+    <!-- wiring from TP4056 to board -->
+    <path d="M 304 250 H 416" class="line" marker-end="url(#arrow)"/>
+    <text x="308" y="240" class="small">OUT+ to 5V pin</text>
+    <path d="M 304 300 H 416" class="line" marker-end="url(#arrow)"/>
+    <text x="308" y="292" class="small">OUT- to GND</text>
+    <path d="M 304 430 Q 360 430 360 348 H 416" class="dash" marker-end="url(#arrow)"/>
+    <text x="228" y="524" class="small">ALTERNATIVE: cell straight to the JST 1.25 header, no TP4056</text>
+
+    <!-- VBAT sense -->
+    <path d="M 584 417 H 600 V 560 H 300 V 470" class="dash"/>
+    <text x="306" y="560" class="small">divider is on the board, not wired by hand</text>
+
+    <!-- antenna -->
+    <path d="M 824 500 H 900" class="line" marker-end="url(#arrow)"/>
+    <path d="M 900 500 v -60 m -14 14 l 14 -14 l 14 14" class="line"/>
+    <text x="908" y="504" class="label">Antenna</text>
+    <text x="908" y="522" class="small">868 MHz whip, 3 dBi,</text>
+    <text x="908" y="540" class="small">SMA male plug</text>
+
+    <!-- dimension -->
+    <path d="M 400 610 H 840" class="dimline"/>
+    <text x="620" y="632" text-anchor="middle" class="small">50.20 mm board length</text>
+
+    <!-- callouts -->
+    <path d="M 840 275 L 940 210 H 1010" class="lead"/>
+    <circle cx="840" cy="275" r="3" fill="#ffffff"/>
+    <text x="1016" y="214" class="label">Note 2</text>
+    <text x="880" y="196" class="small">Six of the seven doc 02 SPI pins move on this board</text>
+
+    <path d="M 900 620 h 60 v 40" class="warn"/>
+    <text x="620" y="680" class="small" fill="#ffd166">NOTE 1: the V3 carries its own JST 1.25 battery connector and charge circuit, so the TP4056 is only needed when the panel feeds the cell directly.</text>
+    <text x="620" y="700" class="small" fill="#ffd166">LITHIUM: one cell, correct polarity, protection board fitted, never charged unattended or above 45 C.</text>
+    <text x="60" y="700" class="small">No mains anywhere in this drawing: the Satellite is the one xKoin device with no mains coupling and therefore no isolation requirement.</text>
+  </g>
+
+  <g id="titleblock" transform="translate(780 640)">
+    <rect width="390" height="130" class="line" fill="#0b3d91"/>
+    <path d="M 0 26 H 390 M 0 52 H 390 M 0 78 H 390 M 0 104 H 390 M 110 0 V 130" class="thin"/>
+    <text x="10" y="18" class="label">Project</text><text x="120" y="18" class="small">xKoin proof of concept</text>
+    <text x="10" y="44" class="label">Drawing</text><text x="120" y="44" class="small">XK-SAT-WIRING</text>
+    <text x="10" y="70" class="label">Date</text><text x="120" y="70" class="small">2026-09-13</text>
+    <text x="10" y="96" class="label">Units</text><text x="120" y="96" class="small">millimetres, not to scale</text>
+    <text x="10" y="122" class="label">Rev</text><text x="120" y="122" class="small">A</text>
+  </g>
+</svg>

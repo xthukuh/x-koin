@@ -1,0 +1,141 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" font-family="IBM Plex Mono, Consolas, Menlo, monospace" font-size="13" fill="#e9f0ff">
+  <!--
+    xKoin-Client OTG dongle wiring blueprint. Copied from _template-blueprint.svg:
+    frame, grid, defs, style block and title block unchanged; drawing group and
+    title block text replaced.
+  -->
+  <defs>
+    <pattern id="minor" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255,255,255,0.10)" stroke-width="1"/>
+    </pattern>
+    <pattern id="major" width="100" height="100" patternUnits="userSpaceOnUse">
+      <rect width="100" height="100" fill="url(#minor)"/>
+      <path d="M 100 0 L 0 0 0 100" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="1"/>
+    </pattern>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#ffffff"/>
+    </marker>
+    <marker id="dim" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 5 L 10 5 M 5 0 L 5 10" stroke="#ffffff" stroke-width="1.5"/>
+    </marker>
+  </defs>
+  <style>
+    .line { fill: none; stroke: #ffffff; stroke-width: 1.5; }
+    .thin { fill: none; stroke: #9fc0ff; stroke-width: 1; }
+    .dash { fill: none; stroke: #9fc0ff; stroke-width: 1; stroke-dasharray: 6 4; }
+    .warn { fill: none; stroke: #ffd166; stroke-width: 1.5; }
+    .fillp { fill: #0b3d91; stroke: #ffffff; stroke-width: 1.5; }
+    .label { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
+    .small { font-size: 11px; fill: #c9d8ff; }
+    .title { font-size: 22px; letter-spacing: 0.08em; text-transform: uppercase; }
+    .lead { fill: none; stroke: #ffffff; stroke-width: 1; }
+    .dimline { fill: none; stroke: #ffffff; stroke-width: 1; marker-start: url(#dim); marker-end: url(#dim); }
+  </style>
+
+  <rect width="1200" height="800" fill="#0b3d91"/>
+  <rect width="1200" height="800" fill="url(#major)"/>
+  <rect x="30" y="30" width="1140" height="740" class="line"/>
+
+  <g id="drawing">
+    <text x="60" y="70" class="title">xKoin-Client OTG dongle</text>
+    <text x="60" y="92" class="label">Wiring blueprint, phone to dongle to antenna</text>
+
+    <!-- phone -->
+    <rect x="70" y="150" width="200" height="380" rx="22" class="line"/>
+    <rect x="86" y="176" width="168" height="300" class="fillp"/>
+    <text x="98" y="200" class="label">Companion app</text>
+    <text x="98" y="222" class="small">seed in the Keystore</text>
+    <text x="98" y="240" class="small">signs receipts</text>
+    <text x="98" y="258" class="small">signs tickets</text>
+    <text x="98" y="276" class="small">presents the voucher</text>
+    <text x="98" y="306" class="label">USB host mode</text>
+    <text x="98" y="328" class="small">supplies VBUS</text>
+    <text x="98" y="346" class="small">opens a CDC serial port</text>
+    <text x="98" y="364" class="small">or joins the SoftAP</text>
+    <text x="98" y="394" class="label">Battery</text>
+    <text x="98" y="416" class="small">the only energy source</text>
+    <text x="98" y="434" class="small">in this drawing</text>
+    <rect x="150" y="530" width="40" height="18" class="fillp"/>
+    <text x="80" y="566" class="small">USB-C receptacle</text>
+
+    <!-- OTG lead -->
+    <path d="M 274 340 H 360" class="line"/>
+    <rect x="360" y="300" width="150" height="80" class="fillp"/>
+    <text x="372" y="324" class="label">OTG adapter</text>
+    <text x="372" y="344" class="small">USB-C plug to</text>
+    <text x="372" y="362" class="small">USB-A socket, ID grounded</text>
+    <path d="M 514 340 H 600" class="line" marker-end="url(#arrow)"/>
+    <text x="520" y="330" class="small">USB-A to USB-C lead</text>
+
+    <!-- dongle outline -->
+    <rect x="600" y="170" width="380" height="360" rx="14" class="line"/>
+    <text x="616" y="198" class="label">Heltec WiFi LoRa 32 V3 as dongle</text>
+    <text x="616" y="216" class="small">the native USB port, not the UART bridge</text>
+    <circle cx="620" cy="190" r="6" class="thin"/>
+    <circle cx="960" cy="190" r="6" class="thin"/>
+    <circle cx="620" cy="510" r="6" class="thin"/>
+    <circle cx="960" cy="510" r="6" class="thin"/>
+
+    <rect x="620" y="240" width="150" height="90" class="fillp"/>
+    <text x="632" y="264" class="label">USB-C in</text>
+    <text x="632" y="284" class="small">VBUS 5 V</text>
+    <text x="632" y="302" class="small">D+ GPIO20</text>
+    <text x="632" y="320" class="small">D- GPIO19</text>
+
+    <rect x="800" y="240" width="160" height="90" class="fillp"/>
+    <text x="812" y="264" class="label">3V3 LDO</text>
+    <text x="812" y="284" class="small">on board</text>
+    <text x="812" y="302" class="small">feeds MCU, radio</text>
+    <text x="812" y="320" class="small">and OLED rail</text>
+    <path d="M 774 285 H 796" class="line" marker-end="url(#arrow)"/>
+
+    <rect x="620" y="360" width="150" height="140" class="fillp"/>
+    <text x="632" y="384" class="label">ESP32-S3FN8</text>
+    <text x="632" y="404" class="small">TinyUSB CDC</text>
+    <text x="632" y="422" class="small">or SoftAP</text>
+    <text x="632" y="446" class="label">Battery header</text>
+    <text x="632" y="466" class="small">LEFT EMPTY</text>
+    <text x="632" y="484" class="small">see note 1</text>
+
+    <rect x="800" y="360" width="160" height="140" class="fillp"/>
+    <text x="812" y="384" class="label">SX1262</text>
+    <text x="812" y="404" class="small">SCK 9  MISO 11</text>
+    <text x="812" y="422" class="small">MOSI 10  NSS 8</text>
+    <text x="812" y="440" class="small">RESET 12 BUSY 13</text>
+    <text x="812" y="458" class="small">DIO1 14</text>
+    <text x="812" y="482" class="small">TX burst is the draw</text>
+    <path d="M 774 420 H 796" class="line" marker-end="url(#arrow)"/>
+
+    <!-- antenna -->
+    <path d="M 984 430 H 1050" class="line" marker-end="url(#arrow)"/>
+    <path d="M 1050 430 v -90 m -14 14 l 14 -14 l 14 14" class="line"/>
+    <text x="1000" y="470" class="label">Antenna</text>
+    <text x="1000" y="488" class="small">868 MHz, SMA male</text>
+    <text x="1000" y="506" class="small">3 dBi whip</text>
+
+    <!-- dimension -->
+    <path d="M 600 560 H 980" class="dimline"/>
+    <text x="790" y="582" text-anchor="middle" class="small">50.20 mm dongle length, shell adds 6.00 mm</text>
+
+    <!-- callouts -->
+    <path d="M 900 250 L 1000 210 H 1060" class="lead"/>
+    <circle cx="900" cy="250" r="3" fill="#ffffff"/>
+    <text x="1000" y="196" class="small">Note 2: 500 mA budget</text>
+
+    <path d="M 60 620 h 60 v 20" class="warn"/>
+    <text x="60" y="662" class="small" fill="#ffd166">NOTE 1: leave the battery header empty. A cell in the dongle would charge from the phone and turn the phone into the power source for a second battery.</text>
+    <text x="60" y="682" class="small">NOTE 2: USB 2.0 host default is 500 mA at 5 V. The dongle must stay under it including the TX burst, or the phone drops the port.</text>
+    <text x="60" y="702" class="small">No mains and no solar in this drawing. Every milliamp comes from the phone battery, which is why the duty cycle is a product decision and not only a radio one.</text>
+    <text x="60" y="722" class="small">Pin numbers are the Heltec V3 fixed assignment; D+ and D- are the ESP32-S3 native USB pins and are not free for reuse.</text>
+  </g>
+
+  <g id="titleblock" transform="translate(780 640)">
+    <rect width="390" height="130" class="line" fill="#0b3d91"/>
+    <path d="M 0 26 H 390 M 0 52 H 390 M 0 78 H 390 M 0 104 H 390 M 110 0 V 130" class="thin"/>
+    <text x="10" y="18" class="label">Project</text><text x="120" y="18" class="small">xKoin proof of concept</text>
+    <text x="10" y="44" class="label">Drawing</text><text x="120" y="44" class="small">XK-CLIENT-DONGLE</text>
+    <text x="10" y="70" class="label">Date</text><text x="120" y="70" class="small">2026-09-13</text>
+    <text x="10" y="96" class="label">Units</text><text x="120" y="96" class="small">millimetres, not to scale</text>
+    <text x="10" y="122" class="label">Rev</text><text x="120" y="122" class="small">A</text>
+  </g>
+</svg>

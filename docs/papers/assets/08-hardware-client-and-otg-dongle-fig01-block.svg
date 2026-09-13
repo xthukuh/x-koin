@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" font-family="IBM Plex Mono, Consolas, Menlo, monospace" font-size="13" fill="#14213d">
+  <!-- xKoin Client paper, Figure 1. Block diagram: the phone holds the keys, the
+       OTG dongle holds the radio. Schematic style. -->
+  <defs>
+    <marker id="ai" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#0b3d91"/>
+    </marker>
+    <marker id="am" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#b8741a"/>
+    </marker>
+  </defs>
+  <style>
+    .box { fill: #ffffff; stroke: #14213d; stroke-width: 2; }
+    .acc { fill: #eef2fa; stroke: #0b3d91; stroke-width: 2; }
+    .mon { fill: #fdf6ec; stroke: #b8741a; stroke-width: 2; }
+    .seg { fill: #f7f9fd; stroke: #14213d; stroke-width: 1.5; stroke-dasharray: 8 5; }
+    .flow { fill: none; stroke: #0b3d91; stroke-width: 2; marker-end: url(#ai); }
+    .pwr { fill: none; stroke: #b8741a; stroke-width: 2.5; marker-end: url(#am); }
+    .radio { fill: none; stroke: #0b3d91; stroke-width: 2; stroke-dasharray: 7 5; marker-end: url(#ai); }
+    .both { fill: none; stroke: #0b3d91; stroke-width: 2; marker-start: url(#ai); marker-end: url(#ai); }
+    .h { font-size: 14px; letter-spacing: 0.05em; fill: #14213d; }
+    .s { font-size: 12px; fill: #3c4a67; }
+  </style>
+
+  <rect width="1200" height="800" fill="#ffffff"/>
+
+  <text x="50" y="40" class="h">xKoin-CLIENT: THE PHONE HOLDS THE KEYS, THE DONGLE HOLDS THE RADIO</text>
+
+  <!-- phone -->
+  <rect x="50" y="90" width="330" height="520" rx="26" class="seg"/>
+  <text x="68" y="120" class="h">THE PHONE</text>
+  <text x="68" y="140" class="s">Android first, Kotlin, one seed</text>
+
+  <rect x="70" y="160" width="290" height="118" class="acc"/>
+  <text x="84" y="186" class="h">ANDROID KEYSTORE</text>
+  <text x="84" y="208" class="s">12 words, one seed</text>
+  <text x="84" y="228" class="s">secp256k1: address, tickets,</text>
+  <text x="84" y="248" class="s">transfers</text>
+  <text x="84" y="268" class="s">Ed25519: receipts</text>
+
+  <rect x="70" y="296" width="290" height="108" class="box"/>
+  <text x="84" y="322" class="h">WHAT IT SHOWS</text>
+  <text x="84" y="344" class="s">wallet XKN, escrow deposit</text>
+  <text x="84" y="364" class="s">bytes used this session</text>
+  <text x="84" y="384" class="s">link medium and RSSI</text>
+
+  <rect x="70" y="422" width="290" height="128" class="mon"/>
+  <text x="84" y="448" class="h" fill="#b8741a">WHAT IT SIGNS</text>
+  <text x="84" y="470" class="s">voucher presentation on join</text>
+  <text x="84" y="490" class="s">cumulative receipts, 108 B</text>
+  <text x="84" y="510" class="s">EIP-712 tickets at settlement</text>
+  <text x="84" y="530" class="s">relayed transfers to a friend</text>
+
+  <text x="68" y="586" class="s">The balance is never in the phone: it is in the escrow, keyed by the address.</text>
+
+  <!-- path A: wifi -->
+  <path d="M 384 210 H 760" class="flow"/>
+  <rect x="430" y="160" width="290" height="38" fill="#ffffff"/>
+  <text x="440" y="186" class="s">PATH A: Wi-Fi to a Node or Node-Satellite</text>
+
+  <!-- OTG lead -->
+  <path d="M 384 400 H 470" class="both"/>
+  <text x="392" y="386" class="s">USB-C OTG</text>
+
+  <rect x="474" y="330" width="150" height="140" class="box"/>
+  <text x="488" y="356" class="h">OTG ADAPTER</text>
+  <text x="488" y="378" class="s">USB-C plug to</text>
+  <text x="488" y="398" class="s">USB-A socket</text>
+  <text x="488" y="418" class="s">ID pin grounded,</text>
+  <text x="488" y="438" class="s">phone becomes host</text>
+  <text x="488" y="458" class="s">and supplies VBUS</text>
+
+  <path d="M 628 400 H 700" class="both"/>
+
+  <!-- dongle -->
+  <rect x="704" y="300" width="330" height="270" class="seg"/>
+  <text x="720" y="328" class="h">THE OTG AP DONGLE</text>
+  <text x="720" y="348" class="s">Heltec V3 today, a smaller ESP32-S3 board later</text>
+
+  <rect x="722" y="366" width="294" height="88" class="acc"/>
+  <text x="736" y="392" class="h">ESP32-S3FN8</text>
+  <text x="736" y="412" class="s">native USB: enumerates as CDC serial</text>
+  <text x="736" y="432" class="s">or raises a SoftAP the phone joins</text>
+
+  <rect x="722" y="472" width="294" height="80" class="acc"/>
+  <text x="736" y="498" class="h">SX1262</text>
+  <text x="736" y="518" class="s">868.1 MHz SF7, class C frames</text>
+  <text x="736" y="538" class="s">SPI 9 / 11 / 10 / 8, IRQ 14</text>
+
+  <path d="M 780 296 V 250" class="pwr"/>
+  <text x="790" y="272" class="s">5 V VBUS from the phone, 500 mA budget</text>
+
+  <!-- antenna and link -->
+  <path d="M 1038 512 H 1090" class="flow"/>
+  <path d="M 1090 512 v -80 m -14 14 l 14 -14 l 14 14" stroke="#14213d" stroke-width="2" fill="none"/>
+  <text x="1046" y="556" class="s">868 MHz whip</text>
+
+  <path d="M 1090 420 Q 1120 260 1000 200" class="radio"/>
+
+  <rect x="764" y="120" width="330" height="90" class="acc"/>
+  <text x="778" y="146" class="h">NODE OR SATELLITE</text>
+  <text x="778" y="168" class="s">path A: Wi-Fi attach and the captive portal</text>
+  <text x="778" y="188" class="s">path B: direct class C reach over LoRa</text>
+
+  <!-- footer -->
+  <rect x="50" y="640" width="1100" height="100" class="box"/>
+  <text x="66" y="666" class="h">WHY THE DONGLE EXISTS</text>
+  <text x="66" y="692" class="s">Path A needs a Node's Wi-Fi within range. Path B needs nothing but the radio: the phone reaches the mesh directly at class C, which carries balances, messages,</text>
+  <text x="66" y="712" class="s">kiosk operations and the free LAN plane. It carries no bulk web traffic, because 226 bytes of LoRa payload and a duty-cycle ceiling cannot carry it.</text>
+  <text x="66" y="732" class="s">Journey J3 in how-it-works is the roaming case this path has to satisfy: same phone, same key, a second serving device, and the deposit drawn from one escrow.</text>
+</svg>
