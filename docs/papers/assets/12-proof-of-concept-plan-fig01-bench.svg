@@ -1,0 +1,165 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" font-family="IBM Plex Mono, Consolas, Menlo, monospace" font-size="13" fill="#e9f0ff">
+  <!-- xKoin paper 12, Figure 1. Bench layout for demos D1 to D6.
+       Blueprint template: frame, grid, defs, style block and title block copied
+       from _template-blueprint.svg; drawing group and title block text replaced. -->
+  <defs>
+    <pattern id="minor" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255,255,255,0.10)" stroke-width="1"/>
+    </pattern>
+    <pattern id="major" width="100" height="100" patternUnits="userSpaceOnUse">
+      <rect width="100" height="100" fill="url(#minor)"/>
+      <path d="M 100 0 L 0 0 0 100" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="1"/>
+    </pattern>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#ffffff"/>
+    </marker>
+    <marker id="dim" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 5 L 10 5 M 5 0 L 5 10" stroke="#ffffff" stroke-width="1.5"/>
+    </marker>
+  </defs>
+  <style>
+    .line { fill: none; stroke: #ffffff; stroke-width: 1.5; }
+    .thin { fill: none; stroke: #9fc0ff; stroke-width: 1; }
+    .dash { fill: none; stroke: #9fc0ff; stroke-width: 1; stroke-dasharray: 6 4; }
+    .warn { fill: none; stroke: #ffd166; stroke-width: 1.5; }
+    .fillp { fill: #0b3d91; stroke: #ffffff; stroke-width: 1.5; }
+    .fillw { fill: #0b3d91; stroke: #ffd166; stroke-width: 1.5; }
+    .label { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
+    .small { font-size: 11px; fill: #c9d8ff; }
+    .pin { font-size: 10px; fill: #c9d8ff; }
+    .title { font-size: 22px; letter-spacing: 0.08em; text-transform: uppercase; }
+    .lead { fill: none; stroke: #ffffff; stroke-width: 1; }
+    .dimline { fill: none; stroke: #ffffff; stroke-width: 1; marker-start: url(#dim); marker-end: url(#dim); }
+  </style>
+
+  <rect width="1200" height="800" fill="#0b3d91"/>
+  <rect width="1200" height="800" fill="url(#major)"/>
+  <rect x="30" y="30" width="1140" height="740" class="line"/>
+
+  <g id="drawing">
+    <text x="60" y="70" class="title">xKoin bench rig</text>
+    <text x="60" y="92" class="label">One bench, six demos, D1 to D6</text>
+
+    <!-- Node -->
+    <rect x="60" y="130" width="220" height="130" class="fillp"/>
+    <text x="74" y="156" class="label">xKoin-NODE</text>
+    <text x="74" y="176" class="small">DevKitC N16R8 + E22</text>
+    <text x="74" y="194" class="small">+ KQ-130F + HLK-PM01</text>
+    <text x="74" y="212" class="small">HomePlug injector beside it</text>
+    <text x="74" y="234" class="small">backhaul: router or hotspot</text>
+    <text x="74" y="252" class="small">D1 D2 D3 D4 D5 D6</text>
+    <path d="M 170 80 V 126" class="thin"/>
+    <text x="182" y="100" class="small">to the router or the phone hotspot</text>
+
+    <!-- Node-Satellite A -->
+    <rect x="330" y="130" width="200" height="130" class="fillp"/>
+    <text x="344" y="156" class="label">NODE-SAT A</text>
+    <text x="344" y="176" class="small">extender + DevKitC</text>
+    <text x="344" y="194" class="small">+ KQ-130F</text>
+    <text x="344" y="216" class="small">no LoRa fitted</text>
+    <text x="344" y="238" class="small">D1 D4 D5</text>
+
+    <!-- Node-Satellite B -->
+    <rect x="700" y="130" width="200" height="130" class="fillp"/>
+    <text x="714" y="156" class="label">NODE-SAT B</text>
+    <text x="714" y="176" class="small">extender + DevKitC</text>
+    <text x="714" y="194" class="small">+ KQ-130F + E22</text>
+    <text x="714" y="216" class="small">segment B, LoRa fitted</text>
+    <text x="714" y="238" class="small">D3</text>
+
+    <!-- strips -->
+    <rect x="60" y="300" width="480" height="56" rx="6" class="fillw"/>
+    <text x="74" y="322" class="label" fill="#ffd166">EXTENSION STRIP A</text>
+    <text x="74" y="344" class="small">behind a 30 mA plug-in RCD; segment A</text>
+    <path d="M 420 300 v 56 M 460 300 v 56 M 500 300 v 56" class="thin"/>
+    <text x="250" y="404" class="small">LoRa 868.1 MHz through 60 dB of pad</text>
+
+    <rect x="700" y="300" width="470" height="56" rx="6" class="fillw"/>
+    <text x="714" y="322" class="label" fill="#ffd166">EXTENSION STRIP B</text>
+    <text x="714" y="344" class="small">behind its own RCD; segment B</text>
+    <path d="M 1040 300 v 56 M 1080 300 v 56 M 1120 300 v 56" class="thin"/>
+
+    <!-- filter -->
+    <rect x="570" y="286" width="100" height="84" class="fillw"/>
+    <text x="584" y="312" class="label" fill="#ffd166">PLC</text>
+    <text x="584" y="330" class="label" fill="#ffd166">FILTER</text>
+    <text x="584" y="352" class="small">stands in for</text>
+    <text x="584" y="366" class="small">a transformer</text>
+    <path d="M 540 328 H 570 M 670 328 H 700" class="warn"/>
+
+    <!-- drops -->
+    <path d="M 170 260 V 296" class="warn"/>
+    <path d="M 430 260 V 296" class="warn"/>
+    <path d="M 800 260 V 296" class="warn"/>
+
+    <!-- laptop -->
+    <rect x="60" y="420" width="190" height="120" class="line"/>
+    <text x="74" y="446" class="label">LAPTOP</text>
+    <text x="74" y="466" class="small">serial logs, USB-C</text>
+    <text x="74" y="484" class="small">leads, pio monitor</text>
+    <text x="74" y="506" class="small">replay page :8090</text>
+    <text x="74" y="528" class="small">speed test for D5</text>
+    <path d="M 155 420 V 262" class="dash"/>
+    <text x="60" y="404" class="small">USB serial to the Node</text>
+
+    <!-- phones -->
+    <rect x="280" y="420" width="110" height="120" rx="8" class="line"/>
+    <text x="292" y="446" class="label">PHONE 1</text>
+    <text x="292" y="468" class="small">buys and</text>
+    <text x="292" y="486" class="small">browses on</text>
+    <text x="292" y="504" class="small">NODE-SAT A</text>
+    <text x="292" y="526" class="small">D1 D4 D5</text>
+
+    <rect x="410" y="420" width="110" height="120" rx="8" class="line"/>
+    <text x="422" y="446" class="label">PHONE 2</text>
+    <text x="422" y="468" class="small">second</text>
+    <text x="422" y="486" class="small">client on</text>
+    <text x="422" y="504" class="small">NODE-SAT B</text>
+    <text x="422" y="526" class="small">D3</text>
+    <path d="M 330 420 V 264" class="dash"/>
+    <path d="M 470 420 V 390 H 800 V 264" class="dash"/>
+    <text x="612" y="384" class="small">Wi-Fi</text>
+
+    <!-- attenuators and satellite -->
+    <text x="545" y="436" class="small">2 x 30 dB SMA</text>
+    <text x="545" y="452" class="small">pads, 60 dB</text>
+    <rect x="600" y="470" width="20" height="20" class="thin"/>
+    <rect x="640" y="470" width="20" height="20" class="thin"/>
+    <path d="M 700 480 H 660 M 640 480 H 620 M 600 480 H 560 V 410 H 200 V 264" class="dash"/>
+
+    <rect x="700" y="420" width="240" height="120" class="fillp"/>
+    <text x="714" y="446" class="label">xKoin-SATELLITE</text>
+    <text x="714" y="466" class="small">Heltec V3, 18650, TP4056,</text>
+    <text x="714" y="484" class="small">6 V 2 W panel, OLED</text>
+    <text x="714" y="506" class="small">class C service only</text>
+    <text x="714" y="528" class="small">D2 D4 D6</text>
+
+    <!-- farm node -->
+    <rect x="960" y="420" width="210" height="120" class="fillp"/>
+    <text x="974" y="446" class="label">FARM NODE</text>
+    <text x="974" y="466" class="small">ESP32-C3 SuperMini</text>
+    <text x="974" y="484" class="small">+ Ra-01SH, soil</text>
+    <text x="974" y="502" class="small">moisture + DHT22</text>
+    <text x="974" y="524" class="small">free LAN plane, D6</text>
+    <path d="M 960 480 H 940" class="dash"/>
+
+    <!-- notes -->
+    <text x="60" y="588" class="label">Bench rules</text>
+    <text x="60" y="610" class="small">1. Every mains item sits behind a 30 mA plug-in RCD. No isolation transformer is bought.</text>
+    <text x="60" y="630" class="small">2. Each KQ-130F pair is proven on a 12 V DC line, which the module supports, first.</text>
+    <text x="60" y="650" class="small">3. The strips never share a socket: the filter is the only path between them.</text>
+    <text x="60" y="670" class="small">4. Every LoRa test runs with the pads fitted; nothing radiates at 22 dBm.</text>
+    <text x="60" y="690" class="small">5. Logs and screenshots land in bench/DN/ on the laptop, one directory per demo.</text>
+    <text x="60" y="710" class="small">Dashed lines are radio. Yellow is mains. White is data or serial.</text>
+  </g>
+
+  <g id="titleblock" transform="translate(780 640)">
+    <rect width="390" height="130" class="line" fill="#0b3d91"/>
+    <path d="M 0 26 H 390 M 0 52 H 390 M 0 78 H 390 M 0 104 H 390 M 110 0 V 130" class="thin"/>
+    <text x="10" y="18" class="label">Project</text><text x="120" y="18" class="small">xKoin proof of concept</text>
+    <text x="10" y="44" class="label">Drawing</text><text x="120" y="44" class="small">XK-BENCH-LAYOUT</text>
+    <text x="10" y="70" class="label">Date</text><text x="120" y="70" class="small">2026-09-12</text>
+    <text x="10" y="96" class="label">Units</text><text x="120" y="96" class="small">plan view, not to scale</text>
+    <text x="10" y="122" class="label">Rev</text><text x="120" y="122" class="small">A</text>
+  </g>
+</svg>

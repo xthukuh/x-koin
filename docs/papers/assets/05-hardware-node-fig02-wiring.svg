@@ -1,0 +1,201 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" font-family="IBM Plex Mono, Consolas, Menlo, monospace" font-size="13" fill="#e9f0ff">
+  <!-- xKoin hardware paper 05, Figure 2. xKoin-Node wiring blueprint.
+       Blueprint template: frame, grid, defs, style block and title block copied
+       from _template-blueprint.svg; drawing group and title block text replaced. -->
+  <defs>
+    <pattern id="minor" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255,255,255,0.10)" stroke-width="1"/>
+    </pattern>
+    <pattern id="major" width="100" height="100" patternUnits="userSpaceOnUse">
+      <rect width="100" height="100" fill="url(#minor)"/>
+      <path d="M 100 0 L 0 0 0 100" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="1"/>
+    </pattern>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#ffffff"/>
+    </marker>
+    <marker id="dim" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 5 L 10 5 M 5 0 L 5 10" stroke="#ffffff" stroke-width="1.5"/>
+    </marker>
+  </defs>
+  <style>
+    .line { fill: none; stroke: #ffffff; stroke-width: 1.5; }
+    .thin { fill: none; stroke: #9fc0ff; stroke-width: 1; }
+    .dash { fill: none; stroke: #9fc0ff; stroke-width: 1; stroke-dasharray: 6 4; }
+    .warn { fill: none; stroke: #ffd166; stroke-width: 1.5; }
+    .warnd { fill: none; stroke: #ffd166; stroke-width: 1.5; stroke-dasharray: 10 6; }
+    .fillp { fill: #0b3d91; stroke: #ffffff; stroke-width: 1.5; }
+    .fillw { fill: #0b3d91; stroke: #ffd166; stroke-width: 1.5; }
+    .label { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
+    .small { font-size: 11px; fill: #c9d8ff; }
+    .pin { font-size: 10px; fill: #c9d8ff; }
+    .title { font-size: 22px; letter-spacing: 0.08em; text-transform: uppercase; }
+    .lead { fill: none; stroke: #ffffff; stroke-width: 1; }
+    .dimline { fill: none; stroke: #ffffff; stroke-width: 1; marker-start: url(#dim); marker-end: url(#dim); }
+  </style>
+
+  <rect width="1200" height="800" fill="#0b3d91"/>
+  <rect width="1200" height="800" fill="url(#major)"/>
+  <rect x="30" y="30" width="1140" height="740" class="line"/>
+
+  <g id="drawing">
+    <text x="60" y="70" class="title">xKoin-Node</text>
+    <text x="60" y="92" class="label">Wiring diagram, logic side and mains side</text>
+
+    <!-- DevKitC -->
+    <rect x="210" y="140" width="250" height="380" rx="8" class="line"/>
+    <text x="224" y="166" class="label">ESP32-S3-DevKitC-1</text>
+    <text x="224" y="184" class="small">N16R8, WROOM-1 PCB antenna</text>
+    <text x="224" y="202" class="small">USB-C UART + USB-C native</text>
+    <rect x="300" y="216" width="70" height="26" class="thin"/>
+    <text x="310" y="234" class="pin">WROOM-1</text>
+    <text x="224" y="494" class="small">Wi-Fi AP: xKoin-Node</text>
+    <text x="224" y="512" class="small">captive portal on 192.168.4.1</text>
+
+    <!-- left pin row -->
+    <path d="M 190 170 h 20 M 190 192 h 20 M 190 214 h 20 M 190 236 h 20 M 190 258 h 20 M 190 280 h 20" class="thin"/>
+    <text x="184" y="174" text-anchor="end" class="pin">USB-C</text>
+    <text x="184" y="196" text-anchor="end" class="pin">EN</text>
+    <text x="184" y="218" text-anchor="end" class="pin">BOOT</text>
+    <text x="184" y="240" text-anchor="end" class="pin">5V IN</text>
+    <text x="184" y="262" text-anchor="end" class="pin">3V3</text>
+    <text x="184" y="284" text-anchor="end" class="pin">GND</text>
+    <text x="70" y="330" class="label">Pin row, left</text>
+    <text x="70" y="348" class="small">Flash and power entry.</text>
+    <text x="70" y="366" class="small">5 V IN is fed from the</text>
+    <text x="70" y="384" class="small">HLK-PM01 below, or from</text>
+    <text x="70" y="402" class="small">the USB-C lead on the bench.</text>
+    <path d="M 168 240 L 120 240 V 320" class="lead"/>
+
+    <!-- right pin row, LoRa -->
+    <path d="M 460 170 H 680 M 460 192 H 680 M 460 214 H 680 M 460 236 H 680 M 460 258 H 680 M 460 280 H 680 M 460 302 H 680 M 460 324 H 680" class="line"/>
+    <text x="470" y="166" class="pin">GPIO12</text>
+    <text x="470" y="188" class="pin">GPIO13</text>
+    <text x="470" y="210" class="pin">GPIO11</text>
+    <text x="470" y="232" class="pin">GPIO10</text>
+    <text x="470" y="254" class="pin">GPIO14</text>
+    <text x="470" y="276" class="pin">GPIO21</text>
+    <text x="470" y="298" class="pin">3V3</text>
+    <text x="470" y="320" class="pin">GND</text>
+    <text x="672" y="166" text-anchor="end" class="pin">SCK</text>
+    <text x="672" y="188" text-anchor="end" class="pin">MISO</text>
+    <text x="672" y="210" text-anchor="end" class="pin">MOSI</text>
+    <text x="672" y="232" text-anchor="end" class="pin">NSS</text>
+    <text x="672" y="254" text-anchor="end" class="pin">DIO1</text>
+    <text x="672" y="276" text-anchor="end" class="pin">BUSY</text>
+    <text x="672" y="298" text-anchor="end" class="pin">VCC</text>
+    <text x="672" y="320" text-anchor="end" class="pin">GND</text>
+
+    <rect x="680" y="150" width="240" height="195" class="fillp"/>
+    <text x="692" y="176" class="label">E22-900M22S</text>
+    <text x="692" y="194" class="small">SX1262, 868.1 MHz</text>
+    <text x="692" y="212" class="small">22 dBm PA, TCXO</text>
+    <text x="692" y="230" class="small">SPI2 at 8 MHz</text>
+    <text x="692" y="248" class="small">IPEX to SMA pigtail</text>
+    <text x="692" y="266" class="small">to the 868 MHz whip</text>
+    <text x="692" y="290" class="small">ALL EIGHT LINES: doc02</text>
+    <text x="692" y="312" class="small">RST on GPIO9 is proposed,</text>
+    <text x="692" y="330" class="small">not fixed by doc 02</text>
+    <path d="M 920 200 h 40" class="thin"/>
+    <circle cx="966" cy="200" r="6" class="thin"/>
+    <text x="930" y="190" class="pin">ANT</text>
+
+    <!-- right pin row, PLC -->
+    <path d="M 460 380 H 680 M 460 402 H 680 M 460 424 H 680 M 460 446 H 680" class="line"/>
+    <text x="470" y="376" class="pin">GPIO17</text>
+    <text x="470" y="398" class="pin">GPIO18</text>
+    <text x="470" y="420" class="pin">5V</text>
+    <text x="470" y="442" class="pin">GND</text>
+    <text x="672" y="376" text-anchor="end" class="pin">RX</text>
+    <text x="672" y="398" text-anchor="end" class="pin">TX</text>
+    <text x="672" y="420" text-anchor="end" class="pin">VCC</text>
+    <text x="672" y="442" text-anchor="end" class="pin">GND</text>
+
+    <rect x="680" y="360" width="240" height="150" class="fillw"/>
+    <text x="692" y="386" class="label" fill="#ffd166">KQ-130F</text>
+    <text x="692" y="404" class="small">Narrowband PLC, UART2</text>
+    <text x="692" y="422" class="small">9600 bd, 5 V logic side</text>
+    <text x="692" y="440" class="small">doc02 pins, all four</text>
+    <text x="692" y="464" class="small" fill="#ffd166">Pins 1 and 2 are the</text>
+    <text x="692" y="482" class="small" fill="#ffd166">mains coupling. Isolated</text>
+    <text x="692" y="500" class="small" fill="#ffd166">from everything above.</text>
+
+    <!-- deferred blocks -->
+    <rect x="960" y="150" width="200" height="150" class="dash"/>
+    <text x="972" y="176" class="label">W5500 (DEFERRED)</text>
+    <text x="972" y="196" class="small">Deferred for the PoC.</text>
+    <text x="972" y="214" class="small">Proposed pins:</text>
+    <text x="972" y="232" class="small">SCK 36, MISO 37,</text>
+    <text x="972" y="250" class="small">MOSI 35, CS 38,</text>
+    <text x="972" y="268" class="small">INT 39, RST 40</text>
+    <text x="972" y="290" class="small">3V3 and GND</text>
+
+    <rect x="960" y="330" width="200" height="150" class="dash"/>
+    <text x="972" y="356" class="label">SIM7600E (DEFERRED)</text>
+    <text x="972" y="376" class="small">Deferred for the PoC.</text>
+    <text x="972" y="394" class="small">Proposed pins:</text>
+    <text x="972" y="412" class="small">RXD 4, TXD 5,</text>
+    <text x="972" y="430" class="small">PWRKEY 6</text>
+    <text x="972" y="448" class="small">5 V at 2 A peak</text>
+    <text x="972" y="466" class="small">and GND</text>
+    <path d="M 335 520 V 540 H 940 V 240 H 960" class="dash"/>
+    <path d="M 940 405 H 960" class="dash"/>
+
+    <!-- 5 V rail -->
+    <path d="M 300 580 H 620" class="warn"/>
+    <text x="306" y="572" class="small" fill="#ffd166">5 V RAIL, ISOLATED SECONDARY</text>
+    <path d="M 300 580 V 236 H 190" class="warn"/>
+
+    <!-- isolation boundary -->
+    <path d="M 60 612 H 1160" class="warnd"/>
+    <text x="60" y="604" class="label" fill="#ffd166">Isolation boundary: only the AC-DC module and the Y2 coupling capacitor cross it</text>
+
+    <!-- mains side -->
+    <rect x="70" y="686" width="150" height="66" class="fillw"/>
+    <text x="82" y="710" class="label" fill="#ffd166">230 V AC</text>
+    <text x="82" y="730" class="small">Type G inlet, 50 Hz</text>
+
+    <rect x="260" y="686" width="150" height="66" class="fillw"/>
+    <text x="272" y="710" class="label" fill="#ffd166">RCD 30 mA</text>
+    <text x="272" y="730" class="small">plug-in, always first</text>
+    <path d="M 220 706 H 260 M 220 736 H 260" class="warn"/>
+
+    <path d="M 410 706 H 760" class="warn"/>
+    <path d="M 410 736 H 760" class="warn"/>
+    <text x="424" y="700" class="pin" fill="#ffd166">L</text>
+    <text x="424" y="758" class="pin" fill="#ffd166">N</text>
+
+    <rect x="470" y="628" width="170" height="58" class="fillw"/>
+    <text x="482" y="650" class="label" fill="#ffd166">HLK-PM01</text>
+    <text x="482" y="670" class="small">230 V AC to 5 V, 3 W</text>
+    <path d="M 500 686 V 706" class="warn"/>
+    <path d="M 610 686 V 736" class="warn"/>
+    <path d="M 555 628 V 580" class="warn"/>
+
+    <!-- Y2 coupling -->
+    <path d="M 760 510 V 634 M 760 664 V 706" class="warn"/>
+    <path d="M 742 644 H 778 M 742 654 H 778" class="warn"/>
+    <path d="M 778 649 H 830 V 560" class="lead"/>
+    <text x="836" y="534" class="small" fill="#ffd166">Y2 coupling capacitor and the</text>
+    <text x="836" y="552" class="small" fill="#ffd166">KQ-130F coupling transformer:</text>
+    <text x="836" y="570" class="small" fill="#ffd166">the only signal path across</text>
+    <text x="836" y="588" class="small" fill="#ffd166">the boundary</text>
+    <path d="M 700 510 V 736" class="warn"/>
+    <text x="676" y="616" class="pin" fill="#ffd166">N</text>
+    <text x="736" y="616" class="pin" fill="#ffd166">L</text>
+
+    <text x="70" y="626" class="small" fill="#ffd166">Never energise the mains</text>
+    <text x="70" y="644" class="small" fill="#ffd166">side without the RCD in</text>
+    <text x="70" y="662" class="small" fill="#ffd166">line. Prove the KQ-130F</text>
+    <text x="70" y="680" class="small" fill="#ffd166">pair on 12 V DC first.</text>
+  </g>
+
+  <g id="titleblock" transform="translate(780 640)">
+    <rect width="390" height="130" class="line" fill="#0b3d91"/>
+    <path d="M 0 26 H 390 M 0 52 H 390 M 0 78 H 390 M 0 104 H 390 M 110 0 V 130" class="thin"/>
+    <text x="10" y="18" class="label">Project</text><text x="120" y="18" class="small">xKoin proof of concept</text>
+    <text x="10" y="44" class="label">Drawing</text><text x="120" y="44" class="small">XK-NODE-WIRING</text>
+    <text x="10" y="70" class="label">Date</text><text x="120" y="70" class="small">2026-09-12</text>
+    <text x="10" y="96" class="label">Units</text><text x="120" y="96" class="small">schematic, not to scale</text>
+    <text x="10" y="122" class="label">Rev</text><text x="120" y="122" class="small">A</text>
+  </g>
+</svg>

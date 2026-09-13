@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" font-family="IBM Plex Mono, Consolas, Menlo, monospace" font-size="13" fill="#14213d">
+  <!-- xKoin hardware paper 06, Figure 1. xKoin-Node-Satellite block diagram: the
+       HomePlug extender is the bulk plane, the ESP32-S3 is the control plane. -->
+  <defs>
+    <marker id="ai" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#0b3d91"/>
+    </marker>
+  </defs>
+  <style>
+    .box { fill: #ffffff; stroke: #14213d; stroke-width: 2; }
+    .acc { fill: #eef2fa; stroke: #0b3d91; stroke-width: 2; }
+    .mon { fill: #fdf6ec; stroke: #b8741a; stroke-width: 2; }
+    .def { fill: #ffffff; stroke: #3c4a67; stroke-width: 1.5; stroke-dasharray: 8 5; }
+    .bus2 { fill: none; stroke: #0b3d91; stroke-width: 2; marker-start: url(#ai); marker-end: url(#ai); }
+    .pwr { fill: none; stroke: #b8741a; stroke-width: 2; marker-start: url(#ai); }
+    .dashflow { fill: none; stroke: #3c4a67; stroke-width: 1.5; stroke-dasharray: 8 5; marker-start: url(#ai); marker-end: url(#ai); }
+    .h { font-size: 14px; letter-spacing: 0.05em; fill: #14213d; }
+    .s { font-size: 12px; fill: #3c4a67; }
+    .m { font-size: 12px; fill: #b8741a; }
+  </style>
+
+  <rect width="1200" height="600" fill="#ffffff"/>
+  <text x="50" y="34" class="h">xKoin-NODE-SATELLITE: BLOCK DIAGRAM</text>
+  <text x="50" y="54" class="s">Two planes in one wall socket. The extender moves the bytes; the MCU decides whether they are allowed and counts them.</text>
+
+  <!-- bulk plane -->
+  <rect x="60" y="110" width="340" height="190" class="box"/>
+  <text x="74" y="138" class="h">HomePlug AV Wi-Fi EXTENDER</text>
+  <text x="74" y="162" class="s">TL-WPA4220 class, AV600 or</text>
+  <text x="74" y="182" class="s">AV1000, stock and unmodified</text>
+  <text x="74" y="206" class="s">extracts the 2 to 68 MHz OFDM</text>
+  <text x="74" y="226" class="s">carrier from the same mains</text>
+  <text x="74" y="246" class="s">segment, regenerates 2.4 GHz</text>
+  <text x="74" y="270" class="s">~10 Mbps modelled goodput</text>
+  <text x="74" y="292" class="s">THE BULK PLANE</text>
+
+  <!-- control plane -->
+  <rect x="440" y="110" width="340" height="190" class="acc"/>
+  <text x="454" y="138" class="h">ESP32-S3-DevKitC-1 N16R8</text>
+  <text x="454" y="162" class="s">admission: verifies the kiosk</text>
+  <text x="454" y="182" class="s">voucher offline, 24 h expiry</text>
+  <text x="454" y="206" class="s">metering: bytes per client</text>
+  <text x="454" y="226" class="s">receipts: Ed25519, 108 bytes</text>
+  <text x="454" y="246" class="s">tickets name THIS unit's own</text>
+  <text x="454" y="266" class="s">operator address</text>
+  <text x="454" y="292" class="s">THE CONTROL PLANE</text>
+
+  <!-- KQ -->
+  <rect x="820" y="110" width="330" height="190" class="box"/>
+  <text x="834" y="138" class="h">KQ-130F NARROWBAND PLC</text>
+  <text x="834" y="162" class="s">UART2, GPIO 17 and 18</text>
+  <text x="834" y="182" class="s">9600 bd, ~960 B/s</text>
+  <text x="834" y="206" class="s">carries receipts, vouchers</text>
+  <text x="834" y="226" class="s">and control to the Node when</text>
+  <text x="834" y="246" class="s">the extender path is down,</text>
+  <text x="834" y="266" class="s">congested or filtered</text>
+  <text x="834" y="292" class="s">3 kV mains coupling</text>
+
+  <!-- phone -->
+  <rect x="440" y="350" width="340" height="90" class="box"/>
+  <text x="454" y="378" class="h">PHONE ON Wi-Fi</text>
+  <text x="454" y="400" class="s">captive portal, buy, browse</text>
+  <text x="454" y="422" class="s">signs its own receipts</text>
+
+  <!-- LoRa optional -->
+  <rect x="60" y="350" width="280" height="150" class="def"/>
+  <text x="74" y="378" class="h" fill="#3c4a67">E22-900M22S (OPTIONAL)</text>
+  <text x="74" y="400" class="s">Fitted only on the unit that</text>
+  <text x="74" y="420" class="s">plays segment B in demo D3,</text>
+  <text x="74" y="440" class="s">where LoRa is the only path</text>
+  <text x="74" y="460" class="s">across the mains filter.</text>
+  <text x="74" y="484" class="s">Same doc02 SPI pins.</text>
+
+  <!-- mains -->
+  <rect x="60" y="520" width="1090" height="46" class="mon"/>
+  <text x="74" y="548" class="m">ONE 230 V SOCKET, ONE MAINS SEGMENT: the extender plugs straight in and passes the socket through; the MCU takes 5 V from its USB port</text>
+
+  <!-- links -->
+  <path d="M 404 205 H 436" class="bus2"/>
+  <text x="356" y="326" class="s">bulk: Ethernet or the extender's own Wi-Fi</text>
+  <path d="M 784 205 H 816" class="bus2"/>
+  <path d="M 610 304 V 346" class="bus2"/>
+  <text x="624" y="330" class="s">Wi-Fi AP, admission enforced here</text>
+  <path d="M 436 268 H 418 V 400 H 344" class="dashflow"/>
+  <path d="M 370 304 V 516" class="pwr"/>
+  <path d="M 985 304 V 516" class="pwr"/>
+  <path d="M 750 304 V 330 H 800 V 516" class="pwr"/>
+</svg>

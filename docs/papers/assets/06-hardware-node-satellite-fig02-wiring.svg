@@ -1,0 +1,186 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" font-family="IBM Plex Mono, Consolas, Menlo, monospace" font-size="13" fill="#e9f0ff">
+  <!-- xKoin hardware paper 06, Figure 2. xKoin-Node-Satellite wiring blueprint.
+       Blueprint template: frame, grid, defs, style block and title block copied
+       from _template-blueprint.svg; drawing group and title block text replaced. -->
+  <defs>
+    <pattern id="minor" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255,255,255,0.10)" stroke-width="1"/>
+    </pattern>
+    <pattern id="major" width="100" height="100" patternUnits="userSpaceOnUse">
+      <rect width="100" height="100" fill="url(#minor)"/>
+      <path d="M 100 0 L 0 0 0 100" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="1"/>
+    </pattern>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#ffffff"/>
+    </marker>
+    <marker id="dim" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 5 L 10 5 M 5 0 L 5 10" stroke="#ffffff" stroke-width="1.5"/>
+    </marker>
+  </defs>
+  <style>
+    .line { fill: none; stroke: #ffffff; stroke-width: 1.5; }
+    .thin { fill: none; stroke: #9fc0ff; stroke-width: 1; }
+    .dash { fill: none; stroke: #9fc0ff; stroke-width: 1; stroke-dasharray: 6 4; }
+    .warn { fill: none; stroke: #ffd166; stroke-width: 1.5; }
+    .warnd { fill: none; stroke: #ffd166; stroke-width: 1.5; stroke-dasharray: 10 6; }
+    .fillp { fill: #0b3d91; stroke: #ffffff; stroke-width: 1.5; }
+    .fillw { fill: #0b3d91; stroke: #ffd166; stroke-width: 1.5; }
+    .label { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
+    .small { font-size: 11px; fill: #c9d8ff; }
+    .pin { font-size: 10px; fill: #c9d8ff; }
+    .title { font-size: 22px; letter-spacing: 0.08em; text-transform: uppercase; }
+    .lead { fill: none; stroke: #ffffff; stroke-width: 1; }
+    .dimline { fill: none; stroke: #ffffff; stroke-width: 1; marker-start: url(#dim); marker-end: url(#dim); }
+  </style>
+
+  <rect width="1200" height="800" fill="#0b3d91"/>
+  <rect width="1200" height="800" fill="url(#major)"/>
+  <rect x="30" y="30" width="1140" height="740" class="line"/>
+
+  <g id="drawing">
+    <text x="60" y="70" class="title">xKoin-Node-Satellite</text>
+    <text x="60" y="92" class="label">Wiring diagram, one wall socket, two planes</text>
+
+    <!-- extender -->
+    <rect x="60" y="140" width="230" height="250" rx="10" class="fillw"/>
+    <text x="74" y="168" class="label" fill="#ffd166">HomePlug AV</text>
+    <text x="74" y="186" class="label" fill="#ffd166">Wi-Fi EXTENDER</text>
+    <text x="74" y="212" class="small">Stock plug-top unit.</text>
+    <text x="74" y="230" class="small">Sealed. Nothing is wired</text>
+    <text x="74" y="248" class="small">into it and nothing is</text>
+    <text x="74" y="266" class="small">opened. Class II, its own</text>
+    <text x="74" y="284" class="small">mains isolation.</text>
+    <text x="74" y="310" class="small">2 to 68 MHz OFDM in,</text>
+    <text x="74" y="328" class="small">2.4 GHz Wi-Fi out,</text>
+    <text x="74" y="346" class="small">~10 Mbps modelled</text>
+    <text x="74" y="372" class="small">THE BULK PLANE</text>
+    <path d="M 290 200 h 34" class="thin"/>
+    <circle cx="330" cy="200" r="6" class="thin"/>
+    <text x="296" y="190" class="pin">Wi-Fi</text>
+
+    <!-- DevKitC -->
+    <rect x="380" y="140" width="240" height="380" rx="8" class="line"/>
+    <text x="394" y="166" class="label">ESP32-S3-DevKitC-1</text>
+    <text x="394" y="184" class="small">N16R8, WROOM-1 PCB antenna</text>
+    <text x="394" y="202" class="small">its own Wi-Fi AP and portal</text>
+    <rect x="470" y="216" width="70" height="26" class="thin"/>
+    <text x="480" y="234" class="pin">WROOM-1</text>
+    <text x="394" y="482" class="small">admission and metering only:</text>
+    <text x="394" y="500" class="small">never in the bulk data path</text>
+    <path d="M 380 260 h -40" class="thin"/>
+    <circle cx="334" cy="260" r="6" class="thin"/>
+    <text x="344" y="252" class="pin">Wi-Fi</text>
+
+    <!-- left pins -->
+    <path d="M 360 300 h 20 M 360 322 h 20" class="thin"/>
+    <text x="354" y="304" text-anchor="end" class="pin">5V IN</text>
+    <text x="354" y="326" text-anchor="end" class="pin">GND</text>
+
+    <!-- LoRa pin row, optional -->
+    <path d="M 620 170 H 830 M 620 192 H 830 M 620 214 H 830 M 620 236 H 830 M 620 258 H 830 M 620 280 H 830 M 620 302 H 830 M 620 324 H 830" class="dash"/>
+    <text x="630" y="166" class="pin">GPIO12</text>
+    <text x="630" y="188" class="pin">GPIO13</text>
+    <text x="630" y="210" class="pin">GPIO11</text>
+    <text x="630" y="232" class="pin">GPIO10</text>
+    <text x="630" y="254" class="pin">GPIO14</text>
+    <text x="630" y="276" class="pin">GPIO21</text>
+    <text x="630" y="298" class="pin">3V3</text>
+    <text x="630" y="320" class="pin">GND</text>
+    <text x="822" y="166" text-anchor="end" class="pin">SCK</text>
+    <text x="822" y="188" text-anchor="end" class="pin">MISO</text>
+    <text x="822" y="210" text-anchor="end" class="pin">MOSI</text>
+    <text x="822" y="232" text-anchor="end" class="pin">NSS</text>
+    <text x="822" y="254" text-anchor="end" class="pin">DIO1</text>
+    <text x="822" y="276" text-anchor="end" class="pin">BUSY</text>
+    <text x="822" y="298" text-anchor="end" class="pin">VCC</text>
+    <text x="822" y="320" text-anchor="end" class="pin">GND</text>
+
+    <rect x="830" y="150" width="250" height="195" class="dash"/>
+    <text x="844" y="176" class="label">E22-900M22S (OPTIONAL)</text>
+    <text x="844" y="196" class="small">SX1262, 868.1 MHz, 22 dBm</text>
+    <text x="844" y="214" class="small">Same doc02 SPI pins as the</text>
+    <text x="844" y="232" class="small">Node. Fitted only on the</text>
+    <text x="844" y="250" class="small">unit that plays segment B</text>
+    <text x="844" y="268" class="small">in demo D3.</text>
+    <text x="844" y="294" class="small">Omit it and the eight lines</text>
+    <text x="844" y="312" class="small">above are not populated;</text>
+    <text x="844" y="330" class="small">nothing else changes.</text>
+
+    <!-- PLC pin row -->
+    <path d="M 620 380 H 830 M 620 402 H 830 M 620 424 H 830 M 620 446 H 830" class="line"/>
+    <text x="630" y="376" class="pin">GPIO17</text>
+    <text x="630" y="398" class="pin">GPIO18</text>
+    <text x="630" y="420" class="pin">5V</text>
+    <text x="630" y="442" class="pin">GND</text>
+    <text x="822" y="376" text-anchor="end" class="pin">RX</text>
+    <text x="822" y="398" text-anchor="end" class="pin">TX</text>
+    <text x="822" y="420" text-anchor="end" class="pin">VCC</text>
+    <text x="822" y="442" text-anchor="end" class="pin">GND</text>
+
+    <rect x="830" y="360" width="250" height="150" class="fillw"/>
+    <text x="844" y="386" class="label" fill="#ffd166">KQ-130F</text>
+    <text x="844" y="404" class="small">Narrowband PLC, UART2</text>
+    <text x="844" y="422" class="small">9600 bd, doc02 pins</text>
+    <text x="844" y="446" class="small" fill="#ffd166">Pins 1 and 2 are the</text>
+    <text x="844" y="464" class="small" fill="#ffd166">mains coupling. Isolated</text>
+    <text x="844" y="482" class="small" fill="#ffd166">from the logic side.</text>
+
+    <!-- 5 V rail -->
+    <path d="M 250 580 H 560" class="warn"/>
+    <text x="256" y="572" class="small" fill="#ffd166">5 V RAIL, ISOLATED SECONDARY</text>
+    <path d="M 250 580 V 300 H 360" class="warn"/>
+
+    <!-- isolation boundary -->
+    <path d="M 60 612 H 1160" class="warnd"/>
+    <text x="60" y="604" class="label" fill="#ffd166">Isolation boundary: only the USB charger and the Y2 coupling capacitor cross it</text>
+
+    <!-- mains side -->
+    <rect x="70" y="686" width="150" height="66" class="fillw"/>
+    <text x="82" y="710" class="label" fill="#ffd166">230 V AC</text>
+    <text x="82" y="730" class="small">Type G socket, 50 Hz</text>
+
+    <rect x="260" y="686" width="150" height="66" class="fillw"/>
+    <text x="272" y="710" class="label" fill="#ffd166">RCD 30 mA</text>
+    <text x="272" y="730" class="small">plug-in, always first</text>
+    <path d="M 220 706 H 260 M 220 736 H 260" class="warn"/>
+
+    <path d="M 410 706 H 760" class="warn"/>
+    <path d="M 410 736 H 760" class="warn"/>
+    <text x="424" y="700" class="pin" fill="#ffd166">L</text>
+    <text x="424" y="758" class="pin" fill="#ffd166">N</text>
+
+    <rect x="440" y="628" width="170" height="58" class="fillw"/>
+    <text x="452" y="650" class="label" fill="#ffd166">USB CHARGER</text>
+    <text x="452" y="670" class="small">230 V AC to 5 V, 1 A</text>
+    <path d="M 470 686 V 706" class="warn"/>
+    <path d="M 580 686 V 736" class="warn"/>
+    <path d="M 525 628 V 580" class="warn"/>
+
+    <!-- extender plug -->
+    <path d="M 130 390 V 706 M 180 390 V 736" class="warn"/>
+    <text x="136" y="632" class="small" fill="#ffd166">extender plug-top,</text>
+    <text x="136" y="650" class="small" fill="#ffd166">pass-through socket</text>
+
+    <!-- Y2 coupling -->
+    <path d="M 900 510 V 560 H 760 V 634 M 760 664 V 706" class="warn"/>
+    <path d="M 742 644 H 778 M 742 654 H 778" class="warn"/>
+    <path d="M 860 510 V 540 H 700 V 736" class="warn"/>
+    <text x="676" y="616" class="pin" fill="#ffd166">N</text>
+    <text x="736" y="616" class="pin" fill="#ffd166">L</text>
+    <path d="M 778 649 H 812 V 556" class="lead"/>
+    <text x="820" y="534" class="small" fill="#ffd166">Y2 coupling capacitor and the</text>
+    <text x="820" y="552" class="small" fill="#ffd166">KQ-130F coupling transformer</text>
+
+    <text x="70" y="676" class="small" fill="#ffd166">Prove the KQ-130F pair on 12 V DC before the mains.</text>
+  </g>
+
+  <g id="titleblock" transform="translate(780 640)">
+    <rect width="390" height="130" class="line" fill="#0b3d91"/>
+    <path d="M 0 26 H 390 M 0 52 H 390 M 0 78 H 390 M 0 104 H 390 M 110 0 V 130" class="thin"/>
+    <text x="10" y="18" class="label">Project</text><text x="120" y="18" class="small">xKoin proof of concept</text>
+    <text x="10" y="44" class="label">Drawing</text><text x="120" y="44" class="small">XK-NODESAT-WIRING</text>
+    <text x="10" y="70" class="label">Date</text><text x="120" y="70" class="small">2026-09-12</text>
+    <text x="10" y="96" class="label">Units</text><text x="120" y="96" class="small">schematic, not to scale</text>
+    <text x="10" y="122" class="label">Rev</text><text x="120" y="122" class="small">A</text>
+  </g>
+</svg>

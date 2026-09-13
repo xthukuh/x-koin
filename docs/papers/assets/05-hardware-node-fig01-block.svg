@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" font-family="IBM Plex Mono, Consolas, Menlo, monospace" font-size="13" fill="#14213d">
+  <!-- xKoin hardware paper 05, Figure 1. xKoin-Node block diagram: one MCU, three
+       radios or carriers, one mains supply, two deferred blocks. -->
+  <defs>
+    <marker id="ai" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#0b3d91"/>
+    </marker>
+  </defs>
+  <style>
+    .box { fill: #ffffff; stroke: #14213d; stroke-width: 2; }
+    .acc { fill: #eef2fa; stroke: #0b3d91; stroke-width: 2; }
+    .mon { fill: #fdf6ec; stroke: #b8741a; stroke-width: 2; }
+    .def { fill: #ffffff; stroke: #3c4a67; stroke-width: 1.5; stroke-dasharray: 8 5; }
+    .bus { fill: none; stroke: #0b3d91; stroke-width: 2; marker-end: url(#ai); }
+    .bus2 { fill: none; stroke: #0b3d91; stroke-width: 2; marker-start: url(#ai); marker-end: url(#ai); }
+    .pwr { fill: none; stroke: #b8741a; stroke-width: 2; marker-end: url(#ai); }
+    .dashflow { fill: none; stroke: #3c4a67; stroke-width: 1.5; stroke-dasharray: 8 5; marker-end: url(#ai); }
+    .h { font-size: 14px; letter-spacing: 0.05em; fill: #14213d; }
+    .s { font-size: 12px; fill: #3c4a67; }
+    .m { font-size: 12px; fill: #b8741a; }
+  </style>
+
+  <rect width="1200" height="600" fill="#ffffff"/>
+  <text x="50" y="36" class="h">xKoin-NODE: BLOCK DIAGRAM</text>
+  <text x="50" y="56" class="s">Solid blue: data and control. Orange: power. Dashed: deferred for the proof of concept.</text>
+
+  <!-- MCU -->
+  <rect x="440" y="200" width="260" height="170" class="acc"/>
+  <text x="456" y="228" class="h">ESP32-S3-DevKitC-1</text>
+  <text x="456" y="248" class="s">N16R8, 16 MB flash, 8 MB PSRAM</text>
+  <text x="456" y="270" class="s">Wi-Fi AP + captive portal</text>
+  <text x="456" y="290" class="s">Ed25519 receipts, voucher check</text>
+  <text x="456" y="310" class="s">medium scoring, ticket assembly</text>
+  <text x="456" y="332" class="s">SPI2 + UART2 + 3V3 and 5 V rails</text>
+  <text x="456" y="356" class="s">firmware: xkoin-gateway, esp32-s3</text>
+
+  <!-- backhaul -->
+  <rect x="440" y="70" width="260" height="70" class="box"/>
+  <text x="456" y="96" class="h">BACKHAUL</text>
+  <text x="456" y="116" class="s">existing router or phone hotspot</text>
+  <text x="456" y="134" class="s">(LTE module deferred)</text>
+  <path d="M 570 140 V 196" class="bus2"/>
+  <text x="712" y="116" class="s">every WAN byte is</text>
+  <text x="712" y="134" class="s">classified and metered here</text>
+
+  <!-- LoRa -->
+  <rect x="830" y="180" width="290" height="90" class="box"/>
+  <text x="846" y="206" class="h">E22-900M22S (SX1262)</text>
+  <text x="846" y="226" class="s">868.1 MHz, SF7 BW125 CR4/5</text>
+  <text x="846" y="246" class="s">SPI2, ~5.4 kbps, survival plane</text>
+  <text x="846" y="264" class="s">GFSK 150 kbps switchable</text>
+  <path d="M 700 240 H 826" class="bus2"/>
+  <text x="712" y="200" class="s">SPI GPIO 10 to 14, 21</text>
+
+  <!-- KQ130F -->
+  <rect x="830" y="300" width="290" height="90" class="box"/>
+  <text x="846" y="326" class="h">KQ-130F NARROWBAND PLC</text>
+  <text x="846" y="346" class="s">120 to 135 kHz, UART2 9600 bd</text>
+  <text x="846" y="366" class="s">~960 B/s, receipts and control</text>
+  <text x="846" y="384" class="s">3 kV coupling to 230 V mains</text>
+  <path d="M 700 330 H 826" class="bus2"/>
+  <text x="712" y="320" class="s">UART GPIO 17, 18</text>
+
+  <!-- HomePlug -->
+  <rect x="80" y="180" width="290" height="110" class="box"/>
+  <text x="96" y="206" class="h">HomePlug AV ADAPTER</text>
+  <text x="96" y="226" class="s">2 to 68 MHz OFDM, ~10 Mbps</text>
+  <text x="96" y="246" class="s">bulk plane into the mains</text>
+  <text x="96" y="266" class="s">Ethernet port to the router;</text>
+  <text x="96" y="284" class="s">the MCU is beside it, not in it</text>
+  <path d="M 436 250 H 374" class="bus2"/>
+  <text x="236" y="160" class="s">bulk data path</text>
+
+  <!-- power -->
+  <rect x="80" y="410" width="290" height="90" class="mon"/>
+  <text x="96" y="436" class="h" fill="#b8741a">HLK-PM01</text>
+  <text x="96" y="456" class="m">230 V AC to 5 V DC, 3 W ceiling</text>
+  <text x="96" y="476" class="m">isolated; 3V3 from the DevKitC LDO</text>
+  <text x="96" y="494" class="m">behind a 30 mA RCD on the bench</text>
+  <path d="M 370 450 H 470 V 374" class="pwr"/>
+  <path d="M 470 450 H 826 V 394" class="pwr"/>
+
+  <!-- mains -->
+  <rect x="80" y="524" width="1040" height="56" class="mon"/>
+  <text x="96" y="546" class="m">230 V 50 Hz MAINS SEGMENT: carries HomePlug AV bulk, the KQ-130F control carrier</text>
+  <text x="96" y="566" class="m">and the supply for both. It stops at the first transformer, phase change or filter.</text>
+  <path d="M 225 290 V 520" class="pwr"/>
+  <path d="M 975 390 V 520" class="pwr"/>
+
+  <!-- deferred -->
+  <rect x="80" y="70" width="290" height="80" class="def"/>
+  <text x="96" y="96" class="h" fill="#3c4a67">W5500 ETHERNET (DEFERRED)</text>
+  <text x="96" y="116" class="s">only if the MCU must sit inside</text>
+  <text x="96" y="134" class="s">the HomePlug data path</text>
+  <path d="M 370 110 H 436" class="dashflow"/>
+
+  <rect x="830" y="70" width="290" height="80" class="def"/>
+  <text x="846" y="96" class="h" fill="#3c4a67">SIM7600E LTE (DEFERRED)</text>
+  <text x="846" y="116" class="s">2 A peak; deferred with its</text>
+  <text x="846" y="134" class="s">type-approval question</text>
+  <path d="M 826 110 H 704" class="dashflow"/>
+</svg>
