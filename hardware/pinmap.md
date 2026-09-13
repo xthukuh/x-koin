@@ -20,12 +20,12 @@ Provenance: `doc02` pins are fixed by the MVP plan and must not move;
 | GPIO18 | KQ-130F narrowband PLC | TX  (ESP RX2) | UART | doc02 |
 | 5V | KQ-130F narrowband PLC | VCC (isolated side) | PWR | doc02 |
 | GND | KQ-130F narrowband PLC | GND (isolated side) | GND | doc02 |
-| GPIO36 | W5500 Ethernet -> HomePlug AV | SCK | SPI | proposed |
-| GPIO37 | W5500 Ethernet -> HomePlug AV | MISO | SPI | proposed |
-| GPIO35 | W5500 Ethernet -> HomePlug AV | MOSI | SPI | proposed |
-| GPIO38 | W5500 Ethernet -> HomePlug AV | CS | SPI | proposed |
-| GPIO39 | W5500 Ethernet -> HomePlug AV | INT | CTRL | proposed |
-| GPIO40 | W5500 Ethernet -> HomePlug AV | RST | CTRL | proposed |
+| GPIO39 | W5500 Ethernet -> HomePlug AV | SCK | SPI | proposed (moved 2026-09-13; GPIO33 to GPIO37 are the octal PSRAM bus on every R8 module) |
+| GPIO41 | W5500 Ethernet -> HomePlug AV | MISO | SPI | proposed (moved) |
+| GPIO40 | W5500 Ethernet -> HomePlug AV | MOSI | SPI | proposed (moved) |
+| GPIO42 | W5500 Ethernet -> HomePlug AV | CS | SPI | proposed (moved; GPIO38 drives the RGB LED on DevKitC-1 v1.1) |
+| GPIO2 | W5500 Ethernet -> HomePlug AV | INT | CTRL | proposed (moved) |
+| GPIO15 | W5500 Ethernet -> HomePlug AV | RST | CTRL | proposed (moved) |
 | 3V3 | W5500 Ethernet -> HomePlug AV | VCC | PWR | proposed |
 | GND | W5500 Ethernet -> HomePlug AV | GND | GND | proposed |
 | GPIO4 | SIM7600E LTE (backhaul) | RXD (ESP TX1) | UART | proposed |
