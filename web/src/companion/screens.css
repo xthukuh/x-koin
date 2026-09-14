@@ -1,0 +1,608 @@
+/*
+ * Screens of the xKoin Companion app, ported from ./wireframes/*.dc.html.
+ *
+ * Every screen is drawn at the 390x844 design size and the phone frame scales
+ * it, so the sizes here stay in px exactly as the artboards specify them. The
+ * colours do not: each hex in the wireframes maps to a theme.css token so the
+ * screens follow light and dark with the rest of the site.
+ *
+ *   #14213d ink      #0b3d91 accent    #5a6478 muted
+ *   #9aa3b5 faint    #d6dce8 line      #eceff3 surface-2
+ *   #1f7a4d good     #b42323 critical  #ffffff on accent -> ground
+ *
+ * Class names are prefixed xk-app- and used nowhere outside ./screens/.
+ */
+
+/* ---------------------------------------------------------------- shell */
+
+.xk-app {
+  position: relative;
+  width: 390px;
+  height: 844px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 56px 20px 24px;
+  background: var(--xk-surface);
+  color: var(--xk-ink);
+  font-family: var(--xk-font-sans);
+  font-size: 15px;
+  line-height: 1.4;
+  overflow: hidden;
+}
+
+.xk-app--onboard {
+  gap: 20px;
+  padding: 72px 24px 32px;
+}
+
+.xk-app--attach {
+  gap: 16px;
+}
+
+.xk-app-spacer {
+  flex-grow: 1;
+}
+
+/* ------------------------------------------------------------ typography */
+
+.xk-app-eyebrow {
+  font-family: var(--xk-font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--xk-muted);
+}
+
+.xk-app-label {
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--xk-muted);
+}
+
+.xk-app-mono {
+  font-family: var(--xk-font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.xk-app-note {
+  font-size: 13px;
+  color: var(--xk-muted);
+}
+
+.xk-app-mini {
+  font-size: 12px;
+  color: var(--xk-muted);
+}
+
+.xk-app-muted {
+  color: var(--xk-muted);
+}
+
+.xk-app-strong {
+  font-weight: 600;
+}
+
+.xk-app-foot {
+  font-size: 12px;
+  color: var(--xk-muted);
+  text-align: center;
+}
+
+.xk-app-title {
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+.xk-app-lede {
+  color: var(--xk-muted);
+  line-height: 1.5;
+}
+
+.xk-app-good {
+  color: var(--xk-good);
+  font-weight: 600;
+}
+
+.xk-app-short {
+  color: var(--xk-critical);
+}
+
+/* ------------------------------------------------------------- structure */
+
+.xk-app-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.xk-app-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.xk-app-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.xk-app-box {
+  border: 1.5px solid var(--xk-ink);
+  box-sizing: border-box;
+}
+
+.xk-app-box--dashed {
+  border: 1.5px dashed var(--xk-faint);
+}
+
+.xk-app-grid {
+  display: grid;
+  gap: 8px;
+}
+
+.xk-app-grid--2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.xk-app-grid--3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.xk-app-grid--4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+/* --------------------------------------------------------------- buttons */
+
+.xk-app-btn {
+  border: 1.5px solid var(--xk-ink);
+  padding: 15px;
+  text-align: center;
+  font-weight: 600;
+  min-height: 48px;
+  box-sizing: border-box;
+}
+
+.xk-app-btn--primary {
+  background: var(--xk-accent);
+  border-color: var(--xk-accent);
+  color: var(--xk-ground);
+}
+
+.xk-app-btn--snug {
+  padding: 14px;
+}
+
+.xk-app-btn--off {
+  border-color: var(--xk-faint);
+  color: var(--xk-faint);
+}
+
+/* ------------------------------------------------------------------ main */
+
+.xk-app-meter {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 18px 16px;
+}
+
+.xk-app-figure {
+  font-family: var(--xk-font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 34px;
+  font-weight: 500;
+}
+
+.xk-app-figure span {
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.xk-app-wallet {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 16px;
+}
+
+.xk-app-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.xk-app-action {
+  border: 1.5px solid var(--xk-ink);
+  padding: 14px;
+  text-align: center;
+  font-weight: 600;
+  min-height: 48px;
+  box-sizing: border-box;
+}
+
+.xk-app-action--primary {
+  background: var(--xk-accent);
+  border-color: var(--xk-accent);
+  color: var(--xk-ground);
+}
+
+.xk-app-node {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 16px;
+}
+
+.xk-app-node-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.xk-app-dot {
+  width: 10px;
+  height: 10px;
+  background: var(--xk-good);
+}
+
+.xk-app-recent {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.xk-app-recent .xk-app-label {
+  padding-bottom: 6px;
+}
+
+.xk-app-recent-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-top: 1px solid var(--xk-line);
+}
+
+.xk-app-recent-item:last-child {
+  border-bottom: 1px solid var(--xk-line);
+}
+
+.xk-app-tabs {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-top: 1.5px solid var(--xk-ink);
+  padding-top: 12px;
+  font-size: 12px;
+  text-align: center;
+  letter-spacing: 0.04em;
+  color: var(--xk-muted);
+}
+
+.xk-app-tab--on {
+  color: var(--xk-ink);
+  font-weight: 600;
+}
+
+/* --------------------------------------------------------------- onboard */
+
+.xk-app-seed {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  padding: 14px;
+}
+
+.xk-app-seed-word {
+  font-family: var(--xk-font-mono);
+  font-size: 13px;
+}
+
+.xk-app-check {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 12px 14px;
+}
+
+.xk-app-checkbox {
+  width: 22px;
+  height: 22px;
+  border: 1.5px solid var(--xk-ink);
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.xk-app-checkbox--on {
+  background: var(--xk-accent);
+}
+
+.xk-app-check-text {
+  font-size: 14px;
+}
+
+.xk-app-choices {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ----------------------------------------------------------- buy and send */
+
+.xk-app-amount {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 14px 16px;
+  font-family: var(--xk-font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 30px;
+}
+
+.xk-app-amount-unit {
+  font-size: 14px;
+}
+
+.xk-app-chip {
+  border: 1.5px solid var(--xk-faint);
+  padding: 10px;
+  text-align: center;
+  font-size: 13px;
+  box-sizing: border-box;
+}
+
+.xk-app-chip--on {
+  border-color: var(--xk-accent);
+  font-weight: 600;
+}
+
+.xk-app-pay {
+  border: 1.5px solid var(--xk-faint);
+  padding: 12px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.xk-app-pay--on {
+  border-color: var(--xk-accent);
+  font-weight: 600;
+}
+
+.xk-app-field {
+  display: flex;
+  justify-content: space-between;
+  padding: 13px 16px;
+  font-family: var(--xk-font-mono);
+}
+
+.xk-app-field-action {
+  color: var(--xk-muted);
+  font-size: 12px;
+}
+
+.xk-app-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px 16px;
+}
+
+.xk-app-steps--sm {
+  font-size: 14px;
+}
+
+.xk-app-step {
+  display: flex;
+  gap: 10px;
+}
+
+.xk-app-step-n {
+  font-family: var(--xk-font-mono);
+  width: 18px;
+  flex-shrink: 0;
+}
+
+.xk-app-opt {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+}
+
+.xk-app-to {
+  display: flex;
+  gap: 10px;
+}
+
+.xk-app-to-field {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  padding: 13px 14px;
+  font-family: var(--xk-font-mono);
+  font-size: 13px;
+}
+
+.xk-app-qr {
+  width: 48px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.xk-app-explain {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 16px;
+  font-size: 14px;
+}
+
+/* ---------------------------------------------------------------- attach */
+
+.xk-app-node-name {
+  font-weight: 600;
+  font-size: 17px;
+}
+
+.xk-app-facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  font-size: 12px;
+}
+
+.xk-app-fact {
+  border: 1px solid var(--xk-line);
+  padding: 8px;
+}
+
+.xk-app-session {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 16px;
+  font-family: var(--xk-font-mono);
+  font-size: 13px;
+}
+
+.xk-app-bar {
+  height: 8px;
+  background: var(--xk-surface-2);
+  position: relative;
+}
+
+.xk-app-bar-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background: var(--xk-accent);
+  min-width: 4px;
+}
+
+.xk-app-free-item {
+  border: 1.5px solid var(--xk-ink);
+  padding: 12px 8px;
+  text-align: center;
+  font-size: 13px;
+  box-sizing: border-box;
+}
+
+.xk-app-nearby-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-top: 1px solid var(--xk-line);
+}
+
+.xk-app-nearby-item:last-child {
+  border-bottom: 1px solid var(--xk-line);
+}
+
+/* -------------------------------------------------------------- withdraw */
+
+.xk-app-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px 16px;
+  font-size: 13px;
+}
+
+/* --------------------------------------------- confirmation, buy and send */
+
+.xk-app-scrim {
+  position: absolute;
+  inset: 0;
+  background: var(--xk-scrim);
+}
+
+.xk-app-sheet {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 20px;
+  background: var(--xk-surface);
+  border-top: 1.5px solid var(--xk-ink);
+  box-sizing: border-box;
+}
+
+.xk-app-sheet-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--xk-good);
+}
+
+.xk-app-sheet-tick {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  border: 1.5px solid var(--xk-good);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  line-height: 1;
+}
+
+.xk-app-sheet-line {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--xk-muted);
+}
+
+.xk-app-sheet-line span:last-child {
+  font-family: var(--xk-font-mono);
+  color: var(--xk-ink);
+}
+
+/* ------------------------------------------------------------- highlight */
+
+/*
+ * The control the presenter is pointing at. `highlight="buy"` on the frame
+ * adds this class to the named control and nothing else moves.
+ */
+.xk-app-hl {
+  position: relative;
+}
+
+.xk-app-hl::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border: 2px solid var(--xk-accent);
+  pointer-events: none;
+  animation: xk-app-hl-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes xk-app-hl-pulse {
+  0%,
+  100% {
+    opacity: 0.3;
+    box-shadow: 0 0 0 0 transparent;
+  }
+
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 0 4px var(--xk-accent-soft);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .xk-app-hl::after {
+    animation: none;
+    opacity: 1;
+  }
+}

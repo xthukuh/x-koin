@@ -1,0 +1,123 @@
+/* Page furniture for the founder deck: the chapter strip and the terms strip.
+   Everything inside the 1280x720 stage is styled by player.css and the theme
+   tokens; nothing here reaches into the frame, so a captured still is unchanged
+   by this file. */
+
+.xk-deck-chapters {
+  display: flex;
+  gap: 1px;
+  background: var(--xk-line);
+  border: 1px solid var(--xk-line);
+  margin-bottom: 1rem;
+  overflow-x: auto;
+}
+
+.xk-deck-chapter {
+  flex: 1 1 0;
+  min-width: 132px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  align-items: flex-start;
+  text-align: left;
+  padding: 0.5rem 0.65rem 0.6rem;
+  border: 0;
+  background: var(--xk-surface);
+  color: var(--xk-muted);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.82rem;
+  line-height: 1.25;
+}
+
+.xk-deck-chapter:hover {
+  background: var(--xk-surface-2);
+  color: var(--xk-ink);
+}
+
+.xk-deck-chapter.is-current {
+  background: var(--xk-accent-soft);
+  color: var(--xk-ink);
+  box-shadow: inset 0 2px 0 0 var(--xk-accent);
+}
+
+.xk-deck-chapter__n {
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  color: var(--xk-faint);
+}
+
+.xk-deck-chapter.is-current .xk-deck-chapter__n {
+  color: var(--xk-accent);
+}
+
+.xk-deck-chapter__label {
+  font-weight: 500;
+}
+
+.xk-deck-terms {
+  margin-top: 0.85rem;
+  border: 1px solid var(--xk-line);
+  background: var(--xk-surface);
+  padding: 0.7rem 0.85rem 0.85rem;
+}
+
+.xk-deck-terms__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.55rem;
+}
+
+.xk-deck-terms__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  gap: 1px;
+  background: var(--xk-line-soft);
+  border: 1px solid var(--xk-line-soft);
+}
+
+.xk-deck-term {
+  display: block;
+  background: var(--xk-surface);
+  padding: 0.45rem 0.6rem 0.55rem;
+  text-decoration: none;
+  color: inherit;
+  height: 100%;
+}
+
+.xk-deck-term:hover {
+  background: var(--xk-surface-2);
+}
+
+.xk-deck-term__word {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--xk-accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.xk-deck-term__gloss {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 0.78rem;
+  line-height: 1.35;
+  color: var(--xk-muted);
+}
+
+@media (max-width: 720px) {
+  .xk-deck-chapters {
+    flex-wrap: nowrap;
+  }
+
+  .xk-deck-chapter {
+    min-width: 116px;
+  }
+}
