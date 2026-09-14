@@ -1,0 +1,311 @@
+/*
+ * /manufacturing. Only the pieces the shared theme does not already give:
+ * the cost chart box, the two-column comparison, the factory option cards and
+ * the phase strip. Everything else (sections, tables, .xk-tablewrap, .xk-card,
+ * .xk-stat) comes from theme.css so this page cannot drift from the others.
+ *
+ * Every rule here degrades to one column at narrow widths. Nothing on the page
+ * may make the document scroll sideways; the chart and the tables scroll inside
+ * their own boxes instead.
+ */
+
+.xk-mfg {
+  overflow-x: hidden;
+}
+
+.xk-mfg__rates {
+  margin-top: 1.25rem;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid var(--xk-line);
+  background: var(--xk-surface);
+  font-family: var(--xk-font-mono);
+  font-size: 0.8rem;
+  line-height: 1.55;
+  color: var(--xk-muted);
+}
+
+.xk-mfg__basis {
+  display: block;
+  margin-top: 0.45rem;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: var(--xk-faint);
+}
+
+.xk-mfg__why {
+  margin: 1.5rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 1px;
+  background: var(--xk-line);
+  border: 1px solid var(--xk-line);
+}
+
+.xk-mfg__why li {
+  background: var(--xk-surface);
+  padding: 0.9rem 1rem 1rem;
+  min-width: 0;
+}
+
+.xk-mfg__why strong {
+  display: block;
+  font-family: var(--xk-font-mono);
+  font-size: 0.86rem;
+  margin-bottom: 0.3rem;
+}
+
+.xk-mfg__why span {
+  font-size: 0.84rem;
+  color: var(--xk-muted);
+  line-height: 1.5;
+}
+
+/* ------------------------------------------------------------- cost chart */
+
+.xk-mfg-chart {
+  margin: 1.75rem 0 0;
+}
+
+.xk-mfg-chart__scroll {
+  overflow-x: auto;
+  border: 1px solid var(--xk-line);
+  background: var(--xk-surface);
+  padding: 0.5rem;
+}
+
+.xk-mfg-chart__svg {
+  display: block;
+  width: 100%;
+  min-width: 620px;
+  height: auto;
+}
+
+.xk-mfg-chart figcaption {
+  margin-top: 0.7rem;
+}
+
+/* ------------------------------------------------------- two-path compare */
+
+.xk-mfg-compare {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--xk-line);
+  border: 1px solid var(--xk-line);
+  margin-top: 1.75rem;
+}
+
+.xk-mfg-compare__col {
+  background: var(--xk-surface);
+  padding: 1rem 1.05rem 1.15rem;
+  min-width: 0;
+}
+
+.xk-mfg-compare__name {
+  font-family: var(--xk-font-mono);
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.xk-mfg-compare__sub {
+  font-size: 0.8rem;
+  color: var(--xk-faint);
+  margin: 0.2rem 0 0.9rem;
+}
+
+.xk-mfg-compare__figure {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.4rem 0;
+  border-top: 1px solid var(--xk-line-soft);
+  font-size: 0.85rem;
+}
+
+.xk-mfg-compare__figure span:last-child {
+  font-family: var(--xk-font-mono);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.xk-mfg-compare__win {
+  color: var(--xk-good);
+}
+
+@media (max-width: 640px) {
+  .xk-mfg-compare {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ---------------------------------------------------------- factory cards */
+
+.xk-mfg-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1px;
+  background: var(--xk-line);
+  border: 1px solid var(--xk-line);
+  margin-top: 1.75rem;
+}
+
+.xk-mfg-option {
+  background: var(--xk-surface);
+  padding: 1.1rem 1.15rem 1.3rem;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.xk-mfg-option.is-pick {
+  background: var(--xk-accent-soft);
+}
+
+.xk-mfg-option__tag {
+  font-family: var(--xk-font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--xk-faint);
+}
+
+.xk-mfg-option h3 {
+  margin: 0;
+}
+
+.xk-mfg-option__summary {
+  font-size: 0.88rem;
+  color: var(--xk-muted);
+  margin: 0;
+}
+
+.xk-mfg-option__row {
+  border-top: 1px solid var(--xk-line-soft);
+  padding-top: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.xk-mfg-option__row b {
+  display: block;
+  font-family: var(--xk-font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--xk-faint);
+  font-weight: 600;
+  margin-bottom: 0.2rem;
+}
+
+.xk-mfg-risk {
+  font-family: var(--xk-font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border: 1px solid currentColor;
+  padding: 0.05rem 0.4rem;
+  white-space: nowrap;
+}
+
+.xk-mfg-risk--highest {
+  color: var(--xk-critical);
+}
+
+.xk-mfg-risk--moderate {
+  color: var(--xk-warn);
+}
+
+.xk-mfg-risk--lowest {
+  color: var(--xk-good);
+}
+
+/* ------------------------------------------------------------ phase strip */
+
+.xk-mfg-phases {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 1px;
+  background: var(--xk-line);
+  border: 1px solid var(--xk-line);
+  margin-top: 1.75rem;
+}
+
+.xk-mfg-phase {
+  background: var(--xk-surface);
+  padding: 1rem 1.05rem 1.2rem;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.xk-mfg-phase__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.xk-mfg-phase__tag {
+  font-family: var(--xk-font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--xk-faint);
+}
+
+.xk-mfg-phase h3 {
+  margin: 0;
+}
+
+.xk-mfg-phase__cost {
+  font-family: var(--xk-font-mono);
+  font-size: 0.85rem;
+  color: var(--xk-money);
+}
+
+.xk-mfg-phase__exit {
+  font-size: 0.85rem;
+  color: var(--xk-muted);
+  margin: 0;
+}
+
+/* --------------------------------------------------------------- outgoing */
+
+.xk-mfg-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1px;
+  background: var(--xk-line);
+  border: 1px solid var(--xk-line);
+  margin-top: 1.75rem;
+}
+
+.xk-mfg-links a {
+  background: var(--xk-surface);
+  padding: 0.95rem 1.05rem 1.05rem;
+  text-decoration: none;
+  color: var(--xk-ink);
+  min-width: 0;
+}
+
+.xk-mfg-links a:hover {
+  background: var(--xk-surface-2);
+}
+
+.xk-mfg-links strong {
+  display: block;
+  font-family: var(--xk-font-mono);
+  font-size: 0.9rem;
+  color: var(--xk-accent);
+  margin-bottom: 0.2rem;
+}
+
+.xk-mfg-links span {
+  font-size: 0.83rem;
+  color: var(--xk-muted);
+}

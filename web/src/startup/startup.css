@@ -1,0 +1,630 @@
+/*
+ * /startup. The blueprint look comes from theme.css tokens and the .xk-page
+ * primitives; this file adds only what the page needs that no other route has:
+ * a horizontal phase timeline, stacked budget bars, a scenario grid and the
+ * print rules that turn the page into the leave-behind.
+ *
+ * The eight budget colours are mixed from existing tokens rather than declared
+ * per theme, so light and dark both work without this file knowing which one it
+ * is in.
+ */
+
+.xk-su {
+  --xk-su-hardware: var(--xk-accent);
+  --xk-su-pcb: color-mix(in srgb, var(--xk-accent) 50%, var(--xk-ground));
+  --xk-su-certification: var(--xk-money);
+  --xk-su-legal: color-mix(in srgb, var(--xk-money) 50%, var(--xk-ground));
+  --xk-su-pilot: var(--xk-good);
+  --xk-su-cloud: color-mix(in srgb, var(--xk-good) 45%, var(--xk-ground));
+  --xk-su-people: var(--xk-muted);
+  --xk-su-contingency: color-mix(in srgb, var(--xk-muted) 35%, var(--xk-ground));
+}
+
+/* --------------------------------------------------------------- header */
+
+.xk-su-hero {
+  border-bottom: 1px solid var(--xk-line);
+  padding: clamp(2rem, 6vw, 4rem) 0 clamp(2rem, 5vw, 3rem);
+}
+
+.xk-su-lede {
+  font-size: clamp(1.02rem, 2.2vw, 1.2rem);
+  color: var(--xk-muted);
+  max-width: 62ch;
+}
+
+.xk-su-ask-line {
+  color: var(--xk-ink);
+  font-weight: 600;
+}
+
+.xk-su-rates {
+  border: 1px solid var(--xk-line);
+  background: var(--xk-surface);
+  color: var(--xk-muted);
+  font-size: 0.8rem;
+  line-height: 1.5;
+  margin-top: 1.5rem;
+  max-width: 68ch;
+  padding: 0.7rem 0.85rem;
+}
+
+.xk-su-rates strong {
+  color: var(--xk-ink);
+}
+
+/* ------------------------------------------------------------- ask tiles */
+
+.xk-su-buys {
+  display: grid;
+  gap: 1px;
+  background: var(--xk-line);
+  border: 1px solid var(--xk-line);
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  margin-top: 1px;
+}
+
+.xk-su-buy {
+  background: var(--xk-surface);
+  padding: 0.9rem 1rem 1rem;
+  min-width: 0;
+}
+
+.xk-su-buy-n {
+  color: var(--xk-faint);
+  display: block;
+  font-family: var(--xk-font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.3rem;
+}
+
+.xk-su-buy p {
+  font-size: 0.87rem;
+  margin: 0;
+  color: var(--xk-muted);
+}
+
+.xk-su-unlock {
+  border-left: 3px solid var(--xk-money);
+  margin-top: 1.75rem;
+  padding-left: 0.9rem;
+}
+
+.xk-su-unlock h3 {
+  margin-bottom: 0.25rem;
+}
+
+/* -------------------------------------------------------------- timeline */
+
+.xk-su-rail {
+  border: 1px solid var(--xk-line);
+  background: var(--xk-surface);
+  margin-top: 1.75rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.xk-su-rail-inner {
+  display: grid;
+  grid-auto-columns: minmax(168px, 1fr);
+  grid-auto-flow: column;
+  min-width: 900px;
+}
+
+.xk-su-tick {
+  background: none;
+  border: 0;
+  border-right: 1px solid var(--xk-line-soft);
+  cursor: pointer;
+  display: block;
+  font: inherit;
+  padding: 0.85rem 0.8rem 0.95rem;
+  text-align: left;
+  width: 100%;
+  color: inherit;
+}
+
+.xk-su-tick:last-child {
+  border-right: 0;
+}
+
+.xk-su-tick:hover {
+  background: var(--xk-surface-2);
+}
+
+.xk-su-tick.is-open {
+  background: var(--xk-accent-soft);
+}
+
+.xk-su-tick-n {
+  color: var(--xk-faint);
+  font-family: var(--xk-font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+}
+
+.xk-su-tick-name {
+  display: block;
+  font-family: var(--xk-font-mono);
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.25;
+  margin: 0.25rem 0 0.45rem;
+  text-wrap: balance;
+}
+
+.xk-su-bead {
+  display: block;
+  height: 6px;
+  margin: 0.15rem 0 0.5rem;
+  background: var(--xk-line);
+}
+
+.xk-su-bead.is-done {
+  background: var(--xk-good);
+}
+
+.xk-su-bead.is-progress {
+  background: var(--xk-warn);
+}
+
+.xk-su-bead.is-blocked {
+  background: var(--xk-critical);
+}
+
+.xk-su-tick-meta {
+  color: var(--xk-muted);
+  display: block;
+  font-family: var(--xk-font-mono);
+  font-size: 0.7rem;
+  line-height: 1.5;
+}
+
+.xk-su-panel {
+  border: 1px solid var(--xk-line);
+  border-top: 0;
+  background: var(--xk-surface);
+  padding: clamp(1rem, 3vw, 1.6rem);
+}
+
+.xk-su-panel-head {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  justify-content: space-between;
+  margin-bottom: 0.9rem;
+}
+
+.xk-su-panel-head h3 {
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.xk-su-crit {
+  display: grid;
+  gap: 1px;
+  background: var(--xk-line);
+  border: 1px solid var(--xk-line);
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  margin-top: 1rem;
+}
+
+.xk-su-crit > div {
+  background: var(--xk-surface);
+  padding: 0.8rem 0.9rem 0.9rem;
+  min-width: 0;
+}
+
+.xk-su-crit dt {
+  color: var(--xk-faint);
+  font-family: var(--xk-font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.xk-su-crit dd {
+  font-size: 0.87rem;
+  margin: 0.35rem 0 0;
+}
+
+.xk-su-crit dd.is-risk {
+  color: var(--xk-critical);
+}
+
+.xk-su-plan-note {
+  color: var(--xk-faint);
+  font-size: 0.82rem;
+  margin-top: 1.25rem;
+}
+
+/* ---------------------------------------------------------------- budget */
+
+.xk-su-bars {
+  border: 1px solid var(--xk-line);
+  background: var(--xk-surface);
+  margin-top: 1.75rem;
+  padding: clamp(0.9rem, 2.5vw, 1.4rem);
+}
+
+.xk-su-bar-row {
+  display: grid;
+  gap: 0.15rem 0.9rem;
+  grid-template-columns: minmax(0, 1fr);
+  margin-bottom: 1rem;
+}
+
+.xk-su-bar-row:last-child {
+  margin-bottom: 0;
+}
+
+.xk-su-bar-head {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem 0.75rem;
+  justify-content: space-between;
+}
+
+.xk-su-bar-name {
+  font-family: var(--xk-font-mono);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.xk-su-bar-value {
+  color: var(--xk-muted);
+  font-family: var(--xk-font-mono);
+  font-size: 0.78rem;
+}
+
+.xk-su-bar {
+  display: block;
+  height: 24px;
+  width: 100%;
+}
+
+.xk-su-legend {
+  border-top: 1px solid var(--xk-line-soft);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.1rem;
+  margin-top: 1.1rem;
+  padding-top: 0.8rem;
+}
+
+.xk-su-legend span {
+  align-items: center;
+  color: var(--xk-muted);
+  display: inline-flex;
+  font-size: 0.76rem;
+  gap: 0.4rem;
+}
+
+.xk-su-swatch {
+  display: inline-block;
+  height: 10px;
+  width: 16px;
+}
+
+.xk-su-table td.xk-su-num,
+.xk-su-table th.xk-su-num {
+  font-family: var(--xk-font-mono);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.xk-su-table tr.is-total td {
+  border-top: 1px solid var(--xk-line);
+  font-weight: 600;
+}
+
+.xk-su-table tr.is-phase td {
+  background: var(--xk-surface-2);
+  font-family: var(--xk-font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.xk-su-tag {
+  border: 1px solid currentColor;
+  font-family: var(--xk-font-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.06em;
+  padding: 0.02rem 0.32rem;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.xk-su-tag--verified,
+.xk-su-tag--measured {
+  color: var(--xk-good);
+}
+
+.xk-su-tag--derived {
+  color: var(--xk-accent);
+}
+
+.xk-su-tag--estimate {
+  color: var(--xk-warn);
+}
+
+.xk-su-tag--unquoted {
+  color: var(--xk-money);
+}
+
+.xk-su-tag--unpriced {
+  color: var(--xk-critical);
+}
+
+.xk-su-fn {
+  color: var(--xk-accent);
+  font-family: var(--xk-font-mono);
+  font-size: 0.68rem;
+  text-decoration: none;
+  vertical-align: super;
+}
+
+.xk-su-notes {
+  counter-reset: none;
+  font-size: 0.82rem;
+  list-style: none;
+  margin: 1.75rem 0 0;
+  padding: 0;
+}
+
+.xk-su-notes li {
+  border-top: 1px solid var(--xk-line-soft);
+  color: var(--xk-muted);
+  display: grid;
+  gap: 0.15rem 0.7rem;
+  grid-template-columns: 2.6rem minmax(0, 1fr);
+  padding: 0.5rem 0;
+}
+
+.xk-su-notes b {
+  color: var(--xk-faint);
+  font-family: var(--xk-font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+/* --------------------------------------------------------------- revenue */
+
+.xk-su-assume {
+  display: grid;
+  gap: 1px;
+  background: var(--xk-line);
+  border: 1px solid var(--xk-line);
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  margin-top: 1.5rem;
+}
+
+.xk-su-assume > div {
+  background: var(--xk-surface);
+  min-width: 0;
+  padding: 0.8rem 0.9rem 0.9rem;
+}
+
+.xk-su-assume dt {
+  color: var(--xk-faint);
+  font-family: var(--xk-font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.xk-su-assume .xk-su-assume-value {
+  font-family: var(--xk-font-mono);
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin: 0.3rem 0 0.35rem;
+}
+
+.xk-su-assume .xk-su-assume-basis {
+  color: var(--xk-muted);
+  font-size: 0.79rem;
+  margin: 0;
+}
+
+.xk-su-condition {
+  border-left: 3px solid var(--xk-critical);
+  color: var(--xk-muted);
+  font-size: 0.85rem;
+  margin: 1.5rem 0 0;
+  padding-left: 0.9rem;
+}
+
+.xk-su-map {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+/* -------------------------------------------------------------- tranches */
+
+.xk-su-tranche {
+  border: 1px solid var(--xk-line);
+  background: var(--xk-surface);
+  margin-top: 1.5rem;
+  padding: clamp(1rem, 3vw, 1.5rem);
+}
+
+.xk-su-tranche-head {
+  align-items: baseline;
+  border-bottom: 1px solid var(--xk-line-soft);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 1rem;
+  justify-content: space-between;
+  padding-bottom: 0.7rem;
+}
+
+.xk-su-tranche-total {
+  font-family: var(--xk-font-mono);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--xk-money);
+}
+
+.xk-su-verify {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  margin-top: 1rem;
+}
+
+.xk-su-verify a {
+  border: 1px solid var(--xk-line);
+  display: block;
+  min-width: 0;
+  padding: 0.65rem 0.75rem 0.75rem;
+  text-decoration: none;
+}
+
+.xk-su-verify a:hover {
+  border-color: var(--xk-accent);
+}
+
+.xk-su-verify b {
+  display: block;
+  font-family: var(--xk-font-mono);
+  font-size: 0.85rem;
+}
+
+.xk-su-verify span {
+  color: var(--xk-muted);
+  display: block;
+  font-size: 0.79rem;
+  margin-top: 0.2rem;
+}
+
+/* ------------------------------------------------------------- team, asks */
+
+.xk-su-asks {
+  display: grid;
+  gap: 1px;
+  background: var(--xk-line);
+  border: 1px solid var(--xk-line);
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  margin-top: 1.5rem;
+}
+
+.xk-su-asks > div {
+  background: var(--xk-surface);
+  min-width: 0;
+  padding: 1rem 1.05rem 1.1rem;
+}
+
+.xk-su-asks h3 {
+  color: var(--xk-money);
+}
+
+.xk-su-asks p {
+  font-size: 0.87rem;
+  margin: 0;
+  color: var(--xk-muted);
+}
+
+.xk-su-foot {
+  border-top: 1px solid var(--xk-line);
+  color: var(--xk-faint);
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 0.8rem;
+  gap: 0.5rem 1.5rem;
+  justify-content: space-between;
+  margin-top: 2rem;
+  padding-top: 0.8rem;
+}
+
+/* ----------------------------------------------------------------- print */
+
+@media print {
+  .xk-su {
+    background: #ffffff;
+    color: #000000;
+    font-size: 9pt;
+  }
+
+  .xk-su .xk-section {
+    border-top: 1px solid #999999;
+    padding: 0.5rem 0 0.75rem;
+    break-inside: auto;
+  }
+
+  .xk-su .xk-anim__bar,
+  .xk-su .xk-anim__head,
+  .xk-su .xk-anim__stage {
+    display: none !important;
+  }
+
+  .xk-su .xk-anim {
+    border: 0;
+    margin: 0;
+  }
+
+  .xk-su-rail {
+    overflow-x: visible;
+  }
+
+  .xk-su-rail-inner {
+    grid-auto-flow: row;
+    grid-template-columns: 1fr 1fr 1fr;
+    min-width: 0;
+  }
+
+  .xk-su-tick {
+    border: 1px solid #cccccc;
+    break-inside: avoid;
+  }
+
+  .xk-su-panel {
+    display: none !important;
+  }
+
+  .xk-su-tablewrap,
+  .xk-su .xk-tablewrap {
+    overflow-x: visible;
+  }
+
+  .xk-su table {
+    min-width: 0;
+  }
+
+  .xk-su-bars,
+  .xk-su-tranche,
+  .xk-su-crit > div,
+  .xk-su-asks > div {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .xk-su-print-only {
+    display: block !important;
+  }
+
+  .xk-su-printphase {
+    border-top: 1px solid #cccccc;
+    break-inside: avoid;
+    padding-top: 0.4rem;
+    page-break-inside: avoid;
+  }
+
+  .xk-su-printphase h3 {
+    margin-bottom: 0.15rem;
+  }
+
+  .xk-su-printphase p {
+    margin: 0 0 0.25rem;
+    max-width: none;
+  }
+}
+
+.xk-su-print-only {
+  display: none;
+}
