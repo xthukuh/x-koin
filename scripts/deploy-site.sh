@@ -40,14 +40,13 @@ scp -q -o BatchMode=yes "$ROOT/docker/compose.site.yml" "$HOST:$DIR/docker-compo
 scp -q -o BatchMode=yes "$ROOT/docker/gate/Dockerfile" "$ROOT/docker/gate/server.mjs" "$HOST:$DIR/gate/"
 
 # The remote half runs from a quoted heredoc, so nothing below is expanded by
-# the local shell. Every value it needs arrives as a positional argument.
-ssh -o BatchMode=yes "$HOST" bash -s -- \
-  "$DIR" \
-  "$SITE_HOST" \
-  "${XKOIN_GATE_PASSWORD:-}" \
-  "${XKOIN_GATE_NAMED:-}" \
-  "${XKOIN_GATE_SECRET:-}" \
-  "${XKOIN_GATE_TTL_HOURS:-}" <<'REMOTE'
+# the local shell. Every value it needs arrives as a positional argument. ssh
+# joins its arguments into one command string for the remote shell, so an empty
+# value would vanish and shift the rest; printf %q quotes each one so it
+# survives that trip (an empty value arrives as '').
+REMOTE_ARGS="$(printf '%q ' "$DIR" "$SITE_HOST" "${XKOIN_GATE_PASSWORD:-}" \
+  "${XKOIN_GATE_NAMED:-}" "${XKOIN_GATE_SECRET:-}" "${XKOIN_GATE_TTL_HOURS:-}")"
+ssh -o BatchMode=yes "$HOST" "bash -s -- $REMOTE_ARGS" <<'REMOTE'
 set -eu
 DIR="$1"; SITE_HOST="$2"; IN_PASSWORD="$3"; IN_NAMED="$4"; IN_SECRET="$5"; IN_TTL="$6"
 ENVFILE="$DIR/.env"
