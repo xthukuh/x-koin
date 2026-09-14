@@ -1,9 +1,6 @@
 # Address and account register
 
-Public identifiers only. A private key, seed, API key, password or 2FA
-secret never appears in this file; if one does, the file is treated as
-compromised and every key in it is rotated. Update the same day anything
-changes and commit.
+Public identifiers only. A private key, seed, API key, password or 2FA secret never appears in this file; if one does, the file is treated as compromised and every key in it is rotated. Update the same day anything changes and commit.
 
 Last updated: 2026-09-09 (created, nothing registered yet).
 
@@ -51,8 +48,7 @@ Last updated: 2026-09-09 (created, nothing registered yet).
 
 ## Contracts
 
-Authoritative copies are `contracts/deployments/<chainId>.json`, written by
-the deploy script. This table is the human index.
+Authoritative copies are `contracts/deployments/<chainId>.json`, written by the deploy script. This table is the human index.
 
 | Chain | Token | Treasury | Escrow | Deployed | Verified |
 |---|---|---|---|---|---|

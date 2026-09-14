@@ -195,7 +195,8 @@ button {
 .xk-page {
   background: var(--xk-ground);
   color: var(--xk-ink);
-  overflow-x: hidden;
+  /* clip, not hidden: hidden makes this a scroll container and breaks position: sticky inside it. */
+  overflow-x: clip;
 }
 
 .xk-page h1 {

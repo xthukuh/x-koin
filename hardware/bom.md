@@ -1,9 +1,6 @@
 # xKoin MVP Field Kit - Bill of Materials
 
-Procurement list for the first field-test kit: 2 gateways, 3 satellites, 2 client-side
-test nodes, plus a shared bench/safety kit. Every module carries a 20 percent spare
-allowance (rounded up), and the SX1262 radio carries one extra bench spare on top of
-that, because a dead radio during a field trip in Nairobi cannot be next-day shipped in.
+Procurement list for the first field-test kit: 2 gateways, 3 satellites, 2 client-side test nodes, plus a shared bench/safety kit. Every module carries a 20 percent spare allowance (rounded up), and the SX1262 radio carries one extra bench spare on top of that, because a dead radio during a field trip in Nairobi cannot be next-day shipped in.
 
 ## Kit sizing
 
@@ -14,16 +11,9 @@ that, because a dead radio during a field trip in Nairobi cannot be next-day shi
 | Client test node (ESP32-S3 dev kit + SX1262 only, bench radio testing) | 2 |
 | **Total field units** | **7** |
 
-Spare policy: every module line below is (role count x qty per unit), inflated 20
-percent and rounded up to a whole part. The SX1262 radio additionally gets +1 unit
-kit-wide as a known-good bench reference, listed under Bench and safety.
+Spare policy: every module line below is (role count x qty per unit), inflated 20 percent and rounded up to a whole part. The SX1262 radio additionally gets +1 unit kit-wide as a known-good bench reference, listed under Bench and safety.
 
-Read for this BOM: `hardware/pinmap.md` (pins and part identity), `HANDOVER.md`
-section 3 (wire-format and pin invariants) and section 4 items 3, 4, 6 (ESP-IDF
-compile-untested, SX1262 register VERIFY flags, satellite firmware pending),
-`firmware/xkoin-gateway/platformio.ini` (board id `esp32-s3-devkitc-1`), and
-`firmware/xkoin-gateway/lib/sx1262/sx1262.h` (LoRa and GFSK both run at 868.1 MHz,
-PA config is +22 dBm - see the regulatory flag in the Kenya import section below).
+Read for this BOM: `hardware/pinmap.md` (pins and part identity), `HANDOVER.md` section 3 (wire-format and pin invariants) and section 4 items 3, 4, 6 (ESP-IDF compile-untested, SX1262 register VERIFY flags, satellite firmware pending), `firmware/xkoin-gateway/platformio.ini` (board id `esp32-s3-devkitc-1`), and `firmware/xkoin-gateway/lib/sx1262/sx1262.h` (LoRa and GFSK both run at 868.1 MHz, PA config is +22 dBm - see the regulatory flag in the Kenya import section below).
 
 ## Gateway (2 units, 3 incl. spares per module)
 
@@ -64,9 +54,7 @@ Bench-only radio testers: ESP32-S3 dev kit plus SX1262, nothing else.
 
 ## Bench and safety
 
-Mains-coupling safety kit for the KQ-130F. The KQ-130F couples directly onto 230 V
-mains (pinmap SAFETY note); it is never bench-tested without every item in this
-section in the power path.
+Mains-coupling safety kit for the KQ-130F. The KQ-130F couples directly onto 230 V mains (pinmap SAFETY note); it is never bench-tested without every item in this section in the power path.
 
 | Part | Exact spec / part number | Qty | Indicative unit price USD | Suggested source | Gotcha |
 |---|---|---|---|---|---|
@@ -90,8 +78,7 @@ section in the power path.
 
 ## Consolidated cross-role ordering summary
 
-The MCU board, radio and antenna are the same part across all three roles. Order
-these totals rather than re-deriving them from the tables above:
+The MCU board, radio and antenna are the same part across all three roles. Order these totals rather than re-deriving them from the tables above:
 
 | Part | Gateway | Satellite | Client | Bench spare | Total to order |
 |---|---|---|---|---|---|
@@ -102,96 +89,28 @@ these totals rather than re-deriving them from the tables above:
 
 ## Totals (indicative only)
 
-Gateway subtotal (3 units' worth of every module): USD 621.00
-Satellite subtotal: USD 220.00
-Client test node subtotal: USD 84.00
-Bench and safety subtotal: USD 136.00
-Programming and misc subtotal: USD 109.00
+Gateway subtotal (3 units' worth of every module): USD 621.00 Satellite subtotal: USD 220.00 Client test node subtotal: USD 84.00 Bench and safety subtotal: USD 136.00 Programming and misc subtotal: USD 109.00
 
-**Grand total, indicative, parts only, before freight, Kenya duty, VAT, IDF, RDL or
-PVoC inspection fees: approximately USD 1,170.00.**
+**Grand total, indicative, parts only, before freight, Kenya duty, VAT, IDF, RDL or PVoC inspection fees: approximately USD 1,170.00.**
 
-Several line items are marked "unverified" above where no current sourced price was
-found this session (the 5 V/3 A supply, the isolation transformer, the USB-C cable).
-Confirm those before committing to the total.
+Several line items are marked "unverified" above where no current sourced price was found this session (the 5 V/3 A supply, the isolation transformer, the USB-C cable). Confirm those before committing to the total.
 
 ## Kenya import notes
 
-- Kenya has no de minimis: duty applies at any declared value. Electronics (HS
-  chapter 85) attract roughly 25 percent import duty under the EAC common external
-  tariff, though many bare modules and dev boards fall under HS lines 8542 / 8471 /
-  8517 that can be 0 to 10 percent - ask the freight forwarder to classify per line
-  rather than lump the whole shipment at 25 percent. VAT is 16 percent on CIF plus
-  duty, plus a 2.25 percent Import Declaration Fee and a 1.5 percent Railway
-  Development Levy. (Kenya Tradex, "Kenya Import Duty Rates 2026"; Stackry, "Duties
-  and Taxes: Kenya".)
-- KEBS PVoC: China-origin shipments from 1 March 2026 onward need a Certificate of
-  Conformity from Cotecna or Intertek, or the consignment faces destination
-  inspection at 5 percent of customs value. Goods under USD 100 for personal use are
-  exempt - most individual line items in this BOM qualify, but a consolidated
-  shipment likely exceeds that threshold in aggregate. Confirm with the forwarder
-  whether PVoC is assessed per line or per shipment. (KEBS PVoC Manual v15; Pamoja
-  Imports, "Import Electronics from China to Kenya".)
-- CA type approval: devices operating inside the CA 2022 SRD guideline table (868.0
-  to 868.6 MHz at 25 mW ERP, or 869.4 to 869.65 MHz at 500 mW ERP) are exempt from
-  type approval, but the importer must be able to produce an accredited-lab test
-  report on request. **Flag:** `firmware/xkoin-gateway/lib/sx1262/sx1262.h` sets the
-  SX1262 PA config to +22 dBm (about 158 mW) at 868.1 MHz for both LoRa and GFSK -
-  that is inside the 868.0-868.6 MHz sub-band but roughly 6x over its 25 mW ERP SRD
-  exemption ceiling. As shipped, this firmware configuration does not obviously
-  qualify for the SRD exemption; either the field TX power needs to be reduced in
-  firmware before deployment, or the module needs to go through CA type approval.
-  This needs a decision from Martin (or Kenyan counsel) before field trial, not an
-  assumption either way. The SIM7600E-H LTE module is separately NOT an SRD and is
-  on the modem type-approval list regardless - check the CA type-approved equipment
-  register for SIM7600 before ordering. The new Communications Equipment Distributor
-  licence (July 2026) targets commercial importers and wholesalers; a handful of
-  development units for own use is probably not "distribution," but this should go
-  to counsel rather than being asserted here. (CA "Guidelines on the Use of
-  Radiofrequency Spectrum by Short Range Devices," 2022; Techweez, "Communications
-  Equipment Distributor License Kenya," July 2026.)
-- Practical: ship as one consolidated parcel with a per-line packing list and HS
-  codes, declare "development boards and radio modules for prototyping, not for
-  resale," keep every invoice, and do not ship loose 18650 cells (UN3480) - buy
-  those in Nairobi instead, per the Satellite table above.
+- Kenya has no de minimis: duty applies at any declared value. Electronics (HS chapter 85) attract roughly 25 percent import duty under the EAC common external tariff, though many bare modules and dev boards fall under HS lines 8542 / 8471 / 8517 that can be 0 to 10 percent - ask the freight forwarder to classify per line rather than lump the whole shipment at 25 percent. VAT is 16 percent on CIF plus duty, plus a 2.25 percent Import Declaration Fee and a 1.5 percent Railway Development Levy. (Kenya Tradex, "Kenya Import Duty Rates 2026"; Stackry, "Duties and Taxes: Kenya".)
+- KEBS PVoC: China-origin shipments from 1 March 2026 onward need a Certificate of Conformity from Cotecna or Intertek, or the consignment faces destination inspection at 5 percent of customs value. Goods under USD 100 for personal use are exempt - most individual line items in this BOM qualify, but a consolidated shipment likely exceeds that threshold in aggregate. Confirm with the forwarder whether PVoC is assessed per line or per shipment. (KEBS PVoC Manual v15; Pamoja Imports, "Import Electronics from China to Kenya".)
+- CA type approval: devices operating inside the CA 2022 SRD guideline table (868.0 to 868.6 MHz at 25 mW ERP, or 869.4 to 869.65 MHz at 500 mW ERP) are exempt from type approval, but the importer must be able to produce an accredited-lab test report on request. **Flag:** `firmware/xkoin-gateway/lib/sx1262/sx1262.h` sets the SX1262 PA config to +22 dBm (about 158 mW) at 868.1 MHz for both LoRa and GFSK - that is inside the 868.0-868.6 MHz sub-band but roughly 6x over its 25 mW ERP SRD exemption ceiling. As shipped, this firmware configuration does not obviously qualify for the SRD exemption; either the field TX power needs to be reduced in firmware before deployment, or the module needs to go through CA type approval. This needs a decision from Martin (or Kenyan counsel) before field trial, not an assumption either way. The SIM7600E-H LTE module is separately NOT an SRD and is on the modem type-approval list regardless - check the CA type-approved equipment register for SIM7600 before ordering. The new Communications Equipment Distributor licence (July 2026) targets commercial importers and wholesalers; a handful of development units for own use is probably not "distribution," but this should go to counsel rather than being asserted here. (CA "Guidelines on the Use of Radiofrequency Spectrum by Short Range Devices," 2022; Techweez, "Communications Equipment Distributor License Kenya," July 2026.)
+- Practical: ship as one consolidated parcel with a per-line packing list and HS codes, declare "development boards and radio modules for prototyping, not for resale," keep every invoice, and do not ship loose 18650 cells (UN3480) - buy those in Nairobi instead, per the Satellite table above.
 
 ## Ask before ordering
 
 Decisions only Martin can make, ranked by how much they block the rest of the order:
 
-1. **SIM7600E-H vs SIM7600G-H.** E-H is the Africa/EU band-matched variant (bands
-   1/3/5/7/8/20, covering Safaricom/Airtel/Equitel on bands 3 and 20); G-H is the
-   global variant, easier to find in stock, also covers those bands but carries more
-   inventory risk on availability. Pros of E-H: purpose-matched, no band ambiguity.
-   Cons: pricier HAT form factor found this session (~USD 95), narrower supplier
-   pool. Pros of G-H: wider stock, same band coverage in practice. Cons: broader
-   part number invites a wrong-variant order (SIM7600A, Americas-only, must never be
-   ordered). This blocks the single most expensive line item in the kit (USD 285
-   across 3 gateway units) - confirm first.
-2. **Which SX1262 breakout.** Waveshare Core1262-868M (recommended above, in stock,
-   header breakout, ~USD 8-13 depending on supplier) versus the bare Ebyte
-   E22-900M22S SMD module (cheaper chip, ~USD 6, but needs a carrier board designed
-   and fabricated before it is bench-usable - not realistic on an expedited
-   timeline). Recommendation is Core1262-868M; confirm before the order for 11 units
-   goes out.
-3. **Buy HomePlug AV2 adapters locally in Nairobi, or import.** Importing (Amazon UK,
-   TL-PA4010 KIT, verified ~USD 38/kit) has confirmed pricing and stock but adds
-   freight time plus Kenya duty/VAT/PVoC exposure. Buying locally in Nairobi may be
-   faster and duty-free but no current Nairobi retail price was verified this
-   session for this exact model. Pros of local: consistent with the KQ-130F
-   local-purchase pattern already found (Pixel Electric), likely faster. Cons: price
-   and stock unverified, may need a trip or a local contact. This affects 3 kits
-   (6 adapters) at stake.
-4. **Firmware TX power vs SRD exemption.** See the flagged +22 dBm PA config above
-   the CA SRD 25 mW ERP threshold. This does not block procurement (the same
-   Core1262-868M module supports both power levels in firmware) but it does need a
-   decision before any field trial or import declaration that relies on the SRD
-   exemption.
-5. **One bench-safety station or two.** This BOM priced one isolation transformer
-   and one energy meter but two RCD adapters and two IEC leads, on the assumption
-   that only one mains-side test happens at a time even with two people working.
-   Confirm if Martin wants a fully duplicated second bench safety station (adds
-   roughly USD 54 for a second transformer and meter).
+1. **SIM7600E-H vs SIM7600G-H.** E-H is the Africa/EU band-matched variant (bands 1/3/5/7/8/20, covering Safaricom/Airtel/Equitel on bands 3 and 20); G-H is the global variant, easier to find in stock, also covers those bands but carries more inventory risk on availability. Pros of E-H: purpose-matched, no band ambiguity. Cons: pricier HAT form factor found this session (~USD 95), narrower supplier pool. Pros of G-H: wider stock, same band coverage in practice. Cons: broader part number invites a wrong-variant order (SIM7600A, Americas-only, must never be ordered). This blocks the single most expensive line item in the kit (USD 285 across 3 gateway units) - confirm first.
+2. **Which SX1262 breakout.** Waveshare Core1262-868M (recommended above, in stock, header breakout, ~USD 8-13 depending on supplier) versus the bare Ebyte E22-900M22S SMD module (cheaper chip, ~USD 6, but needs a carrier board designed and fabricated before it is bench-usable - not realistic on an expedited timeline). Recommendation is Core1262-868M; confirm before the order for 11 units goes out.
+3. **Buy HomePlug AV2 adapters locally in Nairobi, or import.** Importing (Amazon UK, TL-PA4010 KIT, verified ~USD 38/kit) has confirmed pricing and stock but adds freight time plus Kenya duty/VAT/PVoC exposure. Buying locally in Nairobi may be faster and duty-free but no current Nairobi retail price was verified this session for this exact model. Pros of local: consistent with the KQ-130F local-purchase pattern already found (Pixel Electric), likely faster. Cons: price and stock unverified, may need a trip or a local contact. This affects 3 kits (6 adapters) at stake.
+4. **Firmware TX power vs SRD exemption.** See the flagged +22 dBm PA config above the CA SRD 25 mW ERP threshold. This does not block procurement (the same Core1262-868M module supports both power levels in firmware) but it does need a decision before any field trial or import declaration that relies on the SRD exemption.
+5. **One bench-safety station or two.** This BOM priced one isolation transformer and one energy meter but two RCD adapters and two IEC leads, on the assumption that only one mains-side test happens at a time even with two people working. Confirm if Martin wants a fully duplicated second bench safety station (adds roughly USD 54 for a second transformer and meter).
 
 ## Sources
 

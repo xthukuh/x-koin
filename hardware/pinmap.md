@@ -1,7 +1,6 @@
 # xKoin device pinmaps
 
-Provenance: `doc02` pins are fixed by the MVP plan and must not move;
-`proposed` pins are this repo's allocation, pending sign-off.
+Provenance: `doc02` pins are fixed by the MVP plan and must not move; `proposed` pins are this repo's allocation, pending sign-off.
 
 
 ## xKoin-Gateway (ESP32-S3-DevKitC-1)
@@ -34,10 +33,7 @@ Provenance: `doc02` pins are fixed by the MVP plan and must not move;
 | 5V | SIM7600E LTE (backhaul) | VCC 2A peak | PWR | proposed |
 | GND | SIM7600E LTE (backhaul) | GND | GND | proposed |
 
-> SAFETY: KQ-130F couples to 230 V mains. Keep mains coupling network fully
-> isolated from the logic side; opto/transformer isolation per doc 03. Never
-> bench-test the mains side without an isolation transformer and RCD.
-> Power: 230 V -> 5 V/3 A buck (HLK or MeanWell) -> AMS1117/buck 3V3 rail.
+> SAFETY: KQ-130F couples to 230 V mains. Keep mains coupling network fully isolated from the logic side; opto/transformer isolation per doc 03. Never bench-test the mains side without an isolation transformer and RCD. Power: 230 V -> 5 V/3 A buck (HLK or MeanWell) -> AMS1117/buck 3V3 rail.
 
 
 ## xKoin-Satellite (ESP32-S3, off-grid)
@@ -58,5 +54,4 @@ Provenance: `doc02` pins are fixed by the MVP plan and must not move;
 | GND | TP4056 + 10 W solar + 18650 | Common ground | GND | doc03 |
 | GPIO1 | Battery sense | VBAT divider (ADC1_CH0) | CTRL | proposed |
 
-> Deep sleep between beacon windows; SX1262 DIO1 wake. Target < 40 mA avg
-> so a 10 W panel + 3400 mAh 18650 rides through 2 overcast days (doc 03).
+> Deep sleep between beacon windows; SX1262 DIO1 wake. Target < 40 mA avg so a 10 W panel + 3400 mAh 18650 rides through 2 overcast days (doc 03).

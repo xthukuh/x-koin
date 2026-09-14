@@ -1,15 +1,10 @@
 # xKoin revamp plan (session four, 2026-09-12)
 
-Working plan for the change request Martin filed on 2026-09-12. It fixes the
-device lineup, the demo matrix, the document tree and the order of work so
-every subagent and every resumed session builds against the same picture.
-Decisions marked "Martin" are open until he answers; the recommended option
-is what the work assumes in the meantime.
+Working plan for the change request Martin filed on 2026-09-12. It fixes the device lineup, the demo matrix, the document tree and the order of work so every subagent and every resumed session builds against the same picture. Decisions marked "Martin" are open until he answers; the recommended option is what the work assumes in the meantime.
 
 ## 1. Device lineup
 
-Martin's names win over the patent draft's names. The mapping is recorded so
-the Drive documents and the repo can be read together.
+Martin's names win over the patent draft's names. The mapping is recorded so the Drive documents and the repo can be read together.
 
 | Martin's name | Patent draft (docs/_drive/01) | Role in one line | Bare-minimum PoC build |
 |---|---|---|---|
@@ -19,16 +14,9 @@ the Drive documents and the repo can be read together.
 | xKoin-Client | (client) | The user: phone with the companion app over Wi-Fi, or the OTG AP dongle for direct LoRa reach | ESP32-S3 (native USB) + SX1262 on a USB-C OTG lead |
 | LoRa ecosystem devices | (AgTech sensors) | Third-party style nodes that ride the free LAN plane: farm sensor, tank level, Meshtastic handset for interop | ESP32-C3 + RA-01SH + soil moisture + DHT22; one Heltec V3 flashed with Meshtastic |
 
-Martin: confirm the mapping of "Node-Satellite" (mains relay) versus
-"Satellite" (off-grid LoRa). The work assumes this reading.
+Martin: confirm the mapping of "Node-Satellite" (mains relay) versus "Satellite" (off-grid LoRa). The work assumes this reading.
 
-Martin: LoRa-bearing boards. Recommended: Heltec WiFi LoRa 32 V3 (ESP32-S3,
-SX1262, OLED, 868 MHz, about 15 to 20 USD) for Satellite, Client dongle and
-the farm node, because it removes SPI wiring, is standard Meshtastic
-hardware, and the OLED carries state on camera. The Node and Node-Satellite
-stay on DevKitC N16R8 with a separate SX1262 module on the doc 02 pins so the
-proven firmware pin map does not move. Alternative: E22-900M22S modules on
-every board (cheaper per radio, more wiring, no display).
+Martin: LoRa-bearing boards. Recommended: Heltec WiFi LoRa 32 V3 (ESP32-S3, SX1262, OLED, 868 MHz, about 15 to 20 USD) for Satellite, Client dongle and the farm node, because it removes SPI wiring, is standard Meshtastic hardware, and the OLED carries state on camera. The Node and Node-Satellite stay on DevKitC N16R8 with a separate SX1262 module on the doc 02 pins so the proven firmware pin map does not move. Alternative: E22-900M22S modules on every board (cheaper per radio, more wiring, no display).
 
 ## 2. Demo matrix
 
@@ -45,9 +33,7 @@ Each demo names the hardware, the observable, and what it proves.
 
 ## 3. Parts to source (bare minimum, one kit)
 
-Quantities are the minimum that runs every demo above once. Scouring agents
-price each line with the exact listing, the store's sold count and rating,
-and at least two candidate listings.
+Quantities are the minimum that runs every demo above once. Scouring agents price each line with the exact listing, the store's sold count and rating, and at least two candidate listings.
 
 | Line | Qty | Notes for the scout |
 |---|---|---|
@@ -73,14 +59,9 @@ and at least two candidate listings.
 | HLK-PM01 5 V mains module | 2 | Or USB chargers |
 | Breadboard, jumpers, extension strips | as needed | |
 
-Optional, decided later: W5500 Ethernet modules if the ESP32 must sit in the
-HomePlug data path (doc 05 decision point 2 recommends the dual-tier design
-instead; the PoC uses the HomePlug adapter's own Wi-Fi for bulk and the
-ESP32 for admission and metering).
+Optional, decided later: W5500 Ethernet modules if the ESP32 must sit in the HomePlug data path (doc 05 decision point 2 recommends the dual-tier design instead; the PoC uses the HomePlug adapter's own Wi-Fi for bulk and the ESP32 for admission and metering).
 
-Safety rule for the bench: KQ-130F is first proven on a 12 V DC line, which
-the module supports, and only then on a mains strip behind an RCD. No
-isolation transformer is bought for the PoC.
+Safety rule for the bench: KQ-130F is first proven on a 12 V DC line, which the module supports, and only then on a mains strip behind an RCD. No isolation transformer is bought for the PoC.
 
 ## 4. Document tree
 
@@ -107,12 +88,7 @@ isolation transformer is bought for the PoC.
     docs/_drive/                 verbatim Drive exports (source, read-only)
     docs/ops/                    critical-accounts, jenga, regulatory brief, key management (moved)
 
-Paper conventions: abstract and keywords at the top, numbered sections,
-figures with numbered captions, tables for anything with three or more
-rows, a references section, plain ASCII punctuation. Each hardware paper
-carries a photo strip of the real parts, a block diagram, a blueprint-style
-wiring drawing with a title block, the pin map, its BOM slice, a power
-budget and an enclosure note.
+Paper conventions: abstract and keywords at the top, numbered sections, figures with numbered captions, tables for anything with three or more rows, a references section, plain ASCII punctuation. Each hardware paper carries a photo strip of the real parts, a block diagram, a blueprint-style wiring drawing with a title block, the pin map, its BOM slice, a power budget and an enclosure note.
 
 ## 5. Order of work
 

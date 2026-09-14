@@ -4,44 +4,25 @@
 
 ## 1. The situation
 
-The Mathioya valley, Murang'a County, after three weeks of long rains. A
-hillside above the road gives way overnight. The road is cut in two places, a
-section of the low-voltage distribution line comes down with it, and the small
-town on the far side of the break loses power and its usable mobile signal
-within the day, because the site that serves it is fed from the line that fell.
+The Mathioya valley, Murang'a County, after three weeks of long rains. A hillside above the road gives way overnight. The road is cut in two places, a section of the low-voltage distribution line comes down with it, and the small town on the far side of the break loses power and its usable mobile signal within the day, because the site that serves it is fed from the line that fell.
 
-Joseph Kariuki is a Kenya Red Cross branch volunteer coordinator. He has done
-this before: floods along the Tana, a bus off the road at Sagana, a building
-collapse. His working problem in the first 48 hours is never a shortage of
-people. It is that the people are distributed along a corridor, out of contact
-with each other, and every piece of information has to travel by somebody
-driving or walking it.
+Joseph Kariuki is a Kenya Red Cross branch volunteer coordinator. He has done this before: floods along the Tana, a bus off the road at Sagana, a building collapse. His working problem in the first 48 hours is never a shortage of people. It is that the people are distributed along a corridor, out of contact with each other, and every piece of information has to travel by somebody driving or walking it.
 
 ## 2. What breaks today
 
-The first 48 hours of a response are dominated by coordination, and
-coordination is exactly what a broken corridor removes.
+The first 48 hours of a response are dominated by coordination, and coordination is exactly what a broken corridor removes.
 
-Terrestrial coverage is gone in the places the response needs it. Cell sites
-run on their own reserve and then stop. Where the backhaul to the site was
-carried on the same infrastructure that failed, the site is useless even while
-it has power.
+Terrestrial coverage is gone in the places the response needs it. Cell sites run on their own reserve and then stop. Where the backhaul to the site was carried on the same infrastructure that failed, the site is useless even while it has power.
 
-Satellite terminals exist and work and are slow to arrive, expensive per
-deployment, and limited in number. A branch coordinator does not have one in
-the boot of his car.
+Satellite terminals exist and work and are slow to arrive, expensive per deployment, and limited in number. A branch coordinator does not have one in the boot of his car.
 
-Handheld VHF radios cover the voice case and nothing else. They do not carry a
-beneficiary list, a stock count, a photograph, or a payment.
+Handheld VHF radios cover the voice case and nothing else. They do not carry a beneficiary list, a stock count, a photograph, or a payment.
 
-The money breaks with everything else. Cash-based response, which is now the
-default instrument in Kenyan emergencies, needs a working payment rail.
-Mobile money without a network is a promise. <!-- TODO: verify -->
+The money breaks with everything else. Cash-based response, which is now the default instrument in Kenyan emergencies, needs a working payment rail. Mobile money without a network is a promise. <!-- TODO: verify -->
 
 ## 3. The xKoin composition
 
-Nothing in this composition is installed. Everything is carried, dropped and
-retrieved.
+Nothing in this composition is installed. Everything is carried, dropped and retrieved.
 
 | Device | Count | How it is deployed | Plane |
 |---|---|---|---|
@@ -51,60 +32,25 @@ retrieved.
 | xKoin-Client OTG dongle | 6 to 12 | One per team, on a responder's phone | Direct LoRa reach, no Wi-Fi, no mains |
 | xKoin-Client | per responder | Phones | Attach, sign, message |
 
-The deployment procedure is the product. A Satellite is a sealed box with a
-panel and a magnet or a strap. A volunteer places it where a phone shows a line
-of sight along the valley, switches it on, and it BEACONs. The next Satellite
-placed within range joins. The mesh grows by walking.
+The deployment procedure is the product. A Satellite is a sealed box with a panel and a magnet or a strap. A volunteer places it where a phone shows a line of sight along the valley, switches it on, and it BEACONs. The next Satellite placed within range joins. The mesh grows by walking.
 
-Frames carry a TTL decremented at each relay (spec section 2), so a chain of
-Satellites across the valley is a chain of hops with a bounded depth, not a
-broadcast storm.
+Frames carry a TTL decremented at each relay (spec section 2), so a chain of Satellites across the valley is a chain of hops with a bounded depth, not a broadcast storm.
 
-**Pre-issued vouchers.** Before a deployment, the kiosk root key signs vouchers
-for the responders' addresses. A voucher is an offline-verifiable Ed25519
-signature over address, amount, reference, issue time and expiry. A responder
-who has never had a connection since leaving Nairobi is admitted at a Satellite
-in the valley, because admission asks nothing of the internet (Law 2). The
-standard expiry is 24 hours; a response deployment needs a longer one, which is
-a field in the voucher and a policy decision, not a code change.
+**Pre-issued vouchers.** Before a deployment, the kiosk root key signs vouchers for the responders' addresses. A voucher is an offline-verifiable Ed25519 signature over address, amount, reference, issue time and expiry. A responder who has never had a connection since leaving Nairobi is admitted at a Satellite in the valley, because admission asks nothing of the internet (Law 2). The standard expiry is 24 hours; a response deployment needs a longer one, which is a field in the voucher and a policy decision, not a code change.
 <!-- TODO: verify -->
 
 ## 4. Internals: which primitives do the work
 
-**Class C is the whole service.** Native XKP frames with no IP
-([../papers/03-protocol-xkp.md](../papers/03-protocol-xkp.md)). A team position
-report, a stock count, a beneficiary identifier, a short message, a request for
-fuel: each is tens to a couple of hundred bytes. They fit LoRa SF7 payloads
-directly. Class A distilled web is technically available at roughly 21.9
-seconds per page on SF7 and is not what a corridor is for. Video is not
-offered.
+**Class C is the whole service.** Native XKP frames with no IP ([../papers/03-protocol-xkp.md](../papers/03-protocol-xkp.md)). A team position report, a stock count, a beneficiary identifier, a short message, a request for fuel: each is tens to a couple of hundred bytes. They fit LoRa SF7 payloads directly. Class A distilled web is technically available at roughly 21.9 seconds per page on SF7 and is not what a corridor is for. Video is not offered.
 
-**Settlement waits, and nothing is lost.** The Node holds one latest receipt
-per client and one settlement queue. During a deployment there may be no
-backhaul at all for days. Receipts accumulate, tickets map from the latest
-receipt, and the first time any Node in the chain reaches the internet, one
-`settleTicketBatch` call carries every client's final cumulative counter. Law 5
-makes replay worthless and Law 6 caps every payment at what was actually
-escrowed, so a long offline period creates no reconciliation work and no
-exposure beyond the offline cap per client.
+**Settlement waits, and nothing is lost.** The Node holds one latest receipt per client and one settlement queue. During a deployment there may be no backhaul at all for days. Receipts accumulate, tickets map from the latest receipt, and the first time any Node in the chain reaches the internet, one `settleTicketBatch` call carries every client's final cumulative counter. Law 5 makes replay worthless and Law 6 caps every payment at what was actually escrowed, so a long offline period creates no reconciliation work and no exposure beyond the offline cap per client.
 
-**Attribution across a moving mesh.** A Satellite that serves a client collects
-that client's receipts itself (spec section 5), so a corridor whose topology
-changes daily as boxes are moved still attributes correctly. The relay path is
-irrelevant to who is owed.
+**Attribution across a moving mesh.** A Satellite that serves a client collects that client's receipts itself (spec section 5), so a corridor whose topology changes daily as boxes are moved still attributes correctly. The relay path is irrelevant to who is owed.
 
-**Meshtastic interoperability.** LoRa BEACONs keep Meshtastic framing for
-discovery (spec section 2). Responders who already carry Meshtastic handsets,
-which is not unusual in Kenyan search and rescue circles, can discover the
-mesh. Full protocol interoperability is not claimed; discovery is.
+**Meshtastic interoperability.** LoRa BEACONs keep Meshtastic framing for discovery (spec section 2). Responders who already carry Meshtastic handsets, which is not unusual in Kenyan search and rescue circles, can discover the mesh. Full protocol interoperability is not claimed; discovery is.
 <!-- TODO: verify -->
 
-**The honest limit.** This composition carries coordination traffic. It does
-not carry a video call from a collapsed building, it does not replace a
-satellite terminal, and it is not an emergency communications system in any
-regulated sense. Its claim is narrower: a corridor of cheap solar boxes that
-keeps text-sized information moving when nothing else does, and that bills
-correctly afterwards without anyone keeping a ledger.
+**The honest limit.** This composition carries coordination traffic. It does not carry a video call from a collapsed building, it does not replace a satellite terminal, and it is not an emergency communications system in any regulated sense. Its claim is narrower: a corridor of cheap solar boxes that keeps text-sized information moving when nothing else does, and that bills correctly afterwards without anyone keeping a ledger.
 
 ## 5. A day in the life
 
@@ -128,36 +74,17 @@ Day two of a response.
 
 ## 6. Economics, with conditions
 
-This is the case where the economics should be stated most carefully, because
-the temptation to oversell is largest.
+This is the case where the economics should be stated most carefully, because the temptation to oversell is largest.
 
-Every shilling figure is conditional on a pricing decision that has not been
-made (spec section 8). Beyond that, a relief corridor has a further condition:
-it is not clear that responders should be metered at all. The protocol requires
-signed receipts for WAN service; it does not require that anyone bill a
-volunteer. Three shapes are possible and only one is recommended:
+Every shilling figure is conditional on a pricing decision that has not been made (spec section 8). Beyond that, a relief corridor has a further condition: it is not clear that responders should be metered at all. The protocol requires signed receipts for WAN service; it does not require that anyone bill a volunteer. Three shapes are possible and only one is recommended:
 
-1. **Pre-funded organisational deposit, recommended.** The responding
-   organisation funds one escrow deposit and relays transfers into each
-   responder's deposit before deployment (option A in
-   [../how-it-works.md](../how-it-works.md) section 5.1). Responders never see a
-   price. The organisation sees one settlement statement afterwards, on a public
-   chain, which is exactly the accountability an audited body wants.
-2. **Free corridor, no metering.** Configure the corridor as free LAN only:
-   class C messaging between responders never leaves the mesh, so no WAN
-   service is provided and nothing is metered. Simplest, and it works whenever
-   the corridor does not need the public internet.
-3. **Responders pay individually.** Not recommended. Billing volunteers in an
-   emergency is the wrong product.
+1. **Pre-funded organisational deposit, recommended.** The responding organisation funds one escrow deposit and relays transfers into each responder's deposit before deployment (option A in [../how-it-works.md](../how-it-works.md) section 5.1). Responders never see a price. The organisation sees one settlement statement afterwards, on a public chain, which is exactly the accountability an audited body wants.
+2. **Free corridor, no metering.** Configure the corridor as free LAN only: class C messaging between responders never leaves the mesh, so no WAN service is provided and nothing is metered. Simplest, and it works whenever the corridor does not need the public internet.
+3. **Responders pay individually.** Not recommended. Billing volunteers in an emergency is the wrong product.
 
-Capital cost is five to eight Satellites, one or two Nodes and a set of
-dongles. Indicative module prices are in `hardware/bom.md`, are part costs
-rather than field-ready kit costs, and a field-ready sealed enclosure with a
-mount has not been costed. <!-- TODO: verify -->
+Capital cost is five to eight Satellites, one or two Nodes and a set of dongles. Indicative module prices are in `hardware/bom.md`, are part costs rather than field-ready kit costs, and a field-ready sealed enclosure with a mount has not been costed. <!-- TODO: verify -->
 
-The one hard economic statement: on-chain cost for a four-day offline
-deployment is one batch settlement, a fraction of a Kenyan cent on Base,
-because only the latest counter per client ever mattered.
+The one hard economic statement: on-chain cost for a four-day offline deployment is one batch settlement, a fraction of a Kenyan cent on Base, because only the latest counter per client ever mattered.
 
 ## 7. What could go wrong, and what answers it
 
@@ -173,17 +100,9 @@ because only the latest counter per client ever mattered.
 
 ## 8. What would have to be true to pilot this
 
-1. A humanitarian partner who will run a tabletop exercise first, then a
-   planned-event deployment such as a marathon or a county exercise, before any
-   real emergency.
-2. A field enclosure: sealed, mountable in a minute by a volunteer, with a
-   visible state indicator and a battery that survives an overcast week.
-3. Demo D2 passed, then a real multi-hop range test in a valley, with an RSSI
-   log at each hop.
-4. TX power capped to the sub-band limit and a duty-cycle position confirmed by
-   counsel, because a relief corridor is the deployment most likely to be
-   noticed and the least defensible if it is non-compliant.
-5. A written statement, agreed with the partner, that the mesh is not an
-   emergency service and carries no guarantee.
-6. A decision on which economic shape applies, with option 1 or option 2 above
-   configured before deployment, never left to be decided in the field.
+1. A humanitarian partner who will run a tabletop exercise first, then a planned-event deployment such as a marathon or a county exercise, before any real emergency.
+2. A field enclosure: sealed, mountable in a minute by a volunteer, with a visible state indicator and a battery that survives an overcast week.
+3. Demo D2 passed, then a real multi-hop range test in a valley, with an RSSI log at each hop.
+4. TX power capped to the sub-band limit and a duty-cycle position confirmed by counsel, because a relief corridor is the deployment most likely to be noticed and the least defensible if it is non-compliant.
+5. A written statement, agreed with the partner, that the mesh is not an emergency service and carries no guarantee.
+6. A decision on which economic shape applies, with option 1 or option 2 above configured before deployment, never left to be decided in the field.
