@@ -16,12 +16,17 @@ const marked = new Marked({ gfm: true, breaks: false });
 marked.use({
   renderer: {
     code({ text, lang }) {
-      const language = (lang ?? '').trim().split(/\s+/)[0];
+      const info = (lang ?? '').trim();
+      const language = info.split(/\s+/)[0];
       if (language === 'mermaid') {
         return `<pre class="mermaid">${escapeHtml(text)}</pre>\n`;
       }
       const className = language ? ` class="language-${escapeHtml(language)}"` : '';
-      return `<pre><code${className}>${escapeHtml(text)}</code></pre>\n`;
+      // The whole info string is kept, not just the first word, so a consumer
+      // can act on a fence such as ```xk-anim frame-hop. The docs renderer
+      // turns those into diagrams; anything else stays a plain code block.
+      const infoAttr = info ? ` data-info="${escapeHtml(info)}"` : '';
+      return `<pre${infoAttr}><code${className}>${escapeHtml(text)}</code></pre>\n`;
     },
   },
 });

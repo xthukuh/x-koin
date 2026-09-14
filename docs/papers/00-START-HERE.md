@@ -1,28 +1,25 @@
 # 00. Start here: a reading guide to the xKoin paper set
 
-Abstract: This guide is the entry point to the xKoin whitepaper set. xKoin is a
-hybrid power-line and LoRa mesh for Kenya in which a user pays per
-cryptographically verified byte of wide-area traffic and pays nothing at all for
-traffic that stays inside the local mesh. The set is written for five readers who
-need different halves of the same system: an investor, an engineer, a node
-operator, a regulator and a contract manufacturer. This paper states what each
-numbered paper contains, the shortest path through the set for each reader, a
-glossary of the vocabulary the other papers assume, the conventions every paper
-follows (figures, tables, numbers that carry a condition, plain ASCII
-punctuation), the mapping between the device names used in this repository and
-the names used in the original patent draft, and the three-value status legend
-that marks every claim in the set as built, partial or proposed.
+Abstract: This guide is the entry point to the xKoin whitepaper set. xKoin is a hybrid power-line and LoRa mesh for Kenya in which a user pays per cryptographically verified byte of wide-area traffic and pays nothing at all for traffic that stays inside the local mesh. The set is written for five readers who need different halves of the same system: an investor, an engineer, a node operator, a regulator and a contract manufacturer. This paper states what each numbered paper contains, the shortest path through the set for each reader, a glossary of the vocabulary the other papers assume, the conventions every paper follows (figures, tables, numbers that carry a condition, plain ASCII punctuation), the mapping between the device names used in this repository and the names used in the original patent draft, and the three-value status legend that marks every claim in the set as built, partial or proposed.
 
-Keywords: xKoin, mesh networking, power-line communication, LoRa, state-channel
-settlement, Kenya, reading guide
+Keywords: xKoin, mesh networking, power-line communication, LoRa, state-channel settlement, Kenya, reading guide
 
 ## 1. What the set is
 
-The set is one document in fifteen files. It describes a network that sells
-internet transit over infrastructure that already exists in a Kenyan building,
-which is the mains wiring, and over a radio plane that survives when the mains
-does not. Payment is metered in a KES-pegged token on the Base L2 chain and
-bought with M-Pesa or Equitel.
+The set is one document in sixteen files. It describes a network that sells internet transit over infrastructure that already exists in a Kenyan building, which is the mains wiring, and over a radio plane that survives when the mains does not. Payment is metered in a KES-pegged token on the Base L2 chain and bought with M-Pesa or Equitel.
+
+```xk-anim frame-hop
+A frame hops from the client to a satellite to the node and out to the internet, and one signed receipt goes back to the device that served it.
+```
+
+```xk-compare
+title: The two planes, and which one costs anything
+Free LAN plane | Paid WAN
+Price | 0 XKN, always | metered in 10 KB units against a deposit
+Proof needed | none at all | one Ed25519 receipt the client signed
+Backhaul down | still works | pauses, and settles when the link returns
+Examples | neighbour chat, files on the Node, farm sensors | a web page, an app sync, a video call
+```
 
 | File | Contains | Primary reader |
 |---|---|---|
@@ -42,35 +39,19 @@ bought with M-Pesa or Equitel.
 | `12-proof-of-concept-plan.md` | The six demos and their acceptance tests | Engineer, investor |
 | `13-roadmap.md` | What ships when, and what each stage unblocks | Investor |
 | `14-references.md` | The consolidated source list | Everyone |
+| `15-hidden-gems-and-fallback-channels.md` | A graded brainstorm of sixteen extensions: cellular fallbacks, erasure coding, on-chip storage, compression, and ten more, each with its cost, bit rate and legality | Engineer, investor |
 
 ## 2. Reading order by audience
 
-**Investor.** `00-x-koin-concept.md` for the thesis, then
-`01-problem-and-market.md` for the prices that make it a business, then
-`04-settlement-and-economics.md` section on operator unit economics, then
-`12-proof-of-concept-plan.md` to see what will actually be demonstrated and
-`13-roadmap.md` for the dates. Read the status legend in section 6 below first;
-about half of the set describes work that is proven in software and not yet in a
-building.
+**Investor.** `00-x-koin-concept.md` for the thesis, then `01-problem-and-market.md` for the prices that make it a business, then `04-settlement-and-economics.md` section on operator unit economics, then `12-proof-of-concept-plan.md` to see what will actually be demonstrated and `13-roadmap.md` for the dates. Read the status legend in section 6 below first; about half of the set describes work that is proven in software and not yet in a building.
 
-**Engineer.** `02-system-architecture.md`, then `03-protocol-xkp.md`, then the
-hardware papers `05` to `09` in order. `10-security-and-trust.md` before writing
-any code that touches a receipt or a ticket. The protocol source of truth is
-`protocol/spec.md` in this repository; where a paper and the spec disagree, the
-spec wins and the paper is a bug.
+**Engineer.** `02-system-architecture.md`, then `03-protocol-xkp.md`, then the hardware papers `05` to `09` in order. `10-security-and-trust.md` before writing any code that touches a receipt or a ticket. The protocol source of truth is `protocol/spec.md` in this repository; where a paper and the spec disagree, the spec wins and the paper is a bug.
 
-**Node operator.** `01-problem-and-market.md` section on the three buyers, then
-`04-settlement-and-economics.md`, then `05-hardware-node.md` and
-`06-hardware-node-satellite.md` for what has to be installed and what it draws.
+**Node operator.** `01-problem-and-market.md` section on the three buyers, then `04-settlement-and-economics.md`, then `05-hardware-node.md` and `06-hardware-node-satellite.md` for what has to be installed and what it draws.
 
-**Regulator or counsel.** `00-x-koin-concept.md` sections on trusted parties and
-claims, then `11-regulatory-and-safety.md`, then `10-security-and-trust.md`. The
-standing brief to counsel is `docs/ops/regulatory-brief.md`, which carries the
-open questions in the form a lawyer can answer.
+**Regulator or counsel.** `00-x-koin-concept.md` sections on trusted parties and claims, then `11-regulatory-and-safety.md`, then `10-security-and-trust.md`. The standing brief to counsel is `docs/ops/regulatory-brief.md`, which carries the open questions in the form a lawyer can answer.
 
-**Contract manufacturer.** `docs/x-koin-beta/` rather than this set: the beta
-folder holds the merged-board version, the PCB outline and the manufacturing
-brief. Use `05` to `07` here for the function each block must perform.
+**Contract manufacturer.** `docs/x-koin-beta/` rather than this set: the beta folder holds the merged-board version, the PCB outline and the manufacturing brief. Use `05` to `07` here for the function each block must perform.
 
 ## 3. Glossary
 
@@ -120,40 +101,23 @@ brief. Use `05` to `07` here for the function each block must perform.
 
 ## 4. Conventions
 
-Figures are SVG in `assets/`, named `<paper>-figNN-<slug>.svg`, in one of two
-styles: blueprint for hardware drawings, schematic for topologies, money flows
-and state. Every figure is referenced from the text before it appears, carries a
-numbered caption inside its alt text, and repeats that caption as an italic line
-underneath. Tables carry anything with three or more parallel rows. Wire formats
-and code sit in fenced blocks.
+Figures are SVG in `assets/`, named `<paper>-figNN-<slug>.svg`, in one of two styles: blueprint for hardware drawings, schematic for topologies, money flows and state. Every figure is referenced from the text before it appears, carries a numbered caption inside its alt text, and repeats that caption as an italic line underneath. Tables carry anything with three or more parallel rows. Wire formats and code sit in fenced blocks.
 
-Cross-references are relative links to the sibling file and section, for example
-`[03-protocol-xkp.md, section 4](03-protocol-xkp.md#4-proof-layer)`.
+Cross-references are relative links to the sibling file and section, for example `[03-protocol-xkp.md, section 4](03-protocol-xkp.md#4-proof-layer)`.
 
-Numbers that carry a condition keep the condition in the same sentence. Three
-conditions recur across the set and are never dropped:
+Numbers that carry a condition keep the condition in the same sentence. Three conditions recur across the set and are never dropped:
 
-1. The per-unit price is a placeholder at 500 micro-KES per 10 KB unit
-   (0.05 KES/MB) until it clears measured backhaul cost. Every payback and margin
-   figure derived from it is conditional on that measurement.
-2. The payback periods in the Drive tokenomics document are conditional on the
-   same price and on its CapEx and tenant-count assumptions, which are stated
-   wherever the figure appears.
-3. Kenyan 868 MHz duty-cycle and power rules are read from the CA 2022
-   short-range-device guidelines, and whether those guidelines survive the 2025
-   and 2026 regulations is unconfirmed until counsel answers.
+1. The per-unit price is a placeholder at 500 micro-KES per 10 KB unit (0.05 KES/MB) until it clears measured backhaul cost. Every payback and margin figure derived from it is conditional on that measurement.
+2. The payback periods in the Drive tokenomics document are conditional on the same price and on its CapEx and tenant-count assumptions, which are stated wherever the figure appears.
+3. Kenyan 868 MHz duty-cycle and power rules are read from the CA 2022 short-range-device guidelines, and whether those guidelines survive the 2025 and 2026 regulations is unconfirmed until counsel answers.
 
-"Zero-trust" is used only of the peer relay layer, where Laws 1 to 8 mean no peer
-must trust any other peer. The fiat boundary has named custodians and they are
-listed in `protocol/spec.md` section 8 and repeated in the concept paper.
+"Zero-trust" is used only of the peer relay layer, where Laws 1 to 8 mean no peer must trust any other peer. The fiat boundary has named custodians and they are listed in `protocol/spec.md` section 8 and repeated in the concept paper.
 
-Punctuation is plain ASCII throughout: hyphens, straight quotes, no dashes of any
-other kind and no ellipsis characters.
+Punctuation is plain ASCII throughout: hyphens, straight quotes, no dashes of any other kind and no ellipsis characters.
 
 ## 5. Device names
 
-Martin's names are authoritative. The patent draft used a different set, and both
-appear in the older material, so the mapping is fixed here.
+Martin's names are authoritative. The patent draft used a different set, and both appear in the older material, so the mapping is fixed here.
 
 | This set | Patent draft (Drive doc 01) | Role in one line |
 |---|---|---|
@@ -165,8 +129,7 @@ appear in the older material, so the mapping is fixed here.
 
 ## 6. Status legend
 
-Every capability claim in the set carries one of three marks. Nothing in the set
-is written as shipped when it is not.
+Every capability claim in the set carries one of three marks. Nothing in the set is written as shipped when it is not.
 
 | Mark | Meaning | Example |
 |---|---|---|
