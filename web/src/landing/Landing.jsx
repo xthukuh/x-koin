@@ -1,3 +1,5 @@
+import BeyondMvp from './BeyondMvp.jsx';
+import Companion from './Companion.jsx';
 import Devices from './Devices.jsx';
 import DocsAndRepo from './DocsAndRepo.jsx';
 import Faq from './Faq.jsx';
@@ -23,6 +25,8 @@ const SECTIONS = [
   ['#operators', 'Operators'],
   ['#laws', 'Security'],
   ['#roadmap', 'Roadmap'],
+  ['#beyond', 'Beyond MVP'],
+  ['#companion', 'App'],
 ];
 
 export default function Landing() {
@@ -50,6 +54,8 @@ export default function Landing() {
         <Roadmap />
         <Faq />
         <DocsAndRepo />
+        <BeyondMvp />
+        <Companion />
       </main>
 
       <Footer />
