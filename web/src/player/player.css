@@ -1,0 +1,539 @@
+/* The scene player and the inline animation frame. Tokens from theme.css. */
+
+.xk-player {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  background: var(--xk-surface);
+  border: 1px solid var(--xk-line);
+  padding: 0.75rem;
+  user-select: none;
+}
+
+.xk-player.is-fullscreen {
+  background: var(--xk-ground);
+  border: 0;
+  padding: 1rem;
+  height: 100vh;
+  justify-content: center;
+}
+
+/* ------------------------------------------------------------- segments */
+
+.xk-player__segments {
+  display: flex;
+  gap: 4px;
+}
+
+.xk-player__segment {
+  flex: 1 1 0;
+  height: 14px;
+  padding: 5px 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  position: relative;
+}
+
+.xk-player__segment::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 5px;
+  height: 4px;
+  background: var(--xk-line);
+}
+
+.xk-player__segment-fill {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 5px;
+  height: 4px;
+  background: var(--xk-accent);
+  transform-origin: left center;
+  transform: scaleX(0);
+}
+
+.xk-player__segment:hover::before {
+  background: var(--xk-accent-soft);
+}
+
+/* ---------------------------------------------------------------- stage */
+
+.xk-player__stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: var(--xk-ground);
+  border: 1px solid var(--xk-line);
+  overflow: hidden;
+  cursor: pointer;
+  background-image: linear-gradient(var(--xk-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--xk-grid) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+.xk-player.is-fullscreen .xk-player__stage {
+  flex: 0 1 auto;
+  max-height: calc(100vh - 11rem);
+  aspect-ratio: 16 / 9;
+  margin: 0 auto;
+  width: min(100%, calc((100vh - 11rem) * 16 / 9));
+}
+
+.xk-player__frame {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform-origin: center center;
+  color: var(--xk-ink);
+  font-family: var(--xk-font-sans);
+}
+
+/* Scene typography inside the 1280x720 frame. Scenes use these classes so a
+   deck reads as one voice. */
+.xk-scene {
+  position: absolute;
+  inset: 0;
+  padding: 56px 72px;
+  display: flex;
+  flex-direction: column;
+}
+
+.xk-scene__kicker {
+  font-family: var(--xk-font-mono);
+  font-size: 15px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--xk-faint);
+  margin: 0 0 12px;
+}
+
+.xk-scene__title {
+  font-family: var(--xk-font-mono);
+  font-weight: 600;
+  font-size: 44px;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin: 0 0 14px;
+  text-wrap: balance;
+}
+
+.xk-scene__title--big {
+  font-size: 72px;
+}
+
+.xk-scene__lede {
+  font-size: 22px;
+  line-height: 1.45;
+  color: var(--xk-muted);
+  margin: 0;
+  max-width: 900px;
+}
+
+.xk-scene__body {
+  flex: 1 1 auto;
+  position: relative;
+  min-height: 0;
+  margin-top: 24px;
+}
+
+.xk-scene__foot {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--xk-font-mono);
+  font-size: 13px;
+  color: var(--xk-faint);
+  border-top: 1px solid var(--xk-line);
+  padding-top: 10px;
+  margin-top: 16px;
+}
+
+.xk-scene__stat {
+  border: 1px solid var(--xk-line);
+  background: var(--xk-surface);
+  padding: 14px 18px;
+  min-width: 0;
+}
+
+.xk-scene__stat-value {
+  font-family: var(--xk-font-mono);
+  font-weight: 600;
+  font-size: 40px;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.xk-scene__stat-label {
+  font-size: 15px;
+  color: var(--xk-muted);
+  margin-top: 6px;
+}
+
+.xk-scene__money {
+  color: var(--xk-money);
+}
+
+.xk-scene__good {
+  color: var(--xk-good);
+}
+
+.xk-scene__critical {
+  color: var(--xk-critical);
+}
+
+/* --------------------------------------------------------------- overlays */
+
+.xk-player__hint {
+  position: absolute;
+  right: 20px;
+  bottom: 18px;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 0.55rem 1rem;
+  background: var(--xk-accent);
+  color: var(--xk-ground);
+  border: 0;
+  cursor: pointer;
+  animation: xk-nudge 1.6s ease-in-out infinite;
+}
+
+@keyframes xk-nudge {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(4px);
+  }
+}
+
+.xk-player__paused {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  font-family: var(--xk-font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--xk-ground);
+  background: color-mix(in srgb, var(--xk-ink) 70%, transparent);
+  padding: 0.4rem 0.8rem;
+}
+
+.xk-player__help {
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, var(--xk-ground) 94%, transparent);
+  padding: clamp(1rem, 3vw, 2rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  cursor: default;
+  overflow: auto;
+}
+
+.xk-player__help h3 {
+  font-family: var(--xk-font-mono);
+  margin: 0;
+}
+
+.xk-player__help dl {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.4rem 1rem;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.xk-player__help dd {
+  margin: 0;
+  color: var(--xk-muted);
+}
+
+.xk-player__help kbd {
+  font-family: var(--xk-font-mono);
+  font-size: 0.75rem;
+  padding: 0.05rem 0.4rem;
+  border: 1px solid var(--xk-line);
+  border-bottom-width: 2px;
+  background: var(--xk-surface);
+}
+
+/* ---------------------------------------------------------------- caption */
+
+.xk-player__caption {
+  margin: 0;
+  padding: 0.55rem 0.85rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--xk-ink);
+  background: var(--xk-surface-2);
+  border-left: 3px solid var(--xk-accent);
+  min-height: 3.2rem;
+  max-width: none;
+}
+
+/* -------------------------------------------------------------------- bar */
+
+.xk-player__bar {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-areas:
+    'controls scrub tools'
+    'meta meta meta';
+  align-items: center;
+  gap: 0.5rem 0.9rem;
+}
+
+.xk-player__controls {
+  grid-area: controls;
+  display: flex;
+  gap: 0.35rem;
+}
+
+.xk-player__scrub {
+  grid-area: scrub;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.xk-player__meta {
+  grid-area: meta;
+  display: flex;
+  gap: 0.75rem;
+  align-items: baseline;
+  font-size: 0.85rem;
+  color: var(--xk-muted);
+  min-width: 0;
+}
+
+.xk-player__counter {
+  color: var(--xk-ink);
+  font-weight: 600;
+}
+
+.xk-player__title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.xk-player__tools {
+  grid-area: tools;
+  display: flex;
+  gap: 0.3rem;
+}
+
+.xk-player__btn {
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--xk-line);
+  background: var(--xk-surface);
+  color: var(--xk-ink);
+  cursor: pointer;
+  padding: 0;
+}
+
+.xk-player__btn svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: square;
+  stroke-linejoin: miter;
+}
+
+.xk-player__btn svg path[fill='none'] {
+  fill: none;
+}
+
+.xk-player__btn:hover:not(:disabled) {
+  border-color: var(--xk-accent);
+}
+
+.xk-player__btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.xk-player__btn.is-primary {
+  background: var(--xk-accent);
+  border-color: var(--xk-accent);
+  color: var(--xk-ground);
+}
+
+.xk-player__tool {
+  height: 30px;
+  min-width: 30px;
+  padding: 0 0.5rem;
+  border: 1px solid var(--xk-line);
+  background: var(--xk-surface);
+  color: var(--xk-muted);
+  font-size: 0.72rem;
+  font-family: var(--xk-font-mono);
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.xk-player__tool.is-on {
+  color: var(--xk-accent);
+  border-color: var(--xk-accent);
+}
+
+.xk-player input[type='range'],
+.xk-anim__scrub {
+  width: 100%;
+  accent-color: var(--xk-accent);
+  height: 24px;
+  margin: 0;
+  cursor: pointer;
+}
+
+@media (min-width: 720px) {
+  .xk-player__bar {
+    grid-template-columns: auto minmax(0, 1fr) auto auto;
+    grid-template-areas: 'controls scrub meta tools';
+  }
+
+  .xk-player__meta {
+    max-width: 28ch;
+  }
+}
+
+/* ------------------------------------------------------- animation frame */
+
+.xk-anim {
+  margin: 1.5rem 0;
+  border: 1px solid var(--xk-line);
+  background: var(--xk-surface);
+  display: flex;
+  flex-direction: column;
+}
+
+.xk-anim__head {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.45rem 0.7rem;
+  border-bottom: 1px solid var(--xk-line-soft);
+  font-size: 0.85rem;
+}
+
+.xk-anim__badge {
+  font-size: 0.66rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--xk-accent);
+  border: 1px solid currentColor;
+  padding: 0.05rem 0.4rem;
+}
+
+.xk-anim__title {
+  font-weight: 500;
+  color: var(--xk-ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.xk-anim__time {
+  margin-left: auto;
+  font-size: 0.75rem;
+  color: var(--xk-faint);
+}
+
+.xk-anim__stage {
+  position: relative;
+  width: 100%;
+  background: var(--xk-ground);
+  overflow: hidden;
+  background-image: linear-gradient(var(--xk-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--xk-grid) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.xk-anim__stage > svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.xk-anim__cover {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: color-mix(in srgb, var(--xk-ground) 55%, transparent);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  color: var(--xk-ink);
+}
+
+.xk-anim__cover--end {
+  background: color-mix(in srgb, var(--xk-ground) 35%, transparent);
+}
+
+.xk-anim__play {
+  width: 64px;
+  height: 64px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--xk-accent);
+  color: var(--xk-ground);
+  box-shadow: 0 0 0 8px color-mix(in srgb, var(--xk-accent) 18%, transparent);
+  transition: transform 0.18s ease;
+}
+
+.xk-anim__cover:hover .xk-anim__play {
+  transform: scale(1.06);
+}
+
+.xk-anim__cover-label {
+  font-family: var(--xk-font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.xk-anim__bar {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.5rem 0.6rem;
+  border-top: 1px solid var(--xk-line-soft);
+}
+
+.xk-anim__bar .xk-player__btn {
+  width: 32px;
+  height: 32px;
+}
+
+.xk-anim__bar .xk-player__btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.xk-anim__caption {
+  padding: 0.6rem 0.8rem 0.8rem;
+  font-size: 0.87rem;
+  color: var(--xk-muted);
+  border-top: 1px solid var(--xk-line-soft);
+}

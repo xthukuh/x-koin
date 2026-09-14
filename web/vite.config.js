@@ -41,6 +41,8 @@ export default defineConfig({
   server: {
     port: 5173,
     strictPort: true,
+    // A tunnel (ngrok) in front of the dev server presents its own hostname.
+    allowedHosts: ['.ngrok-free.dev', '.ngrok-free.app'],
     fs: {
       // The markdown glob reads ../docs and the landing page's part photos read
       // ../hardware, both outside the Vite root.

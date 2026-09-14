@@ -1,0 +1,910 @@
+{
+  "generated": "2026-09-09T17:40:17.290788+00:00",
+  "mode": "dry-run, HTTP mocked, same code path as production",
+  "journeys": [
+    {
+      "id": "buy_gas_mpesa_daraja",
+      "title": "Buy gas with M-Pesa (Daraja STK)",
+      "steps": [
+        {
+          "n": 1,
+          "actor": "user",
+          "layer": "fiat",
+          "action": "Customer asks the kiosk to buy gas, paying with M-Pesa over the Daraja STK rail.",
+          "evidence": {
+            "request": {
+              "method": "POST",
+              "path": "/buy-gas",
+              "body": {
+                "phone": "254722000100",
+                "amount_kes": 50,
+                "client_address": "0xa1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+                "rail": "daraja"
+              },
+              "authorization_header_present": false,
+              "signature_header_present": false
+            },
+            "response": {
+              "status_code": 200,
+              "body": {
+                "order_key": "ws_CO_TRACE_D1",
+                "ack": {
+                  "ResponseCode": "0",
+                  "ResponseDescription": "Success. Request accepted for processing",
+                  "CustomerMessage": "Success. Request accepted for processing",
+                  "CheckoutRequestID": "ws_CO_TRACE_D1",
+                  "MerchantRequestID": "mr-trace-d1"
+                }
+              }
+            }
+          }
+        },
+        {
+          "n": 2,
+          "actor": "kiosk",
+          "layer": "fiat",
+          "action": "Gateway fetches a Daraja OAuth bearer token before it can push the STK prompt.",
+          "evidence": {
+            "request": {
+              "method": "GET",
+              "path": "/oauth/v1/generate",
+              "body": null,
+              "authorization_header_present": true,
+              "signature_header_present": false
+            },
+            "response": {
+              "status_code": 200,
+              "body": {
+                "access_token": "daraja-demo-token",
+                "expires_in": 3599
+              }
+            }
+          }
+        },
+        {
+          "n": 3,
+          "actor": "daraja",
+          "layer": "fiat",
+          "action": "Daraja accepts the STK push and returns a CheckoutRequestID that keys the pending order.",
+          "evidence": {
+            "request": {
+              "method": "POST",
+              "path": "/mpesa/stkpush/v1/processrequest",
+              "body": {
+                "BusinessShortCode": "174379",
+                "Password": "[redacted]",
+                "Timestamp": "20260909174016",
+                "TransactionType": "CustomerPayBillOnline",
+                "Amount": 50,
+                "PartyA": "254722000100",
+                "PartyB": "174379",
+                "PhoneNumber": "254722000100",
+                "CallBackURL": "https://kiosk.example.com/daraja/stk-callback",
+                "AccountReference": "0xa1a1a1a1a1",
+                "TransactionDesc": "xKoin Gas Voucher"
+              },
+              "authorization_header_present": true,
+              "signature_header_present": false
+            },
+            "response": {
+              "status_code": 200,
+              "body": {
+                "ResponseCode": "0",
+                "ResponseDescription": "Success. Request accepted for processing",
+                "CustomerMessage": "Success. Request accepted for processing",
+                "CheckoutRequestID": "ws_CO_TRACE_D1",
+                "MerchantRequestID": "mr-trace-d1"
+              }
+            },
+            "pending_order": {
+              "order_key": "ws_CO_TRACE_D1",
+              "phone": "254722000100",
+              "amount_kes": 50,
+              "client_address": "0xa1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+              "rail": "daraja"
+            }
+          }
+        },
+        {
+          "n": 4,
+          "actor": "user",
+          "layer": "fiat",
+          "action": "Customer enters their M-Pesa PIN on the STK prompt on their own handset; this happens off-system and is what the callback below confirms.",
+          "evidence": {
+            "order_key": "ws_CO_TRACE_D1",
+            "phone": "254722000100",
+            "amount_kes": 50
+          }
+        },
+        {
+          "n": 5,
+          "actor": "daraja",
+          "layer": "fiat",
+          "action": "Daraja posts the STK result callback confirming the payment succeeded.",
+          "evidence": {
+            "request": {
+              "method": "POST",
+              "path": "/daraja/stk-callback",
+              "body": {
+                "Body": {
+                  "stkCallback": {
+                    "CheckoutRequestID": "ws_CO_TRACE_D1",
+                    "ResultCode": 0,
+                    "ResultDesc": "The service request is processed successfully.",
+                    "CallbackMetadata": {
+                      "Item": [
+                        {
+                          "Name": "Amount",
+                          "Value": 50
+                        },
+                        {
+                          "Name": "MpesaReceiptNumber",
+                          "Value": "TIH3TRACE1"
+                        },
+                        {
+                          "Name": "PhoneNumber",
+                          "Value": 254722000100
+                        }
+                      ]
+                    }
+                  }
+                }
+              },
+              "authorization_header_present": false,
+              "signature_header_present": false
+            },
+            "response": {
+              "status_code": 200,
+              "body": {
+                "ResultCode": 0,
+                "ResultDesc": "Accepted",
+                "mint": {
+                  "dry_run": true,
+                  "to": "",
+                  "fn": "bridgeMint",
+                  "args": [
+                    "0xa1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+                    50000000,
+                    "TIH3TRACE1"
+                  ],
+                  "chain_id": 84532
+                },
+                "voucher": {
+                  "voucher": {
+                    "client_address": "0xa1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+                    "amount_ukes": 50000000,
+                    "fiat_ref": "TIH3TRACE1",
+                    "rail": "daraja",
+                    "issued_at": 1788975616,
+                    "expires_at": 1789062016
+                  },
+                  "signature": "QoGiYxxCws6DSRlAZ1bKJME0C/hAhrNxYN1Y/HxVUI1xHQqLe8QKKmYmgQsiPiUy3OUwFnifSCqSmakHLoL+Cw=="
+                }
+              }
+            }
+          }
+        },
+        {
+          "n": 6,
+          "actor": "bridge",
+          "layer": "chain",
+          "action": "ChainBridge dry-run captures the bridgeMint call crediting the buyer 1:1 for the confirmed KES payment.",
+          "evidence": {
+            "mint": {
+              "dry_run": true,
+              "contract": "",
+              "function": "bridgeMint",
+              "args": [
+                "0xa1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+                50000000,
+                "TIH3TRACE1"
+              ],
+              "amount_ukes": 50000000,
+              "amount_kes": 50.0,
+              "chain_id": 84532
+            }
+          }
+        },
+        {
+          "n": 7,
+          "actor": "kiosk",
+          "layer": "kiosk",
+          "action": "Kiosk signs and issues an offline Gas Voucher bound to the buyer's address, verifiable by firmware without backhaul.",
+          "evidence": {
+            "voucher": {
+              "client_address": "0xa1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+              "amount_ukes": 50000000,
+              "amount_kes": 50.0,
+              "fiat_ref": "TIH3TRACE1",
+              "rail": "daraja",
+              "issued_at": 1788975616,
+              "expires_at": 1789062016,
+              "ttl_seconds": 86400,
+              "signature_verified": true
+            }
+          }
+        },
+        {
+          "n": 8,
+          "actor": "kiosk",
+          "layer": "fiat",
+          "action": "Order is removed from PENDING_ORDERS now that it is fulfilled.",
+          "evidence": {
+            "order_key": "ws_CO_TRACE_D1",
+            "still_pending": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "buy_gas_mpesa_jenga",
+      "title": "Buy gas with M-Pesa via Equitel Jenga STK",
+      "steps": [
+        {
+          "n": 1,
+          "actor": "user",
+          "layer": "fiat",
+          "action": "Customer asks to buy gas paying with M-Pesa, routed through Equitel's Jenga wallet-based STK push. The /buy-gas route currently only wires rail='daraja' (Daraja STK) and rail='jenga' (Jenga USSD merchants/payment); JengaClient.mpesa_stk_push has no route yet, so this journey calls it directly and then feeds its IPN into /jenga/mpesa-callback exactly as production would once the rail is wired.",
+          "evidence": {
+            "phone": "254722000200",
+            "amount_kes": 25,
+            "client_address": "0xb2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2",
+            "route_wiring": "pending: /buy-gas has no rail value that calls JengaClient.mpesa_stk_push"
+          }
+        },
+        {
+          "n": 2,
+          "actor": "kiosk",
+          "layer": "fiat",
+          "action": "Gateway authenticates as the Jenga merchant to obtain a bearer token.",
+          "evidence": {
+            "request": {
+              "method": "POST",
+              "path": "/authentication/api/v3/authenticate/merchant",
+              "body": {
+                "merchantCode": "",
+                "consumerSecret": "[redacted]"
+              },
+              "authorization_header_present": false,
+              "signature_header_present": false
+            },
+            "response": {
+              "status_code": 200,
+              "body": {
+                "accessToken": "jenga-demo-token-1",
+                "refreshToken": "r-1"
+              }
+            }
+          }
+        },
+        {
+          "n": 3,
+          "actor": "jenga",
+          "layer": "fiat",
+          "action": "Jenga accepts the M-Pesa STK push request, signed with the merchant's RSA key (signature header present).",
+          "evidence": {
+            "request": {
+              "method": "POST",
+              "path": "/api-checkout/mpesa-stk-push/v3.0/init",
+              "body": {
+                "order": {
+                  "orderReference": "XKTRACE-JENGA-STK-1",
+                  "orderAmount": 25,
+                  "orderCurrency": "KES",
+                  "source": "APICHECKOUT",
+                  "countryCode": "KE",
+                  "description": "xKoin gas top-up"
+                },
+                "customer": {
+                  "name": "Jane Trace",
+                  "email": "jane@example.com",
+                  "phoneNumber": "254722000200",
+                  "identityNumber": "",
+                  "firstAddress": "",
+                  "secondAddress": ""
+                },
+                "payment": {
+                  "paymentReference": "PAYTRACE2",
+                  "paymentCurrency": "KES",
+                  "channel": "MOBILE",
+                  "service": "MPESA",
+                  "provider": "JENGA",
+                  "callbackUrl": "https://kiosk.example.com/jenga/mpesa-callback",
+                  "details": {
+                    "msisdn": "254722000200",
+                    "paymentAmount": 25
+                  }
+                }
+              },
+              "authorization_header_present": true,
+              "signature_header_present": true
+            },
+            "response": {
+              "status_code": 200,
+              "body": {
+                "status": true,
+                "code": "0",
+                "message": "Request accepted for processing",
+                "data": {
+                  "amount": 25.0,
+                  "charge": 1.0,
+                  "paymentReference": "PAYTRACE2",
+                  "invoiceNumber": "INVTRACE2",
+                  "orderReference": "XKTRACE-JENGA-STK-1",
+                  "amountDebited": 25.0
+                }
+              }
+            },
+            "client_result": {
+              "status": true,
+              "code": "0",
+              "message": "Request accepted for processing",
+              "data": {
+                "amount": 25.0,
+                "charge": 1.0,
+                "paymentReference": "PAYTRACE2",
+                "invoiceNumber": "INVTRACE2",
+                "orderReference": "XKTRACE-JENGA-STK-1",
+                "amountDebited": 25.0
+              }
+            }
+          }
+        },
+        {
+          "n": 4,
+          "actor": "kiosk",
+          "layer": "fiat",
+          "action": "Gateway records the pending order under the order reference, the way the route would once wired (set here directly, matching tests/test_fiat_bridge.py's PENDING_ORDERS setup).",
+          "evidence": {
+            "order_key": "XKTRACE-JENGA-STK-1",
+            "pending_order": {
+              "phone": "254722000200",
+              "amount_kes": 25,
+              "client_address": "0xb2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2",
+              "rail": "jenga"
+            }
+          }
+        },
+        {
+          "n": 5,
+          "actor": "jenga",
+          "layer": "fiat",
+          "action": "Jenga posts the M-Pesa STK IPN confirming payment; the gateway keys it on customer.reference (our order reference).",
+          "evidence": {
+            "request": {
+              "method": "POST",
+              "path": "/jenga/mpesa-callback",
+              "body": {
+                "callbackType": "IPN",
+                "customer": {
+                  "name": "Jane Trace",
+                  "mobileNumber": "0722000200",
+                  "reference": "XKTRACE-JENGA-STK-1"
+                },
+                "transaction": {
+                  "date": "2026-09-09 12:00:00",
+                  "reference": "SH90TRACE2",
+                  "paymentMode": "MPESA",
+                  "amount": 25,
+                  "currency": "KES",
+                  "serviceCharge": 1,
+                  "billNumber": "INVTRACE2",
+                  "servedBy": "JENGA",
+                  "status": "SUCCESS"
+                },
+                "bank": {
+                  "reference": "NONE",
+                  "transactionType": "C",
+                  "account": "NONE"
+                }
+              },
+              "authorization_header_present": false,
+              "signature_header_present": false
+            },
+            "response": {
+              "status_code": 200,
+              "body": {
+                "accepted": true,
+                "fulfilled": true,
+                "mint": {
+                  "dry_run": true,
+                  "to": "",
+                  "fn": "bridgeMint",
+                  "args": [
+                    "0xb2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2",
+                    25000000,
+                    "SH90TRACE2"
+                  ],
+                  "chain_id": 84532
+                },
+                "voucher": {
+                  "voucher": {
+                    "client_address": "0xb2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2",
+                    "amount_ukes": 25000000,
+                    "fiat_ref": "SH90TRACE2",
+                    "rail": "jenga",
+                    "issued_at": 1788975617,
+                    "expires_at": 1789062017
+                  },
+                  "signature": "bHcY76UhiZijdiWJ7ARh6yBk8XeSHCcPdpVQi35+IsyB0e1M548J1op7lyIGHAZPuEC+Hol1mkw7hfohsse/Ag=="
+                }
+              }
+            }
+          }
+        },
+        {
+          "n": 6,
+          "actor": "bridge",
+          "layer": "chain",
+          "action": "ChainBridge dry-run captures the bridgeMint call crediting the buyer 1:1 for the confirmed KES payment.",
+          "evidence": {
+            "mint": {
+              "dry_run": true,
+              "contract": "",
+              "function": "bridgeMint",
+              "args": [
+                "0xb2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2",
+                25000000,
+                "SH90TRACE2"
+              ],
+              "amount_ukes": 25000000,
+              "amount_kes": 25.0,
+              "chain_id": 84532
+            }
+          }
+        },
+        {
+          "n": 7,
+          "actor": "kiosk",
+          "layer": "kiosk",
+          "action": "Kiosk signs and issues an offline Gas Voucher bound to the buyer's address.",
+          "evidence": {
+            "voucher": {
+              "client_address": "0xb2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2",
+              "amount_ukes": 25000000,
+              "amount_kes": 25.0,
+              "fiat_ref": "SH90TRACE2",
+              "rail": "jenga",
+              "issued_at": 1788975617,
+              "expires_at": 1789062017,
+              "ttl_seconds": 86400,
+              "signature_verified": true
+            }
+          }
+        },
+        {
+          "n": 8,
+          "actor": "kiosk",
+          "layer": "fiat",
+          "action": "Order is removed from PENDING_ORDERS now that it is fulfilled.",
+          "evidence": {
+            "order_key": "XKTRACE-JENGA-STK-1",
+            "still_pending": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "buy_gas_equitel_jenga",
+      "title": "Buy gas from an Equitel line (Jenga USSD push)",
+      "steps": [
+        {
+          "n": 1,
+          "actor": "user",
+          "layer": "fiat",
+          "action": "Customer on an Equitel line asks the kiosk to buy gas; this rail bills the Equitel wallet directly (USSD push), no separate M-Pesa STK.",
+          "evidence": {
+            "request": {
+              "method": "POST",
+              "path": "/buy-gas",
+              "body": {
+                "phone": "254722000300",
+                "amount_kes": 35,
+                "client_address": "0xc3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3",
+                "rail": "jenga"
+              },
+              "authorization_header_present": false,
+              "signature_header_present": false
+            },
+            "response": {
+              "status_code": 200,
+              "body": {
+                "order_key": "XKc3c3c3c335",
+                "ack": {
+                  "status": true,
+                  "code": "0",
+                  "message": "Request accepted for processing",
+                  "transactionId": "JNGTRACE3"
+                }
+              }
+            }
+          }
+        },
+        {
+          "n": 2,
+          "actor": "kiosk",
+          "layer": "fiat",
+          "action": "Gateway authenticates as the Jenga merchant to obtain a bearer token.",
+          "evidence": {
+            "request": {
+              "method": "POST",
+              "path": "/authentication/api/v3/authenticate/merchant",
+              "body": {
+                "merchantCode": "",
+                "consumerSecret": "[redacted]"
+              },
+              "authorization_header_present": false,
+              "signature_header_present": false
+            },
+            "response": {
+              "status_code": 200,
+              "body": {
+                "accessToken": "jenga-demo-token-2",
+                "refreshToken": "r-2"
+              }
+            }
+          }
+        },
+        {
+          "n": 3,
+          "actor": "jenga",
+          "layer": "fiat",
+          "action": "Jenga accepts the merchant payment (USSD push) request, signed with the merchant's RSA key.",
+          "evidence": {
+            "request": {
+              "method": "POST",
+              "path": "/v3-apis/transaction-api/v3.0/merchants/payment",
+              "body": {
+                "merchant": {
+                  "accountNumber": "",
+                  "countryCode": "KE"
+                },
+                "payment": {
+                  "ref": "XKc3c3c3c335",
+                  "amount": "35",
+                  "currency": "KES",
+                  "telco": "Equitel",
+                  "mobileNumber": "254722000300",
+                  "date": "2026-09-09",
+                  "callBackUrl": "https://kiosk.example.com/jenga/payment-callback",
+                  "pushType": "USSD"
+                }
+              },
+              "authorization_header_present": true,
+              "signature_header_present": true
+            },
+            "response": {
+              "status_code": 200,
+              "body": {
+                "status": true,
+                "code": "0",
+                "message": "Request accepted for processing",
+                "transactionId": "JNGTRACE3"
+              }
+            },
+            "pending_order": {
+              "order_key": "XKc3c3c3c335",
+              "phone": "254722000300",
+              "amount_kes": 35,
+              "client_address": "0xc3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3",
+              "rail": "jenga"
+            }
+          }
+        },
+        {
+          "n": 4,
+          "actor": "user",
+          "layer": "fiat",
+          "action": "Customer confirms the USSD prompt on their Equitel handset; this happens off-system and is what the callback below confirms.",
+          "evidence": {
+            "order_key": "XKc3c3c3c335",
+            "phone": "254722000300",
+            "amount_kes": 35
+          }
+        },
+        {
+          "n": 5,
+          "actor": "jenga",
+          "layer": "fiat",
+          "action": "Jenga posts the merchant payment callback confirming the USSD payment succeeded.",
+          "evidence": {
+            "request": {
+              "method": "POST",
+              "path": "/jenga/payment-callback",
+              "body": {
+                "status": "SUCCESS",
+                "reference": "XKc3c3c3c335",
+                "transactionId": "JNGTRACE3-RCPT",
+                "amount": 35
+              },
+              "authorization_header_present": false,
+              "signature_header_present": false
+            },
+            "response": {
+              "status_code": 200,
+              "body": {
+                "accepted": true,
+                "fulfilled": true,
+                "mint": {
+                  "dry_run": true,
+                  "to": "",
+                  "fn": "bridgeMint",
+                  "args": [
+                    "0xc3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3",
+                    35000000,
+                    "JNGTRACE3-RCPT"
+                  ],
+                  "chain_id": 84532
+                },
+                "voucher": {
+                  "voucher": {
+                    "client_address": "0xc3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3",
+                    "amount_ukes": 35000000,
+                    "fiat_ref": "JNGTRACE3-RCPT",
+                    "rail": "jenga",
+                    "issued_at": 1788975617,
+                    "expires_at": 1789062017
+                  },
+                  "signature": "siAXkbDK5D2TN6jSxQ2zPWDAg7AYYoTnthKHWk2agVvQrpBDNAdK2TxeZ51Jyp8pQExhwGY28PxHbQFvFoLfAw=="
+                }
+              }
+            }
+          }
+        },
+        {
+          "n": 6,
+          "actor": "bridge",
+          "layer": "chain",
+          "action": "ChainBridge dry-run captures the bridgeMint call crediting the buyer 1:1 for the confirmed KES payment.",
+          "evidence": {
+            "mint": {
+              "dry_run": true,
+              "contract": "",
+              "function": "bridgeMint",
+              "args": [
+                "0xc3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3",
+                35000000,
+                "JNGTRACE3-RCPT"
+              ],
+              "amount_ukes": 35000000,
+              "amount_kes": 35.0,
+              "chain_id": 84532
+            }
+          }
+        },
+        {
+          "n": 7,
+          "actor": "kiosk",
+          "layer": "kiosk",
+          "action": "Kiosk signs and issues an offline Gas Voucher bound to the buyer's address.",
+          "evidence": {
+            "voucher": {
+              "client_address": "0xc3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3",
+              "amount_ukes": 35000000,
+              "amount_kes": 35.0,
+              "fiat_ref": "JNGTRACE3-RCPT",
+              "rail": "jenga",
+              "issued_at": 1788975617,
+              "expires_at": 1789062017,
+              "ttl_seconds": 86400,
+              "signature_verified": true
+            }
+          }
+        },
+        {
+          "n": 8,
+          "actor": "kiosk",
+          "layer": "fiat",
+          "action": "Order is removed from PENDING_ORDERS now that it is fulfilled.",
+          "evidence": {
+            "order_key": "XKc3c3c3c335",
+            "still_pending": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "fee_payout",
+      "title": "Founder fee payout: treasury to pinned M-Pesa number",
+      "steps": [
+        {
+          "n": 1,
+          "actor": "kiosk",
+          "layer": "chain",
+          "action": "Payout worker verifies the founder MSISDN pin: the destination phone number is signed by the beneficiary key and checked against the on-chain beneficiary address before the worker will start. A server compromise cannot redirect the payout, only delay it.",
+          "evidence": {
+            "msisdn": "254722000900",
+            "beneficiary": "0xEca772903cB28E79d099301016B0a58022818a3b",
+            "chain_id": 84532,
+            "token_address": "",
+            "signature_valid": true
+          }
+        },
+        {
+          "n": 2,
+          "actor": "chain",
+          "layer": "chain",
+          "action": "An on-chain Transfer(beneficiary -> bridge) event is observed (constructed here as the dry-run source, the same way tests/test_payout_worker.py's transfer() helper does; live mode reads this from Base logs).",
+          "evidence": {
+            "event": {
+              "from": "0xEca772903cB28E79d099301016B0a58022818a3b",
+              "to": "0xb7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7b7",
+              "value": 65123456,
+              "tx_hash": "0x7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a",
+              "log_index": 0
+            }
+          }
+        },
+        {
+          "n": 3,
+          "actor": "worker",
+          "layer": "fiat",
+          "action": "Worker floors the transfer to whole KES (dust stays in the bridge) and fires a Daraja B2C to the pinned MSISDN; the event's own fields are never consulted for a destination.",
+          "evidence": {
+            "oauth_request": {
+              "method": "GET",
+              "path": "/oauth/v1/generate",
+              "body": null,
+              "authorization_header_present": true,
+              "signature_header_present": false
+            },
+            "b2c_request": {
+              "method": "POST",
+              "path": "/mpesa/b2c/v1/paymentrequest",
+              "body": {
+                "InitiatorName": "",
+                "SecurityCredential": "[redacted]",
+                "CommandID": "BusinessPayment",
+                "Amount": 65,
+                "PartyA": "",
+                "PartyB": "254722000900",
+                "Remarks": "xKoin fee 0x7a7a7a7a",
+                "QueueTimeOutURL": "https://kiosk.example.com/daraja/b2c-timeout",
+                "ResultURL": "https://kiosk.example.com/daraja/b2c-result",
+                "Occasion": "xKoinPayout"
+              },
+              "authorization_header_present": true,
+              "signature_header_present": false
+            },
+            "b2c_response": {
+              "status_code": 200,
+              "body": {
+                "ResponseCode": "0",
+                "ResponseDescription": "Accept the service request successfully.",
+                "ConversationID": "AG_TRACE_PAYOUT_1",
+                "OriginatorConversationID": "orig-trace-payout-1"
+              }
+            },
+            "msisdn_pinned": "254722000900",
+            "msisdn_in_request_matches_pin": true
+          }
+        },
+        {
+          "n": 4,
+          "actor": "worker",
+          "layer": "fiat",
+          "action": "Ledger row after the B2C is sent: nothing is burned yet, burn is deferred until Daraja confirms.",
+          "evidence": {
+            "ledger_row": {
+              "key": "0x7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a:0",
+              "tx_hash": "0x7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a",
+              "log_index": 0,
+              "sender": "0xeca772903cb28e79d099301016b0a58022818a3b",
+              "value_ukes": 65123456,
+              "amount_kes": 65,
+              "dust_ukes": 123456,
+              "status": "b2c_sent",
+              "attempts": 1,
+              "conversation_id": "AG_TRACE_PAYOUT_1",
+              "originator_id": "orig-trace-payout-1",
+              "receipt": null,
+              "burn_tx": null,
+              "last_error": null,
+              "created_at": 1788975617,
+              "updated_at": 1788975617
+            }
+          }
+        },
+        {
+          "n": 5,
+          "actor": "daraja",
+          "layer": "fiat",
+          "action": "Daraja posts the asynchronous B2C result callback confirming the payout to the founder's phone.",
+          "evidence": {
+            "request": {
+              "method": "POST",
+              "path": "/daraja/b2c-result",
+              "body": {
+                "Result": {
+                  "ResultType": 0,
+                  "ResultCode": 0,
+                  "ResultDesc": "The service request is processed successfully.",
+                  "OriginatorConversationID": "orig-trace-payout-1",
+                  "ConversationID": "AG_TRACE_PAYOUT_1",
+                  "TransactionID": "QBTRACE01",
+                  "ResultParameters": {
+                    "ResultParameter": [
+                      {
+                        "Key": "TransactionAmount",
+                        "Value": 65
+                      },
+                      {
+                        "Key": "TransactionReceipt",
+                        "Value": "QBTRACE01"
+                      }
+                    ]
+                  }
+                }
+              },
+              "authorization_header_present": false,
+              "signature_header_present": false
+            },
+            "response": {
+              "status_code": 200,
+              "body": {
+                "ResultCode": 0,
+                "ResultDesc": "Accepted"
+              }
+            }
+          }
+        },
+        {
+          "n": 6,
+          "actor": "bridge",
+          "layer": "chain",
+          "action": "Only after Daraja confirms does ChainBridge dry-run capture the bridgeBurn call, for exactly the paid-out amount (never the dust, never before confirmation).",
+          "evidence": {
+            "burn": {
+              "dry_run": true,
+              "contract": "",
+              "function": "bridgeBurn",
+              "args": [
+                65000000,
+                "QBTRACE01"
+              ],
+              "amount_ukes": 65000000,
+              "amount_kes": 65.0,
+              "chain_id": 84532
+            }
+          }
+        },
+        {
+          "n": 7,
+          "actor": "worker",
+          "layer": "fiat",
+          "action": "Final ledger row is settled, carrying the Daraja receipt and the burn transaction; the read-only /payouts operator view exposes it without being able to move funds itself.",
+          "evidence": {
+            "ledger_row": {
+              "key": "0x7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a:0",
+              "tx_hash": "0x7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a",
+              "log_index": 0,
+              "sender": "0xeca772903cb28e79d099301016b0a58022818a3b",
+              "value_ukes": 65123456,
+              "amount_kes": 65,
+              "dust_ukes": 123456,
+              "status": "settled",
+              "attempts": 1,
+              "conversation_id": "AG_TRACE_PAYOUT_1",
+              "originator_id": "orig-trace-payout-1",
+              "receipt": "QBTRACE01",
+              "burn_tx": {
+                "dry_run": true,
+                "to": "",
+                "fn": "bridgeBurn",
+                "args": [
+                  65000000,
+                  "QBTRACE01"
+                ],
+                "chain_id": 84532
+              },
+              "last_error": null,
+              "created_at": 1788975617,
+              "updated_at": 1788975617
+            },
+            "payouts_endpoint_row_count": 1
+          }
+        }
+      ]
+    }
+  ]
+}

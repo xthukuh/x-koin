@@ -10,7 +10,7 @@ export default function NotFound() {
       </p>
       <p className="mt-4">
         <Link className="underline" to="/">
-          Back to the index
+          Back to the home page
         </Link>
       </p>
     </main>

@@ -1,45 +1,33 @@
 @import 'tailwindcss';
 
-/* The index and the docs viewer commit to a light surface, because the three
-   legacy pages they frame are light and a half-inherited dark theme would put
-   white table headers on a black page. */
-:root {
-  color-scheme: light;
-}
+/*
+ * Tailwind stays available for utility layout inside routes. Colours, type and
+ * the body surface come from theme.css, which loads first. The markdown prose
+ * styles below are used by the docs viewer and read the same tokens.
+ */
 
-html,
-body,
-#root {
-  height: 100%;
-}
-
-body {
-  margin: 0;
-  background: #ffffff;
-  color: #171717;
-  font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
-}
-
-/* Prose styles for the rendered markdown. Plain CSS rather than a typography
-   plugin, because the corpus is technical documents and the whole page needs
-   to stay simple. */
 .xk-markdown {
   line-height: 1.65;
 }
 
 .xk-markdown h1 {
-  font-size: 1.75rem;
+  font-family: var(--xk-font-mono);
+  font-size: 1.85rem;
   font-weight: 600;
+  letter-spacing: -0.02em;
   margin: 1.5rem 0 0.75rem;
 }
 
 .xk-markdown h2 {
+  font-family: var(--xk-font-mono);
   font-size: 1.35rem;
   font-weight: 600;
+  letter-spacing: -0.01em;
   margin: 1.75rem 0 0.5rem;
 }
 
 .xk-markdown h3 {
+  font-family: var(--xk-font-mono);
   font-size: 1.1rem;
   font-weight: 600;
   margin: 1.25rem 0 0.5rem;
@@ -67,23 +55,22 @@ body {
 }
 
 .xk-markdown blockquote {
-  border-left: 3px solid #d4d4d4;
+  border-left: 3px solid var(--xk-line);
   padding-left: 1rem;
-  color: #525252;
+  color: var(--xk-muted);
 }
 
 .xk-markdown code {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-family: var(--xk-font-mono);
   font-size: 0.875em;
-  background: #f5f5f5;
+  background: var(--xk-surface-2);
   padding: 0.1em 0.3em;
-  border-radius: 3px;
 }
 
 .xk-markdown pre {
-  background: #f5f5f5;
-  border: 1px solid #e5e5e5;
-  border-radius: 4px;
+  background: var(--xk-console-bg);
+  color: var(--xk-console-ink);
+  border: 1px solid var(--xk-console-line);
   padding: 0.85rem 1rem;
   overflow-x: auto;
   margin: 1rem 0;
@@ -92,11 +79,13 @@ body {
 .xk-markdown pre code {
   background: none;
   padding: 0;
+  color: inherit;
 }
 
 .xk-markdown pre.mermaid {
   background: none;
   border: 0;
+  color: inherit;
   text-align: center;
 }
 
@@ -112,14 +101,14 @@ body {
 
 .xk-markdown th,
 .xk-markdown td {
-  border: 1px solid #e5e5e5;
+  border: 1px solid var(--xk-line);
   padding: 0.4rem 0.65rem;
   text-align: left;
   vertical-align: top;
 }
 
 .xk-markdown th {
-  background: #fafafa;
+  background: var(--xk-surface-2);
   font-weight: 600;
 }
 
@@ -131,6 +120,6 @@ body {
 
 .xk-markdown hr {
   border: 0;
-  border-top: 1px solid #e5e5e5;
+  border-top: 1px solid var(--xk-line);
   margin: 2rem 0;
 }

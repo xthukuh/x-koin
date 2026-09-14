@@ -1,0 +1,5 @@
+# Private demo behind a pass-wall. Nothing here is for indexing.
+User-agent: *
+Disallow: /
+
+Sitemap: https://xkoin.thuku.dev/sitemap.xml

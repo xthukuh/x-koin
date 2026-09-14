@@ -92,9 +92,6 @@ export default function Shop() {
   return (
     <main className="xk-shop">
       <div className="xk-shop-wrap">
-        <p className="xk-shop-back">
-          <Link to="/map">xKoin index</Link>
-        </p>
 
         <header className="xk-shop-head">
           <h1 className="xk-shop-title">Proof of concept parts</h1>

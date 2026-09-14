@@ -4,18 +4,20 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "predev": "node scripts/inline-data.mjs",
+    "predev": "node scripts/build-sitemap.mjs",
     "dev": "vite --port 5173 --strictPort",
-    "prebuild": "node scripts/inline-data.mjs",
+    "prebuild": "node scripts/build-sitemap.mjs",
     "build": "vite build",
-    "preview": "vite preview --port 4173 --strictPort"
+    "preview": "vite preview --port 4173 --strictPort",
+    "proof:sync": "node scripts/sync-proof.mjs",
+    "sitemap": "node scripts/build-sitemap.mjs"
   },
   "dependencies": {
     "marked": "18.0.12",
+    "motion": "13.3.0",
     "react": "19.3.0",
     "react-dom": "19.3.0",
-    "react-router-dom": "7.18.3",
-    "reveal.js": "5.2.1"
+    "react-router-dom": "7.18.3"
   },
   "devDependencies": {
     "@tailwindcss/vite": "4.3.3",

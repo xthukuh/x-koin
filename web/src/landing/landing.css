@@ -8,106 +8,8 @@
  * and var(--xk-*) for the same reason.
  */
 
-:root {
-  --xk-ground: #f5f4ef;
-  --xk-surface: #fffefa;
-  --xk-surface-2: #ecebe3;
-  --xk-ink: #14213d;
-  --xk-muted: #4d5a72;
-  --xk-faint: #77839a;
-  --xk-line: #d6dce8;
-  --xk-line-soft: #e6eaf1;
-  --xk-accent: #0b3d91;
-  --xk-accent-soft: #dbe3f3;
-  --xk-money: #b8741a;
-  --xk-good: #17703f;
-  --xk-warn: #8c5a12;
-  --xk-critical: #a32020;
-  --xk-grid: rgba(11, 61, 145, 0.08);
-  --xk-console-bg: #101a2e;
-  --xk-console-ink: #dfe7f5;
-  --xk-console-line: #27374f;
-  --xk-plc: #0b3d91;
-  --xk-nbplc: #b8741a;
-  --xk-lora: #17703f;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) {
-    --xk-ground: #0b1424;
-    --xk-surface: #111d31;
-    --xk-surface-2: #16233a;
-    --xk-ink: #e8edf6;
-    --xk-muted: #9fadc4;
-    --xk-faint: #74839c;
-    --xk-line: #26375a;
-    --xk-line-soft: #1d2c48;
-    --xk-accent: #6ea0ff;
-    --xk-accent-soft: #1b2c4b;
-    --xk-money: #f0b95a;
-    --xk-good: #53c98c;
-    --xk-warn: #d9a34e;
-    --xk-critical: #f08585;
-    --xk-grid: rgba(110, 160, 255, 0.09);
-    --xk-console-bg: #07101f;
-    --xk-console-ink: #dfe7f5;
-    --xk-console-line: #1e2d47;
-    --xk-plc: #6ea0ff;
-    --xk-nbplc: #f0b95a;
-    --xk-lora: #53c98c;
-  }
-}
-
-:root[data-theme='dark'] {
-  --xk-ground: #0b1424;
-  --xk-surface: #111d31;
-  --xk-surface-2: #16233a;
-  --xk-ink: #e8edf6;
-  --xk-muted: #9fadc4;
-  --xk-faint: #74839c;
-  --xk-line: #26375a;
-  --xk-line-soft: #1d2c48;
-  --xk-accent: #6ea0ff;
-  --xk-accent-soft: #1b2c4b;
-  --xk-money: #f0b95a;
-  --xk-good: #53c98c;
-  --xk-warn: #d9a34e;
-  --xk-critical: #f08585;
-  --xk-grid: rgba(110, 160, 255, 0.09);
-  --xk-console-bg: #07101f;
-  --xk-console-ink: #dfe7f5;
-  --xk-console-line: #1e2d47;
-  --xk-plc: #6ea0ff;
-  --xk-nbplc: #f0b95a;
-  --xk-lora: #53c98c;
-}
-
-/* index.css pins the app to a light surface for the docs viewer. The landing
-   page owns the whole viewport while it is mounted, so it takes the body back
-   for the duration and hands it over again on route change. */
-:root:has(.xk-landing) {
-  color-scheme: light dark;
-}
-
-:root:has(.xk-landing) body {
-  background: var(--xk-ground);
-  color: var(--xk-ink);
-}
-
 .xk-landing {
-  --xk-pad: clamp(1.25rem, 4vw, 3rem);
-  background: var(--xk-ground);
-  color: var(--xk-ink);
-  font-family: 'IBM Plex Sans', ui-sans-serif, system-ui, 'Segoe UI', Roboto, Arial, sans-serif;
-  font-size: 16px;
-  line-height: 1.6;
   overflow-x: hidden;
-}
-
-.xk-landing *,
-.xk-landing *::before,
-.xk-landing *::after {
-  box-sizing: border-box;
 }
 
 .xk-mono {
@@ -190,51 +92,6 @@
 .xk-landing a {
   color: var(--xk-accent);
   text-underline-offset: 3px;
-}
-
-/* ------------------------------------------------------------------- header */
-
-.xk-topbar {
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  background: var(--xk-ground);
-  border-bottom: 1px solid var(--xk-line);
-}
-
-.xk-topbar__inner {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  min-height: 56px;
-  flex-wrap: wrap;
-}
-
-.xk-brand {
-  font-family: 'IBM Plex Mono', ui-monospace, Consolas, monospace;
-  font-weight: 600;
-  font-size: 1.05rem;
-  letter-spacing: -0.02em;
-  color: var(--xk-ink);
-  text-decoration: none;
-}
-
-.xk-topnav {
-  margin-left: auto;
-  display: flex;
-  gap: 1.1rem;
-  font-size: 0.87rem;
-  flex-wrap: wrap;
-}
-
-.xk-topnav a {
-  color: var(--xk-muted);
-  text-decoration: none;
-}
-
-.xk-topnav a:hover {
-  color: var(--xk-ink);
-  text-decoration: underline;
 }
 
 /* --------------------------------------------------------------------- hero */
@@ -918,30 +775,6 @@
   margin: 0.3rem 0 0;
   font-size: 0.83rem;
   color: var(--xk-muted);
-}
-
-/* ------------------------------------------------------------------- footer */
-
-.xk-footer {
-  border-top: 1px solid var(--xk-line);
-  background: var(--xk-surface-2);
-  padding: 2.25rem 0;
-  font-size: 0.85rem;
-  color: var(--xk-muted);
-}
-
-.xk-footer__inner {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem 2rem;
-  align-items: baseline;
-}
-
-.xk-footer nav {
-  display: flex;
-  gap: 1.1rem;
-  flex-wrap: wrap;
-  margin-left: auto;
 }
 
 .xk-status {
