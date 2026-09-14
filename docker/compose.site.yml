@@ -1,8 +1,12 @@
-# xKoin presentation site (the Vite SPA in web/, served by nginx).
+# xKoin presentation site (the Vite SPA in web/, served by nginx) behind the
+# pass-wall (docker/gate, docs/ops/critical-accounts/07-pass-wall.md).
 #
 # Local:
-#   docker compose -f docker/compose.site.yml up --build
+#   XKOIN_GATE_SECURE=false docker compose -f docker/compose.site.yml up --build
 #   http://127.0.0.1:8090/
+#
+# The local test is plain http, so the cookie cannot carry the Secure flag or
+# the browser will drop it. Everywhere else XKOIN_GATE_SECURE stays true.
 #
 # VPS: same file, behind the Traefik instance already running on the host
 # (docs/ops/critical-accounts/06-vps-xkoin.thuku.dev.md). That Traefik runs on the
@@ -11,13 +15,44 @@
 # traefik.docker.network label. Entrypoint and certresolver match the rest of
 # the host: `websecure` and `letsencrypt`. Override the hostname with
 # XKOIN_SITE_HOST in the env file.
+#
+# Only the site is routed. The gate publishes no port and carries no Traefik
+# label: it is reachable from nginx alone, over the compose network.
 
 services:
+  gate:
+    build:
+      context: gate
+      dockerfile: Dockerfile
+    image: xkoin-gate:local
+    restart: unless-stopped
+    environment:
+      XKOIN_GATE_PASSWORD: ${XKOIN_GATE_PASSWORD:-xkoin#2030}
+      XKOIN_GATE_NAMED: ${XKOIN_GATE_NAMED:-}
+      XKOIN_GATE_SECRET: ${XKOIN_GATE_SECRET:-}
+      XKOIN_GATE_TTL_HOURS: ${XKOIN_GATE_TTL_HOURS:-72}
+      XKOIN_GATE_SECURE: ${XKOIN_GATE_SECURE:-true}
+      XKOIN_GATE_TRUST_PROXY: "true"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1:8081/healthz || exit 1"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "5"
+
   site:
     build:
       context: ..
       dockerfile: docker/site.Dockerfile
     image: xkoin-site:local
+    depends_on:
+      gate:
+        condition: service_healthy
     ports:
       - "127.0.0.1:8090:80"
     restart: unless-stopped
