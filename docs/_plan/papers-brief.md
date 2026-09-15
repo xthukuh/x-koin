@@ -59,7 +59,7 @@ Each hardware paper carries, in this order: role in the network; photo strip of 
 
 ## Potential use cases (docs/potential)
 
-One file per case, `NN-slug.md`, 900 to 1600 words. Sections: the situation (a concrete Kenyan place and a named kind of person); what breaks today; the xKoin composition for that case (which devices, how many, which planes carry what); internals (which primitives do the work: voucher, receipt, ticket, escrow, free LAN plane); a day in the life (a timeline); economics with conditions; what could go wrong and the Law or mechanism that answers it; what would have to be true to pilot it. Cases: 00 last network standing (disaster and outage backbone), 01 large-scale farm IoT, 02 apartment estates, 03 rural market hubs, 04 schools and clinics, 05 disaster relief corridors, 06 community chat and local media, 07 utility and smart metering, 08 transport and matatu stages.
+One file per case, `NN-slug.md`, 900 to 1600 words. Sections: the situation (a concrete Kenyan place and a named kind of person); what breaks today; the xKoin composition for that case (which devices, how many, which planes carry what); internals (which primitives do the work: voucher, receipt, ticket, escrow, free LAN plane); a day in the life (a timeline); economics with conditions; what could go wrong and the Law or mechanism that answers it; what would have to be true to pilot it. Cases: 00 last network standing (disaster and outage backbone), 01 large-scale farm IoT, 02 apartment estates, 03 rural market hubs, 04 schools and clinics, 05 disaster relief corridors, 06 community chat and local media, 07 utility and smart metering, 08 transport and matatu stages, 09 field geology and survey sensors.
 
 ## Beta (docs/x-koin-beta)
 

@@ -18,6 +18,8 @@ Three devices follow, at three levels of commitment.
 | Water tank level node | proposed | The same platform with a different sensor, so the pattern generalises | Us later, or a third party |
 | Meshtastic handset | proposed | Discovery-layer framing compatibility, and nothing beyond it | Bought and flashed with stock firmware |
 
+The same platform carries instruments that have nothing to do with farming, and the case for geology and survey sensors on it, tiltmeters, piezometers and borehole temperature strings, with the payload sizes and duty-cycle arithmetic that decide which of them fit, is `docs/potential/09-field-geology-sensors.md`.
+
 ## 2. The parts, as bought
 
 | ![ESP32-C3 SuperMini](https://ae-pic-a1.aliexpress-media.com/kf/Sa0575ff31c3e4bc997770ae770419218g.png) | ![Ra-01SH SX1262 module](https://ae-pic-a1.aliexpress-media.com/kf/H87f69d7e86114bb490f50cc25cb46d07n.jpg) | ![IPEX to SMA pigtail](https://ae-pic-a1.aliexpress-media.com/kf/Sf8e3edbfdf4c4e9dab886519c4fef288t.jpg) | ![868 MHz SMA antenna](https://ae-pic-a1.aliexpress-media.com/kf/S3db817a9d512481cadf760748f099e39E.jpg) | ![Heltec WiFi LoRa 32 V3](https://ae-pic-a1.aliexpress-media.com/kf/S35ddeef696a54ac0a29cdaa3f09a7a32b.jpg) |

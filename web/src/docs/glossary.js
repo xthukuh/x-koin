@@ -245,6 +245,12 @@ export const GLOSSARY = [
     paper: 'papers/03-protocol-xkp',
   },
   {
+    term: 'store-and-forward',
+    match: ['store-and-forward', 'store and forward'],
+    definition: 'A device with nothing in reach saves its readings to flash and sends them when a listener finally appears.',
+    paper: 'potential/09-field-geology-sensors',
+  },
+  {
     term: 'Sybil',
     definition: 'Faking many identities. It earns nothing here, because only a signed byte count pays.',
     paper: 'papers/10-security-and-trust',
@@ -308,6 +314,12 @@ export const GLOSSARY = [
     exact: true,
     definition: 'The fastest LoRa setting used here, about 5.4 kbps.',
     paper: 'papers/02-system-architecture',
+  },
+  {
+    term: 'SF12',
+    exact: true,
+    definition: 'The slowest LoRa setting used here: the longest reach, and about 24 times the airtime of SF7 for the same frame.',
+    paper: 'potential/09-field-geology-sensors',
   },
   {
     term: 'BW125',
@@ -485,6 +497,16 @@ export const GLOSSARY = [
     exact: true,
     definition: 'An ultrasonic range finder, used here to read a water tank.',
     paper: 'papers/09-lora-ecosystem-devices',
+  },
+  {
+    term: 'tiltmeter',
+    definition: 'An instrument that measures very small changes in the slope of the ground, used to watch a hillside or a quarry face.',
+    paper: 'potential/09-field-geology-sensors',
+  },
+  {
+    term: 'piezometer',
+    definition: 'An instrument that measures water pressure inside the ground, which is how the stability of a slope or a borehole is judged.',
+    paper: 'potential/09-field-geology-sensors',
   },
   {
     term: 'IPEX',

@@ -5,7 +5,7 @@ Everything written about xKoin. Four of these folders are read by the site's mar
 | Folder | What it holds | On the site |
 |---|---|---|
 | `papers/` | The whitepaper set: one document split across numbered files, from the concept and the market through the protocol, the hardware, security, regulation and the roadmap. Figures in `papers/assets/`. | yes |
-| `potential/` | One use case per file, each traced down to the primitives that make it work: farms, estates, market hubs, schools, relief corridors, community media, metering, matatu stages. | yes |
+| `potential/` | One use case per file, each traced down to the primitives that make it work: farms, estates, market hubs, schools, relief corridors, community media, metering, matatu stages, field geology and survey sensors. | yes |
 | `x-koin-beta/` | The compact merged-board version for contract manufacture: concept, schematic, PCB blueprint, manufacturing brief and cost model. | yes |
 | `ops/` | Operating manuals: the critical accounts runbook, the Jenga onboarding, key management and the regulatory brief. Account material, deliberately never imported into the site bundle. | no |
 | `_drive/` | Verbatim exports of the Google Drive design suite (docs 00 to 05). The original source. Do not edit these; re-export instead. | no |

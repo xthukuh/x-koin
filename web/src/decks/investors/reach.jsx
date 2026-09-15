@@ -7,15 +7,18 @@ import { Foot, Head, Stage } from './parts.jsx';
  *
  * Devices and figures come from docs/papers/09-lora-ecosystem-devices.md (the
  * farm sensor node, the water tank node, the Meshtastic handset, the 2.4 mAh a
- * day power budget) and docs/potential/01-large-scale-farm-iot.md (the Laikipia
- * farm with four boreholes and two fifty thousand litre tanks).
+ * day power budget), docs/potential/01-large-scale-farm-iot.md (the Laikipia
+ * farm with four boreholes and two fifty thousand litre tanks) and
+ * docs/potential/09-field-geology-sensors.md (the tiltmeter on the same
+ * platform, reporting twice an hour on a watched slope).
  */
 
 const DEVICES = [
-  { x: 760, y: 70, label: 'Soil probe', note: 'moisture and temperature, every 15 minutes' },
-  { x: 900, y: 190, label: 'Water tank', note: 'level in a 50,000 litre tank' },
-  { x: 760, y: 310, label: 'Borehole pump', note: 'reports when it starts and stops' },
+  { x: 760, y: 56, label: 'Soil probe', note: 'moisture and temperature, every 15 minutes' },
+  { x: 866, y: 166, label: 'Water tank', note: 'level in a 50,000 litre tank' },
+  { x: 760, y: 276, label: 'Borehole pump', note: 'reports when it starts and stops' },
   { x: 560, y: 380, label: 'Handset', note: 'a walker with no phone signal at all' },
+  { x: 866, y: 386, label: 'Tilt sensor', note: 'a watched slope, twice an hour' },
 ];
 
 function TheFreePlane({ t }) {
@@ -26,7 +29,7 @@ function TheFreePlane({ t }) {
       <Head
         kicker="14 / the free plane"
         title="Sensors that never open a wallet."
-        lede="A probe that talks to the box and never leaves the mesh costs nothing to run, so the network gets denser for free."
+        lede="A probe on a farm or a tiltmeter on a slope talks to the box and never leaves the mesh, so it costs nothing to run and the network gets denser for free."
       />
       <div className="xk-scene__body">
         <Stage viewBox="0 0 1136 464">
@@ -103,7 +106,7 @@ function TheFreePlane({ t }) {
         </Stage>
       </div>
       <Foot
-        source="docs/papers/09-lora-ecosystem-devices.md; docs/potential/01-large-scale-farm-iot.md"
+        source="docs/papers/09-lora-ecosystem-devices.md; docs/potential/01-large-scale-farm-iot.md; docs/potential/09-field-geology-sensors.md"
         right="free LAN, no voucher needed"
       />
     </div>
@@ -116,7 +119,7 @@ export const REACH_SCENES = [
     title: 'The free radio plane',
     duration: ms(10),
     caption:
-      'A soil probe, a tank sensor, a borehole pump or a handheld radio talks to the box and never leaves the mesh, so it costs nothing to run. The farm probe draws so little that one cell outlasts its own shelf life.',
+      'A soil probe, a tank sensor, a borehole pump, a tiltmeter on a quarry slope or a handheld radio talks to the box and never leaves the mesh, so farmers and geologists alike send readings at no cost.',
     Scene: TheFreePlane,
   },
 ];
