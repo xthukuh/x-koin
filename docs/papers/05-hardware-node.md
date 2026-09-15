@@ -68,17 +68,17 @@ Provenance follows `hardware/pinmap.md`: **doc02** pins are fixed by the MVP pla
 | GPIO18 | KQ-130F narrowband PLC | TX (ESP RX2) | UART | doc02 |
 | 5V | KQ-130F narrowband PLC | VCC, isolated side | PWR | doc02 |
 | GND | KQ-130F narrowband PLC | GND, isolated side | GND | doc02 |
-| GPIO36 | W5500 Ethernet, deferred | SCK | SPI | proposed |
-| GPIO37 | W5500 Ethernet, deferred | MISO | SPI | proposed |
-| GPIO35 | W5500 Ethernet, deferred | MOSI | SPI | proposed |
-| GPIO38 | W5500 Ethernet, deferred | CS | SPI | proposed |
-| GPIO39 | W5500 Ethernet, deferred | INT | CTRL | proposed |
-| GPIO40 | W5500 Ethernet, deferred | RST | CTRL | proposed |
+| GPIO39 | W5500 Ethernet, deferred | SCK | SPI | signed off 2026-09-15 (moved off the PSRAM bus) |
+| GPIO41 | W5500 Ethernet, deferred | MISO | SPI | signed off 2026-09-15 |
+| GPIO40 | W5500 Ethernet, deferred | MOSI | SPI | signed off 2026-09-15 |
+| GPIO42 | W5500 Ethernet, deferred | CS | SPI | signed off 2026-09-15 (GPIO38 drives the DevKitC RGB LED) |
+| GPIO2 | W5500 Ethernet, deferred | INT | CTRL | signed off 2026-09-15 |
+| GPIO15 | W5500 Ethernet, deferred | RST | CTRL | signed off 2026-09-15 |
 | GPIO4 | SIM7600E LTE, deferred | RXD (ESP TX1) | UART | proposed |
 | GPIO5 | SIM7600E LTE, deferred | TXD (ESP RX1) | UART | proposed |
 | GPIO6 | SIM7600E LTE, deferred | PWRKEY | CTRL | proposed |
 
-The two deferred blocks keep their proposed rows here so that a later build does not have to re-derive them, and so that nobody allocates GPIO35 to GPIO40 or GPIO4 to GPIO6 for something else in the meantime.
+The two deferred blocks keep their rows here so that a later build does not have to re-derive them, and so that nobody allocates GPIO39 to GPIO42, GPIO2, GPIO15 or GPIO4 to GPIO6 for something else in the meantime. The W5500 rows first sat on GPIO35 to GPIO40; on the N16R8 module GPIO33 to GPIO37 are the octal PSRAM bus and GPIO38 is the on-board RGB LED, so the rows moved on 2026-09-13 and Martin signed the move off on 2026-09-15. `hardware/pinmap.md` is the authority for this table.
 
 ## 6. BOM slice, one Node
 
