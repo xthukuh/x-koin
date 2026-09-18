@@ -36,7 +36,7 @@ Two containers. `site` is nginx serving the built SPA; `gate` is the pass-wall, 
 
 `XKOIN_GATE_SECURE=false` is needed only for the local test, which is plain http: with the Secure flag set the browser drops the cookie and the password page loops. Everywhere else it stays true.
 
-Settings live in an env file next to the compose file. `gate/.env.example` lists every key: the site hostname, the shared password, optional named passwords, the HMAC secret (`scripts/gate-secret.sh` prints one), the cookie lifetime, the Secure flag and the proxy trust flag. Deleting a named password and restarting the gate revokes that name's live cookies and nobody else's.
+Settings live in an env file next to the compose file. `gate/.env.example` lists every key: the site hostname, the shared password, optional named passwords, the HMAC secret (`scripts/gate-secret.sh` prints one), the cookie lifetime, the Secure flag and the proxy trust flag. The cookie is a session cookie bound to the password that opened it: it dies when the browser closes, and changing or deleting a password and restarting the gate revokes that password's live sessions and nobody else's.
 
 The build stage copies `docs/` and `hardware/` alongside `web/`, because the markdown viewer imports the corpus at build time and the landing page reads the board photos, both outside the Vite root. The retired `demo/` and `protocol/viz/` trees are no longer copied.
 

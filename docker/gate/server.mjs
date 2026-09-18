@@ -11,12 +11,20 @@
  *   GET  /gate/logout  clears the cookie and sends the visitor back to /gate.
  *   GET  /healthz      200, for the container healthcheck.
  *
- * The cookie is base64url(payload) "." base64url(HMAC-SHA256(payload, secret))
- * where payload is JSON {"n": name, "exp": unix-seconds}. Nothing is stored
- * server side, so the service restarts without losing anyone, as long as
- * XKOIN_GATE_SECRET is set. Revocation works by name: /auth re-checks that the
- * name in the cookie is still one of the configured passwords, so deleting a
- * named password from the env and restarting invalidates its cookies alone.
+ * The cookie is base64url(payload) "." base64url(HMAC-SHA256(payload, key))
+ * where payload is JSON {"n": name, "exp": unix-seconds} and key is
+ * HMAC-SHA256(secret, sha256(password)) for the password that was entered.
+ * Nothing is stored server side, so the service restarts without losing
+ * anyone, as long as XKOIN_GATE_SECRET is set.
+ *
+ * Every session is therefore bound to the exact password that opened it.
+ * Changing a password in the env and restarting the gate invalidates the
+ * sessions opened with that password and nobody else's; deleting a named
+ * password does the same for that name; rotating the secret invalidates all.
+ *
+ * The cookie carries no Max-Age, so the browser discards it when it closes.
+ * XKOIN_GATE_TTL_HOURS is the ceiling for a browser that stays open, or one
+ * that restores its session cookies on relaunch.
  */
 import { createServer } from 'node:http';
 import { createHash, createHmac, randomBytes, timingSafeEqual } from 'node:crypto';
@@ -95,27 +103,43 @@ if (SECRET.trim().length < 16) {
   );
 }
 
+/**
+ * One entry per configured password. `digest` is what a submitted password is
+ * compared against; `key` signs the cookies that password opens, and is
+ * derived from both the secret and the digest so that a change to either one
+ * makes every cookie signed under the old value fail verification.
+ */
 const CREDENTIALS = [
   { name: DEFAULT_NAME, password: process.env.XKOIN_GATE_PASSWORD || DEFAULT_PASSWORD },
   ...parseNamed(process.env.XKOIN_GATE_NAMED),
-].map((pair) => ({
-  name: pair.name,
-  digest: createHash('sha256').update(pair.password, 'utf8').digest(),
-}));
+].map((pair) => {
+  const digest = createHash('sha256').update(pair.password, 'utf8').digest();
+  return {
+    name: pair.name,
+    digest,
+    key: createHmac('sha256', SECRET).update(digest).digest(),
+  };
+});
 
 const NAMES = new Set(CREDENTIALS.map((credential) => credential.name));
 
 /* ------------------------------------------------------------------- the token */
 
-function sign(name) {
-  const payload = JSON.stringify({ n: name, exp: Math.floor(Date.now() / 1000) + TTL_SECONDS });
-  const signature = createHmac('sha256', SECRET).update(payload).digest();
+function sign(credential) {
+  const payload = JSON.stringify({
+    n: credential.name,
+    exp: Math.floor(Date.now() / 1000) + TTL_SECONDS,
+  });
+  const signature = createHmac('sha256', credential.key).update(payload).digest();
   return `${Buffer.from(payload, 'utf8').toString('base64url')}.${signature.toString('base64url')}`;
 }
 
 /**
- * Verify a token and return the name it carries, or null. The HMAC is checked
- * before the JSON is parsed, so a forged payload is never handed to JSON.parse.
+ * Verify a token and return the name it carries, or null. The signature is
+ * tried against every configured credential's key before the JSON is parsed,
+ * so a forged payload is never handed to JSON.parse, and the name inside the
+ * payload must then be the one whose key matched. A password that is no
+ * longer configured has no key in the list, so its cookies fail here.
  */
 function verify(token) {
   if (typeof token !== 'string' || token.length === 0 || token.length > 1024) return null;
@@ -124,10 +148,13 @@ function verify(token) {
   if (token.indexOf('.', dot + 1) !== -1) return null;
   const payload = Buffer.from(token.slice(0, dot), 'base64url').toString('utf8');
   if (payload === '') return null;
-  const expected = createHmac('sha256', SECRET).update(payload).digest();
   const given = Buffer.from(token.slice(dot + 1), 'base64url');
-  if (given.length !== expected.length) return null;
-  if (!timingSafeEqual(expected, given)) return null;
+  let signer = null;
+  for (const credential of CREDENTIALS) {
+    const expected = createHmac('sha256', credential.key).update(payload).digest();
+    if (given.length === expected.length && timingSafeEqual(expected, given)) signer = credential;
+  }
+  if (signer === null) return null;
   let claims;
   try {
     claims = JSON.parse(payload);
@@ -137,7 +164,7 @@ function verify(token) {
   if (claims === null || typeof claims !== 'object') return null;
   if (typeof claims.n !== 'string' || typeof claims.exp !== 'number') return null;
   if (!Number.isFinite(claims.exp) || claims.exp * 1000 <= Date.now()) return null;
-  if (!NAMES.has(claims.n)) return null;
+  if (claims.n !== signer.name) return null;
   return claims.n;
 }
 
@@ -150,7 +177,7 @@ function matchPassword(submitted) {
   const digest = createHash('sha256').update(submitted, 'utf8').digest();
   let matched = null;
   for (const credential of CREDENTIALS) {
-    if (timingSafeEqual(digest, credential.digest)) matched = credential.name;
+    if (timingSafeEqual(digest, credential.digest)) matched = credential;
   }
   return matched;
 }
@@ -453,8 +480,15 @@ function sendText(res, status, text) {
   res.end(body);
 }
 
-function cookieHeader(value, maxAge) {
-  const parts = [`${COOKIE_NAME}=${value}`, 'Path=/', `Max-Age=${maxAge}`, 'HttpOnly', 'SameSite=Lax'];
+/**
+ * A session cookie: no Max-Age and no Expires, so the browser drops it when it
+ * closes. The token inside still carries its own expiry, checked by verify(),
+ * which caps a browser that stays open. Logout passes maxAge 0 to delete it.
+ */
+function cookieHeader(value, maxAge = null) {
+  const parts = [`${COOKIE_NAME}=${value}`, 'Path=/'];
+  if (maxAge !== null) parts.push(`Max-Age=${maxAge}`);
+  parts.push('HttpOnly', 'SameSite=Lax');
   if (SECURE) parts.push('Secure');
   return parts.join('; ');
 }
@@ -525,8 +559,8 @@ async function handlePost(req, res) {
     return;
   }
 
-  const name = matchPassword(passwords[0]);
-  if (name === null) {
+  const credential = matchPassword(passwords[0]);
+  if (credential === null) {
     recordFailure(ip);
     log(ip, 'rejected', null);
     await delay(FAIL_DELAY_MS);
@@ -535,10 +569,10 @@ async function handlePost(req, res) {
   }
 
   failures.delete(ip);
-  log(ip, 'ok', name);
+  log(ip, 'ok', credential.name);
   res.writeHead(303, {
     location: next,
-    'set-cookie': cookieHeader(sign(name), TTL_SECONDS),
+    'set-cookie': cookieHeader(sign(credential)),
     'cache-control': 'no-store',
     'content-length': 0,
   });

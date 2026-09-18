@@ -146,6 +146,79 @@ export default function DocsArticle({ doc, docTitles, onOutline, onActive }) {
     return () => container.removeEventListener('click', onClick);
   }, [navigate, segments]);
 
+  // Glossary popups are position: fixed so that a term inside a scrolling
+  // table wrapper is not clipped by it. The popup is shown by CSS on hover and
+  // focus; this places it under the term, flips it above when the viewport
+  // has no room below, and keeps it pinned to the term while the page scrolls.
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) {
+      return undefined;
+    }
+    let active = null;
+
+    const place = (gloss) => {
+      const term = gloss.querySelector('.xk-gloss__term') ?? gloss;
+      const pop = gloss.querySelector('.xk-gloss__pop');
+      if (!pop) {
+        return;
+      }
+      const rect = term.getBoundingClientRect();
+      const gap = 6;
+      const margin = 8;
+      const width = pop.offsetWidth || Math.min(330, window.innerWidth * 0.76);
+      const height = pop.offsetHeight;
+      const x = Math.max(margin, Math.min(rect.left, window.innerWidth - width - margin));
+      const below = rect.bottom + gap;
+      const fits = height === 0 || below + height <= window.innerHeight - margin;
+      const y = fits ? below : Math.max(margin, rect.top - gap - height);
+      pop.style.setProperty('--xk-gloss-x', `${Math.round(x)}px`);
+      pop.style.setProperty('--xk-gloss-y', `${Math.round(y)}px`);
+    };
+
+    const show = (event) => {
+      const gloss = event.target.closest('.xk-gloss');
+      if (!gloss || !container.contains(gloss)) {
+        return;
+      }
+      active = gloss;
+      place(gloss);
+      // The first measurement can run before the hover display applies, so
+      // the flip decision is confirmed one frame later with the real height.
+      window.requestAnimationFrame(() => {
+        if (active === gloss) {
+          place(gloss);
+        }
+      });
+    };
+    const hide = (event) => {
+      const gloss = event.target.closest('.xk-gloss');
+      if (gloss && gloss === active && !gloss.contains(event.relatedTarget)) {
+        active = null;
+      }
+    };
+    const follow = () => {
+      if (active) {
+        place(active);
+      }
+    };
+
+    container.addEventListener('pointerover', show);
+    container.addEventListener('focusin', show);
+    container.addEventListener('pointerout', hide);
+    container.addEventListener('focusout', hide);
+    window.addEventListener('scroll', follow, { capture: true, passive: true });
+    window.addEventListener('resize', follow, { passive: true });
+    return () => {
+      container.removeEventListener('pointerover', show);
+      container.removeEventListener('focusin', show);
+      container.removeEventListener('pointerout', hide);
+      container.removeEventListener('focusout', hide);
+      window.removeEventListener('scroll', follow, { capture: true });
+      window.removeEventListener('resize', follow);
+    };
+  }, [segments]);
+
   const source = `${REPO_URL}/blob/main/${doc.sourcePath}`;
 
   return (

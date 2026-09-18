@@ -6,11 +6,11 @@ The presentation site is not public. Nothing behind it is served without a passw
 
 1. Two containers, defined together in `docker/compose.site.yml`: `site` (nginx with the built SPA) and `gate` (`docker/gate/server.mjs`, Node built-ins only, no dependencies, no ports of its own).
 2. Every request nginx receives runs an `auth_request` subrequest to `gate:8081/auth` before a single file is read.
-3. `/auth` reads the `xkgate` cookie, checks its HMAC and its expiry, and answers 204 or 401.
+3. `/auth` reads the `xkgate` cookie, checks its HMAC against every configured password's key and checks its expiry, and answers 204 or 401.
 4. A 401 becomes a 302 to `/gate?next=<the path that was asked for>`.
 5. `/gate` serves one self-contained HTML page: a password field, an Enter button, no external font, no stylesheet, no script.
 6. A correct password sets `xkgate` and sends a 303 straight back to the path the visitor originally wanted.
-7. The cookie is `base64url({"n":name,"exp":unix})` plus an HMAC-SHA256 of that payload under `XKOIN_GATE_SECRET`. Nothing is stored server side.
+7. The cookie is `base64url({"n":name,"exp":unix})` plus an HMAC-SHA256 of that payload under a key derived from `XKOIN_GATE_SECRET` and the password that was entered, so a session is bound to the exact password that opened it. Nothing is stored server side. The cookie has no Max-Age, so the browser drops it when it closes.
 8. Passwords are compared in constant time against every configured entry, and a wrong one costs a one second delay.
 9. Ten failures from one address in fifteen minutes turns into a 429.
 10. Only `/gate`, `/healthz`, `/robots.txt` and `/favicon.svg` answer without a cookie. `robots.txt` says `Disallow: /`, and every response carries `X-Robots-Tag: noindex, nofollow, noarchive`.
@@ -28,7 +28,7 @@ On the VPS, `/docker/xkoin-site/.env`, mode 600, written by `scripts/deploy-site
 | `XKOIN_GATE_PASSWORD` | `xkoin#2030` | the password everyone gets |
 | `XKOIN_GATE_NAMED` | empty | extra `name:password` pairs, comma separated |
 | `XKOIN_GATE_SECRET` | generated | the HMAC key that signs cookies |
-| `XKOIN_GATE_TTL_HOURS` | `72` | how long a cookie lasts |
+| `XKOIN_GATE_TTL_HOURS` | `72` | the longest a session can last with the browser left open |
 | `XKOIN_GATE_SECURE` | `true` | the Secure flag; `false` only for the local http test |
 | `XKOIN_GATE_TRUST_PROXY` | `true` | read the client address from X-Forwarded-For |
 
@@ -46,7 +46,7 @@ sed -i 's/^XKOIN_GATE_PASSWORD=.*/XKOIN_GATE_PASSWORD=the new one/' .env
 docker compose up -d --force-recreate gate
 ```
 
-Cookies already issued stay valid until they expire. The old password stops working the moment the gate restarts. To throw everyone out at the same time, rotate the secret as well.
+Every session opened with the old password is void the moment the gate restarts, and so is the old password itself. Named passwords and their sessions are untouched. Since 2026-09-18 the password change alone does this; rotating the secret is no longer needed for it, though it still throws out every name at once.
 
 Or from the laptop, in one go:
 
@@ -66,13 +66,23 @@ docker compose up -d --force-recreate gate
 
 The name is what lands in the log and in the cookie, so the log says who came in without ever holding the password.
 
-## Revoke one named password
+## Change or revoke one named password
 
-Delete that pair from `XKOIN_GATE_NAMED` and restart the gate. The name is gone from the configured set, so `/auth` stops honouring every cookie carrying it, immediately and without waiting for the expiry. Nobody else is affected: the default password and the other names keep working, and their open browser tabs keep working too. This was tested end to end on 2026-09-14.
+Edit or delete that pair in `XKOIN_GATE_NAMED` and restart the gate. Every cookie signed under the old value of that name fails at `/auth`, immediately and without waiting for the expiry. Nobody else is affected: the default password and the other names keep working, and their open browser tabs keep working too. Revocation by deletion was tested end to end on 2026-09-14; invalidation on change was added and tested on 2026-09-18.
+
+## When a session ends
+
+The cookie is a session cookie: it carries no Max-Age, so the browser discards it when the last window closes, and the visitor enters the password again next time. Three things end a session earlier or later than that:
+
+- `XKOIN_GATE_TTL_HOURS` caps a browser that is never closed. Default 72 hours from the login.
+- A password change or a secret rotation ends it at the next request, as above.
+- A browser set to restore its previous session on launch (Chrome "continue where you left off", Firefox "open previous windows and tabs") keeps session cookies through the restart. The TTL is the backstop for that case.
+
+A signed-in tab that has been idle has no way to notice a change on the server; the next click or reload runs the `auth_request`, gets the 401, and lands on the password page carrying the path that was wanted.
 
 ## Rotate the secret
 
-This logs everyone out at once, including Martin.
+This logs everyone out at once, including Martin. It is the tool for a leaked secret or a lost laptop with a live session under a password that must stay in service; for a password that can simply be changed, the change alone logs its holders out.
 
 ```bash
 cd /docker/xkoin-site
