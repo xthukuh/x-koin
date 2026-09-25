@@ -40,3 +40,27 @@ export function metricLabel(key) {
 }
 
 export const isEthKey = (key) => key.endsWith('.eth');
+
+const POCKET = { wallet: 'wallet', escrow: 'meter', earnings: 'earned', mpesa: 'M-Pesa', eth: 'gas' };
+const SYSTEM = { 'token.supply': 'xKoin in existence', 'escrow.balance': 'Meter pool', 'treasury.balance': 'Fee box', 'kiosk.float': 'Kiosk M-Pesa' };
+
+/** "amina.escrow" to "Amina meter"; system keys to their plain names. */
+export function plainKey(key) {
+  if (SYSTEM[key]) return SYSTEM[key];
+  const [who, what] = key.split('.');
+  return `${nameOf(who).replace(' (bridge)', '').replace(' admin', '')} ${POCKET[what] ?? what}`;
+}
+
+/** Sum every balance change across a step's entries. Gas moves are left out. */
+export function netChanges(entries) {
+  const out = {};
+  for (const e of entries) for (const d of e.diffs) if (!isEthKey(d.key)) out[d.key] = (out[d.key] ?? 0) + d.delta;
+  return Object.entries(out).filter(([, v]) => v !== 0);
+}
+
+/** Gas paid across a step, per payer, in KES. */
+export function gasByPayer(entries) {
+  const out = {};
+  for (const e of entries) if (e.layer === 'chain' && !e.rejected) out[e.payer] = (out[e.payer] ?? 0) + e.kes;
+  return out;
+}
