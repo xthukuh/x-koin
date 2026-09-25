@@ -397,6 +397,127 @@ contract EscrowTest is xKoinTestBase {
         escrow.setPricePerUnit(overMax);
     }
 
+    // ------------------------------------------------------------------
+    // Relayed exits and escrow-to-escrow transfers
+    // ------------------------------------------------------------------
+
+    function _auth(bytes32 typeHash, address from, address to, uint256 amount, uint256 deadline, uint256 key)
+        internal
+        view
+        returns (bytes memory)
+    {
+        bytes32 structHash =
+            keccak256(abi.encode(typeHash, from, to, amount, escrow.authNonces(from), deadline));
+        bytes32 digest = keccak256(abi.encodePacked("\x19\x01", _domainSeparator(), structHash));
+        (uint8 v, bytes32 r, bytes32 s) = vm.sign(key, digest);
+        return abi.encodePacked(r, s, v);
+    }
+
+    function _domainSeparator() internal view returns (bytes32) {
+        return keccak256(
+            abi.encode(
+                keccak256("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)"),
+                keccak256("xKoinEscrow"),
+                keccak256("1"),
+                block.chainid,
+                address(escrow)
+            )
+        );
+    }
+
+    function test_withdrawWithSig_relayedClientPaysNoGas() public {
+        _depositAll();
+        uint256 deadline = block.timestamp + 1 hours;
+        bytes memory sig = _auth(escrow.WITHDRAW_TYPEHASH(), client, client, 4_000, deadline, clientKey);
+        vm.prank(relayer);
+        escrow.withdrawWithSig(client, client, 4_000, deadline, sig);
+        assertEq(escrow.deposits(client), 6_000);
+        assertEq(token.balanceOf(client), 4_000);
+        assertEq(token.balanceOf(relayer), 0);
+        assertEq(escrow.authNonces(client), 1);
+        assertEq(token.balanceOf(address(escrow)), escrow.deposits(client));
+    }
+
+    function test_withdrawWithSig_destinationIsSigned() public {
+        _depositAll();
+        uint256 deadline = block.timestamp + 1 hours;
+        bytes memory sig = _auth(escrow.WITHDRAW_TYPEHASH(), client, client, 4_000, deadline, clientKey);
+        vm.prank(relayer);
+        vm.expectRevert(xKoinEscrow.BadAuthorization.selector);
+        escrow.withdrawWithSig(client, relayer, 4_000, deadline, sig); // redirect attempt
+    }
+
+    function test_withdrawWithSig_replayExpiryAndWrongKey() public {
+        _depositAll();
+        uint256 deadline = block.timestamp + 1 hours;
+        bytes32 typeHash = escrow.WITHDRAW_TYPEHASH();
+        bytes memory sig = _auth(typeHash, client, client, 1_000, deadline, clientKey);
+        escrow.withdrawWithSig(client, client, 1_000, deadline, sig);
+        vm.expectRevert(xKoinEscrow.BadAuthorization.selector); // nonce consumed
+        escrow.withdrawWithSig(client, client, 1_000, deadline, sig);
+
+        bytes memory forged = _auth(typeHash, client, client, 1_000, deadline, 0xBAD);
+        vm.expectRevert(xKoinEscrow.BadAuthorization.selector);
+        escrow.withdrawWithSig(client, client, 1_000, deadline, forged);
+
+        bytes memory late = _auth(typeHash, client, client, 1_000, deadline, clientKey);
+        vm.warp(deadline + 1);
+        vm.expectRevert(xKoinEscrow.AuthorizationExpired.selector);
+        escrow.withdrawWithSig(client, client, 1_000, deadline, late);
+    }
+
+    function test_withdrawWithSig_zeroInputs() public {
+        _depositAll();
+        vm.expectRevert(xKoinEscrow.ZeroAmount.selector);
+        escrow.withdrawWithSig(client, client, 0, block.timestamp, "");
+        vm.expectRevert(xKoinEscrow.ZeroAddress.selector);
+        escrow.withdrawWithSig(client, address(0), 1, block.timestamp, "");
+    }
+
+    function test_transferDeposit_movesCreditNotTokens() public {
+        _depositAll();
+        address friend = vm.addr(0xF12E);
+        uint256 escrowBefore = token.balanceOf(address(escrow));
+        uint256 deadline = block.timestamp + 1 hours;
+        bytes memory sig = _auth(escrow.TRANSFER_TYPEHASH(), client, friend, 3_000, deadline, clientKey);
+        vm.prank(relayer);
+        escrow.transferDeposit(client, friend, 3_000, deadline, sig);
+        assertEq(escrow.deposits(client), 7_000);
+        assertEq(escrow.deposits(friend), 3_000);
+        assertEq(token.balanceOf(address(escrow)), escrowBefore); // no token moved
+
+        // The recipient can be served and settled immediately.
+        xKoinEscrow.Ticket memory t = xKoinEscrow.Ticket(friend, nodeAdmin, 1, 100, block.timestamp + 1 days);
+        xKoinEscrow.Ticket[] memory ts = new xKoinEscrow.Ticket[](1);
+        ts[0] = t;
+        bytes[] memory sigs = new bytes[](1);
+        sigs[0] = _sign(t, 0xF12E);
+        escrow.settleTicketBatch(ts, sigs);
+        assertEq(escrow.deposits(friend), 3_000 - 100 * PRICE);
+    }
+
+    function test_transferDeposit_signaturesAreNotInterchangeable() public {
+        _depositAll();
+        uint256 deadline = block.timestamp + 1 hours;
+        bytes memory withdrawSig = _auth(escrow.WITHDRAW_TYPEHASH(), client, relayer, 1_000, deadline, clientKey);
+        vm.expectRevert(xKoinEscrow.BadAuthorization.selector);
+        escrow.transferDeposit(client, relayer, 1_000, deadline, withdrawSig);
+        bytes memory over = _auth(escrow.TRANSFER_TYPEHASH(), client, relayer, 10_001, deadline, clientKey);
+        vm.expectRevert(xKoinEscrow.InsufficientDeposit.selector);
+        escrow.transferDeposit(client, relayer, 10_001, deadline, over);
+    }
+
+    function testFuzz_transferDepositPreservesSolvency(uint96 amount) public {
+        _depositAll();
+        amount = uint96(bound(amount, 1, 10_000));
+        address friend = makeAddr("friend");
+        uint256 deadline = block.timestamp + 1 hours;
+        bytes memory sig = _auth(escrow.TRANSFER_TYPEHASH(), client, friend, amount, deadline, clientKey);
+        escrow.transferDeposit(client, friend, amount, deadline, sig);
+        assertEq(escrow.deposits(client) + escrow.deposits(friend), 10_000);
+        assertEq(token.balanceOf(address(escrow)), escrow.deposits(client) + escrow.deposits(friend));
+    }
+
     function testFuzz_settleNeverExceedsDeposit(uint128 units, uint96 depositAmt) public {
         units = uint128(bound(units, 1, 1e12));
         depositAmt = uint96(bound(depositAmt, 1, 10_000));

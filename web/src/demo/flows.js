@@ -78,6 +78,24 @@ export function withdraw(world, { client, amount }) {
   return runSteps(world, [(w) => escrow.withdrawDeposit(w, { from: client, amount, flow, title: 'Client calls withdrawDeposit' })]);
 }
 
+/** Escrow back to wallet, gasless: the client signs a Withdraw authorisation, the kiosk relays withdrawWithSig. */
+export function withdrawGasless(world, { client, amount, to = client }) {
+  const flow = newFlow(`Withdraw ${fmt(amount, 2)} KES`);
+  return runSteps(world, [
+    (w) => offchain.signAuth(w, { kind: 'withdraw', owner: client, to, amount, flow, title: 'Phone signs: unlock to my wallet' }),
+    (w, auth) => escrow.withdrawWithSig(w, { from: 'kiosk', auth, flow, title: 'Kiosk submits withdrawWithSig' }),
+  ]);
+}
+
+/** Escrow to escrow: the sender signs TransferDeposit, the kiosk relays. Credit moves, no token does. */
+export function sendEscrow(world, { from, to, amount }) {
+  const flow = newFlow(`Meter send ${fmt(amount, 2)} KES`);
+  return runSteps(world, [
+    (w) => offchain.signAuth(w, { kind: 'transfer', owner: from, to, amount, flow, title: 'Phone signs: move meter credit' }),
+    (w, auth) => escrow.transferDeposit(w, { from: 'kiosk', auth, flow, title: `Kiosk submits transferDeposit to ${nameOf(to)}` }),
+  ]);
+}
+
 /** Wallet to wallet with no ETH on the sender: permit to the kiosk, kiosk relays transferFrom. */
 export function send(world, { from, to, amount }) {
   const flow = newFlow(`Send ${fmt(amount, 2)} KES`);
@@ -382,24 +400,31 @@ export const DRILLS = [
     claim: 'withdrawDeposit is always open. Settlement pays what is left and the node carries the gap, bounded by its credit cap.',
     run(world) {
       const flow = newFlow('Drill: drain');
-      let w = world;
       const entries = [];
-      if (w.eth.amina < 2_000) {
-        const f = offchain.fundGas(w, { to: 'amina', gwei: 5_000, flow });
-        w = f.world;
-        entries.push(f.entry);
-      }
-      const { world: w2, tickets, entries: e2 } = signN(w, 1, 2_000, flow);
+      const { world: w2, tickets, entries: e2 } = signN(world, 1, 2_000, flow);
       const left = w2.escrow.deposits.amina;
       const settled = Object.values(w2.escrow.channels).find((c) => c.client === 'amina' && c.nodeAdmin === 'node')?.settledUnits ?? 0;
       const owed = (tickets[0].cumulativeUnits - settled) * w2.escrow.pricePerUnit;
       const keep = Math.min(kes(0.4), left);
-      const r = runSteps(w2, [
-        (x) => escrow.withdrawDeposit(x, { from: 'amina', amount: left - keep, flow, title: `Amina withdraws all but ${fmt(keep, 2)} KES` }),
+      const out = withdrawGasless(w2, { client: 'amina', amount: left - keep });
+      const r0 = { ...out, entries: out.entries };
+      const r1 = runSteps(out.world, [
         (x) => escrow.settleTicketBatch(x, { from: 'relayer', tickets: [tickets[0]], flow, title: `Settle ticket owing ${fmt(owed, 2)} KES` }),
       ]);
+      const r = { world: r1.world, ok: out.ok && r1.ok, entries: [...r0.entries, ...r1.entries], result: r1.result };
       const paid = r.result?.gross ?? 0;
       return { world: r.world, ok: r.ok, entries: [...entries, ...e2, ...r.entries], verdict: `Paid ${fmt(paid, 2)} of ${fmt(owed, 2)} KES owed. The node carries ${fmt(owed - paid, 2)} KES, and the session credit rule (settle at half the cap) keeps that under one cap. Solvency holds throughout.` };
+    },
+  },
+  {
+    id: 'redirect',
+    title: 'Kiosk tries to redirect an unlock',
+    claim: 'The destination is inside the signature. A relayer that changes it fails the signature check.',
+    run(world) {
+      const flow = newFlow('Drill: redirect');
+      const s = offchain.signAuth(world, { kind: 'withdraw', owner: 'amina', to: 'amina', amount: kes(5), flow, title: 'Amina signs: unlock 5 KES to me' });
+      const r = runSteps(s.world, [(w) => escrow.withdrawWithSig(w, { from: 'mallory', auth: s.result, to: 'mallory', flow, title: 'Mallory submits it with herself as destination' })]);
+      return { world: r.world, ok: !r.ok, entries: [s.entry, ...r.entries], verdict: r.ok ? 'Redirect accepted: rule broken.' : 'Reverted BadAuthorization. The coins stayed in Amina\'s meter.' };
     },
   },
   {

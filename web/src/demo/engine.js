@@ -18,6 +18,7 @@ import {
   bytesToHex,
   channelId,
   demoKey,
+  authDigest,
   permitDigest,
   recoverAddress,
   signDigest,
@@ -89,7 +90,7 @@ export function createWorld(params = DEFAULT_PARAMS) {
       nonces: zeroes(),
       bridges: {},
     },
-    escrow: { owner: null, pendingOwner: null, deposits: zeroes(), earnings: zeroes(), channels: {}, pricePerUnit: 0, lastPriceChange: 0 },
+    escrow: { owner: null, pendingOwner: null, deposits: zeroes(), earnings: zeroes(), channels: {}, authNonces: zeroes(), pricePerUnit: 0, lastPriceChange: 0 },
     treasury: { owner: null, pendingOwner: null, feeBps: 0, beneficiary: null, pending: null, activation: 0 },
     // Off chain.
     fiat: { mpesa: { ...zeroes(), amina: kes(2_000), baraka: kes(500) }, float: 0, payoutsPending: [] },
@@ -279,7 +280,7 @@ export function deploy(world, flow = 'deploy') {
   const steps = [
     ['create:xKoinToken', 1_512_737, (x) => (x.token.owner = 'owner')],
     ['create:xKoinTreasury', 746_884, (x) => Object.assign(x.treasury, { owner: 'owner', feeBps: p.feeBps, beneficiary: 'founder' })],
-    ['create:xKoinEscrow', 1_899_284, (x, ctx) => {
+    ['create:xKoinEscrow', 2_210_501, (x, ctx) => {
       need(p.pricePerUnit >= 1 && p.pricePerUnit <= 50_000, 'PriceOutOfBand');
       Object.assign(x.escrow, { owner: 'owner', pricePerUnit: p.pricePerUnit, lastPriceChange: x.t });
       x.deployed = true;
@@ -419,6 +420,36 @@ export const escrow = {
       ctx.events.push({ name: 'DepositWithdrawn', args: { client: addr(from), amount } });
     }),
 
+  /** Gasless exit. `auth` comes from offchain.signAuth(kind 'withdraw'). Anyone relays; `to` is signed. */
+  withdrawWithSig: (w, { from, auth, to = auth?.to, flow, title }) =>
+    call(w, { fn: 'withdrawWithSig', contract: 'escrow', from, layer: 'chain', flow, title, args: { client: auth.from, to, amount: auth.amount } }, (x, ctx) => {
+      need(auth.amount > 0, 'ZeroAmount');
+      need(to, 'ZeroAddress');
+      const warm = (x.token.bal[to] > 0 ? 1 : 0) + (x.escrow.authNonces[auth.from] > 0 ? 1 : 0);
+      useAuth(x, 'withdraw', { ...auth, to }, ctx);
+      need(x.escrow.deposits[auth.from] >= auth.amount, 'InsufficientDeposit', `deposit is ${fmt(x.escrow.deposits[auth.from])} KES`);
+      x.escrow.deposits[auth.from] -= auth.amount;
+      x.token.bal.escrow -= auth.amount;
+      x.token.bal[to] += auth.amount;
+      ctx.events.push({ name: 'DepositWithdrawn', args: { client: addr(auth.from), amount: auth.amount } });
+      if (warm) ctx.gasOverride = { gas: GAS.withdrawWithSig.gas - warm * 17_100, src: 'model', note: `measured 93,358 less ${warm} warm slot(s) (EIP-2200)` };
+    }),
+
+  /** Escrow-to-escrow, relayed. No token moves. */
+  transferDeposit: (w, { from, auth, to = auth?.to, flow, title }) =>
+    call(w, { fn: 'transferDeposit', contract: 'escrow', from, layer: 'chain', flow, title, args: { from: auth.from, to, amount: auth.amount } }, (x, ctx) => {
+      need(auth.amount > 0, 'ZeroAmount');
+      need(to, 'ZeroAddress');
+      const warm = (x.escrow.deposits[to] > 0 ? 1 : 0) + (x.escrow.authNonces[auth.from] > 0 ? 1 : 0);
+      useAuth(x, 'transfer', { ...auth, to }, ctx);
+      need(x.escrow.deposits[auth.from] >= auth.amount, 'InsufficientDeposit', `deposit is ${fmt(x.escrow.deposits[auth.from])} KES`);
+      x.escrow.deposits[auth.from] -= auth.amount;
+      x.escrow.deposits[to] += auth.amount;
+      ctx.events.push({ name: 'DepositTransferred', args: { from: addr(auth.from), to: addr(to), amount: auth.amount } });
+      ctx.notes.push('Only two deposit entries change. The escrow token balance is untouched, so solvency holds by construction.');
+      if (warm) ctx.gasOverride = { gas: GAS.transferDeposit.gas - warm * 17_100, src: 'model', note: `measured 83,050 less ${warm} warm slot(s) (EIP-2200)` };
+    }),
+
   /** tickets: [{ client, nodeAdmin, sequenceNumber, cumulativeUnits, epochExpiry, signature }] */
   settleTicketBatch: (w, { from, tickets, flow, title }) =>
     call(w, { fn: 'settleTicketBatch', contract: 'escrow', from, layer: 'chain', flow, title, args: { tickets: tickets.length } }, (x, ctx) => {
@@ -487,6 +518,18 @@ export const escrow = {
       ctx.events.push({ name: 'PricePerUnitSet', args: { pricePerUnit: newPrice } });
     }),
 };
+
+/** _useAuthorization: deadline, then signer at the current nonce, then consume the nonce. */
+function useAuth(x, kind, auth, ctx) {
+  need(x.t <= auth.deadline, 'AuthorizationExpired');
+  const nonce = x.escrow.authNonces[auth.from];
+  const d = authDigest(kind, { from: addr(auth.from), to: addr(auth.to), amount: auth.amount, nonce, deadline: auth.deadline }, ESCROW_DOMAIN);
+  const signer = recoverAddress(d.digest, auth.signature);
+  ctx.crypto.push({ label: `${kind === 'withdraw' ? 'Withdraw' : 'TransferDeposit'} digest at nonce ${nonce} (to ${nameOf(auth.to)})`, value: bytesToHex(d.digest) });
+  ctx.crypto.push({ label: 'ECDSA.tryRecover', value: signer ?? 'invalid signature' });
+  need(signer === addr(auth.from), 'BadAuthorization', 'signature does not recover to the client for this destination, amount and nonce');
+  x.escrow.authNonces[auth.from] = nonce + 1;
+}
 
 function doDeposit(x, client, amount, ctx) {
   need(amount > 0, 'ZeroAmount');
@@ -608,6 +651,21 @@ export const offchain = {
       ctx.crypto.push({ label: 'digest (domain xKoin, 1)', value: bytesToHex(d.digest) });
       ctx.crypto.push({ label: 'secp256k1 signature', value: sig.signature });
       ctx.result = permit;
+    }),
+
+  /** The client wallet signs a Withdraw or TransferDeposit authorisation for the kiosk to relay. */
+  signAuth: (w, { kind, owner, to, amount, flow, title }) =>
+    call(w, { fn: 'signAuth', from: owner, layer: 'wallet', flow, title: title ?? `Sign ${kind} authorisation`, args: { kind, to, amount } }, (x, ctx) => {
+      deviceNeeded(x, owner);
+      const deadline = x.t + 3_600;
+      const nonce = x.escrow.authNonces[owner];
+      const d = authDigest(kind, { from: addr(owner), to: addr(to), amount, nonce, deadline }, ESCROW_DOMAIN);
+      const sig = signDigest(d.digest, KEYS[owner].secret);
+      ctx.crypto.push({ label: `${kind === 'withdraw' ? 'WITHDRAW' : 'TRANSFER'}_TYPEHASH`, value: bytesToHex(d.typeHash) });
+      ctx.crypto.push({ label: `structHash (from, to ${nameOf(to)}, amount, nonce ${nonce}, deadline)`, value: bytesToHex(d.structHash) });
+      ctx.crypto.push({ label: 'digest (domain xKoinEscrow, 1)', value: bytesToHex(d.digest) });
+      ctx.crypto.push({ label: 'secp256k1 signature', value: sig.signature });
+      ctx.result = { kind, from: owner, to, amount, nonce, deadline, signature: sig.signature };
     }),
 
   /** Customer pays the kiosk paybill over M-Pesa STK push. */

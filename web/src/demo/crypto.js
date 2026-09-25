@@ -146,6 +146,26 @@ export function permitDigest(permit, domain) {
   return { typeHash, encoded, structHash, domain: dom, preimage, digest };
 }
 
+export const WITHDRAW_TYPE = 'Withdraw(address client,address to,uint256 amount,uint256 nonce,uint256 deadline)';
+export const TRANSFER_TYPE = 'TransferDeposit(address from,address to,uint256 amount,uint256 nonce,uint256 deadline)';
+
+/** xKoinEscrow withdrawWithSig / transferDeposit authorisation digest. `kind` is 'withdraw' or 'transfer'. */
+export function authDigest(kind, auth, domain) {
+  const typeHash = keccakText(kind === 'withdraw' ? WITHDRAW_TYPE : TRANSFER_TYPE);
+  const encoded = concat(
+    typeHash,
+    addressWord(auth.from),
+    addressWord(auth.to),
+    uintWord(auth.amount),
+    uintWord(auth.nonce),
+    uintWord(auth.deadline),
+  );
+  const structHash = keccak(encoded);
+  const dom = domainSeparator(domain);
+  const { preimage, digest } = finalDigest(dom.separator, structHash);
+  return { typeHash, encoded, structHash, domain: dom, preimage, digest };
+}
+
 /** channelId = keccak256(abi.encodePacked(client, nodeAdmin)): 40 packed bytes. */
 export const channelId = (client, nodeAdmin) =>
   bytesToHex(keccak(concat(hexToBytes(client), hexToBytes(nodeAdmin))));

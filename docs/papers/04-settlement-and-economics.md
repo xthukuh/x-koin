@@ -1,6 +1,6 @@
 # 4. Settlement and Economics
 
-Abstract: xKoin settles per verified byte on a public chain without asking a user to hold a chain-native asset or an exchange rate. XKN is an ERC-20 with 6 decimals on Base, pegged to the Kenyan shilling by construction rather than by market: it is minted only against a confirmed fiat receipt, burned only by a bridge from its own balance, and capped per rolling day per bridge. The escrow is the network's shared prepaid meter, one deposit per address readable by every node, and tickets are cumulative promises against it that the contract caps at what is actually deposited. Measured on 2026-09-09 at a Base gas price of 0.006 gwei, ETH at 2468.58 USDT and USDT at 123.29 KES, one ticket batch settles for 0.35 KES and all three contracts deploy for 7.7 KES. Chain gas is therefore not the binding cost. Backhaul price per megabyte and the mobile money charge on every fiat leg are, and the per-unit price remains a placeholder until it clears both.
+Abstract: xKoin settles per verified byte on a public chain without asking a user to hold a chain-native asset or an exchange rate. XKN is an ERC-20 with 6 decimals on Base, pegged to the Kenyan shilling by construction rather than by market: it is minted only against a confirmed fiat receipt, burned only by a bridge from its own balance, and capped per rolling day per bridge. The escrow is the network's shared prepaid meter, one deposit per address readable by every node, and tickets are cumulative promises against it that the contract caps at what is actually deposited. At the 2026-09-09 Base gas price of 0.006 gwei, ETH at 2468.58 USDT and USDT at 123.29 KES, a one-ticket batch settles for 0.24 KES and all three contracts deploy for 8.25 KES. Chain gas is therefore not the binding cost. Backhaul price per megabyte and the mobile money charge on every fiat leg are, and the per-unit price remains a placeholder until it clears both.
 
 Keywords: ERC-20, state channel, EIP-712, escrow, micro-payment, KES peg, mobile money bridge, unit economics
 
@@ -69,6 +69,8 @@ One global deposit rather than one per node is what makes "buy once, use anywher
 
 The user can withdraw any unspent deposit at any time (`test_depositAndWithdraw`). That is a deliberate constraint on node behaviour: off-chain tickets are only redeemable against remaining deposit, so nodes must settle promptly rather than accumulating claims.
 
+Two relayed functions let a client who holds no ETH move deposit without paying gas. `withdrawWithSig(client, to, amount, deadline, signature)` is the gasless exit: the client signs an EIP-712 `Withdraw(address client,address to,uint256 amount,uint256 nonce,uint256 deadline)`, anyone relays it, and because the destination is signed the relayer cannot redirect the funds. `transferDeposit(from, to, amount, deadline, signature)` moves credit from one deposit entry to another under an EIP-712 `TransferDeposit(address from,address to,uint256 amount,uint256 nonce,uint256 deadline)`; no token moves, so solvency holds by construction, and the contract emits `DepositTransferred(from, to, amount)`. Both share one per-client nonce, `authNonces`, read on chain rather than passed in, and revert with `AuthorizationExpired`, `BadAuthorization` or `ZeroAddress`. The tests are `test_withdrawWithSig_relayedClientPaysNoGas`, `test_withdrawWithSig_destinationIsSigned`, `test_withdrawWithSig_replayExpiryAndWrongKey`, `test_withdrawWithSig_zeroInputs`, `test_transferDeposit_movesCreditNotTokens`, `test_transferDeposit_signaturesAreNotInterchangeable`, and the 256-run `testFuzz_transferDepositPreservesSolvency`.
+
 ## 6. Tickets
 
 For settlement the node maps its latest receipt onto a Ticket and has the client sign it under EIP-712, domain `xKoinEscrow` version `1`:
@@ -123,7 +125,7 @@ The rule that closes it lives in the node's session manager and in gateway-api's
 
 With the rule in place, the worst case for a node is one cap of bytes, which the 2x receipt interval bound narrows further.
 
-**Relayed transfer between users.** XKN is an ordinary ERC-20, so a wallet-to-wallet transfer already works and costs about 0.1 KES of gas. The catch is that users hold no ETH by design. Three options were assessed in [docs/how-it-works.md](../how-it-works.md), section 5.1, and the recommended one is an escrow-internal relayed transfer: a new function `transferDeposit(from, to, amount, nonce, deadline, sig)` where the sender signs an EIP-712 authorisation, the kiosk relays it and pays the gas, and the contract moves value between two deposit entries. It is about 40 lines of Solidity plus tests, one gateway route and one app screen. It keeps value at 1:1, costs the user nothing, and the recipient can spend at any node immediately. The operator's gas cost is what makes the transfer free to the user, and at about 0.1 KES it is small against the 5 percent fee. This is a proposal, not built.
+**Relayed transfer between users.** XKN is an ordinary ERC-20, so a wallet-to-wallet transfer already works and costs about 0.1 KES of gas. The catch is that users hold no ETH by design. Three options were assessed in [docs/how-it-works.md](../how-it-works.md), section 5.1, and the recommended one, an escrow-internal relayed transfer, is now built: `transferDeposit(from, to, amount, deadline, sig)`, where the sender signs an EIP-712 authorisation, the kiosk relays it and pays the gas, and the contract moves value between two deposit entries. The nonce is not an argument; the contract reads it from `authNonces`. It keeps value at 1:1, costs the user nothing, and the recipient can spend at any node immediately. It measures 83,050 gas (0.15 KES), paid by the relayer, which is small against the 5 percent fee. The gateway route and the app screen are not yet built. Its twin, `withdrawWithSig` at 93,358 gas (0.17 KES), closes the exit gap: clients hold no ETH, so before it the only exit, `withdrawDeposit`, needed the client to be funded with gas first.
 
 ## 9. What it costs to run
 
@@ -135,16 +137,19 @@ Measured on 2026-09-09 with `cast gas-price` against the public Base RPC and the
 | Ethereum L1 gas price | 0.062 gwei | sets the L1 data fee Base adds |
 | ETH price | 2,468.58 USDT | Binance ticker |
 | USDT to KES | 123.29 | 900 / 7.30001286 |
-| Settle one ticket batch | 191,698 gas | measured in the chain end-to-end proof |
+| Settle a one-ticket batch | 131,391 gas | measured by a forge probe on 2026-09-25 |
 
 | Operation | Gas | KES | Status |
 |---|---|---|---|
-| Settle a batch, one ticket | 191,698 | 0.35 | measured |
-| Each additional ticket in a batch | about 65,000 | 0.12 | estimate |
+| Settle a batch, one ticket | 131,391 | 0.24 | measured |
+| Settle a batch, two tickets | 191,698 | 0.35 | measured |
+| Each additional ticket in a batch | about 59,924 | 0.11 | derived from probes |
 | `bridgeMint` for one top-up | about 70,000 | 0.13 | estimate |
 | `depositWithPermit` relayed for the client | about 95,000 | 0.17 | estimate |
+| `withdrawWithSig` relayed for the client, first use | 93,358 | 0.17 | measured |
+| `transferDeposit` relayed between clients, first use | 83,050 | 0.15 | measured |
 | `claim` on the treasury | about 55,000 | 0.10 | estimate |
-| Deploy all three contracts plus `setBridge` | 4,207,312 | 7.7 | measured on a local chain |
+| Deploy all three contracts plus `setBridge` | 4,518,529 | 8.25 | measured with forge on 2026-09-26 after `withdrawWithSig` and `transferDeposit` were added |
 
 Every figure in the shilling column is conditional on that gas price, that ETH price and that exchange rate, all of 2026-09-09. The L1 data fee Base adds is under 5 percent of these at that day's L1 price and is folded into the estimates.
 
@@ -162,9 +167,9 @@ At the placeholder price and that day's gas the break-even is arithmetic:
 
 ```
 fee per batch    = 5% x gross
-gas per batch    = 0.35 KES + 0.12 KES x (tickets - 1)
-break-even gross = gas / 5% = 7.0 KES for a one-ticket batch
-at 0.05 KES/MB   = 140 MB of relayed traffic per batch
+gas per batch    = 0.24 KES + 0.11 KES x (tickets - 1)
+break-even gross = gas / 5% = 4.8 KES for a one-ticket batch
+at 0.05 KES/MB   = 96 MB of relayed traffic per batch
 ```
 
 The relayer therefore batches until the pending fee is at least twice the estimated gas, with the 2x margin absorbing a gas spike between estimate and inclusion, and never waits longer than a cadence that keeps operators paid promptly. Both become configuration values when the relayer loop is written.
@@ -188,26 +193,26 @@ What can be stated without conditions today is narrower and true:
 
 | Statement | Basis |
 |---|---|
-| One ticket batch settles for 0.35 KES of chain gas | measured, 2026-09-09 |
+| A one-ticket batch settles for 0.24 KES of chain gas | measured gas, 2026-09-09 prices |
 | 25 MB of relayed traffic is 2,500 units | the unit is 10 KB by definition |
 | At the placeholder price that is 1.25 KES gross | arithmetic on the placeholder |
 | Of that, 5 percent goes to the treasury and 95 percent to the operator | contract constant, default fee |
-| A one-ticket batch needs about 7.0 KES of gross to break even on gas | the arithmetic in section 9 |
+| A one-ticket batch needs about 4.8 KES of gross to break even on gas | the arithmetic in section 9 |
 
-The gap between 1.25 KES of gross on a 25 MB session and a 7.0 KES break-even is the reason batching exists, and it is why the relayer threshold is a protocol-level concern rather than an implementation detail.
+The gap between 1.25 KES of gross on a 25 MB session and a 4.8 KES break-even is the reason batching exists, and it is why the relayer threshold is a protocol-level concern rather than an implementation detail.
 
 ## 11. Open items
 
 1. The per-unit price. Blocked on measuring the bulk bundle cost per megabyte and the proxy cache hit rate, then applying the floor formula.
 2. The session credit rule caps, 20 KES online and 5 KES offline recommended, pending a decision and pilot tuning.
-3. The escrow-internal relayed transfer, proposed and not built.
+3. The escrow-internal relayed transfer: `transferDeposit` and `withdrawWithSig` are built and tested in the contract; the gateway route and the app screen are not built.
 4. The user off-ramp. Only the founder and operator paths are wired today; the user path reuses the same payout worker with a per-user MSISDN.
 5. Non-owner pricing, deferred. It sits above the money layer and changes no contract when it lands.
 
 ## 12. References
 
 1. `contracts/src/xKoinToken.sol`, the ERC-20, the bridge struct, the mint cap and the self-only burn.
-2. `contracts/src/xKoinEscrow.sol`, the `Ticket` struct, `settleTicketBatch`, the price band and the deposit cap.
+2. `contracts/src/xKoinEscrow.sol`, the `Ticket` struct, `settleTicketBatch`, the relayed `withdrawWithSig` and `transferDeposit`, the price band and the deposit cap.
 3. `contracts/src/xKoinTreasury.sol`, the fee ceiling, the anyone-callable claim and the beneficiary timelock.
 4. `protocol/xkp/settle.py`, the EIP-712 domain and types used by the end-to-end chain proof.
 5. `docs/ops/critical-accounts/03-budget-and-sustainability.md`, the measured gas figures of 2026-09-09 and the self-funding loop.

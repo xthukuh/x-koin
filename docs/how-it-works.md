@@ -127,11 +127,11 @@ The rule to add: a node grants each session a credit limit, the smaller of the l
 
 | Option | How | User cost | Work | Recommendation |
 |---|---|---|---|---|
-| A. Escrow-internal transfer, relayed | New escrow function `transferDeposit(from, to, amount, nonce, deadline, sig)`: the sender signs an EIP-712 authorisation, the kiosk relays it and pays the gas, the contract moves value between two deposit entries | Free to the user; operator pays about 0.1 KES gas per transfer | About 40 lines of Solidity plus tests, one gateway route, one app screen | Recommended. Keeps value 1:1, gasless, and the recipient can spend at any node immediately |
+| A. Escrow-internal transfer, relayed | Escrow function `transferDeposit(from, to, amount, deadline, sig)`, built: the sender signs an EIP-712 authorisation, the kiosk relays it and pays the gas, the contract moves value between two deposit entries. The nonce is read on chain from `authNonces` | Free to the user; operator pays 83,050 gas (0.15 KES) per transfer, measured | Contract function and tests built; one gateway route and one app screen remain | Recommended, contract side built. Keeps value 1:1, gasless, and the recipient can spend at any node immediately |
 | B. Token transfer via permit, relayed | Sender signs a permit for the recipient, kiosk relays `transferFrom` | Free to user, same gas for operator | Gateway route only, no contract change | Moves wallet balance, not the meter; the recipient then needs a deposit step. Fine as a fallback |
 | C. Off-chain IOUs settled later | Users exchange signed IOUs, kiosk nets them at settlement | Free | New protocol surface, new failure modes | Not for MVP |
 
-Option A makes XKN a loose trade currency inside the community from day one: the app shows a QR of the recipient's address, the sender confirms an amount, and the relayed transaction lands in seconds. The operator's gas cost is the "free" in free transfers, and at 0.1 KES it is a rounding error against the 5% fee.
+Option A makes XKN a loose trade currency inside the community from day one: the app shows a QR of the recipient's address, the sender confirms an amount, and the relayed transaction lands in seconds. The operator's gas cost is the "free" in free transfers, and at 0.15 KES it is a rounding error against the 5% fee.
 
 ### 5.2 The companion app (Android first)
 
@@ -178,7 +178,7 @@ Each journey is the sequence a user or operator actually experiences, with the p
 - If the deposit is near zero the node throttles then drops; the app shows the balance and a buy button.
 - Top up (J2 steps 2 and 3); the node re-reads and restores full service.
 
-**J5. Send XKN to a friend (proposed, option A)**
+**J5. Send XKN to a friend (partial: contract built, route and app proposed, option A)**
 - Friend shows a QR of their address in the app.
 - Sender scans, enters 50 KES, confirms with fingerprint; the app signs the authorisation.
 - Kiosk relays; the escrow moves 50 KES between the two deposits, gas paid by the operator.
@@ -226,7 +226,7 @@ Ordered by the shortest path to a network that earns and a user who can roam, an
 | Rank | Feature | Why now | Cost |
 |---|---|---|---|
 | 1 | Session credit limit and balance-on-demand in node and gateway-api | Makes roaming safe for operators (5.1) | Firmware session manager plus one gateway route |
-| 2 | Escrow-internal relayed transfer (option A) | Free sharing, trade-currency feel, gasless | ~40 lines Solidity, tests, one route |
+| 2 | Escrow-internal relayed transfer (option A) | Free sharing, trade-currency feel, gasless | Contract and tests built; one route remains |
 | 3 | Android app, minimum set from 5.2 | Durable identity, roaming, buy and send in one place | The largest item; Kotlin, four screens |
 | 4 | User off-ramp through the existing payout worker (J6) | Completes the loop for users, not only operators | Generalise the worker's MSISDN source |
 | 5 | Real-chain proof phases 1 to 5 | Confidence before Equity live | docs/ops/critical-accounts/05-test-plan.md |

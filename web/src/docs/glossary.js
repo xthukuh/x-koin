@@ -118,7 +118,7 @@ export const GLOSSARY = [
   },
   {
     term: 'gas',
-    definition: 'What the chain charges for a transaction. One settlement costs about 191,698 gas on Base.',
+    definition: 'What the chain charges for a transaction. A two-ticket settlement costs about 191,698 gas on Base.',
     paper: 'papers/04-settlement-and-economics',
   },
   {

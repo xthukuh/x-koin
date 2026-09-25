@@ -116,7 +116,7 @@
   <!-- legend and measured costs -->
   <rect x="40" y="660" width="1120" height="110" fill="#ffffff" stroke="#14213d" stroke-width="2"/>
   <text x="60" y="688" font-family="monospace" font-size="14" fill="#14213d">Measured chain cost, Base at 0.006 gwei, ETH 2468.58 USDT, USDT 123.29 KES, 2026-09-09:</text>
-  <text x="60" y="712" font-family="monospace" font-size="13" fill="#b8741a">settle one ticket batch 191,698 gas = 0.35 KES     deploy all three contracts 4,207,312 gas = 7.7 KES</text>
+  <text x="60" y="712" font-family="monospace" font-size="13" fill="#b8741a">settle one ticket 131,391 gas = 0.24 KES     deploy all three contracts 4,518,529 gas = 8.25 KES</text>
   <text x="60" y="736" font-family="monospace" font-size="13" fill="#0b3d91">Binding cost is elsewhere: backhaul KES per MB, plus the Jenga and Daraja charge on every fiat leg.</text>
   <text x="60" y="758" font-family="monospace" font-size="12" fill="#0b3d91">accent lines: value moves    dark lines: proof and control    XKN never leaves the KES peg</text>
 </svg>

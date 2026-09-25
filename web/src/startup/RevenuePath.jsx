@@ -122,8 +122,8 @@ export default function RevenuePath() {
         </p>
         <p className="xk-note">
           What is not conditional: chain gas. Paper 04 measured a one-ticket settlement batch at
-          191,698 gas, which was 0.35 KES on 2026-09-09 Base pricing, and all three contracts deploy
-          for 7.7 KES. The costs that decide viability are backhaul per megabyte and the mobile money
+          131,391 gas, which is 0.24 KES on 2026-09-09 Base pricing, and all three contracts deploy
+          for 8.25 KES. The costs that decide viability are backhaul per megabyte and the mobile money
           charge on every fiat leg, and the pilot measures both.{' '}
           <Link to="/docs/papers/04-settlement-and-economics">Paper 04</Link> carries the arithmetic
           and every condition attached to it.

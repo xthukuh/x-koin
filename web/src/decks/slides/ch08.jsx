@@ -4,7 +4,7 @@ import { COLOR, Grid, MiniStat, Reveal, Rows, Slide, ms } from './parts.jsx';
 /** Chapter 8. What is already proven, and by which command. */
 
 const MATRIX = [
-  ['contracts', 'cd contracts && forge test', '28 tests, including a 256-run solvency fuzz and a stolen-owner-key drill'],
+  ['contracts', 'cd contracts && forge test', '35 tests, including 256-run solvency fuzzes and a stolen-owner-key drill'],
   ['gateway-api', 'cd gateway-api && pytest', '9 tests over the Daraja, Jenga and voucher paths, HTTP fully mocked'],
   ['protocol units', 'cd protocol && pytest', '11 tests over the codec, the receipts and the admission checks'],
   ['scenarios S1 to S6', 'cd protocol && python3 run_sim.py', 'discrete-event simulation, deterministic per seed, all scenarios passed'],
@@ -39,7 +39,8 @@ function ProofMatrix({ t }) {
       </Grid>
       <Reveal t={t} at={ms(5.2)} from="fade" style={{ fontSize: 15.5, color: COLOR.faint, lineHeight: 1.4 }}>
         Two of those four are simulation results and keep that label wherever they appear. All three contracts
-        deploy for {gas(DEPLOY_GAS)} gas in the recorded run, about 7.7 KES at the 2026-09-09 rates.
+        deployed for {gas(DEPLOY_GAS)} gas in the recorded run. With withdrawWithSig and transferDeposit added,
+        forge measured 4,518,529 gas on 2026-09-26, about 8.25 KES at the 2026-09-09 rates.
       </Reveal>
     </Slide>
   );

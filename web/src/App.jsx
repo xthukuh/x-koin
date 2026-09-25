@@ -28,19 +28,20 @@ export default function App() {
   return (
     <Routes>
       <Route path="/" element={<Landing />} />
+      {/* Full-screen playground: no Shell, it owns the viewport. */}
+      <Route
+        path="/demo"
+        element={
+          <Suspense fallback={<p className="xk-note">Loading the playground.</p>}>
+            <Demo />
+          </Suspense>
+        }
+      />
       <Route element={<Shell />}>
         <Route path="/docs" element={<Docs />} />
         <Route path="/docs/*" element={<Docs />} />
         <Route path="/investors" element={<Investors />} />
         <Route path="/startup" element={<Startup />} />
-        <Route
-          path="/demo"
-          element={
-            <Suspense fallback={<p className="xk-wrap xk-note">Loading the demo.</p>}>
-              <Demo />
-            </Suspense>
-          }
-        />
         <Route path="/replay" element={<Replay />} />
         <Route path="/blueprints" element={<Blueprints />} />
         <Route path="/manufacturing" element={<Manufacturing />} />

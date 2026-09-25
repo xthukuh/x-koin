@@ -20,7 +20,7 @@ export const STATS = [
   { value: '10 KB', label: 'billing unit', note: 'one cumulative unit per settled ticket' },
   { value: '95%', label: 'of every byte to the operator', note: '5 percent fee, capped at 10 on chain' },
   { value: '8', label: 'Laws, each with a named test', note: 'threat model written as invariants' },
-  { value: '28', label: 'forge tests passing', note: 'including the 256-run solvency fuzz' },
+  { value: '35', label: 'forge tests passing', note: 'including the 256-run solvency fuzz' },
 ];
 
 export const MEDIUMS = [
@@ -209,7 +209,7 @@ export const ROADMAP = [
     status: 'built',
     item: 'Contracts: token, escrow, treasury',
     detail:
-      'EIP-712 tickets, cumulative-unit delta settlement, 7-day beneficiary timelock with founder veto. 28 forge tests including a 256-run solvency fuzz and a stolen-owner-key drill.',
+      'EIP-712 tickets, cumulative-unit delta settlement, 7-day beneficiary timelock with founder veto. 35 forge tests including a 256-run solvency fuzz and a stolen-owner-key drill.',
     date: '2026-09-08',
   },
   {

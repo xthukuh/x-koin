@@ -20,7 +20,7 @@ echo "== python deps"
     -r gateway-api/requirements-dev.txt
 command -v forge >/dev/null || { echo "Foundry missing: https://getfoundry.sh"; exit 1; }
 
-echo "== contracts (expect 28 passed)"
+echo "== contracts (expect 35 passed)"
 (cd contracts && forge test)
 echo "== gateway-api (expect 32 passed)"
 (cd gateway-api && "$PYTHON" -m pytest tests/ -q)

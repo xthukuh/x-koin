@@ -106,7 +106,7 @@ export const PHASES = [
     tranche: null,
     entry: 'A protocol specification and a chain to settle on. Nothing to buy.',
     exit:
-      'Every claim in the repository has a command that proves it: 28 forge tests including a 256-run solvency fuzz and a stolen-owner-key drill, 9 gateway tests, 11 protocol unit tests, scenarios S1 to S6, 75 firmware host checks, and a full loop on a real chain with a stranger-triggered founder payout.',
+      'Every claim in the repository has a command that proves it: 35 forge tests including a 256-run solvency fuzz and a stolen-owner-key drill, 9 gateway tests, 11 protocol unit tests, scenarios S1 to S6, 75 firmware host checks, and a full loop on a real chain with a stranger-triggered founder payout.',
     backwards:
       'Nothing. These runs are reproducible from the repository and are the floor everything else stands on.',
     note:
@@ -669,7 +669,7 @@ export const NOTES = [
   {
     id: 'n2',
     text:
-      'The test runs settle on a local anvil chain, which costs nothing. Paper 04 section 9 measured the same work against public Base gas on 2026-09-09: 191,698 gas to settle a one-ticket batch, which was 0.35 KES, and 4,207,312 gas to deploy all three contracts plus setBridge, which was 7.7 KES.',
+      'The test runs settle on a local anvil chain, which costs nothing. Paper 04 section 9 prices the same work at public Base gas of 2026-09-09: 131,391 gas to settle a one-ticket batch, which is 0.24 KES, and 4,518,529 gas to deploy all three contracts plus setBridge, which is 8.25 KES (measured with forge on 2026-09-26 after withdrawWithSig and transferDeposit were added).',
   },
   {
     id: 'n3',
@@ -804,7 +804,7 @@ export const NOTES = [
   {
     id: 'n29',
     text:
-      'Derived from paper 04 section 9: 4,207,312 gas deployed all three contracts plus setBridge for 7.7 KES on 2026-09-09 Base pricing. A 2-of-3 Safe is a small multiple of one of those deploys. The whole on-chain corporate structure costs less than a matatu fare, which is the point: the expensive parts of this phase are lawyers and regulators, not the chain.',
+      'Derived from paper 04 section 9: 4,518,529 gas deploys all three contracts plus setBridge for 8.25 KES on 2026-09-09 Base pricing. A 2-of-3 Safe is a small multiple of one of those deploys. The whole on-chain corporate structure costs less than a matatu fare, which is the point: the expensive parts of this phase are lawyers and regulators, not the chain.',
   },
   {
     id: 'n30',
@@ -1134,7 +1134,7 @@ export const TEAM = {
     name: 'Martin Thuku',
     role: 'Founder. Protocol, contracts, gateway, firmware and hardware sourcing.',
     evidence:
-      'Everything in the proof matrix was built and proven by one person: three contracts with 28 forge tests, a gateway with its external calls mocked, a protocol reference with six passing scenarios, a portable firmware core with 75 host checks, and a full loop settled on a real chain.',
+      'Everything in the proof matrix was built and proven by one person: three contracts with 35 forge tests, a gateway with its external calls mocked, a protocol reference with six passing scenarios, a portable firmware core with 75 host checks, and a full loop settled on a real chain.',
   },
   hires: [
     {

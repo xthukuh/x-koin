@@ -28,18 +28,24 @@ from dataclasses import dataclass
 WEI_PER_ETH = 10**18
 WEI_PER_GWEI = 10**9
 
-# Gas per operation. "measured" entries come from the chain e2e proof on
-# anvil (settle 191,698; deploy 4,207,312 from the broadcast receipts) and
-# are updated from phase 1 receipts.
+# Gas per operation. "measured" entries come from forge: settle one fresh
+# ticket 131,391 (probe, 2026-09-25); withdrawWithSig 93,358 and
+# transferDeposit 83,050 first use, and deploy 4,518,529 (forge --gas-report,
+# 2026-09-26, after withdrawWithSig and transferDeposit were added). The extra
+# ticket figure is derived from a 3-ticket probe at 251,238. The chain e2e
+# proof's 191,698 is a two-ticket batch. Updated from phase 1 receipts.
+# main() reads entries 0, 1, 2, 3, 6 and 7 by index; append new rows at the end.
 OPERATIONS: list[tuple[str, int, str]] = [
-    ("settleTicketBatch, 1 ticket", 191_698, "measured"),
-    ("each extra ticket in a batch", 65_000, "estimate"),
+    ("settleTicketBatch, 1 ticket", 131_391, "measured"),
+    ("each extra ticket in a batch", 59_924, "derived"),
     ("bridgeMint", 70_000, "estimate"),
     ("depositWithPermit (relayed)", 95_000, "estimate"),
     ("claim (treasury)", 55_000, "estimate"),
     ("claimEarnings (node admin)", 60_000, "estimate"),
-    ("deploy token+treasury+escrow+setBridge", 4_207_312, "measured"),
+    ("deploy token+treasury+escrow+setBridge", 4_518_529, "measured"),
     ("create Safe", 300_000, "estimate"),
+    ("withdrawWithSig (relayed)", 93_358, "measured"),
+    ("transferDeposit (relayed)", 83_050, "measured"),
 ]
 
 

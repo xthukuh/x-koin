@@ -45,6 +45,16 @@ contract xKoinEscrow is EIP712, ReentrancyGuard, Ownable2Step {
         "Ticket(address client,address nodeAdmin,uint64 sequenceNumber,uint128 cumulativeUnits,uint256 epochExpiry)"
     );
 
+    /// @dev Relayed exits and escrow-to-escrow transfers. The destination is
+    ///      signed, so a relayer can submit the authorisation but never
+    ///      redirect it. Both share one nonce per client.
+    bytes32 public constant WITHDRAW_TYPEHASH = keccak256(
+        "Withdraw(address client,address to,uint256 amount,uint256 nonce,uint256 deadline)"
+    );
+    bytes32 public constant TRANSFER_TYPEHASH = keccak256(
+        "TransferDeposit(address from,address to,uint256 amount,uint256 nonce,uint256 deadline)"
+    );
+
     IERC20 public immutable token;
     xKoinTreasury public immutable treasury;
 
@@ -64,9 +74,12 @@ contract xKoinEscrow is EIP712, ReentrancyGuard, Ownable2Step {
     mapping(address => uint256) public earnings;
     /// @notice channel state per keccak256(client, nodeAdmin).
     mapping(bytes32 => Channel) public channels;
+    /// @notice Next nonce for withdrawWithSig / transferDeposit, per client.
+    mapping(address => uint256) public authNonces;
 
     event Deposited(address indexed client, uint256 amount);
     event DepositWithdrawn(address indexed client, uint256 amount);
+    event DepositTransferred(address indexed from, address indexed to, uint256 amount);
     event TicketSettled(
         address indexed client,
         address indexed nodeAdmin,
@@ -89,6 +102,9 @@ contract xKoinEscrow is EIP712, ReentrancyGuard, Ownable2Step {
     error InsufficientEarnings();
     error PriceOutOfBand();
     error PriceCooldownActive();
+    error AuthorizationExpired();
+    error BadAuthorization();
+    error ZeroAddress();
 
     constructor(IERC20 token_, xKoinTreasury treasury_, uint256 pricePerUnit_, address initialOwner)
         EIP712("xKoinEscrow", "1")
@@ -144,6 +160,64 @@ contract xKoinEscrow is EIP712, ReentrancyGuard, Ownable2Step {
         deposits[msg.sender] = bal - amount;
         token.safeTransfer(msg.sender, amount);
         emit DepositWithdrawn(msg.sender, amount);
+    }
+
+    /// @notice Gasless exit: the client signs, anyone relays (the kiosk pays
+    ///         gas). Clients hold no native gas by design, so without this the
+    ///         escrow could only be left by first funding the client with ETH.
+    function withdrawWithSig(
+        address client,
+        address to,
+        uint256 amount,
+        uint256 deadline,
+        bytes calldata signature
+    ) external nonReentrant {
+        if (amount == 0) revert ZeroAmount();
+        if (to == address(0)) revert ZeroAddress();
+        _useAuthorization(WITHDRAW_TYPEHASH, client, to, amount, deadline, signature);
+        uint256 bal = deposits[client];
+        if (bal < amount) revert InsufficientDeposit();
+        deposits[client] = bal - amount;
+        token.safeTransfer(to, amount);
+        emit DepositWithdrawn(client, amount);
+    }
+
+    /// @notice Escrow-to-escrow transfer between two clients, relayed. No token
+    ///         moves, so solvency holds by construction; the recipient can
+    ///         spend at any node immediately.
+    function transferDeposit(
+        address from,
+        address to,
+        uint256 amount,
+        uint256 deadline,
+        bytes calldata signature
+    ) external nonReentrant {
+        if (amount == 0) revert ZeroAmount();
+        if (to == address(0)) revert ZeroAddress();
+        _useAuthorization(TRANSFER_TYPEHASH, from, to, amount, deadline, signature);
+        uint256 bal = deposits[from];
+        if (bal < amount) revert InsufficientDeposit();
+        deposits[from] = bal - amount;
+        deposits[to] += amount;
+        emit DepositTransferred(from, to, amount);
+    }
+
+    /// @dev Checks deadline and signer, then consumes the client's nonce.
+    function _useAuthorization(
+        bytes32 typeHash,
+        address client,
+        address to,
+        uint256 amount,
+        uint256 deadline,
+        bytes calldata signature
+    ) internal {
+        if (block.timestamp > deadline) revert AuthorizationExpired();
+        uint256 nonce = authNonces[client];
+        bytes32 digest =
+            _hashTypedDataV4(keccak256(abi.encode(typeHash, client, to, amount, nonce, deadline)));
+        (address signer, ECDSA.RecoverError err,) = ECDSA.tryRecover(digest, signature);
+        if (err != ECDSA.RecoverError.NoError || signer != client) revert BadAuthorization();
+        authNonces[client] = nonce + 1;
     }
 
     // ------------------------------------------------------------------

@@ -16,7 +16,7 @@ Expected proof matrix (all green as of commit bcf91de, re-verified from this exa
 
 | Component | Proof | Command | Result |
 |---|---|---|---|
-| Contracts (token/escrow/treasury) | 28 Foundry tests incl. 256-run solvency fuzz, stolen-owner-key drill | `cd contracts && forge test` | 28 passed |
+| Contracts (token/escrow/treasury) | 35 Foundry tests incl. 256-run solvency fuzz, stolen-owner-key drill | `cd contracts && forge test` | 35 passed |
 | gateway-api (Daraja/Jenga/vouchers) | 9 pytest, HTTP fully mocked | `cd gateway-api && pytest` | 9 passed |
 | XKP protocol units | 11 pytest | `cd protocol && pytest` | 11 passed |
 | XKP scenarios S1-S6 | discrete-event sim, deterministic seeds | `cd protocol && python3 run_sim.py` | ALL SCENARIOS PASSED |
