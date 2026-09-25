@@ -135,6 +135,6 @@ Live at https://xkoin.thuku.dev/demo behind the pass-wall, merged as PR #1 (comm
 
 Gas probes run this session with a throwaway forge test (deleted): transferFrom 57,594; settle one fresh ticket 131,391; the same channel again 80,103; three fresh tickets 251,238; repeat deposit 43,966. Settle model: 71,467 + 59,924 per ticket, less 17,100 per warm slot (EIP-2200), within 0.17 percent of anvil.
 
-Findings for Martin: paper 04 section 9 labels 191,698 gas as a one-ticket settle, but chain.json shows that transaction carried two tickets; one ticket measures 131,391 (0.24 KES). withdrawDeposit has no relayed form, so a client with no ETH cannot exit escrow without the kiosk sending gas. A 12 MB session grosses 0.60 KES against 0.24 KES to settle it alone; the relayer break-even at 2x gas is about 504 MB per batch at the placeholder price.
+Findings for Martin: paper 04 section 9 labels 191,698 gas as a one-ticket settle, but chain.json shows that transaction carried two tickets; one ticket measures 131,391 (0.24 KES). withdrawDeposit has no relayed form, so a client with no ETH cannot exit escrow without the kiosk sending gas. A 12 MB session grosses 0.60 KES against 0.24 KES to settle it alone; the relayer break-even at 2x gas is about 192 MB per batch at the placeholder price.
 
 Next: decide whether to add withdrawWithSig and transferDeposit to xKoinEscrow; correct the paper 04 gas row; the progress board for this session was not published.
