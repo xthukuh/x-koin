@@ -146,3 +146,11 @@ Merged as PR #2 and deployed. xKoinEscrow gained withdrawWithSig (gasless exit, 
 /demo is now a full-screen playground (web/src/demo/ui/Playground.jsx, steps in web/src/demo/steps.js): flow map, folding step wizard with closed-box in/does/out, toggle panels Money, Proof, Log, overlays Costs, Tools, Help. Play all runs with no timers. verify:demo 70 of 70.
 
 Open: gateway route and app screen for the two new functions; paste the regenerated ~/.claude/cloud/setup.sh into the cloud environment (new efficiency rule); decide whether to replace @noble with native code (WebCrypto has no keccak-256 or secp256k1).
+
+## Addendum (2026-09-26, later): relay routes, unlock screen, lab view
+
+Merged as PR #3 and deployed. gateway-api POST /escrow/withdraw and /escrow/transfer (app/escrow_routes.py, app/escrow_auth.py) pre-check and relay withdrawWithSig and transferDeposit; 39 tests pass. gateway-api has never been deployed to the VPS (no /srv/xkoin/.env there), so the routes run only in tests and local dry run. Companion app has an unlock screen.
+
+/demo lab: every ledger entry carries where it ran, time in ms, a plain `say` sentence (web/src/demo/narrative.js), exact calldata (web/src/demo/abi.js, matches `cast calldata`) and a block (web/src/demo/chain.js, block and tx hashes match `cast keccak`). Lab panel tabs trace, bytes, chain; the chain tab walks edit, fix its hash, fix every block after, and five copies rejecting the forgery. Script strip for demos; window.xkoin always; DevTools switch prints each step to console and Performance panel. verify:demo 81 of 81.
+
+Open: deploy gateway-api when rail credentials exist; a real Base Sepolia deployment would let the chain tab link to basescan.
