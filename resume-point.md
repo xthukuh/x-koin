@@ -138,3 +138,11 @@ Gas probes run this session with a throwaway forge test (deleted): transferFrom 
 Findings for Martin: paper 04 section 9 labels 191,698 gas as a one-ticket settle, but chain.json shows that transaction carried two tickets; one ticket measures 131,391 (0.24 KES). withdrawDeposit has no relayed form, so a client with no ETH cannot exit escrow without the kiosk sending gas. A 12 MB session grosses 0.60 KES against 0.24 KES to settle it alone; the relayer break-even at 2x gas is about 192 MB per batch at the placeholder price.
 
 Next: decide whether to add withdrawWithSig and transferDeposit to xKoinEscrow; correct the paper 04 gas row; the progress board for this session was not published.
+
+## Addendum, session eight continued (2026-09-26): relayed exit, playground
+
+Merged as PR #2 and deployed. xKoinEscrow gained withdrawWithSig (gasless exit, destination signed) and transferDeposit (meter to meter, no token moves), sharing authNonces; 35 forge tests pass. Gas: first use 93,358 and 83,050, warm 76,246 and 65,950; escrow deploy 2,210,501; all three plus setBridge 4,518,529. A throwaway forge test deployed the escrow at the demo address on chain 31337 and accepted signatures made by web/src/demo/crypto.js. Docs now call 191,698 a two-ticket settle; one ticket is 131,391 (0.24 KES); break-even 96 MB at 1x gas, 192 MB at the relayer's 2x rule.
+
+/demo is now a full-screen playground (web/src/demo/ui/Playground.jsx, steps in web/src/demo/steps.js): flow map, folding step wizard with closed-box in/does/out, toggle panels Money, Proof, Log, overlays Costs, Tools, Help. Play all runs with no timers. verify:demo 70 of 70.
+
+Open: gateway route and app screen for the two new functions; paste the regenerated ~/.claude/cloud/setup.sh into the cloud environment (new efficiency rule); decide whether to replace @noble with native code (WebCrypto has no keccak-256 or secp256k1).
