@@ -20,7 +20,7 @@ The proof matrix below is `HANDOVER.md` section 1, re-verified from the handover
 
 | Component | Proof | Command | Result |
 |---|---|---|---|
-| Contracts: token, escrow, treasury | 28 Foundry tests including a 256-run solvency fuzz and a stolen-owner-key drill | `cd contracts && forge test` | 28 passed |
+| Contracts: token, escrow, treasury | 35 Foundry tests including a 256-run solvency fuzz and a stolen-owner-key drill | `cd contracts && forge test` | 35 passed |
 | gateway-api: Daraja, Jenga, vouchers | 9 pytest, HTTP fully mocked | `cd gateway-api && pytest` | 9 passed |
 | XKP protocol units | 11 pytest | `cd protocol && pytest` | 11 passed |
 | XKP scenarios S1 to S6 | Discrete-event simulation, deterministic seeds | `cd protocol && python3 run_sim.py` | all scenarios passed |

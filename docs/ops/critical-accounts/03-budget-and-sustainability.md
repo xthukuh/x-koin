@@ -9,7 +9,7 @@ Measured on 2026-09-09 with `cast gas-price` against the public Base RPC and the
 | ETH price | 2,468.58 USDT | Binance ticker |
 | USDT to KES | 123.29 | 900 / 7.30001286 |
 | ETH in KES | 304,350 | product of the two |
-| Settle one ticket batch | 191,698 gas | measured in the chain e2e proof |
+| Settle a one-ticket batch | 131,391 gas | measured by a forge probe on 2026-09-25 |
 
 Re-run the calculator any time with today's numbers:
 
@@ -27,12 +27,15 @@ Add `--rpc <url> --address <0x...>` pairs and it also reports live ETH balances 
 
 | Operation | Gas | ETH | USD | KES |
 |---|---|---|---|---|
-| Settle a batch, one ticket (measured) | 191,698 | 0.00000115 | 0.0028 | 0.35 |
-| Each additional ticket in the batch (estimate, measured in phase 1) | ~65,000 | 0.00000039 | 0.0010 | 0.12 |
+| Settle a batch, one ticket (measured) | 131,391 | 0.00000079 | 0.0019 | 0.24 |
+| Settle a batch, two tickets (measured in the chain e2e proof) | 191,698 | 0.00000115 | 0.0028 | 0.35 |
+| Each additional ticket in the batch (derived from probes) | ~59,924 | 0.00000036 | 0.0009 | 0.11 |
 | `bridgeMint` for one top-up (estimate) | ~70,000 | 0.00000042 | 0.0010 | 0.13 |
 | `depositWithPermit` relayed for the client (estimate) | ~95,000 | 0.00000057 | 0.0014 | 0.17 |
+| `withdrawWithSig` relayed for the client, first use (measured) | 93,358 | 0.00000056 | 0.0014 | 0.17 |
+| `transferDeposit` relayed between clients, first use (measured) | 83,050 | 0.00000050 | 0.0012 | 0.15 |
 | `claim` on the treasury (estimate) | ~55,000 | 0.00000033 | 0.0008 | 0.10 |
-| Deploy all three contracts plus `setBridge` (measured on anvil) | 4,207,312 | 0.000025 | 0.062 | 7.7 |
+| Deploy all three contracts plus `setBridge` (measured with forge on 2026-09-26 after `withdrawWithSig` and `transferDeposit` were added) | 4,518,529 | 0.000027 | 0.067 | 8.25 |
 | Create a Safe (estimate) | ~300,000 | 0.0000018 | 0.0044 | 0.55 |
 
 The L1 data fee that Base adds on top is under 5% of these at today's L1 price and is folded into the estimates. Phase 1 replaces every estimate with a receipt.
@@ -48,9 +51,9 @@ The treasury earns XKN, which is KES. Gas is paid in ETH. Nothing on chain conve
 The break-even for step 2, with the placeholder price and today's gas:
 
     fee per batch     = 5% x gross
-    gas per batch     = 0.35 KES + 0.12 KES x (tickets - 1)
-    break-even gross  = gas / 5%  = 7.0 KES for a one-ticket batch
-    at 0.05 KES/MB    = 140 MB of relayed traffic per batch
+    gas per batch     = 0.24 KES + 0.11 KES x (tickets - 1)
+    break-even gross  = gas / 5%  = 4.8 KES for a one-ticket batch
+    at 0.05 KES/MB    = 96 MB of relayed traffic per batch
 
 The relayer therefore batches until the pending fee is at least two times the estimated gas (a 2x margin absorbs a gas spike between estimate and inclusion), and never more often than a cadence that keeps node operators paid promptly. Both numbers become `XKOIN_SETTLE_MIN_FEE_MULTIPLE` and `XKOIN_SETTLE_MAX_INTERVAL_S` in the gateway when the relayer loop is written (phase 1 exit criterion).
 
@@ -83,9 +86,9 @@ The only number that can break this plan is Binance's minimum withdrawal on the 
 
 ## Measures against anyone draining anything
 
-Already enforced by the contracts and proven by the 28 forge tests:
+Already enforced by the contracts and proven by the 35 forge tests:
 
-- Client deposits leave the escrow only to the client or, through a signed ticket, to a node admin's earnings and the treasury. No owner function touches deposits.
+- Client deposits leave the escrow only to the client, to an address the client signed for in `withdrawWithSig`, to another client's deposit through a signed `transferDeposit`, or, through a signed ticket, to a node admin's earnings and the treasury. No owner function touches deposits.
 - Treasury fees leave only to the beneficiary. `claim` takes no destination.
 - Changing the beneficiary takes seven public days and the current beneficiary can veto.
 - The bridge mints at most its daily cap and burns only its own balance.

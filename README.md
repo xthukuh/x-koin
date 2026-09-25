@@ -8,7 +8,7 @@ Trust model, stated honestly: the peer layer is zero-trust, no peer must trust a
 
 | Folder | What is in it |
 |---|---|
-| `contracts/` | Solidity on Foundry: xKoinToken, xKoinEscrow, xKoinTreasury, the deploy script and 28 tests |
+| `contracts/` | Solidity on Foundry: xKoinToken, xKoinEscrow, xKoinTreasury, the deploy script and 35 tests |
 | `docker/` | Compose files and Dockerfiles: the proof matrix, the presentation site, the gateway API and the velxio simulator |
 | `docs/` | Everything written: the whitepaper set, use cases, the beta board set, ops runbooks, Drive exports and session plans |
 | `firmware/` | ESP32-S3 gateway and satellite firmware, with the portable C core proven on the host |
@@ -44,7 +44,7 @@ Every command below was run on this host on 2026-09-14 unless the exit column sa
 | Site in Docker | `XKOIN_GATE_SECURE=false docker compose -f docker/compose.site.yml up --build` (http://127.0.0.1:8090) | compose file validated, `config -q` exit 0; the image build is not run here |
 | Deploy the site to the VPS | `scripts/deploy-site.sh` | documented from the script, not run |
 | Simulator (velxio) | `docker compose -f docker/compose.velxio.yml up -d` (http://127.0.0.1:3080) | `config -q` exit 0 |
-| Contracts | `cd contracts && forge test` | 0, 28 passed |
+| Contracts | `cd contracts && forge test` | 0, 35 passed |
 | Gateway API | `cd gateway-api && ../.venv/Scripts/python.exe -m pytest tests/ -q` | 0, 32 passed |
 | Protocol units | `cd protocol && ../.venv/Scripts/python.exe -m pytest tests/ -q` | 0, 11 passed |
 | Protocol scenarios S1 to S6 | `cd protocol && ../.venv/Scripts/python.exe run_sim.py` | 0, ALL SCENARIOS PASSED |

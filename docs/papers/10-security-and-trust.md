@@ -134,7 +134,7 @@ Two further items are recorded elsewhere but belong in a security reading. The n
 3. `docs/ops/critical-accounts/04-security-dos-and-donts.md`, the full vigilance list and the incident table.
 4. `docs/ops/critical-accounts/03-budget-and-sustainability.md`, the measured gas figures and the drain-prevention summary.
 5. `contracts/src/xKoinTreasury.sol` and `contracts/src/xKoinToken.sol`, the claim design, the timelock, the mint cap and the self-only burn.
-6. `contracts/test/`, the 28 Foundry tests named throughout this paper, including the 256-run solvency fuzz and the stolen-owner-key drill.
+6. `contracts/test/`, the 35 Foundry tests named throughout this paper, including the 256-run solvency fuzz and the stolen-owner-key drill.
 7. `gateway-api/app/payout`, the payout worker and its tests.
 8. `HANDOVER.md`, sections 2 and 3: the founder-safety decision and the invariants that must not drift.
 9. `docs/papers/03-protocol-xkp.md` and `docs/papers/04-settlement-and-economics.md`, the mechanisms this paper treats as given.

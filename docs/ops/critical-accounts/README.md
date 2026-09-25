@@ -12,11 +12,12 @@ Prepared 2026-09-09 for Martin, who funded a Binance wallet with KES 900 (7.3000
 
 | Item | Gas | Cost today |
 |---|---|---|
-| Settle one ticket batch (measured 191,698 gas) | 191,698 | 0.35 KES |
+| Settle a one-ticket batch (measured 131,391 gas) | 131,391 | 0.24 KES |
+| Settle a two-ticket batch (measured in the chain e2e proof) | 191,698 | 0.35 KES |
 | Mint XKN for one top-up (estimate, measured in phase 1) | ~70,000 | 0.13 KES |
-| Deploy token, treasury, escrow on Base mainnet (measured on anvil) | 4,207,312 | 7.7 KES |
+| Deploy token, treasury, escrow plus `setBridge` on Base mainnet (measured with forge on 2026-09-26 after `withdrawWithSig` and `transferDeposit` were added) | 4,518,529 | 8.25 KES |
 
-At the placeholder price of 0.05 KES/MB and a 5% fee, a settlement batch pays for its own gas once it covers about 140 MB of relayed traffic. Chain gas is not the binding cost of the network; Jenga and M-Pesa charges and backhaul bandwidth are, and the pricing decision (HANDOVER backlog item 8) has to clear those, not gas.
+At the placeholder price of 0.05 KES/MB and a 5% fee, a one-ticket settlement batch pays for its own gas once it covers about 96 MB of relayed traffic. Chain gas is not the binding cost of the network; Jenga and M-Pesa charges and backhaul bandwidth are, and the pricing decision (HANDOVER backlog item 8) has to clear those, not gas.
 
 ## Files in this folder
 

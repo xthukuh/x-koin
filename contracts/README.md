@@ -5,10 +5,10 @@ The on-chain layer: an ERC-20 for metered value, an escrow that settles state-ch
 | File | What it is |
 |---|---|
 | `src/xKoinToken.sol` | XKN, 6 decimals so one base unit is one micro-KES. Bridge mint with a per-bridge rolling-day cap; `bridgeBurn` is self-only, so no key can burn a user balance. |
-| `src/xKoinEscrow.sol` | Deposits, EIP-712 ticket settlement (domain `xKoinEscrow` version `1`), cumulative-unit delta accounting, the owner price band and cooldown. |
+| `src/xKoinEscrow.sol` | Deposits, EIP-712 ticket settlement (domain `xKoinEscrow` version `1`), cumulative-unit delta accounting, the owner price band and cooldown. Relayed `withdrawWithSig` (gasless exit) and `transferDeposit` (escrow-to-escrow credit move): EIP-712 authorisations with the destination signed, sharing one per-client `authNonces` counter. |
 | `src/xKoinTreasury.sol` | The fee sink. `claim()` is callable by anyone and pays only the beneficiary; the beneficiary change carries a 7-day timelock with a cold-key veto. |
 | `script/Deploy.s.sol` | Deploys all three and writes `deployments/<chainId>.json`. Read its header before deploying. |
-| `test/xKoin.t.sol` | 28 tests across three suites, including a 256-run solvency fuzz invariant and a stolen-owner-key drill. |
+| `test/xKoin.t.sol` | 35 tests across three suites, including 256-run solvency fuzz invariants for settlement and `transferDeposit` and a stolen-owner-key drill. |
 | `foundry.toml` | Remappings, optimizer 2000 runs, cancun, and the `sandbox` profile that pins a pre-fetched solc for hosts that cannot reach `binaries.soliditylang.org`. |
 
 ## Prerequisites
@@ -29,7 +29,7 @@ The vendored dependencies in `lib/` (forge-std, openzeppelin-contracts) are in g
     cd contracts
     forge test
 
-Verified on 2026-09-14: exit 0, 28 tests passed across 3 suites in 252 ms. Add `-vvv` for traces, `--gas-report` for the gas table.
+Verified on 2026-09-26: exit 0, 35 tests passed across 3 suites. Add `-vvv` for traces, `--gas-report` for the gas table.
 
 ## Deploy
 

@@ -3,7 +3,7 @@
  * prints the source next to every cost so a number can be traced to its
  * measurement and re-run.
  *
- * measured  forge test --gas-report on contracts/test (28 tests, 2026-09-25),
+ * measured  forge test --gas-report on contracts/test (35 tests, 2026-09-26),
  *           or the anvil chain proof in web/src/proof/chain.json
  * probe     a throwaway forge test run on 2026-09-25 for paths the suite does
  *           not exercise, then deleted (numbers recorded here)
@@ -31,7 +31,9 @@ export const GAS = {
   deposit: { gas: 81_557, src: 'measured', note: 'forge median, 268 calls, first deposit' },
   depositRepeat: { gas: 43_966, src: 'probe', note: 'second deposit, slots already non-zero' },
   depositWithPermit: { gas: 110_693, src: 'measured', note: 'forge, first deposit with permit' },
-  withdrawDeposit: { gas: 63_607, src: 'measured', note: 'forge, 1 call' },
+  withdrawDeposit: { gas: 63_584, src: 'measured', note: 'forge, 1 call' },
+  withdrawWithSig: { gas: 93_358, src: 'measured', note: 'forge max: first use, fresh nonce and recipient slot' },
+  transferDeposit: { gas: 83_050, src: 'measured', note: 'forge max: first use, fresh nonce and recipient deposit' },
   claimEarnings: { gas: 59_631, src: 'measured', note: 'forge max, full claim' },
   setPricePerUnit: { gas: 34_861, src: 'measured', note: 'forge max of successful calls' },
   // settleTicketBatch is modelled, see settleGas()

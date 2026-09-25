@@ -19,7 +19,7 @@ const PHASES = [
     done: true,
     name: 'Proof of concept, software tests (simulated)',
     detail:
-      '28 Foundry tests, 11 protocol units, scenarios S1 to S6, 75 firmware host checks and the full loop settled on a real chain.',
+      '35 Foundry tests, 11 protocol units, scenarios S1 to S6, 75 firmware host checks and the full loop settled on a real chain.',
     when: 'verified green 2026-09-09',
   },
   {

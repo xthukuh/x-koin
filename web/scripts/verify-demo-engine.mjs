@@ -3,7 +3,7 @@
  */
 
 import { UKES, createWorld, deploy, escrow, invariants, kes, offchain, token, treasury, DEFAULT_PARAMS, pendingTickets } from '../src/demo/engine.js';
-import { DRILLS, buy, cashOut, closeSession, depositGasless, ensureReady, openSession, relayBatch, send, serve, setupNetwork, withdraw } from '../src/demo/flows.js';
+import { DRILLS, buy, cashOut, closeSession, depositGasless, ensureReady, openSession, relayBatch, send, sendEscrow, serve, setupNetwork, withdraw, withdrawGasless } from '../src/demo/flows.js';
 
 const errName = (entry) => (entry.error ?? '').split(':')[0];
 
@@ -83,6 +83,23 @@ export async function run(check, chain) {
   check('gasless send moves 10 KES and Amina pays no gas', sent.ok && sent.world.token.bal.baraka === kes(10) && !sent.world.gasSpent.amina, sent.failed?.error);
   const out = cashOut(w, { client: 'amina', amount: kes(10) });
   check('cash out: float and supply both drop 10 KES, peg holds', out.ok && out.world.fiat.float === w.fiat.float - kes(10) && out.world.token.supply === w.token.supply - kes(10) && invariants(out.world).every((i) => i.ok), out.failed?.error);
+
+  // ---- 3b. relayed exit and escrow-to-escrow transfer -------------------
+  const fresh = depositGasless(buy(setupNetwork(createWorld()).world, { client: 'baraka', amount: kes(40) }).world, { client: 'baraka', amount: kes(20) }).world;
+  const out2 = withdrawGasless(fresh, { client: 'baraka', amount: kes(5) });
+  check('withdrawWithSig: Baraka exits 5 KES holding 0 ETH, kiosk pays gas', out2.ok && out2.world.token.bal.baraka === kes(25) && out2.world.escrow.deposits.baraka === kes(15) && !out2.world.gasSpent.baraka, out2.failed?.error);
+  // Baraka's wallet already holds XKN, so the recipient slot is warm: forge measured 76,246 for that case.
+  check('withdrawWithSig warm-recipient gas within 0.1% of measured 76,246', Math.abs(out2.entries.at(-1).gas - 76_246) / 76_246 < 0.001, `${out2.entries.at(-1).gas}`);
+  check('withdrawWithSig consumes the nonce', out2.world.escrow.authNonces.baraka === 1);
+  const signed = offchain.signAuth(fresh, { kind: 'withdraw', owner: 'baraka', to: 'baraka', amount: kes(5) });
+  const once = escrow.withdrawWithSig(signed.world, { from: 'kiosk', auth: signed.result });
+  expect('replayed withdraw authorisation', escrow.withdrawWithSig(once.world, { from: 'kiosk', auth: signed.result }), 'BadAuthorization');
+  expect('redirected withdraw', escrow.withdrawWithSig(signed.world, { from: 'mallory', auth: signed.result, to: 'mallory' }), 'BadAuthorization');
+  expect('expired withdraw', escrow.withdrawWithSig(offchain.warp(signed.world, { seconds: 7_200 }).world, { from: 'kiosk', auth: signed.result }), 'AuthorizationExpired');
+  expect('withdraw signature used as transfer', escrow.transferDeposit(signed.world, { from: 'kiosk', auth: signed.result }), 'BadAuthorization');
+  const moved = sendEscrow(fresh, { from: 'baraka', to: 'amina', amount: kes(7) });
+  check('transferDeposit moves 7 KES of meter credit, escrow token balance unchanged', moved.ok && moved.world.escrow.deposits.amina === kes(7) && moved.world.token.bal.escrow === fresh.token.bal.escrow && invariants(moved.world).every((i) => i.ok), moved.failed?.error);
+  check('transferDeposit first-use gas = measured 83,050', moved.entries.at(-1).gas === 83_050, `${moved.entries.at(-1).gas}`);
 
   // ---- 4. the 12 MB session ------------------------------------------------
   let sw = openSession(w, { client: 'amina', targetBytes: 12_000_000 }).world;

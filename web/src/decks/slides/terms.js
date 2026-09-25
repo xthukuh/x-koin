@@ -351,7 +351,7 @@ export const TERMS = {
   },
   foundry: {
     term: 'Foundry',
-    short: 'The contract test tool. 28 tests pass today.',
+    short: 'The contract test tool. 35 tests pass today.',
     doc: 'papers/13-roadmap',
   },
   'gateway-api': {

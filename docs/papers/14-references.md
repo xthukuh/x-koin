@@ -163,7 +163,7 @@ These are the sources the set relies on most heavily, because they are the ones 
 
 | Path | Proof | Command | Result |
 |---|---|---|---|
-| `contracts/src/xKoinToken.sol`, `xKoinEscrow.sol`, `xKoinTreasury.sol` and `contracts/test/` | 28 Foundry tests including a 256-run solvency fuzz and a stolen-owner-key drill | `cd contracts && forge test` | 28 passed |
+| `contracts/src/xKoinToken.sol`, `xKoinEscrow.sol`, `xKoinTreasury.sol` and `contracts/test/` | 35 Foundry tests including a 256-run solvency fuzz and a stolen-owner-key drill | `cd contracts && forge test` | 35 passed |
 | `gateway-api/` including `app/payout` | 9 pytest with HTTP fully mocked | `cd gateway-api && pytest` | 9 passed |
 | `protocol/xkp/frames.py`, `proofs.py`, `settle.py` | 11 pytest protocol unit tests | `cd protocol && pytest` | 11 passed |
 | `protocol/xkp/sim.py`, `protocol/run_sim.py` | Discrete-event simulation, scenarios S1 to S6, deterministic seeds | `cd protocol && python3 run_sim.py` | all scenarios passed |
