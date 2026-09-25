@@ -44,7 +44,7 @@ export default function Withdraw({ highlight = null }) {
         <div className="xk-app-label">Steps, all signed by you</div>
         <div className="xk-app-step">
           <div className="xk-app-step-n">1</div>
-          <div>Withdraw from the meter to your wallet (unspent deposit only).</div>
+          <div>Unlock from the meter to your wallet (unspent deposit only, the kiosk pays gas).</div>
         </div>
         <div className="xk-app-step">
           <div className="xk-app-step-n">2</div>

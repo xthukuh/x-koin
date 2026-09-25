@@ -31,7 +31,24 @@ export function Entry({ e, open: initial = false }) {
       {!e.ok && <p className="xk-dm-entry__error xk-mono">{e.error}</p>}
       {open && (
         <div className="xk-dm-entry__body">
+          {e.say && <p className="xk-dm-say">{e.say}</p>}
           <dl className="xk-dm-kv">
+            <dt>ran on</dt>
+            <dd>
+              {e.where} <span className="xk-note">{e.ms.toFixed(2)} ms</span>
+            </dd>
+            {e.tx && (
+              <>
+                <dt>tx</dt>
+                <dd className="xk-mono">
+                  {e.tx.hash} in block {e.block}
+                </dd>
+                <dt>calldata</dt>
+                <dd className="xk-mono">
+                  {e.tx.input.length > 2 ? `${e.tx.input.slice(0, 10)} + ${(e.tx.input.length - 10) / 2} bytes` : 'none'}
+                </dd>
+              </>
+            )}
             <dt>caller</dt>
             <dd>
               {nameOf(e.from)} <span className="xk-mono xk-note">{addr(e.from)}</span>
@@ -111,6 +128,7 @@ export function Entry({ e, open: initial = false }) {
                   <thead>
                     <tr>
                       <th>balance</th>
+                      <th>lives in</th>
                       <th>before</th>
                       <th>after</th>
                       <th>change</th>
@@ -120,6 +138,7 @@ export function Entry({ e, open: initial = false }) {
                     {e.diffs.map((d) => (
                       <tr key={d.key}>
                         <td>{metricLabel(d.key)}</td>
+                        <td className="xk-mono">{d.where}</td>
                         <td className="xk-mono">{isEthKey(d.key) ? ethStr(d.before) : kesStr(d.before)}</td>
                         <td className="xk-mono">{isEthKey(d.key) ? ethStr(d.after) : kesStr(d.after)}</td>
                         <td className={`xk-mono ${d.delta > 0 ? 'xk-dm-up' : 'xk-dm-down'}`}>{isEthKey(d.key) ? ethStr(d.delta) : kesStr(d.delta, { sign: true })}</td>

@@ -15,7 +15,7 @@ Importing `./index.js` is enough: it pulls in every screen, and each screen regi
 
 | Prop | Meaning |
 |---|---|
-| `screen` | one of `SCREEN_NAMES`: onboard, main, attach, buy, send, withdraw |
+| `screen` | one of `SCREEN_NAMES`: onboard, main, attach, buy, send, unlock, withdraw |
 | `scale` | 1 draws the 390x844 design size; 0.5 draws it half size |
 | `highlight` | names one control to outline with an accent pulse, or null |
 | `t` | scene clock in ms; buy and send animate, the rest ignore it |
@@ -34,6 +34,7 @@ The frame is a static picture (`role="img"`), not a working app. Nothing inside 
 | attach | status, attach, node, session, free, nearby, pause |
 | buy | amount, presets, method, phone, steps, deposit, buy, confirm |
 | send | to, qr, amount, settles, send, confirm |
+| unlock | amount, to, signed, gas, unlock |
 | withdraw | amount, short, payout, steps, charges, withdraw |
 
 A name that no screen knows highlights nothing. The pulse is a CSS animation that stops under `prefers-reduced-motion`.

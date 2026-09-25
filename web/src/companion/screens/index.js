@@ -8,3 +8,4 @@ export { default as Attach } from './Attach.jsx';
 export { default as Buy } from './Buy.jsx';
 export { default as Send } from './Send.jsx';
 export { default as Withdraw } from './Withdraw.jsx';
+export { default as Unlock } from './Unlock.jsx';

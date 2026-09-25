@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { DEFAULT_PARAMS, createWorld, metrics } from '../engine.js';
 import { closeSession, openSession, serve } from '../flows.js';
 import { STEPS, WORDS } from '../steps.js';
+import Chain from './Chain.jsx';
 import Console from './Console.jsx';
 import Economics from './Economics.jsx';
 import FlowMap, { headline } from './FlowMap.jsx';
@@ -15,9 +16,30 @@ import Stage from './Stage.jsx';
 const PANELS = [
   ['map', 'Map', 'Aerial view of every step'],
   ['money', 'Money', 'Who holds what'],
-  ['proof', 'Proof', 'Signatures, gas and events of the last step'],
+  ['script', 'Script', 'What to say, line by line, for the last step'],
+  ['proof', 'Lab', 'Trace, raw bytes and the chain for the last step'],
   ['log', 'Log', 'Every action so far'],
+  ['devtools', 'DevTools', 'Also print each step to the browser console and Performance panel (window.xkoin)'],
 ];
+
+/** Print new ledger entries to DevTools: one collapsed group per operation, and a Performance-panel measure. */
+function toConsole(entries) {
+  for (const e of entries) {
+    // eslint-disable-next-line no-console
+    console.groupCollapsed(`xkoin #${e.id} ${e.ok ? 'ok' : 'FAIL'} [${e.where}] ${e.say}`);
+    // eslint-disable-next-line no-console
+    console.log('entry', e);
+    if (e.tx) console.log('tx', e.tx); // eslint-disable-line no-console
+    if (e.crypto.length) console.table(e.crypto.map((c) => ({ step: c.label, value: c.value }))); // eslint-disable-line no-console
+    if (e.diffs.length) console.table(e.diffs.map((d) => ({ balance: d.key, lives: d.where, before: d.before, after: d.after, change: d.delta }))); // eslint-disable-line no-console
+    console.groupEnd(); // eslint-disable-line no-console
+    try {
+      performance.measure(`xkoin #${e.id} ${e.fn}`, { start: e.at, duration: e.ms, detail: { say: e.say, where: e.where, gas: e.gas } });
+    } catch {
+      // measure with detail is unavailable in older browsers; the console group above still printed
+    }
+  }
+}
 const OVERLAYS = [
   ['costs', 'Costs', 'Live cost maths and inputs'],
   ['tools', 'Tools', 'Call any contract function directly'],
@@ -57,8 +79,9 @@ export default function Playground() {
   const [active, setActive] = useState(0);
   const [forms, setForms] = useState(freshForms);
   // On a phone the side panels are drawers over the step, so they start closed.
-  const [panels, setPanels] = useState(() => ({ map: true, money: !window.matchMedia('(max-width: 820px)').matches, proof: false, log: false }));
+  const [panels, setPanels] = useState(() => ({ map: true, money: !window.matchMedia('(max-width: 820px)').matches, proof: false, log: false, script: false, devtools: false }));
   const [overlay, setOverlay] = useState(null);
+  const [lab, setLab] = useState('trace');
   const world = hist.worlds.at(-1);
   const worldRef = useRef(world);
   worldRef.current = world;
@@ -73,6 +96,9 @@ export default function Playground() {
 
   const formsRef = useRef(forms);
   formsRef.current = forms;
+  // Read at commit time, so every step prints even when several commit in one pass.
+  const devtoolsRef = useRef(false);
+  devtoolsRef.current = panels.devtools;
   const commit = useCallback((result, stepId, opts = {}) => {
     const step = STEPS.find((s) => s.id === stepId);
     const key = step?.head?.(formsRef.current[stepId]);
@@ -80,10 +106,12 @@ export default function Playground() {
     if (opts.label) record.label = `${opts.label}: ${result.ok ? 'handled' : 'see result'}`;
     if (stepId) setResults((r) => ({ ...r, [stepId]: record }));
     if (opts.record || !result.world) return;
+    if (devtoolsRef.current) toConsole(result.entries ?? []);
     setHist((h) => ({ worlds: [...h.worlds.slice(-80), result.world], changed: diffMap(h.worlds.at(-1), result.world), last: result.entries ?? [] }));
   }, []);
 
   const replace = useCallback((next) => {
+    if (devtoolsRef.current) toConsole(next.ledger.slice(worldRef.current.ledger.length));
     setHist((h) => {
       const prev = h.worlds.at(-1);
       const fresh = next.ledger.slice(prev.ledger.length);
@@ -127,6 +155,11 @@ export default function Playground() {
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, []);
+
+  // DevTools: window.xkoin always holds the live state; console and Performance output only when switched on.
+  useEffect(() => {
+    window.xkoin = { world, ledger: world.ledger, blocks: world.blocks, last: hist.last, trace: (on = true) => setPanels((p) => ({ ...p, devtools: on })) };
+  }, [world, hist.last]);
 
   const chainTx = world.ledger.filter((e) => e.layer === 'chain' && !e.rejected);
   const gasKes = chainTx.reduce((a, e) => a + e.kes, 0);
@@ -178,21 +211,56 @@ export default function Playground() {
       <Stage world={world} active={active} setActive={setActive} results={results} forms={forms} setForm={setForm} commit={commit} replace={replace} />
 
       {panels.proof && (
-        <aside className="pg-panel pg-proof" aria-label="Proof">
+        <aside className="pg-panel pg-proof" aria-label="Lab">
           <header className="pg-panel__head">
-            <h2>Proof</h2>
-            <span className="pg-hint">last step, open a row</span>
+            <h2>Lab</h2>
+            <div className="xk-dm-seg" role="group" aria-label="Lab view">
+              {['trace', 'bytes', 'chain'].map((t) => (
+                <button type="button" key={t} className={lab === t ? 'is-on' : ''} onClick={() => setLab(t)}>
+                  {t}
+                </button>
+              ))}
+            </div>
           </header>
-          {last.length === 0 ? (
-            <p className="pg-hint">Run a step to see its signatures, gas and events.</p>
-          ) : (
+          {lab === 'chain' ? (
+            <Chain world={world} />
+          ) : last.length === 0 ? (
+            <p className="pg-hint">Run a step first.</p>
+          ) : lab === 'trace' ? (
             <ol className="xk-dm-ledger">
               {last.slice(-12).map((e) => (
                 <Entry e={e} key={e.id} />
               ))}
             </ol>
+          ) : (
+            <>
+              <div className="pg-row">
+                <button type="button" className="pg-btn" onClick={() => navigator.clipboard?.writeText(JSON.stringify(last, null, 2))}>
+                  Copy JSON
+                </button>
+                <span className="pg-hint">{last.length} records, as stored. Same object: window.xkoin.last</span>
+              </div>
+              <pre className="pg-raw">{JSON.stringify(last, null, 2)}</pre>
+            </>
           )}
         </aside>
+      )}
+
+      {panels.script && (
+        <section className="pg-script" aria-label="Script">
+          <ol>
+            {last.length === 0 ? (
+              <li className="pg-hint">Run a step: its lines appear here in order.</li>
+            ) : (
+              last.map((e) => (
+                <li key={e.id} className={e.ok ? '' : 'is-bad'}>
+                  <span className="pg-script__where">{e.where}</span>
+                  <span>{e.say}</span>
+                </li>
+              ))
+            )}
+          </ol>
+        </section>
       )}
 
       {panels.log && (

@@ -5,6 +5,8 @@ The fiat boundary. A FastAPI service that sells gas vouchers for M-Pesa and Equi
 | Path | What it is |
 |---|---|
 | `app/main.py` | The routes: `/health`, `/buy-gas`, the Daraja and Jenga callbacks, `/settlement/relay`, the B2C result and timeout hooks, and `/payouts`. |
+| `app/escrow_routes.py` | `/escrow/withdraw` and `/escrow/transfer`: relay a client-signed `withdrawWithSig` or `transferDeposit`, refusing anything that would revert before the kiosk spends gas. |
+| `app/escrow_auth.py` | The EIP-712 `Withdraw` and `TransferDeposit` digests and signer recovery, with parity against the /demo JavaScript. |
 | `app/daraja/client.py` | M-Pesa through Safaricom Daraja: STK push and B2C. |
 | `app/jenga/client.py` | Equitel through Finserve Jenga: payment and the M-Pesa STK rail, RSA-signed. |
 | `app/vouchers.py` | Gas vouchers: Ed25519 signed by the kiosk root key, verified at the edge by a Node or a Node-Satellite. |
@@ -13,7 +15,7 @@ The fiat boundary. A FastAPI service that sells gas vouchers for M-Pesa and Equi
 | `app/payout/pin.py` | Signs the MSISDN pin offline with an EIP-191 signature from the beneficiary key. |
 | `app/config.py` | Settings, read from the environment. `.env.example` lists every key. |
 | `trace_kiosk.py` | Drives four journeys through the real app and writes `protocol/out/kiosk.json` for the site. |
-| `tests/` | 32 tests: the fiat bridge, the payout worker, the pin CLI and the kiosk trace. |
+| `tests/` | 39 tests: the fiat bridge, the payout worker, the pin CLI, the kiosk trace and the relayed escrow exits. |
 
 ## Prerequisites
 
@@ -29,7 +31,7 @@ Configuration: copy `.env.example` to `.env` and fill what you need. `XKOIN_DRY_
     cd gateway-api
     ../.venv/Scripts/python.exe -m pytest tests/ -q
 
-Verified on 2026-09-14: exit 0, 32 passed in 11.5 s, with two deprecation warnings from starlette's test client that are not ours.
+Verified on 2026-09-26: exit 0, 39 passed in 3.6 s, with two deprecation warnings from starlette's test client that are not ours.
 
 All outbound HTTP is intercepted by respx at the same base URLs the real clients use, so a passing suite proves the request bodies as well as the handling. Assert JSON without spaces: httpx serialises `{"Amount":20}`, not `{"Amount": 20}`.
 
