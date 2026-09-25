@@ -10,9 +10,12 @@
     "build": "vite build",
     "preview": "vite preview --port 4173 --strictPort",
     "proof:sync": "node scripts/sync-proof.mjs",
-    "sitemap": "node scripts/build-sitemap.mjs"
+    "sitemap": "node scripts/build-sitemap.mjs",
+    "verify:demo": "node scripts/verify-demo.mjs"
   },
   "dependencies": {
+    "@noble/curves": "2.4.0",
+    "@noble/hashes": "2.4.0",
     "marked": "18.0.12",
     "motion": "13.3.0",
     "react": "19.3.0",

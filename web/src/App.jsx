@@ -1,3 +1,4 @@
+import { Suspense, lazy } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
 import Landing from './landing/Landing.jsx';
@@ -14,6 +15,9 @@ import Slides from './routes/Slides.jsx';
 import Startup from './routes/Startup.jsx';
 import Shell from './shell/Shell.jsx';
 
+// Lazy so the crypto libraries load only on /demo.
+const Demo = lazy(() => import('./routes/Demo.jsx'));
+
 /**
  * Every route renders inside the shared Shell (topbar, footer, document
  * title). The landing page is the one exception: it mounts its own Shell so it
@@ -29,6 +33,14 @@ export default function App() {
         <Route path="/docs/*" element={<Docs />} />
         <Route path="/investors" element={<Investors />} />
         <Route path="/startup" element={<Startup />} />
+        <Route
+          path="/demo"
+          element={
+            <Suspense fallback={<p className="xk-wrap xk-note">Loading the demo.</p>}>
+              <Demo />
+            </Suspense>
+          }
+        />
         <Route path="/replay" element={<Replay />} />
         <Route path="/blueprints" element={<Blueprints />} />
         <Route path="/manufacturing" element={<Manufacturing />} />
