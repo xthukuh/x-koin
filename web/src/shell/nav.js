@@ -54,6 +54,17 @@ export const NAV = [
     changefreq: 'monthly',
   },
   {
+    path: '/demo',
+    label: 'Demo',
+    title: 'Contract demo',
+    text: 'Run the contracts by hand: kiosk, wallet and escrow, a 12 MB session, settlement, live costs in KES and recovery drills.',
+    topbar: true,
+    footer: true,
+    audience: 'engineers, auditors and investors',
+    priority: 0.8,
+    changefreq: 'monthly',
+  },
+  {
     path: '/replay',
     label: 'Replay',
     title: 'Protocol replay',
