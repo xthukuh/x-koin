@@ -31,5 +31,6 @@ export const HIGHLIGHTS = {
   attach: ['status', 'attach', 'node', 'session', 'free', 'nearby', 'pause'],
   buy: ['amount', 'presets', 'method', 'phone', 'steps', 'deposit', 'buy', 'confirm'],
   send: ['to', 'qr', 'amount', 'settles', 'send', 'confirm'],
+  unlock: ['amount', 'to', 'signed', 'gas', 'unlock'],
   withdraw: ['amount', 'short', 'payout', 'steps', 'charges', 'withdraw'],
 };

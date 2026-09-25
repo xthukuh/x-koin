@@ -17,6 +17,10 @@
 import {
   bytesToHex,
   channelId,
+  concat,
+  hexToBytes,
+  keccak,
+  uintWord,
   demoKey,
   authDigest,
   permitDigest,
@@ -27,7 +31,9 @@ import {
   ticketDigest,
   verifyVoucher,
 } from './crypto.js';
+import { calldata } from './abi.js';
 import { GAS, PRICES, REVERT_GAS, gasToGwei, gasToKes, gasToUsd, settleGas } from './gas.js';
+import { say } from './narrative.js';
 
 export const UKES = 1_000_000;
 export const kes = (n) => Math.round(n * UKES);
@@ -48,7 +54,7 @@ export const ACTORS = {
   kiosk: { name: 'Kiosk (bridge)', role: 'gateway-api hot key: mints against M-Pesa, burns after payout, relays gasless calls, Ed25519 voucher root.' },
   relayer: { name: 'Relayer', role: 'Submits ticket batches. Holds no privilege; anyone could run one.' },
   node: { name: 'Node admin', role: 'Operates the gateway Node that relays WAN bytes and is paid per 10 KB unit.' },
-  amina: { name: 'Amina', role: 'Client. Holds a seed phrase on her phone and no ETH.' },
+  amina: { name: 'Amina', role: 'Client. Holds a seed phrase on a phone and no ETH.' },
   baraka: { name: 'Baraka', role: 'Client. Second wallet for send and receive.' },
   founder: { name: 'Founder cold key', role: 'Treasury beneficiary. Hardware wallet, used only to veto.' },
   mallory: { name: 'Mallory', role: 'Attacker. Used by the recovery drills.' },
@@ -102,6 +108,8 @@ export function createWorld(params = DEFAULT_PARAMS) {
     devices: { amina: true, baraka: true },
     session: null,
     ledger: [],
+    blocks: [],
+    txNonces: {},
     seq: 0,
   };
 }
@@ -170,15 +178,16 @@ export function invariants(w) {
 }
 
 /**
- * Run one call. `spec` = { fn, from, contract, layer, gasKey, payer, args, flow, title, note }.
- * `body(w, ctx)` mutates the cloned world and may throw Revert; ctx collects
- * events and crypto steps. On-chain calls charge gas to the payer whether or
- * not they revert; off-chain steps cost no gas.
+ * Run one call. `spec` = { fn, from, contract, layer, gasKey, payer, args, abi, flow, title, note }.
+ * `body(w, ctx)` mutates the copied world and may throw Revert; ctx collects
+ * events, crypto steps and an optional `abi` [signature, values] for calldata.
+ * On-chain calls charge gas to the payer whether or not they revert, and are
+ * sealed into a block; off-chain steps cost no gas and make no block.
  */
 function call(world, spec, body) {
-  const w = structuredClone(world);
+  const w = copyState(world);
   const before = metrics(world);
-  const ctx = { events: [], crypto: [], notes: [], gasOverride: null, result: undefined };
+  const ctx = { events: [], crypto: [], notes: [], gasOverride: null, result: undefined, abi: spec.abi ?? null };
   const onChain = spec.layer === 'chain';
   let ok = true;
   let error = null;
@@ -188,6 +197,7 @@ function call(world, spec, body) {
     w.block += 1;
   }
 
+  const t0 = now();
   try {
     body(w, ctx);
   } catch (err) {
@@ -195,9 +205,11 @@ function call(world, spec, body) {
     ok = false;
     error = err.message;
   }
+  ctx.ms = now() - t0;
+  ctx.at = t0;
 
-  // A reverted call rolls state back but still burns gas.
-  const out = ok ? w : Object.assign(structuredClone(world), { t: w.t, block: w.block });
+  // A reverted call rolls state back but still burns gas and still lands in a block.
+  const out = ok ? w : Object.assign(copyState(world), { t: w.t, block: w.block });
   let gas = 0;
   let gasSrc = null;
   if (onChain) {
@@ -213,8 +225,7 @@ function call(world, spec, body) {
     const gwei = gasToGwei(gas, out.params);
     if (out.eth[payer] < gwei) {
       // The node rejects the transaction before it reaches a block: no state, no gas.
-      const failed = Object.assign(structuredClone(world), {});
-      return finish(failed, spec, {
+      return finish(copyState(world), spec, {
         ok: false,
         error: `insufficient funds for gas: ${nameOf(payer)} holds ${fmtGwei(out.eth[payer])} ETH, needs ${fmtGwei(gwei)}`,
         gas: 0,
@@ -232,22 +243,123 @@ function call(world, spec, body) {
 }
 
 const fmtGwei = (gwei) => (gwei / 1e9).toFixed(9);
+const now = () => (globalThis.performance ? globalThis.performance.now() : Date.now());
+
+/** Copy everything except the append-only ledger and chain, which are shared: entries and blocks never change once made. */
+function copyState(world) {
+  const { ledger, blocks, ...rest } = world;
+  const w = structuredClone(rest);
+  w.ledger = ledger;
+  w.blocks = blocks;
+  return w;
+}
+
+/** Where a balance lives, for the trace. */
+const DOMICILE = {
+  wallet: (who) => `chain: xKoinToken.balanceOf(${nameOf(who)})`,
+  escrow: (who) => `chain: xKoinEscrow.deposits(${nameOf(who)})`,
+  earnings: (who) => `chain: xKoinEscrow.earnings(${nameOf(who)})`,
+  mpesa: (who) => `M-Pesa: ${nameOf(who)}'s mobile money account`,
+  eth: (who) => `chain: native ETH balance of ${nameOf(who)}`,
+};
+const SYSTEM_DOMICILE = {
+  'token.supply': 'chain: xKoinToken.totalSupply()',
+  'escrow.balance': 'chain: xKoinToken.balanceOf(xKoinEscrow)',
+  'treasury.balance': 'chain: xKoinToken.balanceOf(xKoinTreasury)',
+  'kiosk.float': 'M-Pesa: kiosk paybill float (bank)',
+};
+export function domicile(key) {
+  if (SYSTEM_DOMICILE[key]) return SYSTEM_DOMICILE[key];
+  const [who, what] = key.split('.');
+  return DOMICILE[what]?.(who) ?? key;
+}
+
+const LAYER_HOME = { chain: 'chain (EVM)', wallet: 'phone: client wallet', kiosk: 'kiosk server', node: 'node firmware', fiat: 'M-Pesa', time: 'clock' };
+
+const ZERO32 = '0x' + '00'.repeat(32);
+
+const vrs = (sig) => {
+  const b = hexToBytes(sig);
+  return [b[64], bytesToHex(b.slice(0, 32)), bytesToHex(b.slice(32, 64))];
+};
+const refHash = (ref) => bytesToHex(keccakText(String(ref)));
+
+/** Function signature and argument values per call, for the exact calldata bytes. */
+const ABI = {
+  setBridge: (a) => ['setBridge(address,bool,uint128)', [addr(a.bridge), a.allowed, a.dailyMintCap]],
+  bridgeMint: (a) => ['bridgeMint(address,uint256,bytes32)', [addr(a.to), a.amount, refHash(a.fiatRef)]],
+  bridgeBurn: (a) => ['bridgeBurn(uint256,bytes32)', [a.amount, refHash(a.fiatRef)]],
+  approve: (a) => ['approve(address,uint256)', [addr(a.spender), a.amount]],
+  transfer: (a) => ['transfer(address,uint256)', [addr(a.to), a.amount]],
+  transferFrom: (a) => ['transferFrom(address,address,uint256)', [addr(a.owner), addr(a.to), a.amount]],
+  permit: (a) => ['permit(address,address,uint256,uint256,uint8,bytes32,bytes32)', [addr(a.owner), addr(a.spender), a.value, a.deadline, ...vrs(a.signature)]],
+  deposit: (a) => ['deposit(uint256)', [a.amount]],
+  depositWithPermit: (a) => ['depositWithPermit(address,uint256,uint256,uint8,bytes32,bytes32)', [addr(a.client), a.amount, a.deadline, ...vrs(a.signature)]],
+  withdrawDeposit: (a) => ['withdrawDeposit(uint256)', [a.amount]],
+  withdrawWithSig: (a) => ['withdrawWithSig(address,address,uint256,uint256,bytes)', [addr(a.client), addr(a.to), a.amount, a.deadline, a.signature]],
+  transferDeposit: (a) => ['transferDeposit(address,address,uint256,uint256,bytes)', [addr(a.from), addr(a.to), a.amount, a.deadline, a.signature]],
+  settleTicketBatch: (a) => [
+    'settleTicketBatch((address,address,uint64,uint128,uint256)[],bytes[])',
+    [a.list.map((t) => [addr(t.client), addr(t.nodeAdmin), t.sequenceNumber, t.cumulativeUnits, t.epochExpiry]), a.list.map((t) => t.signature)],
+  ],
+  claimEarnings: (a) => ['claimEarnings(address,uint256)', [addr(a.to), a.amount]],
+  setPricePerUnit: (a) => ['setPricePerUnit(uint256)', [a.newPrice]],
+  claim: () => ['claim(address)', [CONTRACTS.token]],
+  setFeeBps: (a) => ['setFeeBps(uint16)', [a.feeBps]],
+  queueBeneficiary: (a) => ['queueBeneficiary(address)', [addr(a.newBeneficiary)]],
+  activateBeneficiary: () => ['activateBeneficiary()', []],
+  cancelBeneficiaryChange: () => ['cancelBeneficiaryChange()', []],
+  transferOwnership: (a) => ['transferOwnership(address)', [addr(a.newOwner)]],
+  acceptOwnership: () => ['acceptOwnership()', []],
+};
+
+/** Seal a transaction into a new block. Real keccak; the header is simplified (Ethereum uses RLP and a state trie). */
+function seal(w, spec, ctx, ok, gas) {
+  const from = addr(spec.payer ?? spec.from);
+  const toKey = spec.contract ?? (spec.fn === 'ethTransfer' ? spec.args?.to : null);
+  const to = toKey ? addr(toKey) : null;
+  let input = '0x';
+  let selector = null;
+  const abi = ctx.abi ?? ABI[spec.fn]?.({ ...spec.args, ...spec.raw });
+  if (abi) {
+    const c = calldata(abi[0], abi[1]);
+    input = c.data;
+    selector = c.selector;
+    ctx.abi = abi;
+  }
+  const nonce = w.txNonces[spec.payer ?? spec.from] ?? 0;
+  w.txNonces[spec.payer ?? spec.from] = nonce + 1;
+  const txPre = concat(hexToBytes(from), hexToBytes(to ?? '0x' + '00'.repeat(20)), uintWord(nonce), hexToBytes(input));
+  const txHash = bytesToHex(keccak(txPre));
+  const state = metrics(w);
+  const stateJson = JSON.stringify(Object.keys(state).sort().map((k) => [k, state[k]]));
+  const stateRoot = bytesToHex(keccakText(stateJson));
+  const parentHash = w.blocks.at(-1)?.hash ?? ZERO32;
+  const headerPre = concat(hexToBytes(parentHash), uintWord(w.block), uintWord(w.t), hexToBytes(txHash), hexToBytes(stateRoot));
+  const hash = bytesToHex(keccak(headerPre));
+  const tx = { hash: txHash, from, to: to ?? 'contract creation', nonce, input, selector, signature: ctx.abi?.[0] ?? null, status: ok ? 1 : 0, gasUsed: gas, preimage: bytesToHex(txPre) };
+  const block = { number: w.block, timestamp: w.t, parentHash, txHash, stateRoot, hash, headerPreimage: bytesToHex(headerPre), stateJson, tx, entryId: w.seq };
+  w.blocks = w.blocks.concat(block);
+  return block;
+}
 
 function finish(w, spec, { ok, error, gas, gasSrc, before, ctx, rejected = false }) {
   const after = metrics(w);
   const diffs = Object.keys(after)
     .filter((k) => after[k] !== before[k])
-    .map((k) => ({ key: k, before: before[k], after: after[k], delta: after[k] - before[k] }));
+    .map((k) => ({ key: k, where: domicile(k), before: before[k], after: after[k], delta: after[k] - before[k] }));
   w.seq += 1;
+  const block = spec.layer === 'chain' && !rejected ? seal(w, spec, ctx, ok, gas) : null;
   const entry = {
     id: w.seq,
     t: w.t,
-    block: spec.layer === 'chain' && !rejected ? w.block : null,
+    block: block ? block.number : null,
     flow: spec.flow ?? null,
     title: spec.title ?? spec.fn,
     fn: spec.fn,
     contract: spec.contract ?? null,
     layer: spec.layer,
+    where: LAYER_HOME[spec.layer] ?? spec.layer,
     from: spec.from,
     payer: spec.layer === 'chain' ? spec.payer ?? spec.from : null,
     args: spec.args ?? {},
@@ -258,13 +370,18 @@ function finish(w, spec, { ok, error, gas, gasSrc, before, ctx, rejected = false
     gasSrc,
     kes: gasToKes(gas, w.params),
     usd: gasToUsd(gas, w.params),
+    ms: ctx.ms ?? 0,
+    at: ctx.at ?? 0,
+    tx: block?.tx ?? null,
+    blockHash: block?.hash ?? null,
     events: ctx.events,
     crypto: ctx.crypto,
     notes: [...(spec.note ? [spec.note] : []), ...ctx.notes],
     diffs,
     invariants: invariants(w),
   };
-  w.ledger = [...w.ledger, entry];
+  entry.say = say(entry);
+  w.ledger = w.ledger.concat(entry);
   return { world: w, entry, result: ctx.result };
 }
 
@@ -358,7 +475,7 @@ export const token = {
 
   /** Relayed EIP-2612 permit. `permit` comes from signPermit. */
   permit: (w, { from, permit, flow, title }) =>
-    call(w, { fn: 'permit', contract: 'token', from, layer: 'chain', flow, title, args: { owner: permit.owner, spender: permit.spender, value: permit.value } }, (x, ctx) => {
+    call(w, { fn: 'permit', contract: 'token', from, layer: 'chain', flow, title, args: { owner: permit.owner, spender: permit.spender, value: permit.value }, raw: { deadline: permit.deadline, signature: permit.signature } }, (x, ctx) => {
       applyPermit(x, permit, ctx);
     }),
 };
@@ -398,7 +515,7 @@ export const escrow = {
     }),
 
   depositWithPermit: (w, { from, client, amount, permit, flow, title }) =>
-    call(w, { fn: 'depositWithPermit', contract: 'escrow', from, layer: 'chain', flow, title, args: { client, amount } }, (x, ctx) => {
+    call(w, { fn: 'depositWithPermit', contract: 'escrow', from, layer: 'chain', flow, title, args: { client, amount }, raw: { deadline: permit.deadline, signature: permit.signature } }, (x, ctx) => {
       const warm = x.escrow.deposits[client] > 0;
       try {
         applyPermit(x, permit, ctx);
@@ -422,7 +539,7 @@ export const escrow = {
 
   /** Gasless exit. `auth` comes from offchain.signAuth(kind 'withdraw'). Anyone relays; `to` is signed. */
   withdrawWithSig: (w, { from, auth, to = auth?.to, flow, title }) =>
-    call(w, { fn: 'withdrawWithSig', contract: 'escrow', from, layer: 'chain', flow, title, args: { client: auth.from, to, amount: auth.amount } }, (x, ctx) => {
+    call(w, { fn: 'withdrawWithSig', contract: 'escrow', from, layer: 'chain', flow, title, args: { client: auth.from, to, amount: auth.amount }, raw: { deadline: auth.deadline, signature: auth.signature } }, (x, ctx) => {
       need(auth.amount > 0, 'ZeroAmount');
       need(to, 'ZeroAddress');
       const warm = (x.token.bal[to] > 0 ? 1 : 0) + (x.escrow.authNonces[auth.from] > 0 ? 1 : 0);
@@ -437,7 +554,7 @@ export const escrow = {
 
   /** Escrow-to-escrow, relayed. No token moves. */
   transferDeposit: (w, { from, auth, to = auth?.to, flow, title }) =>
-    call(w, { fn: 'transferDeposit', contract: 'escrow', from, layer: 'chain', flow, title, args: { from: auth.from, to, amount: auth.amount } }, (x, ctx) => {
+    call(w, { fn: 'transferDeposit', contract: 'escrow', from, layer: 'chain', flow, title, args: { from: auth.from, to, amount: auth.amount }, raw: { deadline: auth.deadline, signature: auth.signature } }, (x, ctx) => {
       need(auth.amount > 0, 'ZeroAmount');
       need(to, 'ZeroAddress');
       const warm = (x.escrow.deposits[to] > 0 ? 1 : 0) + (x.escrow.authNonces[auth.from] > 0 ? 1 : 0);
@@ -452,7 +569,7 @@ export const escrow = {
 
   /** tickets: [{ client, nodeAdmin, sequenceNumber, cumulativeUnits, epochExpiry, signature }] */
   settleTicketBatch: (w, { from, tickets, flow, title }) =>
-    call(w, { fn: 'settleTicketBatch', contract: 'escrow', from, layer: 'chain', flow, title, args: { tickets: tickets.length } }, (x, ctx) => {
+    call(w, { fn: 'settleTicketBatch', contract: 'escrow', from, layer: 'chain', flow, title, args: { tickets: tickets.length }, raw: { list: tickets } }, (x, ctx) => {
       need(tickets.length > 0, 'EmptyBatch');
       const treasuryWarm = x.token.bal.treasury > 0;
       const shape = [];
@@ -630,8 +747,10 @@ export const offchain = {
       const signed = { ...t, signature: sig.signature, digest: bytesToHex(d.digest), signedBy: signer ?? client, at: x.t };
       x.tickets[key] = [...list, signed];
       ctx.crypto.push({ label: 'TICKET_TYPEHASH', value: bytesToHex(d.typeHash) });
+      ctx.crypto.push({ label: 'abi.encode(typehash, client, nodeAdmin, seq, units, expiry): 192 bytes hashed', value: bytesToHex(d.encoded) });
       ctx.crypto.push({ label: 'structHash = keccak256(typehash, client, nodeAdmin, seq, units, expiry)', value: bytesToHex(d.structHash) });
       ctx.crypto.push({ label: 'domainSeparator (xKoinEscrow, 1, chain ' + CONTRACTS.chainId + ')', value: bytesToHex(d.domain.separator) });
+      ctx.crypto.push({ label: 'preimage 0x1901 || domainSeparator || structHash: 66 bytes hashed', value: bytesToHex(d.preimage) });
       ctx.crypto.push({ label: 'digest = keccak256(0x1901 || domain || structHash)', value: bytesToHex(d.digest) });
       ctx.crypto.push({ label: 'secp256k1 signature r || s || v', value: sig.signature });
       ctx.result = signed;
@@ -663,6 +782,8 @@ export const offchain = {
       const sig = signDigest(d.digest, KEYS[owner].secret);
       ctx.crypto.push({ label: `${kind === 'withdraw' ? 'WITHDRAW' : 'TRANSFER'}_TYPEHASH`, value: bytesToHex(d.typeHash) });
       ctx.crypto.push({ label: `structHash (from, to ${nameOf(to)}, amount, nonce ${nonce}, deadline)`, value: bytesToHex(d.structHash) });
+      ctx.crypto.push({ label: 'abi.encode(typehash, from, to, amount, nonce, deadline): 192 bytes hashed', value: bytesToHex(d.encoded) });
+      ctx.crypto.push({ label: 'preimage 0x1901 || domainSeparator || structHash', value: bytesToHex(d.preimage) });
       ctx.crypto.push({ label: 'digest (domain xKoinEscrow, 1)', value: bytesToHex(d.digest) });
       ctx.crypto.push({ label: 'secp256k1 signature', value: sig.signature });
       ctx.result = { kind, from: owner, to, amount, nonce, deadline, signature: sig.signature };
@@ -719,7 +840,7 @@ export const offchain = {
     }),
 
   loseDevice: (w, { who, flow }) =>
-    call(w, { fn: 'loseDevice', from: who, layer: 'wallet', flow, title: `${nameOf(who)} loses her phone` }, (x, ctx) => {
+    call(w, { fn: 'loseDevice', from: who, layer: 'wallet', flow, title: `${nameOf(who)} loses their phone` }, (x, ctx) => {
       x.devices[who] = false;
       ctx.notes.push('Nothing on chain changes. The key is gone from this device; the funds are not.');
     }),

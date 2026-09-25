@@ -83,8 +83,8 @@ export default function Send({ highlight = null, t = 0 }) {
           Confirm with fingerprint
         </div>
         <div className="xk-app-foot">
-          Relayed transfer (proposal A in how-it-works 5.1). Lands in seconds when the node has backhaul; queued
-          otherwise.
+          transferDeposit, relayed by gateway-api POST /escrow/transfer. Lands in seconds when the node has backhaul;
+          queued otherwise.
         </div>
       </div>
 

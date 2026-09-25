@@ -248,42 +248,5 @@ export const DRILL_WORDS = {
   offline: ['Internet is down', 'Node trusts the kiosk voucher, up to 5 KES.'],
 };
 
-/** Plain words for revert reasons. */
-export const PLAIN_ERRORS = {
-  InsufficientDeposit: 'not enough in the meter',
-  InsufficientEarnings: 'nothing earned to take',
-  ERC20InsufficientBalance: 'not enough in the wallet',
-  ERC20InsufficientAllowance: 'not allowed to move those coins',
-  BadAuthorization: 'signature does not match',
-  BadSignature: 'receipt signature is fake',
-  StaleSequence: 'receipt already paid',
-  NoNewUnits: 'nothing new to pay',
-  ExpiredTicket: 'receipt expired',
-  AuthorizationExpired: 'signature expired',
-  MintCapExceeded: 'kiosk hit its daily limit',
-  NotBridge: 'kiosk is not approved',
-  NothingToClaim: 'fee box is empty',
-  FeeTooHigh: 'fee above the 10% cap',
-  PriceOutOfBand: 'price outside the allowed range',
-  PriceCooldownActive: 'price changed less than a day ago',
-  TimelockActive: 'must wait 7 days',
-  NotAuthorized: 'not allowed',
-  OwnableUnauthorizedAccount: 'only the owner may do this',
-  STKCancelled: 'M-Pesa payment cancelled, nothing created',
-  B2CFailed: 'M-Pesa payout failed, coins kept safe',
-  MpesaInsufficientFunds: 'not enough M-Pesa',
-  DeviceUnavailable: 'phone is lost',
-  ZeroAmount: 'amount is zero',
-  EmptyBatch: 'no receipts to send',
-  VoucherExpired: 'voucher expired',
-  NoVoucher: 'no voucher, top up first',
-};
-
-export function plainError(entry) {
-  if (!entry?.error) return '';
-  if (entry.rejected) return `${entry.error.includes('holds 0.000000000') ? 'has no gas money' : 'cannot pay gas'}`;
-  const name = entry.error.split(':')[0];
-  return PLAIN_ERRORS[name] ?? name;
-}
-
+export { plainError } from './narrative.js';
 export { runSteps };

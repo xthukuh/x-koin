@@ -19,6 +19,7 @@ from pydantic import BaseModel, Field
 
 from app.config import get_settings
 from app.daraja.client import DarajaClient, parse_stk_callback
+from app.escrow_routes import router as escrow_router
 from app.jenga.client import JengaClient, JengaSigner
 from app.payout.worker import PayoutWorker, build_worker
 from app.settlement.chain import ChainBridge
@@ -27,6 +28,7 @@ from app.vouchers import VoucherIssuer
 log = logging.getLogger("xkoin.gateway")
 
 app = FastAPI(title="xKoin gateway-api", version="0.1.0")
+app.include_router(escrow_router)
 
 # In-memory pending-order book for the MVP sandbox. Production swaps this for
 # Redis/SQLite so a restart cannot orphan a paid order.

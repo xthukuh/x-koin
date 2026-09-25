@@ -5,6 +5,9 @@
 import { UKES, createWorld, deploy, escrow, invariants, kes, offchain, token, treasury, DEFAULT_PARAMS, pendingTickets } from '../src/demo/engine.js';
 import { DRILLS, buy, cashOut, closeSession, depositGasless, ensureReady, openSession, relayBatch, send, sendEscrow, serve, setupNetwork, withdraw, withdrawGasless } from '../src/demo/flows.js';
 
+import { calldata } from '../src/demo/abi.js';
+import { rehash, tamper, verify as verifyChain } from '../src/demo/chain.js';
+
 const errName = (entry) => (entry.error ?? '').split(':')[0];
 
 export async function run(check, chain) {
@@ -100,6 +103,37 @@ export async function run(check, chain) {
   const moved = sendEscrow(fresh, { from: 'baraka', to: 'amina', amount: kes(7) });
   check('transferDeposit moves 7 KES of meter credit, escrow token balance unchanged', moved.ok && moved.world.escrow.deposits.amina === kes(7) && moved.world.token.bal.escrow === fresh.token.bal.escrow && invariants(moved.world).every((i) => i.ok), moved.failed?.error);
   check('transferDeposit first-use gas = measured 83,050', moved.entries.at(-1).gas === 83_050, `${moved.entries.at(-1).gas}`);
+
+  // ---- 3c. raw bytes: calldata against cast, chain links, tamper ----------
+  const A = '0x04058E195865C8C6f52d568e1a4574C18169CdDA';
+  const B = '0x7fBce6431AF7fb5F1F20FD433a67899f1BB38baE';
+  const S = '0x' + 'ab'.repeat(65);
+  // Expected bytes printed by `cast calldata` (Foundry 1.5.1) on 2026-09-26.
+  const CAST_WITHDRAW = '0x0baf471100000000000000000000000004058e195865c8c6f52d568e1a4574c18169cdda00000000000000000000000004058e195865c8c6f52d568e1a4574c18169cdda00000000000000000000000000000000000000000000000000000000004c4b40000000000000000000000000000000000000000000000000000000007735940000000000000000000000000000000000000000000000000000000000000000a00000000000000000000000000000000000000000000000000000000000000041ababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababab00000000000000000000000000000000000000000000000000000000000000';
+  const CAST_SETTLE = '0x53b3763c000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000001a0000000000000000000000000000000000000000000000000000000000000000200000000000000000000000004058e195865c8c6f52d568e1a4574c18169cdda0000000000000000000000007fbce6431af7fb5f1f20fd433a67899f1bb38bae000000000000000000000000000000000000000000000000000000000000001900000000000000000000000000000000000000000000000000000000000009c4000000000000000000000000000000000000000000000000000000006aa1aa1b00000000000000000000000004058e195865c8c6f52d568e1a4574c18169cdda00000000000000000000000004058e195865c8c6f52d568e1a4574c18169cdda000000000000000000000000000000000000000000000000000000000000000a0000000000000000000000000000000000000000000000000000000000000064000000000000000000000000000000000000000000000000000000006aa1aa1b0000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000000000041ababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababab0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000021234000000000000000000000000000000000000000000000000000000000000';
+  check('calldata withdrawWithSig equals cast', calldata('withdrawWithSig(address,address,uint256,uint256,bytes)', [A, A, 5_000_000, 2_000_000_000, S]).data.toLowerCase() === CAST_WITHDRAW);
+  check(
+    'calldata settleTicketBatch (tuple[] and bytes[]) equals cast',
+    calldata('settleTicketBatch((address,address,uint64,uint128,uint256)[],bytes[])', [[[A, B, 25, 2500, 1788979739], [A, A, 10, 100, 1788979739]], [S, '0x1234']]).data.toLowerCase() === CAST_SETTLE,
+  );
+  const cw = moved.world;
+  const chainTx = cw.ledger.filter((e) => e.layer === 'chain' && !e.rejected).length;
+  check('one block per sent transaction, reverts included', cw.blocks.length === chainTx, `${cw.blocks.length} blocks, ${chainTx} tx`);
+  check('every block recomputes and links', verifyChain(cw.blocks).every((r) => r.ok));
+  check('every chain entry carries calldata', cw.ledger.filter((e) => e.tx && e.fn && !e.fn.startsWith('create:') && e.fn !== 'ethTransfer').every((e) => e.tx.input.length > 10));
+  const mintIdx = cw.blocks.findIndex((b) => b.tx.signature?.startsWith('bridgeMint'));
+  const edited = tamper(cw.blocks, mintIdx, kes(40), kes(40_000));
+  const rows = verifyChain(edited);
+  const firstBad = rows.findIndex((r) => !r.ok);
+  check('tamper: mint of 40 KES edited to 40,000 is caught at that block', firstBad === mintIdx && !rows[mintIdx].tx, `first failure at block index ${firstBad}`);
+  const fixedOne = verifyChain(rehash(edited, mintIdx, true));
+  const brokeAt = fixedOne.findIndex((r) => !r.ok);
+  check('fixing only the edited block moves the break to the next link', brokeAt === mintIdx + 1 && !fixedOne[brokeAt].link, `break at ${brokeAt}`);
+  check('setup result carries the three deploy records', setupNetwork(createWorld()).entries.filter((e) => e.fn.startsWith('create:')).length === 3);
+  const reforged = rehash(edited, mintIdx);
+  check('re-forged copy is self-consistent but its head no longer matches the honest copy', verifyChain(reforged).every((r) => r.ok) && reforged.at(-1).hash !== cw.blocks.at(-1).hash);
+  check('every step has a plain sentence', cw.ledger.every((e) => typeof e.say === 'string' && e.say.length > 10 && e.say !== e.title), cw.ledger.find((e) => e.say === e.title)?.fn);
+  check('every balance change names where it lives', cw.ledger.every((e) => e.diffs.every((d) => d.where && d.where !== d.key)));
 
   // ---- 4. the 12 MB session ------------------------------------------------
   let sw = openSession(w, { client: 'amina', targetBytes: 12_000_000 }).world;

@@ -36,6 +36,46 @@ ESCROW_ABI: list[dict[str, Any]] = [
         "outputs": [],
     },
     {
+        "type": "function",
+        "name": "withdrawWithSig",
+        "stateMutability": "nonpayable",
+        "inputs": [
+            {"name": "client", "type": "address"},
+            {"name": "to", "type": "address"},
+            {"name": "amount", "type": "uint256"},
+            {"name": "deadline", "type": "uint256"},
+            {"name": "signature", "type": "bytes"},
+        ],
+        "outputs": [],
+    },
+    {
+        "type": "function",
+        "name": "transferDeposit",
+        "stateMutability": "nonpayable",
+        "inputs": [
+            {"name": "from", "type": "address"},
+            {"name": "to", "type": "address"},
+            {"name": "amount", "type": "uint256"},
+            {"name": "deadline", "type": "uint256"},
+            {"name": "signature", "type": "bytes"},
+        ],
+        "outputs": [],
+    },
+    {
+        "type": "function",
+        "name": "authNonces",
+        "stateMutability": "view",
+        "inputs": [{"name": "", "type": "address"}],
+        "outputs": [{"name": "", "type": "uint256"}],
+    },
+    {
+        "type": "function",
+        "name": "deposits",
+        "stateMutability": "view",
+        "inputs": [{"name": "", "type": "address"}],
+        "outputs": [{"name": "", "type": "uint256"}],
+    },
+    {
         "type": "event",
         "name": "BatchSettled",
         "inputs": [
@@ -98,6 +138,15 @@ def fiat_ref_hash(reference: str) -> bytes:
     return keccak(text=reference)
 
 
+def _jsonable(value: Any) -> Any:
+    """Bytes become 0x-hex so a dry-run transaction can be returned as JSON."""
+    if isinstance(value, (bytes, bytearray)):
+        return "0x" + bytes(value).hex()
+    if isinstance(value, (list, tuple)):
+        return [_jsonable(v) for v in value]
+    return value
+
+
 class ChainBridge:
     def __init__(self, settings: Settings):
         self._s = settings
@@ -116,7 +165,7 @@ class ChainBridge:
                 "dry_run": True,
                 "to": contract_address,
                 "fn": fn,
-                "args": list(args),
+                "args": _jsonable(list(args)),
                 "chain_id": self._s.chain_id,
             }
         w3 = self._web3()
@@ -155,6 +204,39 @@ class ChainBridge:
         ref = fiat_ref_hash(fiat_ref) if not self._s.dry_run else fiat_ref
         return self._send(
             self._s.token_address, TOKEN_ABI, "bridgeBurn", (amount_ukes, ref)
+        )
+
+    # -- relayed escrow authorisations ---------------------------------------
+
+    def auth_state(self, client: str) -> dict | None:
+        """On-chain nonce and deposit for a pre-check, or None in dry run."""
+        if self._s.dry_run:
+            return None
+        w3 = self._web3()
+        escrow = w3.eth.contract(address=self._s.escrow_address, abi=ESCROW_ABI)
+        return {
+            "nonce": escrow.functions.authNonces(client).call(),
+            "deposit": escrow.functions.deposits(client).call(),
+        }
+
+    def relay_withdraw(
+        self, client: str, to: str, amount: int, deadline: int, signature: bytes
+    ) -> dict:
+        return self._send(
+            self._s.escrow_address,
+            ESCROW_ABI,
+            "withdrawWithSig",
+            (client, to, amount, deadline, signature),
+        )
+
+    def relay_transfer(
+        self, sender: str, to: str, amount: int, deadline: int, signature: bytes
+    ) -> dict:
+        return self._send(
+            self._s.escrow_address,
+            ESCROW_ABI,
+            "transferDeposit",
+            (sender, to, amount, deadline, signature),
         )
 
     # -- settlement relay ----------------------------------------------------

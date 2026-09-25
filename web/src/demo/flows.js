@@ -44,8 +44,10 @@ export function runSteps(world, steps) {
 
 export function setupNetwork(world) {
   const flow = newFlow('Deploy and configure');
-  let w = world.deployed ? world : deploy(world, flow);
-  return runSteps(w, [(x) => token.setBridge(x, { from: 'owner', bridge: 'kiosk', allowed: true, dailyMintCap: kes(x.params.mintCapKes), flow })]);
+  const w = world.deployed ? world : deploy(world, flow);
+  const deployed = w.ledger.slice(world.ledger.length);
+  const r = runSteps(w, [(x) => token.setBridge(x, { from: 'owner', bridge: 'kiosk', allowed: true, dailyMintCap: kes(x.params.mintCapKes), flow })]);
+  return { ...r, entries: [...deployed, ...r.entries] };
 }
 
 /** On-ramp: M-Pesa into the kiosk float, mint only after the callback, then the voucher. */
@@ -391,7 +393,7 @@ export const DRILLS = [
       ]);
       const clean = structuredClone(r.world);
       clean.tickets['amina>node'] = (clean.tickets['amina>node'] ?? []).filter((t) => t.epochExpiry >= clean.t);
-      return { world: clean, ok: !r.ok, entries: [...entries, ...r.entries], verdict: 'Reverted ExpiredTicket. The node forfeits those 200 units. Mitigation: the relayer settles before expiry whatever the fee threshold says, and the client re-signs a fresh cumulative ticket next session, which recovers the units if she agrees.' };
+      return { world: clean, ok: !r.ok, entries: [...entries, ...r.entries], verdict: 'Reverted ExpiredTicket. The node forfeits those 200 units. Mitigation: the relayer settles before expiry whatever the fee threshold says, and the client re-signs a fresh cumulative ticket next session, which recovers the units if the client agrees.' };
     },
   },
   {
@@ -489,7 +491,7 @@ export const DRILLS = [
         (w) => token.permit(w, { from: 'mallory', permit: r0.result, flow, title: 'Mallory submits the permit first' }),
         (w) => escrow.depositWithPermit(w, { from: 'kiosk', client: 'amina', amount: kes(5), permit: r0.result, flow, title: 'Kiosk relays the same permit' }),
       ]);
-      return { world: r.world, ok: r.ok, entries: [r0.entry, ...r.entries], verdict: 'The inner permit() failed on a used nonce and was caught; the allowance Mallory set was used; the deposit landed. Mallory only burned her own gas.' };
+      return { world: r.world, ok: r.ok, entries: [r0.entry, ...r.entries], verdict: 'The inner permit() failed on a used nonce and was caught; the allowance Mallory set was used; the deposit landed. Mallory only burned their own gas.' };
     },
   },
   {

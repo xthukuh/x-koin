@@ -11,7 +11,7 @@ import './phone.css';
  * player scene animate the screen (optional; a screen ignores it if it has
  * nothing to animate). Until a screen is ported, the frame shows its name.
  */
-export const SCREEN_NAMES = ['onboard', 'main', 'attach', 'buy', 'send', 'withdraw'];
+export const SCREEN_NAMES = ['onboard', 'main', 'attach', 'buy', 'send', 'unlock', 'withdraw'];
 
 const SCREENS = {};
 
